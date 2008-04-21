@@ -1,21 +1,121 @@
 #!/bin/bash
-# wain@archlinux.fr
+# Julien MISCHKOWITZ <wain@archlinux.fr>
 # Ce programme permet de rechercher les fichiers pacsave et pacnew, de supprimer les fichiers inutiles et d'éditer les différences entre les fichiers.
 program_version=0.3.6
+DEBUG=1
+dbg(){
+	! [ $DEBUG ] && return
+	echo -e "$*" >> $YAOURTTMPDIR/pacdiffviewer.log
+}
 
-# Répertoires à exclure lors de la recherche des fichiers:
-# Enlevez /home par exemple de cette liste pour rechercher des fichiers pacsave/pacnew à l'intérieur.
-#excluded_directories=/bin,/lib,/media,/mnt,/opt,/root,/tmp,/var,/usr,/home
-excluded_directories=/bin,/lib,/media,/mnt,/opt,/root,/tmp,/var,/usr,/home
-tmp_files="/tmp/pacdiffviewer-$(id -un)"
-USE_COLOR="y"
-FR=
-EN=
-if echo $LANG | grep -i "fr" >/dev/null; then
-	FR=1
-else
-	EN=1
-fi
+merge_files(){
+	DIFFOPTS="-abB"
+	#diff $DIFFOPTS -u "$1$ORIGEXT" "$1">$PATCHFILE
+	echo "$systemfile: diff between $originalversionprevious and $originalversioncurrent"
+	diff $DIFFOPTS -u $savedir/$pkgname/$originalversionprevious$systemfile $systemfile
+	#sdiff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile $systemfile
+	#if patch --dry-run -sp0 "$1$NEWEXT" <$PATCHFILE >/dev/null; then
+			# TODO: can tilde (~) backup files creation be avoided?
+			# If not remove this backup files
+	#		patch -p0 "$1" <$PATCHFILE
+	#	fi
+
+
+
+	read
+
+
+}
+
+
+#           COMPARER LES VERSIONS ET TROUVER CE QUI EST MERGEABLE
+# Pour chaque fichier .pacnew, vérifier qu'on ait la bonne version en sauvegarde
+# Pour chaque fichier .pacnew correct, regarder si la version du package installé correspond
+# Pour chaque fichier .pacnew correct chercher la version précédente de la sauvegarde
+# , regarder si la version du package installé correspond
+is_mergeable(){
+	systemcurrentfile=$1
+	currentversion=`LC_ALL=C pacman -Qo $systemcurrentfile | awk '{print $5"-"$6}'`
+	pkgname=`echo $currentversion | sed 's/-[^-]*-[^-]*$//'`
+	currentversionfile="$savedir/$pkgname/${currentversion}${systemcurrentfile}"
+	unset previousversion
+	dbg "Searching in backupfiles for $systemcurrentfile original files for possible merge"
+	if [ ! -f "$currentversionfile" ]; then
+		dbg "Version actuelle non trouvé ($currentversion). Merge impossible"
+		return 1
+	fi
+	dbg "Searching for previous version of $systemcurrentfile ($currentversion) for possible merge"
+	for candidate in `ls "$savedir/$pkgname" | grep -v "$currentversion"`; do
+		[ ! -f "$savedir/$pkgname/$candidate${systemcurrentfile}" ] && continue
+		#if `is_x_gt_y $currentversion $version`; then
+		#	echo "1 current:$currentversion > version:$version"
+		#else
+		#	echo "1 current:$currentversion < version:$version"
+		#	continue
+		#fi
+		if [ -z "$previousversion" ]; then
+			if `is_x_gt_y $currentversion $candidate`; then
+				previousversion=$candidate
+				dbg "canditate found: $candidate"
+			fi
+			continue
+		fi
+		       
+		if `is_x_gt_y $candidate $previousversion`; then
+			if `is_x_gt_y $currentversion $candidate`; then
+				dbg "best canditate than $previousversion found: candidate:$candidate > $previousversion"
+				previousversion=$candidate
+			fi
+		else
+			dbg "debug: not better: candidate:$candidate < $previousversion"
+			continue
+		fi
+	done
+	if [ ! -z "$previousversion" ]; then
+		dbg "La version $previousversion précède $currentversion"
+		echo "$systemcurrentfile $pkgname $currentversion $previousversion" >> $tmp_files/mergeable_files
+		return 0
+	else
+		dbg "Aucune version antérieure à $currentversion n'a été trouvée"
+		return 1
+	fi
+
+}
+
+# Save files marked as backup in packages for later merge
+##########################################################
+backupfiles(){
+##########################################################
+	need_root
+	local packagelist=`grep -srl --line-regexp --include="files" '%BACKUP%' "$PACMANROOT/local"`
+	for file in ${packagelist[@]};do
+		package=`echo $file | awk -F "/" '{print $(NF-1)}' `
+		pkgname=`echo $package | sed 's/-[^-]*-[^-]*$//'`
+		cat $file | sed -e '1,/%BACKUP%/d' -e '/^$/d'| while read line; do
+			backupfilepath=`echo $line | awk '{print $1}'`
+			if [ ! -f "$savedir/$pkgname/$package/$backupfilepath" ]; then
+				backupfiledir=`dirname $backupfilepath`
+				#backupfilename=`basename $backupfilepath`
+				backupfilemd5=`echo $line | awk '{print $2}'`
+				for currentfile in "/$backupfilepath" "/$backupfilepath.pacnew"; do
+					#echo "     recherche $currentfile"
+					[ ! -f "$currentfile" ] && continue
+					#echo "        calcul md5 $currentfile"
+					pacnewfilemd5=`md5sum "$currentfile" | awk '{print $1}'`
+					if [ "$pacnewfilemd5" = "$backupfilemd5" ]; then
+						#echo "-*- creation du dossier $savedir/$package/$backupfiledir"
+						mkdir -p "$savedir/$pkgname/$package/$backupfiledir"
+			        		echo "  -> copie de $currentfile"
+						cp -a "$currentfile" "$savedir/$pkgname/$package/$backupfilepath" || return 1
+						break
+					fi
+		       		done
+			fi
+		done
+	done
+	exit
+}
+
 
 ##########################################################
 SUPPRESS_ORPHANS()
@@ -35,7 +135,7 @@ list "$(cat $tmp_files/pacfile.obsolete)"
 [ $EN ] && msg "Do you want to remove this obsolete files ?"
 [ $EN ] && msg " (to be confirmed for each file) :  y/n [n]"
 msg "----------------------------------------------"
-prompt
+promptlight
 read -n 1 suppress
 echo
 if [ "$suppress" = "o" -o "$suppress" = "y" ]
@@ -51,8 +151,8 @@ then
 		file=${fichier[$i]}
 		if [ -w $file ]
 		then
-			[ $FR ] && prompt "Supprimer le fichier $file ?: o/n [n] ->"
-			[ $EN ] && prompt "Delete file $file ?: y/n [n] ->"
+			[ $FR ] && promptlight "Supprimer le fichier $file ?: o/n [n] ->"
+			[ $EN ] && promptlight "Delete file $file ?: y/n [n] ->"
 			read -n 1 deletefile 
 			echo
 			if [ "$deletefile" = "y" -o "$deletefile" = "o" ]; then rm $file; fi
@@ -83,7 +183,7 @@ do
 		echo $ligne >> $tmp_files/$extension.tmp
 	fi
 done 
-cp $tmp_files/$extension.tmp $tmp_files/$extension
+[ -f "$tmp_files/$extension.tmp" ] && cp $tmp_files/$extension.tmp $tmp_files/$extension
 }
 
 ##########################################################
@@ -92,19 +192,15 @@ CREATE_DB()
 {
 # Création de la liste des fichiers .pacsave et .pacnew
 rm -rf $tmp_files/
-clear
-[ $FR ] && msg "Veuillez patienter pendant la recherche..."
-[ $EN ] && msg "Please wait..."
+#[ $FR ] && msg "Veuillez patienter pendant la recherche..."
+#[ $EN ] && msg "Please wait..."
 mkdir -p $tmp_files
-#locate -q -u -o $tmp_files/pacbase -l 0 -e $excluded_directories || exit 1
 find /etc/ /opt \( -name *.pacsave -o -name *.pacnew \) > $tmp_files/pacbase 
 
-#Recherche des fichiers pacsave
-extension="pacsave"
-SEARCH_FOR_PACFILES
-#Recherche des fichiers pacnew
-extension="pacnew"
-SEARCH_FOR_PACFILES
+#Recherche des fichiers pacsave/pacnew
+for extension in "pacsave" "pacnew"; do
+	SEARCH_FOR_PACFILES
+done
 }
 
 ##########################################################
@@ -112,13 +208,11 @@ SEARCH_FOR_PACFILES()
 ##########################################################
 {
 # Recherche des fichiers pacsave/pacnew + tri des résultats par date
-for file in `grep ".$extension" $tmp_files/pacbase`;
-do
+for file in `grep ".$extension" $tmp_files/pacbase`; do
 	[ $FR ] && echo `date +%s -r $file` "Le "`date +%d/%m/%Y" à "%T -r $file`": "$file>>$tmp_files/$extension.tmp
 	[ $EN ] && echo `date +%s -r $file` "The "`date +%m/%d/%Y" at "%T -r $file`": "$file>>$tmp_files/$extension.tmp
 done
-if [ -f $tmp_files/$extension.tmp ]
-then
+if [ -f $tmp_files/$extension.tmp ]; then
 	sort -r "$tmp_files/$extension.tmp" | cut -d " " -f 2-6 | sed -e s/.$extension//g>$tmp_files/$extension
 	nbresultats=`wc -l $tmp_files/$extension.tmp | cut -d " " -f 1`
 	if [ "$extension" = "pacsave" ]; then pacsave_num=$nbresultats; fi
@@ -145,18 +239,19 @@ while read ligne; do
 	fichier[$num]=$ligne
 done < $tmp_files/$extension
 
-for i in `seq $num`
-do
+echo "File to merge             Current Version      Previous Version" > $tmp_files/meargeable_files
+
+for i in `seq $num`; do
 	file[$i]=$(echo ${fichier[$i]} | cut -d " " -f 5)
 	show_file_line="$i. ${fichier[$i]}[.$extension]"
-	if [ -r ${file[$i]} ]
-	then
-		if [ ! -w ${file[$i]} ]; then show_file_line=$(echo $show_file_line" (readonly)"); fi
-		[ $FR ] && if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line=$(echo $show_file_line" **fichiers identiques**" ); fi
-		[ $EN ] && if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line=$(echo $show_file_line" **same files**" ); fi
+	#previous_version_for_merge[$i]=`mergeable_with ${file[$i]}`
+	if `is_mergeable ${file[$i]}`; then
+		#if [ ! -w ${file[$i]} ]; then show_file_line=$(echo $show_file_line" (readonly)"); fi
+		[ $FR ] && show_file_line="$show_file_line $COL_RED$COL_BLINK**fusion automatique possible**"
+		[ $EN ] && show_file_line="$show_file_line $COL_RED$COL_BLINK**automerge is possible**"
 	else
-		[ $FR ] && show_file_line=$(echo $show_file_line" (Accès interdit)")
-		[ $EN ] && show_file_line=$(echo $show_file_line" (Acces denied)")
+		[ $FR ] && if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line="$show_file_line **fichiers identiques**";fi
+		[ $EN ] && if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line="$show_file_line **same files**";fi
 	fi
 	list "$show_file_line"
 done 
@@ -167,8 +262,8 @@ DIFFEDITOR()
 ##########################################################
 {
 clear
-[ $FR ] && msg  "Quelle action pour ${file[numero]}[.$extension] ?"
-[ $EN ] && msg  "What do you want to do with ${file[numero]}[.$extension] ?"
+[ $FR ] && msg  "Quelle action pour ${file[$numero]}[.$extension] ?"
+[ $EN ] && msg  "What do you want to do with ${file[$numero]}[.$extension] ?"
 [ $FR ] && plain "  1: Voir les différences avec gvim en mode Expert"
 [ $EN ] && plain "  1: Show diffs with gvim in expert mode"
 [ $FR ] && plain "  2: Voir les différences avec vimdiff (vi en console)"
@@ -185,13 +280,33 @@ clear
 [ $EN ] && plain "  S: suppress .$extension file"
 [ $FR ] && plain "  R: remplacer le fichier actuel par le .$extension"
 [ $EN ] && plain "  R: replace actual file by .$extension"
+if [ -f "$tmp_files/mergeable_files" ]; then
+	line=`grep "${file[$numero]}" $tmp_files/mergeable_files`
+	if [ ! -z "$line" ]; then 
+		systemfile=`echo $line | awk '{print $1}'`
+		pkgname=`echo $line | awk '{print $2}'`
+		originalversioncurrent=`echo $line | awk '{print $3}'`
+		originalversionprevious=`echo $line | awk '{print $4}'`
+		mergeable=1 
+		[ $FR ] && plain "  ${COL_BLINK}A: Automatiquement fusionner avec le .$extension (utilise un diff entre $originalversionprevious et $originalversioncurrent)"
+		[ $EN ] && plain "  ${COL_BLINK}A: Automatically merge with .$extension (use a diff between $originalfilecurrent and $originalfileprevious)"
+	else
+		mergeable=0 
+	fi
+fi
 [ $FR ] && msg " Tapez ENTER pour revenir au menu précédent"
 [ $EN ] && msg " Press ENTER to return to menu"
 msg "----------------------------------------------"
-prompt
+promptlight
 read -n 1 action
 echo
 case "$action" in
+	a|A) 
+	# Auto merge
+	if [ "$mergeable" -eq 1 ]; then
+       		merge_files
+	fi
+	DIFFEDITOR;;
 	"1" )
 	# Voir les différences avec GVIM
 	gvim -d ${file[numero]} ${file[numero]}.$extension
@@ -232,7 +347,7 @@ case "$action" in
 	[ $EN ] && msg " Enter the name of the program to use"
   	[ $EN ] && echo "    (without ${file[numero]} ${file[numero]}.$extension)"
 	msg "----------------------------------------------"
-	prompt
+	promptlight
 	read commanddiffview
 	( $commanddiffview ${file[numero]} ${file[numero]}.$extension )
 	wait
@@ -304,7 +419,7 @@ SHOWVERSION()
 ##########################################################
 {
 echo "pacdiffviewer $program_version"
-echo "ecrit par wain <wain@gmx.net>"
+echo "Author: Julien MISCHKOWITZ <wain@archlinux.fr>"
 exit 0
 }
 
@@ -312,18 +427,17 @@ exit 0
 SUPPRESSAUTO()
 ##########################################################
 {
-clear
+echo
 [ $FR ] && msg "Etes-vous sur de vouloir supprimer tous les fichiers suivants ?"
 [ $EN ] && msg "Do you want to delete following files ?"
-for file in `cat $tmp_files/pacbase`;
-do
+for file in `cat $tmp_files/pacbase`; do
 	[ $FR ] && list $file "(créé le "`date +%d/%m/%Y" à "%T -r $file`")"
 	[ $EN ] && list $file "(created "`date +%m/%d/%Y" at "%T -r $file`")"
 done
 [ $FR ] && msg "Oui (à confirmer pour chaque fichier), Tous, Non"
 [ $EN ] && msg "Yes (to be confirmed for each file), All, No"
 msg "----------------------------------------------"
-prompt
+promptlight
 read -n 1 action
 echo
 case "$action" in
@@ -354,74 +468,56 @@ case "$action" in
 	;;
 esac
 
-
-#[ $FR ] && plain "Programme terminé"
 rm -rf $tmp_files/
 exit 0
 }
 
-##################################################################
-# Gestion des messages
-##################################################################
-plain() {
-	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
-		echo -e "\033[1;1m$1\033[1;0m" >&2
-	else
-		echo "$1" >&2
-	fi
+need_root(){
+if [ "$UID" -ne "0" ]; then
+	echo "Requires root user"
+	echo
+	echo "Login root:"
+	echo "   # su"
+	echo "   # <root password>"
+	echo
+	echo "Or add this line to sudoers:"
+	echo "`id -un` ALL=NOPASSWD: /usr/bin/pacdiffviewer"
+	exit
+fi
 }
-list() {
-	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
-		echo -e "\033[1;33m$1\033[1;0m" >&2
-	else
-		echo "$1" >&2
-	fi
-}
-msg() {
-	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
-		echo -e "\033[1;32m==>\033[1;0m \033[1;1m$1\033[1;0m" >&2
-	else
-		echo "==> $1" >&2
-	fi
-}
-prompt() {
-	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
-		echo -ne "\033[1;33m==> \033[1;0m \033[1;1m$1\033[1;0m" >&2
-	else
-		echo -n "==> $1" >&2
-	fi
-}
-warning() {
-	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
-		echo -e "\033[1;33m==> WARNING:\033[1;0m \033[1;1m$1\033[1;0m" >&2
-	else
-		echo "==> WARNING: $1" >&2
-	fi
-}
-error() {
-	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
-		echo -e "\033[1;31m==> ERROR:\033[1;0m \033[1;1m$1\033[1;0m" >&2
-	else
-		echo "==> ERROR: $1" >&2
-	fi
-}
+
 
 ########################################################################
-###              Corps du Programme                                  ###
+###              MAIN PROGRAM                                        ###
 ########################################################################
+savedir=/var/lib/yaourt/backupfiles
 
-# Affichage de l'aide et sortie
-if [ "$1" = "-h" ]; then SHOWHELP; fi
+unset FR EN
+if echo $LANG | grep -i "fr" >/dev/null; then
+	FR=1
+else
+	EN=1
+fi
 
-# Affichage de la version et sortie
-if [ "$1" = "-v" ]; then SHOWVERSION; fi
+# Basic init and libs in common with yaourt
+source /usr/lib/yaourt/basicfunctions.sh || exit 1 
+tmp_files="$YAOURTTMPDIR/pacdiffviewer.$$"
 
-# Nettoyage et initialisation de la liste des fichiers pacsave/pacnew
+
+
+case $1 in
+  -h|--help) SHOWHELP;;
+  -v|--version) SHOWVERSION;;
+  --backup) backupfiles;;
+esac
+
+# Initialisation de la liste des fichiers pacsave/pacnew
+need_root
+dbg `date +%D" "%Hh%Mm%Ss`
 CREATE_DB
 
 # Affichage des résultats de la recherche et sortie si pas de résultats
-if [[ "$pacsave_num" -eq "0" && "$pacnew_num" -eq "0" ]]
-then
+if [[ "$pacsave_num" -eq "0" && "$pacnew_num" -eq "0" ]]; then
 	[ $FR ] && msg "pas de fichiers trouvés. fin"
 	[ $EN ] && msg "no file found."
 	rm -rf $tmp_files/
@@ -432,9 +528,8 @@ sleep 1
 # Mode suppression automatique et sortie
 if [ "$1" = "-c" ]; then SUPPRESSAUTO; fi
 
-
 # Suppression des fichiers orphelins si nécessaires 
-if [ -f $tmp_files/pacfile.obsolete ]; then SUPPRESS_ORPHANS; fi
+if [ -f "$tmp_files/pacfile.obsolete" ]; then SUPPRESS_ORPHANS; fi
 
 # Recherche des différences sur les pacsave
 if [[ "$pacsave_num" -gt "0" ]]
@@ -457,7 +552,7 @@ then
 		[ $FR ] && msg "Tapez le numéro du fichier à modifier ou ENTER pour Annuler"
 		[ $EN ] && msg "Enter the number of the file to be modified or press ENTER to cancel"
 		msg "----------------------------------------------"
-		prompt
+		promptlight
 		read numero
 		if [ -z $numero ]; then break; fi
 		DIFFEDITOR
@@ -485,7 +580,7 @@ then
 		[ $FR ] && msg "Tapez le numéro du fichier à modifier ou ENTER pour Annuler"
 		[ $EN ] && msg "Enter the number of the file to be modified or press ENTER to cancel"
 		msg "----------------------------------------------"
-		prompt
+		promptlight
 		read numero
 		if [ -z $numero ]; then break; fi
 		DIFFEDITOR

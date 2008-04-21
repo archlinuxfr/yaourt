@@ -92,6 +92,9 @@ prompt(){
 	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD} ----------------------------------------------${NO_COLOR}" >&2
 	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
 }
+promptlight(){
+	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
+}
 error(){
 	echo -e "${COL_RED}""Error""${NO_COLOR}"": $1\n"
 	return 1
