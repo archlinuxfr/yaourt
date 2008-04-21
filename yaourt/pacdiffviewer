@@ -1,0 +1,498 @@
+#!/bin/bash
+# wain@archlinux.fr
+# Ce programme permet de rechercher les fichiers pacsave et pacnew, de supprimer les fichiers inutiles et d'éditer les différences entre les fichiers.
+program_version=0.3.6
+
+# Répertoires à exclure lors de la recherche des fichiers:
+# Enlevez /home par exemple de cette liste pour rechercher des fichiers pacsave/pacnew à l'intérieur.
+#excluded_directories=/bin,/lib,/media,/mnt,/opt,/root,/tmp,/var,/usr,/home
+excluded_directories=/bin,/lib,/media,/mnt,/opt,/root,/tmp,/var,/usr,/home
+tmp_files="/tmp/pacdiffviewer-$(id -un)"
+USE_COLOR="y"
+FR=
+EN=
+if echo $LANG | grep -i "fr" >/dev/null; then
+	FR=1
+else
+	EN=1
+fi
+
+##########################################################
+SUPPRESS_ORPHANS()
+##########################################################
+{
+# Affichage et suppression des fichiers orphelins
+list "-------------------------------------------------------"
+[ $FR ] && plain "        Les fichiers suivants sont orphelins:"
+[ $FR ] && plain "    (Les paquetages concernés ne sont plus installés)"
+[ $EN ] && plain "        Following files are orphans:"
+[ $EN ] && plain "    (Packages are no longer installed)"
+list "-------------------------------------------------------"
+sleep 1
+list "$(cat $tmp_files/pacfile.obsolete)"
+[ $FR ] && msg "Voulez-vous supprimer ces fichiers devenus inutiles ?"
+[ $FR ] && msg " (à confirmer pour chaque fichier) :  o/n [n]"
+[ $EN ] && msg "Do you want to remove this obsolete files ?"
+[ $EN ] && msg " (to be confirmed for each file) :  y/n [n]"
+msg "----------------------------------------------"
+prompt
+read -n 1 suppress
+echo
+if [ "$suppress" = "o" -o "$suppress" = "y" ]
+then
+	num=0
+	while read ligne; do
+		num=$(($num+1))
+		fichier[$num]=$ligne
+	done < $tmp_files/pacfile.obsolete 
+
+	for i in `seq $num`
+	do
+		file=${fichier[$i]}
+		if [ -w $file ]
+		then
+			[ $FR ] && prompt "Supprimer le fichier $file ?: o/n [n] ->"
+			[ $EN ] && prompt "Delete file $file ?: y/n [n] ->"
+			read -n 1 deletefile 
+			echo
+			if [ "$deletefile" = "y" -o "$deletefile" = "o" ]; then rm $file; fi
+		else
+			[ $FR ] && error "${file}: Vous n'avez pas les droits d'écriture"	
+			[ $EN ] && error "${file}: You don't have write access"	
+		fi
+	done 
+	sleep 2
+fi
+}
+
+##########################################################
+SEARCH_ORPHANS()
+##########################################################
+{
+# Rechercher les fichiers pacsave/pacnew orphelins
+rm $tmp_files/$extension.tmp
+cat < $tmp_files/$extension | while true
+do
+	read ligne
+  	if [ "$ligne" = "" ]; then break; fi
+	file=`echo $ligne | cut -d " " -f 5`
+	if ! [ -f $file ]
+	then
+		echo $file.$extension >> $tmp_files/pacfile.obsolete
+	else
+		echo $ligne >> $tmp_files/$extension.tmp
+	fi
+done 
+cp $tmp_files/$extension.tmp $tmp_files/$extension
+}
+
+##########################################################
+CREATE_DB()
+##########################################################
+{
+# Création de la liste des fichiers .pacsave et .pacnew
+rm -rf $tmp_files/
+clear
+[ $FR ] && msg "Veuillez patienter pendant la recherche..."
+[ $EN ] && msg "Please wait..."
+mkdir -p $tmp_files
+#locate -q -u -o $tmp_files/pacbase -l 0 -e $excluded_directories || exit 1
+find /etc/ /opt \( -name *.pacsave -o -name *.pacnew \) > $tmp_files/pacbase 
+
+#Recherche des fichiers pacsave
+extension="pacsave"
+SEARCH_FOR_PACFILES
+#Recherche des fichiers pacnew
+extension="pacnew"
+SEARCH_FOR_PACFILES
+}
+
+##########################################################
+SEARCH_FOR_PACFILES()
+##########################################################
+{
+# Recherche des fichiers pacsave/pacnew + tri des résultats par date
+for file in `grep ".$extension" $tmp_files/pacbase`;
+do
+	[ $FR ] && echo `date +%s -r $file` "Le "`date +%d/%m/%Y" à "%T -r $file`": "$file>>$tmp_files/$extension.tmp
+	[ $EN ] && echo `date +%s -r $file` "The "`date +%m/%d/%Y" at "%T -r $file`": "$file>>$tmp_files/$extension.tmp
+done
+if [ -f $tmp_files/$extension.tmp ]
+then
+	sort -r "$tmp_files/$extension.tmp" | cut -d " " -f 2-6 | sed -e s/.$extension//g>$tmp_files/$extension
+	nbresultats=`wc -l $tmp_files/$extension.tmp | cut -d " " -f 1`
+	if [ "$extension" = "pacsave" ]; then pacsave_num=$nbresultats; fi
+	if [ "$extension" = "pacnew" ]; then pacnew_num=$nbresultats; fi
+	[ $FR ] && plain "$nbresultats fichiers $extension ont été trouvés"
+	[ $EN ] && plain "$nbresultats .$extension files found"
+	SEARCH_ORPHANS
+else
+	nbresultats=0
+fi
+}
+
+##########################################################
+VIEW_DIFF_LIST()
+##########################################################
+{
+# A partir des fichiers pacsave/pacnew trouvés, cherche les fichiers identiques
+# affiche les fichiers avec un numéro, et mémorise ces index dans le tableau file[]
+
+# Recherche des fichiers .pacsave/.pacnew non modifiés
+num=0
+while read ligne; do
+	num=$(($num+1))
+	fichier[$num]=$ligne
+done < $tmp_files/$extension
+
+for i in `seq $num`
+do
+	file[$i]=$(echo ${fichier[$i]} | cut -d " " -f 5)
+	show_file_line="$i. ${fichier[$i]}[.$extension]"
+	if [ -r ${file[$i]} ]
+	then
+		if [ ! -w ${file[$i]} ]; then show_file_line=$(echo $show_file_line" (readonly)"); fi
+		[ $FR ] && if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line=$(echo $show_file_line" **fichiers identiques**" ); fi
+		[ $EN ] && if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line=$(echo $show_file_line" **same files**" ); fi
+	else
+		[ $FR ] && show_file_line=$(echo $show_file_line" (Accès interdit)")
+		[ $EN ] && show_file_line=$(echo $show_file_line" (Acces denied)")
+	fi
+	list "$show_file_line"
+done 
+}
+
+##########################################################
+DIFFEDITOR()
+##########################################################
+{
+clear
+[ $FR ] && msg  "Quelle action pour ${file[numero]}[.$extension] ?"
+[ $EN ] && msg  "What do you want to do with ${file[numero]}[.$extension] ?"
+[ $FR ] && plain "  1: Voir les différences avec gvim en mode Expert"
+[ $EN ] && plain "  1: Show diffs with gvim in expert mode"
+[ $FR ] && plain "  2: Voir les différences avec vimdiff (vi en console)"
+[ $EN ] && plain "  2: Show diffs with vimdiff (in console)"
+[ $FR ] && plain "  3: Voir les différences avec kompare"
+[ $EN ] && plain "  3: Show diffs with kompare"
+[ $FR ] && plain "  4: Voir les différences avec kdiff3"
+[ $EN ] && plain "  4: Show diffs with kdiff3"
+[ $FR ] && plain "  5: gvim en mode Facile (pour les allergiques à VI)"
+[ $EN ] && plain "  5: gvim in EASY mode"
+[ $FR ] && plain "  6: Entrez une commande pour éditer"
+[ $EN ] && plain "  6: Enter a command to edit"
+[ $FR ] && plain "  S: supprimer le fichier .$extension"
+[ $EN ] && plain "  S: suppress .$extension file"
+[ $FR ] && plain "  R: remplacer le fichier actuel par le .$extension"
+[ $EN ] && plain "  R: replace actual file by .$extension"
+[ $FR ] && msg " Tapez ENTER pour revenir au menu précédent"
+[ $EN ] && msg " Press ENTER to return to menu"
+msg "----------------------------------------------"
+prompt
+read -n 1 action
+echo
+case "$action" in
+	"1" )
+	# Voir les différences avec GVIM
+	gvim -d ${file[numero]} ${file[numero]}.$extension
+	DIFFEDITOR
+	;;
+	
+	"2" )
+	# Voir les différences avec VIMDIFF
+	vim -d ${file[numero]} ${file[numero]}.$extension
+	DIFFEDITOR
+	;;
+	
+	"3" )
+	# Voir les différences avec KOMPARE
+	kompare -c ${file[numero]} ${file[numero]}.$extension >/dev/null
+	DIFFEDITOR
+	;;
+
+	"4" )
+	# Voir les différences avec KDIFF3
+	kdiff3 ${file[numero]} ${file[numero]}.$extension >/dev/null
+
+	DIFFEDITOR
+	;;
+	
+	"5" )
+	# Voir les différences avec GVIM
+	gvim -dy ${file[numero]} ${file[numero]}.$extension
+	DIFFEDITOR
+	;;
+	
+	"6" )
+	# Voir les différences avec une commande donnée
+	echo
+	echo
+	[ $FR ] && msg " Entrez le nom du programme à utiliser"
+  	[ $FR ] && echo "    (sans ${file[numero]} ${file[numero]}.$extension)"
+	[ $EN ] && msg " Enter the name of the program to use"
+  	[ $EN ] && echo "    (without ${file[numero]} ${file[numero]}.$extension)"
+	msg "----------------------------------------------"
+	prompt
+	read commanddiffview
+	( $commanddiffview ${file[numero]} ${file[numero]}.$extension )
+	wait
+	DIFFEDITOR
+	;;
+
+
+	"S" | "s" )
+	# Supprimer le fichier .pacsave ou .pacnew
+	rm -i ${file[numero]}.$extension
+	extension_old=$extension
+	CREATE_DB
+	extension=$extension_old
+	;;
+	
+	"R" | "r" )
+	# Remplacer le fichier actuel par le fichier .pacsave ou .pacnew
+	cp ${file[numero]}.$extension ${file[numero]}
+	[ $FR ] && msg "Le fichier ${file[numero]} a été remplacé"
+	[ $EN ] && msg "${file[numero]} file has been replaced"
+	rm -i ${file[numero]}.$extension
+	extension_old=$extension
+	CREATE_DB
+	extension=$extension_old
+	;;
+esac
+}
+
+
+##########################################################
+SHOWHELP()
+##########################################################
+{
+echo "pacdiffviewer $program_version"
+echo "ecrit par wain <wain@archlinux.fr>"
+echo ""
+echo "usage:"
+echo "         pacdiffviewer -c, clean:    Supprime tous les fichiers pacsave et pacnew trouvés"
+echo "         pacdiffviewer -h, help:     Affiche cette aide"
+echo "         pacdiffviewer -v, version:  Affiche le numéro de version"
+echo ""
+echo "--------------------------------------------------------"
+[ $FR ] && echo "La gestion des fichiers de configuration par pacman lors des mises à jour fonctionne de la manière suivante :"
+[ $FR ] && echo "Au cours de la mise à jour d'un paquetage, 3 versions des fichiers sont comparés pour décider l'action à réaliser."
+[ $FR ] && echo "- original=X, actuel=X, nouveau=X: Les 3 sont identiques. Le nouveau fichier s'installe"
+[ $FR ] && echo "- orginial=X, actuel=X, nouveau=Y: Le fichier original n'a pas été modifié par l'utilisateur, le nouveau fichier s'installe."
+[ $FR ] && echo "- original=X, actuel=Y, nouveau=X: Les 2 fichiers des paquetages sont identiques mais l'utilisateur a modifié le fichier actuel. Le fichier actuel reste inchangé. Création d'un .pacnew"
+[ $FR ] && echo "- original=X, actuel=Y, nouveau=Y: Le nouveau et l'actuel sont identiques. Le nouveau s'installe"
+[ $FR ] && echo "- original=X, actuel=Y, nouveau=Z: Les 3 sont différents. Le nouveau est installé et l'ancien sauvegardé dans .pacsave"
+
+
+[ $EN ] && echo "HANDLING CONFIG FILES"
+[ $EN ] && echo "pacman uses the same logic as rpm to determine action against files that are designated to be backed up."
+[ $EN ] && echo "During an upgrade, it uses 3 md5 hashes for each backup file to determine the required action: one for the original file installed, one for the new file that's about to be installed, and one for the actual file existing on the filesystem."
+[ $EN ] && echo "After comparing these 3 hashes, the follow scenarios can result:"
+[ $EN ] && echo "original=X, current=X, new=X: All three files are the same, so we win either way. Install the new file."
+[ $EN ] && echo "original=X, current=X, new=Y: The current file is un-altered from the original but the new one is different. Since the user did not ever modify the file, and the new one may contain improvements/bugfixes, we install the new file."
+[ $EN ] && echo "original=X, current=Y, new=X: Both package versions contain the exact same file, but the one on the filesystem has been modified since. In this case, we leave the current file in place."
+[ $EN ] && echo "original=X, current=Y, new=Y: The new one is identical to the current one. Win win. Install the new file."
+[ $EN ] && echo "original=X, current=Y, new=Z: All three files are different, so we install the new file with a .pacnew extension and warn the user, so she can manually move the file into place after making any necessary customizations."
+echo "--------------------------------------------------------"
+echo "http://wiki.archlinux.fr/doku.php?id=howto:archlinux:gerer_pacsave_pacnew"
+exit 0
+}
+
+
+##########################################################
+SHOWVERSION()
+##########################################################
+{
+echo "pacdiffviewer $program_version"
+echo "ecrit par wain <wain@gmx.net>"
+exit 0
+}
+
+##########################################################
+SUPPRESSAUTO()
+##########################################################
+{
+clear
+[ $FR ] && msg "Etes-vous sur de vouloir supprimer tous les fichiers suivants ?"
+[ $EN ] && msg "Do you want to delete following files ?"
+for file in `cat $tmp_files/pacbase`;
+do
+	[ $FR ] && list $file "(créé le "`date +%d/%m/%Y" à "%T -r $file`")"
+	[ $EN ] && list $file "(created "`date +%m/%d/%Y" at "%T -r $file`")"
+done
+[ $FR ] && msg "Oui (à confirmer pour chaque fichier), Tous, Non"
+[ $EN ] && msg "Yes (to be confirmed for each file), All, No"
+msg "----------------------------------------------"
+prompt
+read -n 1 action
+echo
+case "$action" in
+
+	"O" | "o" | "Y" | "y" )
+	# oui/yes demande confirmation
+	[ $FR ] && msg "suppression des fichiers un par un"
+	[ $EN ] && msg "deleting files one bye one"
+	for file in `cat $tmp_files/pacbase`;
+	do
+		rm -i $file
+	done
+	;;
+	
+	"A" | "a" | "T" | "t" )
+	# tous/all supprime tout sans confirmation
+	[ $FR ] && msg "Suppression de tous les fichiers"
+	[ $EN ] && msg "Deleting all files"
+	for file in `cat $tmp_files/pacbase`;
+	do
+		rm $file
+	done
+	;;
+
+	*)
+	[ $FR ] && msg "Annulation"
+	[ $EN ] && msg "Cancelled"
+	;;
+esac
+
+
+#[ $FR ] && plain "Programme terminé"
+rm -rf $tmp_files/
+exit 0
+}
+
+##################################################################
+# Gestion des messages
+##################################################################
+plain() {
+	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
+		echo -e "\033[1;1m$1\033[1;0m" >&2
+	else
+		echo "$1" >&2
+	fi
+}
+list() {
+	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
+		echo -e "\033[1;33m$1\033[1;0m" >&2
+	else
+		echo "$1" >&2
+	fi
+}
+msg() {
+	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
+		echo -e "\033[1;32m==>\033[1;0m \033[1;1m$1\033[1;0m" >&2
+	else
+		echo "==> $1" >&2
+	fi
+}
+prompt() {
+	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
+		echo -ne "\033[1;33m==> \033[1;0m \033[1;1m$1\033[1;0m" >&2
+	else
+		echo -n "==> $1" >&2
+	fi
+}
+warning() {
+	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
+		echo -e "\033[1;33m==> WARNING:\033[1;0m \033[1;1m$1\033[1;0m" >&2
+	else
+		echo "==> WARNING: $1" >&2
+	fi
+}
+error() {
+	if [ "$USE_COLOR" = "Y" -o "$USE_COLOR" = "y" ]; then
+		echo -e "\033[1;31m==> ERROR:\033[1;0m \033[1;1m$1\033[1;0m" >&2
+	else
+		echo "==> ERROR: $1" >&2
+	fi
+}
+
+########################################################################
+###              Corps du Programme                                  ###
+########################################################################
+
+# Affichage de l'aide et sortie
+if [ "$1" = "-h" ]; then SHOWHELP; fi
+
+# Affichage de la version et sortie
+if [ "$1" = "-v" ]; then SHOWVERSION; fi
+
+# Nettoyage et initialisation de la liste des fichiers pacsave/pacnew
+CREATE_DB
+
+# Affichage des résultats de la recherche et sortie si pas de résultats
+if [[ "$pacsave_num" -eq "0" && "$pacnew_num" -eq "0" ]]
+then
+	[ $FR ] && msg "pas de fichiers trouvés. fin"
+	[ $EN ] && msg "no file found."
+	rm -rf $tmp_files/
+	exit 0
+fi
+sleep 1
+
+# Mode suppression automatique et sortie
+if [ "$1" = "-c" ]; then SUPPRESSAUTO; fi
+
+
+# Suppression des fichiers orphelins si nécessaires 
+if [ -f $tmp_files/pacfile.obsolete ]; then SUPPRESS_ORPHANS; fi
+
+# Recherche des différences sur les pacsave
+if [[ "$pacsave_num" -gt "0" ]]
+then
+	clear
+	modif="o"
+	extension="pacsave"
+	while true; do
+		if [ ! -f $tmp_files/pacsave ]; then break; fi
+		clear
+		list "--------------------------------------------"
+		[ $FR ] && plain "              Fichiers .pacsave"
+		[ $EN ] && plain "              .pacsave files"
+		list "--------------------------------------------"
+		[ $FR ] && plain "Vous aviez peut-être personnalisé ces fichiers de configuration,"
+		[ $FR ] && plain "mais depuis ils ont été remplacés suite à une mise à jour:"
+		[ $EN ] && plain "Maybe you have changed this files, but they have been"
+		[ $EN ] && plain "replaced during packages update:"
+		VIEW_DIFF_LIST
+		[ $FR ] && msg "Tapez le numéro du fichier à modifier ou ENTER pour Annuler"
+		[ $EN ] && msg "Enter the number of the file to be modified or press ENTER to cancel"
+		msg "----------------------------------------------"
+		prompt
+		read numero
+		if [ -z $numero ]; then break; fi
+		DIFFEDITOR
+	done
+fi
+
+# Recherche des différences sur les pacnew
+if [[ "$pacnew_num" -gt "0" ]]
+then
+	clear
+	modif="o"
+	extension="pacnew"
+	while true; do
+		if [ ! -f $tmp_files/pacnew ]; then break; fi
+		clear
+		list "--------------------------------------------"
+		[ $FR ] && plain "               Fichiers .pacnew"
+		[ $EN ] && plain "               .pacnew files"
+		list "--------------------------------------------"
+		[ $FR ] && plain "De nouvelles versions de ces fichiers de configuration sont disponibles"
+		[ $FR ] && plain "Ces fichiers .pacnew contiennent peut-être des améliorations."
+		[ $EN ] && plain "New version of these files are available"
+		[ $EN ] && plain "These .pacnew files may contain enhancements"
+		VIEW_DIFF_LIST
+		[ $FR ] && msg "Tapez le numéro du fichier à modifier ou ENTER pour Annuler"
+		[ $EN ] && msg "Enter the number of the file to be modified or press ENTER to cancel"
+		msg "----------------------------------------------"
+		prompt
+		read numero
+		if [ -z $numero ]; then break; fi
+		DIFFEDITOR
+	done
+fi
+
+# Fin du programme
+#[ $FR ] && plain "Programme terminé"
+rm -rf $tmp_files/
+exit 0
