@@ -42,9 +42,9 @@ for arg in ${args[@]}; do
 	title "Searching wich package owns \"$arg\""
 	argpath=`type -p "$arg"`
 	if [ ! -z "$argpath" ]; then
-		$PACMANBIN -Qo "$argpath"
+		eval $PACMANBIN -Qo "$argpath"
 	else
-		$PACMANBIN -Qo "$arg"
+		eval $PACMANBIN -Qo "$arg"
 	fi
 done
 }
@@ -68,7 +68,7 @@ fi
 # searching for argument in installed packages
 search_for_installed_package(){
 	title "Searching for \"${args[*]}\" in installed packages"
-	$PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
+	eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
 	while read line; do
 		package=$(echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///')
 		version=$(echo $line | grep -v "^_" | awk '{ print $2}' | sed 's/^.*\///')
@@ -100,7 +100,7 @@ list_installed_packages(){
 	elif [ $FOREIGN -eq 1 ]; then
 		title "List installed packages not found in sync db(s)"
 		msg "List installed packages not found in sync db(s)"
-		$PACMANBIN $ARGSANS ${args[*]}
+		eval $PACMANBIN $ARGSANS ${args[*]}
 		return
 	elif [ $GROUP -eq 1 ]; then
 		title "List all installed packages members of a group"
@@ -116,7 +116,7 @@ list_installed_packages(){
 		colpkg=1
 		colsecond=2
 	fi
-	$PACMANBIN $ARGSANS ${args[*]} |
+	eval $PACMANBIN $ARGSANS ${args[*]} |
 	while read line; do
 		local col1=$(echo $line | awk '{print $'$colpkg'}')
 		local col2=$(echo $line | awk '{print $'$colsecond'}')

@@ -36,7 +36,7 @@ is_an_alpm_backup(){
 	backupdir="$YAOURTTMPDIR/backup/$$"
 	mkdir -p "$backupdir"
 	tar xjf $1 -C "$backupdir/"
-	$PACMANBIN --dbpath "$backupdir/" --query | sort > "$YAOURTTMPDIR/backup/backupdb"
+	eval $PACMANBIN --dbpath "$backupdir/" --query | sort > "$YAOURTTMPDIR/backup/backupdb"
 	if [ ! -s "$YAOURTTMPDIR/backup/backupdb" ]; then
 		error "$1 is not a valid alpm database backup"
 		return 1
@@ -49,7 +49,7 @@ restore_alpm_db(){
 	if ! is_an_alpm_backup "$backupfile"; then
 		return 1
 	fi
-	$PACMANBIN --query | sort > "$YAOURTTMPDIR/backup/nowdb"
+	eval $PACMANBIN --query | sort > "$YAOURTTMPDIR/backup/nowdb"
 	msg "New packages installed since backup:"
 	comm -1 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
 	echo
@@ -66,7 +66,7 @@ restore_alpm_db(){
 	msg "Copying backup"
 	launch_with_su "mv $backupdir/local/ $PACMANROOT/local"
 	msg "Testing the new database"
-	$PACMANBIN --query | sort > "$YAOURTTMPDIR/backup/nowdb"
+	eval $PACMANBIN --query | sort > "$YAOURTTMPDIR/backup/nowdb"
 	if [ `diff "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" | wc -l` -gt 0 ]; then
 	       warning "Your backup is not successfully restored"	
 	else

@@ -17,6 +17,7 @@
 #   DontNeedToPressEnter yes
 #   EditPkgbuild yes
 #   ExportToLocalRepository /where/you/want
+#   ForceEnglish no
 #   LastCommentsNumber 5
 #   LastCommentsOrder asc
 #   NoConfirm no

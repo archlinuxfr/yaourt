@@ -83,6 +83,7 @@ MAXCOMMENTS=5
 NOENTER=1
 ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
+INENGLISH=""
 sfmirror=""
 
 while [ "$#" -ne "0" ]; do
@@ -104,6 +105,14 @@ while [ "$#" -ne "0" ]; do
 		alwaysforce)
 			if [ $value -gt -1 ]; then
 				FORCE=$value; shift
+			fi
+	  		;;	
+		forceenglish)
+			if [ $value -gt -1 ]; then
+				shift
+				if [ $value -eq 1 ]; then
+					INENGLISH="LC_ALL=C"
+				fi
 			fi
 	  		;;	
 		editpkgbuild)
@@ -208,12 +217,14 @@ while [ "$#" -ne "0" ]; do
 			esac
 			;;
 		*)
-		echo "$1 non reconized in config file"
+		echo "$1 no recognized in config file"
 		sleep 4
 		;;
 	esac
 	shift
 done
+
+PACMANBIN="$INENGLISH $PACMANBIN"
 	
 }
 

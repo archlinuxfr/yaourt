@@ -45,9 +45,10 @@ install:
 	$(INSTALL) -m644 lib/alpm_backup.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/alpm_query.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/alpm_stats.sh $(DESTDIR)$(libdir)
+	$(INSTALL) -m644 lib/aur.sh $(DESTDIR)$(libdir)
+	$(INSTALL) -m644 lib/basicfunctions.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/pacman_conf.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m755 bashcompletion $(DESTDIR)$(completiondir)/yaourt
-
 
 .PHONY: install

@@ -115,8 +115,8 @@ if [ $failed -ne 1 ]; then
 			CONTINUE_INSTALLING=`userinput`
 			echo
 			if [ "$CONTINUE_INSTALLING" = "V" ]; then
-				$PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
-				$PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
+				eval $PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
+				eval $PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
 			elif [ "$CONTINUE_INSTALLING" = "C" ]; then
 				echo
 				if [ `type -p namcap` ]; then
@@ -244,12 +244,12 @@ fi
 
 # Build 
 if [ $runasroot -eq 1 ]; then 
-	pacman_queuing; PKGDEST=`pwd` nice -n 15 makepkg $confirmation --asroot --syncdeps --force -p ./PKGBUILD
+	pacman_queuing; $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --asroot --syncdeps --force -p ./PKGBUILD
 else
 	if [ $SUDOINSTALLED -eq 1 ]; then
-		pacman_queuing; PKGDEST=`pwd` nice -n 15 makepkg $confirmation --syncdeps --force -p ./PKGBUILD
+		pacman_queuing; $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --syncdeps --force -p ./PKGBUILD
 	else
-		PKGDEST=`pwd` nice -n 15 makepkg $confirmation --force -p ./PKGBUILD
+		$INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --force -p ./PKGBUILD
 	fi
 fi
 
@@ -419,7 +419,7 @@ for package in $@; do
 	for file in ${files[@]}; do
 		echo -e "   ${COL_BLUE}-> ${NO_COLOR}${COL_BOLD}Downloading ${file%\?*} in build dir${NO_COLOR}"
 		filename=`echo ${file%*\?*} | sed "s/^.*\///"`
-		wget --tries=3 --waitretry=3 --no-check-certificate "${url%\?*}$file" -O $filename
+		$INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "${url%\?*}$file" -O $filename
 	done
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
@@ -1621,7 +1621,7 @@ case $MAJOR in
 		PKG=${args[0]}
 		#msg "Get PKGBUILD for $PKG"
 		if `is_unsupported $PKG`; then
-			wget "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error "$PKG not found in AUR."; die 1; }
+			$INENGLISH wget "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error "$PKG not found in AUR."; die 1; }
 			tar xzf $PKG.tar.gz --transform="s,$PKG,," 2>/dev/null
 			rm $PKG.tar.gz
 		else
@@ -1654,7 +1654,7 @@ case $MAJOR in
 		#msg "Synchronisation"
 		if [ $GROUP -eq 1 ]; then
 			title "show groups"
-			pacman_queuing;	$PACMANBIN -Sg ${args[*]}
+			pacman_queuing;	eval $PACMANBIN -Sg ${args[*]}
 		elif [ $QUERYWHICH -eq 1 ]; then
 			if [ "$QUERYTYPE" = "" ]; then usage; die 1; fi
 			if [ ${#args[@]} -lt 1 ]; then die 1; fi
@@ -1677,7 +1677,7 @@ case $MAJOR in
 		#Searching all packages in repos
 				title "listing all packages in repos"
 				msg "Listing all REPOS's packages"
-				$PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
+				eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
 				while read line; do
 					package=$(echo $line | awk '{print $2}')
 					repos="${COL_GREEN}$(echo $line | awk '{print $1}')"
@@ -1739,7 +1739,7 @@ case $MAJOR in
 			for arg in ${args[@]}; do
 				title "Information for $arg"
 				if isavailable ${arg#*/} && [ "${arg%/*}" != "aur" ]; then
-				       	$PACMANBIN -Si $arg
+				       	eval $PACMANBIN -Si $arg
 				else
 					info_from_aur "${arg#*/}"
 				fi
@@ -1747,7 +1747,7 @@ case $MAJOR in
 		elif [ $SYSUPGRADE -eq 0 -a ${#args[@]} -eq 0 -a $REFRESH -eq 0 ]; then
 			prepare_orphan_list
 			msg "yaourt: no argument"
-			pacman_queuing;	$PACMANBIN $ARGSANS
+			pacman_queuing;	eval $PACMANBIN $ARGSANS
 			show_new_orphans
 		elif [ $SYSUPGRADE -eq 0 ]; then
 			#msg "Install ($ARGSANS)"
@@ -1840,7 +1840,7 @@ case $MAJOR in
 
 				# Show package list before building
 				if [ ${#packagesfromsource[@]} -gt 0 ]; then
-				       	$PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+				       	eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
 					if [ $NOCONFIRM -eq 0 ]; then
 						echo -n "Proceed with installation? [Y/n] "
 						proceed=`userinput`
@@ -1860,7 +1860,7 @@ case $MAJOR in
 
 			else
 				# Nothing to update. Show various infos
-				$PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+				eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
 			fi
 
 			# Upgrade all AUR packages or all Devel packages
@@ -1885,7 +1885,7 @@ case $MAJOR in
 				title "Query backup database"
 				msg "Query backup database"
 				PACMANROOT="$backupdir/"
-				$PACMANBIN --dbpath "$backupdir/" $ARGSANS ${args[*]}
+				eval $PACMANBIN --dbpath "$backupdir/" $ARGSANS ${args[*]}
 			else
 				die 1
 			fi
@@ -1897,7 +1897,7 @@ case $MAJOR in
 			search_for_installed_package
 		elif [ $LIST -eq 1 -o $INFO -eq 1 -o $SYSUPGRADE -eq 1 -o $CHANGELOG -eq 1 ]; then
 			# just run pacman -Ql or pacman -Qi
-			$PACMANBIN $ARGSANS ${args[*]}
+			eval $PACMANBIN $ARGSANS ${args[*]}
 		else
 			list_installed_packages
 		fi
