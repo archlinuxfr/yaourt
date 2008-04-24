@@ -105,5 +105,6 @@ yaourt 0.9.1 (pending)
 - yaourt -Su --aur now show packages flaged by another user as out of date
 - bug fixed when building a package with text in name (like per-text-kakaso)
 - new option ForceEnglish in yaourtrc
+- new option AutoSaveBackupFile in yaourtrc (required for automerge with yaourt -C)
 - fixed FS#110 yaourt -Sb don't refresh PKGBUILD if continue=on is set in
 wgetrc 

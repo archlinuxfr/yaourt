@@ -10,6 +10,7 @@
 #   AlwaysUpgradeAur no
 #   AlwaysForce no
 #   AurVoteSupport yes
+#   AutoSaveBackupFile no
 #   ColorMod Normal
 #   ColorMod LightBackGround
 #   ColorMod NoColor

@@ -79,6 +79,7 @@ AURCOMMENT=1
 AURUPGRADE=0
 AURVOTE=1
 AURSEARCH=1
+AUTOSAVEBACKUPFILE=0
 MAXCOMMENTS=5
 NOENTER=1
 ORDERBY="asc"
@@ -105,6 +106,11 @@ while [ "$#" -ne "0" ]; do
 		alwaysforce)
 			if [ $value -gt -1 ]; then
 				FORCE=$value; shift
+			fi
+	  		;;	
+		autosavebackupfile)
+			if [ $value -gt -1 ]; then
+				AUTOSAVEBACKUPFILE=$value; shift
 			fi
 	  		;;	
 		forceenglish)

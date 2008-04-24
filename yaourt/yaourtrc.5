@@ -31,6 +31,10 @@ obtains configuration data from the following sources in the following order:
 .B AurVoteSupport
   If set to "no", yaourt don't check the vote status for inclusion/keeping in [community], and it is unable to vote.
 
+.B AutoSaveBackupFile
+  If set to "yes", after each install, yaourt search for config files to backup (.pacnew files). It store all files in /var/lib/yaourt/. These files will be used later with yaourt -C to automerge current config files with new config files (.pacnew).
+This option requires root password or sudo configured to allow runing /usr/bin/pacdiffviewer without password.
+
 .B ColorMod
   Define the color style to use. ColorMod can be "normal", "lightbackground", "nocolor" or "textonly".
     example: ColorMod lightbackground
