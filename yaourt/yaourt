@@ -384,7 +384,7 @@ for package in $@; do
 		[ "$MAJOR" != "getpkgbuild" ] && aurcomments $aurid $PKG
 		url=`wget --quiet "${AUR_URL3}${aurid}" -O - | grep "href='http://cvs.archlinux.org.*>CVS<" | sed -e "s/^.*href='//" -e "s/'>CVS<.*$//"`
 	else
-		wget -q "${ABS_URL}&repo=${repository}&q=$PKG" -O "$YAOURTTMPDIR/page.tmp"
+		wget -q "${ABS_URL}&repo=${repository}&q=$PKG" -O - > "$YAOURTTMPDIR/page.tmp"
 		manage_error $? || continue
 		if grep -q 'View CVS Entries' "$YAOURTTMPDIR/page.tmp"; then
 			url=`grep 'View CVS Entries' "$YAOURTTMPDIR/page.tmp" | awk -F "\"" '{print $2}'`
@@ -394,7 +394,7 @@ for package in $@; do
 			if [ ${#urls[@]} -gt 1 -a $TESTING -eq 1 ]; then
 				branchtags="TESTING"
 			fi
-			wget -q "http://archlinux.org${urls[0]}" -O "$YAOURTTMPDIR/page.tmp"
+			wget -q "http://archlinux.org${urls[0]}" -O - > "$YAOURTTMPDIR/page.tmp"
 			manage_error $? || continue
 			url=`grep 'View CVS Entries' "$YAOURTTMPDIR/page.tmp" | awk -F "\"" '{print $2}'`
 		fi
