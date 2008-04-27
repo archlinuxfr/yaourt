@@ -244,12 +244,12 @@ fi
 
 # Build 
 if [ $runasroot -eq 1 ]; then 
-	pacman_queuing; $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --asroot --syncdeps --force -p ./PKGBUILD
+	pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --asroot --syncdeps --force -p ./PKGBUILD
 else
 	if [ $SUDOINSTALLED -eq 1 ]; then
-		pacman_queuing; $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --syncdeps --force -p ./PKGBUILD
+		pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --syncdeps --force -p ./PKGBUILD
 	else
-		$INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --force -p ./PKGBUILD
+		eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --force -p ./PKGBUILD
 	fi
 fi
 
@@ -419,7 +419,7 @@ for package in $@; do
 	for file in ${files[@]}; do
 		echo -e "   ${COL_BLUE}-> ${NO_COLOR}${COL_BOLD}Downloading ${file%\?*} in build dir${NO_COLOR}"
 		filename=`echo ${file%*\?*} | sed "s/^.*\///"`
-		$INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "${url%\?*}$file" -O $filename
+		eval $INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "${url%\?*}$file" -O $filename
 	done
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
@@ -1631,7 +1631,7 @@ case $MAJOR in
 		PKG=${args[0]}
 		#msg "Get PKGBUILD for $PKG"
 		if `is_unsupported $PKG`; then
-			$INENGLISH wget "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error "$PKG not found in AUR."; die 1; }
+			eval $INENGLISH wget "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error "$PKG not found in AUR."; die 1; }
 			tar xzf $PKG.tar.gz --transform="s,$PKG,," 2>/dev/null
 			rm $PKG.tar.gz
 		else

@@ -1,0 +1,18 @@
+# Author: Julien MISCHKOWITZ <wain@archlinux.fr>
+pkgname=yaourt
+pkgver=0.9.1
+pkgrel=1
+pkgdesc="yaourt test release" 
+arch=(i686 x86_64 ppc)
+url="http://www.archlinux.fr/yaourt-en/" 
+license="GPL" 
+depends=('wget' 'diffutils' 'pacman>=3.1.0') 
+install=
+backup=('etc/yaourtrc')
+source=() 
+
+build() { 
+	cp -r /home/wain/projets/archlinux.fr/yaourt/src $startdir/src/yaourt/
+	cd $startdir/src/yaourt/
+	make install DESTDIR=$pkgdir || return 1
+}
