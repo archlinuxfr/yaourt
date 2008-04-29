@@ -29,6 +29,7 @@ VERSION="0.9.01"
 AUR_URL="http://aur.archlinux.org/packages.php?setlang=en&do_Search=SeB=nd&L=2&C=0&PP=100&K="
 AUR_URL3="http://aur.archlinux.org/packages.php?setlang=en&ID="
 ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
+ABS_REPOS_URL="http://repos.archlinux.org/viewvc.cgi"
 [ -z "$LC_ALL" ] && export LC_ALL=$LANG
 
 ###################################
@@ -340,175 +341,6 @@ for PKG in ${devel_package[@]}; do
 	esac
 done
 [ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
-}
-install_from_abs(){
-#msg "install $* from source with abs or with pacman"
-if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
-	echo
-	echo "Source Targets:  $*"
-	echo -ne "\nProceed with upgrade?  [Y/n] "
-	PROCEED_UPGD=`userinput`
-fi
-if [ "$PROCEED_UPGD" = "N" ]; then return; fi
-TESTING=0
-if { LC_ALL="C"; pacman --debug 2>/dev/null| grep -q "debug: opening database 'testing'"; }; then TESTING=1;fi
-for package in $@; do
-	PKG=${package#*/}
-	local repository=`sourcerepository $PKG`
-	if [ "$repository" = "community" ]; then
-		communitypackages[${#communitypackages[@]}]=$PKG
-	fi
-	if [ $BUILD -eq 0 -a ! -f "/etc/customizepkg.d/$PKG" ]; then
-		binariespackages[${#binariespackages[@]}]=$package
-		continue
-	fi
-	[ "$MAJOR" != "getpkgbuild" ] && msg "Building $PKG from sources"
-	title "Install $PKG from sources"
-	failed=0
-
-	# Build From AUR [Community] ?
-	if [ -z "$repository" ]; then echo "$PKG was not found on abs"; manage_error 1 || continue; fi
-	if [ "$repository" = "testing" ]; then
-	       	repository="all"
-	fi
-	
-	# Manage specific Community and Testing packages
-	branchtags="CURRENT"
-	if [ "$repository" = "community" ]; then 
-		[ "$MAJOR" != "getpkgbuild" ] && msg "Searching Community AUR page for $PKG"
-		aurid=`findaurid "$PKG"`
-		if [ -z "$aurid" ]; then
-                        echo "$pkgname was not found on AUR"
-			manage_error 1 || continue
-		fi
-		[ "$MAJOR" != "getpkgbuild" ] && aurcomments $aurid $PKG
-		url=`wget --quiet "${AUR_URL3}${aurid}" -O - | grep "href='http://cvs.archlinux.org.*>CVS<" | sed -e "s/^.*href='//" -e "s/'>CVS<.*$//"`
-	else
-		wget -q "${ABS_URL}&repo=${repository}&q=$PKG" -O - > "$YAOURTTMPDIR/page.tmp"
-		manage_error $? || continue
-		if grep -q 'View CVS Entries' "$YAOURTTMPDIR/page.tmp"; then
-			url=`grep 'View CVS Entries' "$YAOURTTMPDIR/page.tmp" | awk -F "\"" '{print $2}'`
-		else
-			urls=( `grep ">${PKG}<" "$YAOURTTMPDIR/page.tmp" | awk -F "\"" '{print $2}'` )
-			# if package exists in testing branch and in current branch, select the right url
-			if [ ${#urls[@]} -gt 1 -a $TESTING -eq 1 ]; then
-				branchtags="TESTING"
-			fi
-			wget -q "http://archlinux.org${urls[0]}" -O - > "$YAOURTTMPDIR/page.tmp"
-			manage_error $? || continue
-			url=`grep 'View CVS Entries' "$YAOURTTMPDIR/page.tmp" | awk -F "\"" '{print $2}'`
-		fi
-	fi
-
-	# Download Files on CVS package page
-	if [ -z "$url" ]; then echo "$PKG was not found on abs"; manage_error 1 || continue; fi
-	wget -q "${url/only_with_tag=*/only_with_tag=$branchtags}" -O "$YAOURTTMPDIR/page.tmp" || continue
-	files=( `grep "href=\".*?rev=.*&" "$YAOURTTMPDIR/page.tmp" |  sed -e "s/^.*href=\"//" -e "s/&only_with_tag.*//"` )
-	if [ ${#files[@]} -eq 0 ]; then echo "No file found for $PKG"; manage_error 1 || continue; fi
-	echo
-	if [ "$MAJOR" != "getpkgbuild" ]; then
-		msg "Retrieving PKGBUILD and local sources..."
-		wdir="$YAOURTTMPDIR/abs-$PKG"
-		if [ -d "$wdir" ]; then
-			rm -rf "$wdir" || { error "Unable to delete directory $wdir. Please remove it using root privileges."; return 1; }
-		fi
-		mkdir -p "$wdir" || { error "Unable to create directory $wdir."; return 1; }
-		cd $wdir
-	fi
-
-	for file in ${files[@]}; do
-		echo -e "   ${COL_BLUE}-> ${NO_COLOR}${COL_BOLD}Downloading ${file%\?*} in build dir${NO_COLOR}"
-		filename=`echo ${file%*\?*} | sed "s/^.*\///"`
-		eval $INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "${url%\?*}$file" -O $filename
-	done
-
-	[ "$MAJOR" = "getpkgbuild" ] && return 0
-
-	if [ $UID -eq 0 ]; then
-		runasroot=1
-        	warning "Building package as root is dangerous.\n Please run yaourt as a non-privileged user."
-		sleep 2
-	else
-		runasroot=0
-	fi
-	
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-       	echo "Unable to read $PKG's PKGBUILD"
-		manage_error 1 || continue
-	fi
-	
-	msg "$pkgname $pkgver-$pkgrel $([ "$branchtags" = "TESTING" ] && echo -e "$COL_BLINK[TESTING]")"
-	
-	# Customise PKGBUILD
-	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
-
-	# show deps
-	find_pkgbuild_deps
-	manage_error $? || continue
-
-	if [ $EDITPKGBUILD -eq 1 ]; then
-		prompt "Edit the PKGBUILD ? [y/N] (\"A\" to abort)"
-		EDIT_PKGBUILD=`userinput`
-		echo
-	fi
-	
-	if [ "$EDIT_PKGBUILD" = "Y" -a "$EDIT_PKGBUILD" != "A" ]; then
-		if [ -z "$EDITOR" ]; then
-			echo -e ${COL_RED}'Please add $EDITOR to your environment variables'
-			echo -e ${NO_COLOR}'for example:'
-			echo -e ${COL_BLUE}"export EDITOR=\"gvim\""${NO_COLOR}" (in ~/.bashrc)"
-			echo "(replace gvim with your favorite editor)"
-			echo
-			echo -ne ${COL_ARROW}"==> "${NO_COLOR}"Edit PKGBUILD with: "
-			read -e EDITOR
-			echo
-		fi
-		if [ "$EDITOR" = "gvim" ]; then edit_prog="gvim --nofork"; else edit_prog="$EDITOR";fi
-		( $edit_prog ./PKGBUILD )
-		wait
-		find_pkgbuild_deps
-		prompt "Continue the building of '$PKG'? [Y/n] "
- 		if [ "`userinput`" = "N" ]; then
-			manage_error 1 || continue
-		fi
-	fi
-	
-	if [ "$EDIT_PKGBUILD" = "a" -o "$EDIT_PKGBUILD" = "A" ]; then
-		echo
-		echo "Aborted..."
-		manage_error 1 || continue
-	fi
-	# TODO: dependecies from AUR should be downloaded here
-
-	# compil PKGBUILD if dep's building not failed
-	build_package	
-	retval=$?
-	if [ $retval -eq 1 ]; then
-		manage_error 1 || continue
-	elif [ $retval -eq 90 ]; then
-		continue
-	fi
-
-	# Install, export, copy package after build 
-	install_package
-	manage_error $? || continue
-done
-
-# Install precompiled packages
-if [ ${#binariespackages[@]} -gt 0 ]; then
-	pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
-fi
-
-# Vote for community packages
-if [ ${#communitypackages[@]} -gt 0 -a $AURVOTE -eq 1 ]; then
-	for pkgname in ${communitypackages[@]}; do
-		aurid=`findaurid $pkgname`
-		vote_package "$pkgname" "$aurid"
-	done
-
-fi
-
 }
 
 ###################################
@@ -1616,6 +1448,7 @@ case $MAJOR in
 	getpkgbuild)
 		title "get PKGBUILD"
 		loadlibrary aur
+		loadlibrary abs
 		# don't replace the file if exist
 		if [ -f "./PKGBUILD" ]; then
 			prompt "PKGBUILD file already exist. Replace ? [Y/n]"
@@ -1762,6 +1595,7 @@ case $MAJOR in
 		elif [ $SYSUPGRADE -eq 0 ]; then
 			#msg "Install ($ARGSANS)"
 			# Install from a list of packages	
+			loadlibrary abs
 			if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
 				title "Installing from a list of a packages"
 				msg "Installing from a list of a packages (${args[0]})"
@@ -1784,6 +1618,7 @@ case $MAJOR in
 		elif [ $SYSUPGRADE -eq 1 ]; then
 			#msg "System Upgrade"
 			prepare_orphan_list
+			loadlibrary abs
 
 			#Downgrade all packages marked as "newer than extra/core/etc..."
 			if [ $DOWNGRADE -eq 1 ]; then

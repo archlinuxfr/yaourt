@@ -45,6 +45,7 @@ install:
 	$(INSTALL) -m644 lib/alpm_backup.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/alpm_query.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/alpm_stats.sh $(DESTDIR)$(libdir)
+	$(INSTALL) -m644 lib/abs.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/aur.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/basicfunctions.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)
