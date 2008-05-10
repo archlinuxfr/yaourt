@@ -108,3 +108,4 @@ yaourt 0.9.1 (pending)
 - new option AutoSaveBackupFile in yaourtrc (required for automerge with yaourt -C)
 - fixed FS#110 yaourt -Sb don't refresh PKGBUILD if continue=on is set in
 wgetrc 
+- support for new svn repos.archlinux.org (for yaourt -Sb and -G)

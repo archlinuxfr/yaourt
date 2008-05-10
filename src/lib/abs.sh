@@ -13,8 +13,7 @@
 #       VERSION:  1.0
 #===============================================================================
 
-#TODO:
-# récupérer la variable arch
+# grab PKGBUILD from repos.archlinux.org and run makepkg
 install_from_abs(){
 #msg "install $* from source with abs or with pacman"
 if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
@@ -24,8 +23,8 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	PROCEED_UPGD=`userinput`
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
-TESTING=0
-if { LC_ALL="C"; pacman --debug 2>/dev/null| grep -q "debug: opening database 'testing'"; }; then TESTING=1;fi
+USETESTING=0
+if { LC_ALL="C"; pacman --debug 2>/dev/null| grep -q "debug: opening database 'testing'"; }; then USETESTING=1;fi
 for package in $@; do
 	PKG=${package#*/}
 	local repository=`sourcerepository $PKG`
@@ -42,9 +41,9 @@ for package in $@; do
 
 	# Build From AUR [Community] ?
 	if [ -z "$repository" ]; then echo "$PKG was not found on abs"; manage_error 1 || continue; fi
-	if [ "$repository" = "testing" ]; then
-	       	repository="all"
-	fi
+	#if [ "$repository" = "testing" ]; then
+	#       	repository="all"
+	#fi
 	
 	# Manage specific Community and Testing packages
 	if [ "$repository" = "community" ]; then 
@@ -56,9 +55,14 @@ for package in $@; do
 			manage_error 1 || continue
 		fi
 		[ "$MAJOR" != "getpkgbuild" ] && aurcomments $aurid $PKG
-		error "building package from community is broken during arch's migration from cvs to svn"
-		continue
-		#TODO when AUR will be up to date with new repos.archlinux.org
+		# Crapy Hack waiting for AUR to be up to date with new repos.archlinux.org
+		category=`wget -q "http://aur.archlinux.org/packages.php?ID=$aurid" -O - | grep 'community ::' | sed 's|<[^<]*>||g' | awk '{print $3}'`
+		if [ -z "$category" ]; then
+                        echo "Link to subversion repository was not found on AUR page"
+			manage_error 1 || continue
+		fi
+		# EndofHack
+		url="$ABS_REPOS_URL/community/$category/$PKG/?root=community"
 	else
 		# Grab link to download pkgbuild from new repos.archlinux.org
 		source /etc/makepkg.conf
@@ -69,7 +73,7 @@ for package in $@; do
 		fi
 		repos=( `grep "name=.*i686" "$YAOURTTMPDIR/page.tmp" | awk -F "\"" '{print $2}'` )
 		# if package exists in testing branch and in current branch, select the right url
-		if [ ${#repos[@]} -gt 1 -a $TESTING -eq 1 ]; then
+		if [ ${#repos[@]} -gt 1 -a $USETESTING -eq 1 ]; then
 			url="$ABS_REPOS_URL/$PKG/repos/${repos[1]}/"
 		else
 			url="$ABS_REPOS_URL/$PKG/repos/${repos[0]}/"
@@ -94,7 +98,11 @@ for package in $@; do
 
 	for file in ${files[@]}; do
 		echo -e "   ${COL_BLUE}-> ${NO_COLOR}${COL_BOLD}Downloading ${file} in build dir${NO_COLOR}"
-		eval $INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "$url/$file?view=co" -O $file
+		if [ "$repository" = "community" ]; then
+			eval $INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "$ABS_REPOS_URL/community/$category/$PKG/$file?root=community\&view=co" -O $file
+		else
+			eval $INENGLISH wget --tries=3 --waitretry=3 --no-check-certificate "${url}${file}?view=co" -O $file
+		fi
 	done
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
@@ -109,7 +117,7 @@ for package in $@; do
 	
 	readPKGBUILD
 	if [ -z "$pkgname" ]; then
-       	echo "Unable to read $PKG's PKGBUILD"
+       		echo "Unable to read $PKG's PKGBUILD"
 		manage_error 1 || continue
 	fi
 	

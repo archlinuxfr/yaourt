@@ -931,7 +931,7 @@ fi
 testdb
 
 # save original of backup files (pacnew/pacsave)
-if [ $AUTOSAVEBACKUPFILE -eq 1 ] && ! diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
+if [ "$MAJOR" != "remove" ] && [ $AUTOSAVEBACKUPFILE -eq 1 ] && ! diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
 	msg "Searching for original config files to save"
 	launch_with_su "pacdiffviewer --backup"
 fi
