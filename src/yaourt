@@ -907,15 +907,15 @@ ORPHANS_AFTER="$YAOURTTMPDIR/orphans/orphans_after.$$"
 INSTALLED_BEFORE="$YAOURTTMPDIR/orphans/installed_before.$$"
 INSTALLED_AFTER="$YAOURTTMPDIR/orphans/installed_after.$$"
 # search orphans before removing or upgrading
-pacman -Qt | awk '{print $1}' | sort > $ORPHANS_BEFORE
+pacman -Qt | awk '{print $1}' | LC_ALL=C sort > $ORPHANS_BEFORE
 # store package list before
-pacman -Q | sort > "$INSTALLED_BEFORE.full"
+pacman -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
 cat "$INSTALLED_BEFORE.full" | awk '{print $1}' > $INSTALLED_BEFORE
 }
 show_new_orphans(){
 # search for new orphans after upgrading or after removing (exclude new installed package)
-pacman -Qt | awk '{print $1}' | sort > "$ORPHANS_AFTER.tmp"
-pacman -Q | sort > "$INSTALLED_AFTER.full"
+pacman -Qt | awk '{print $1}' | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
+pacman -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
 cat "$INSTALLED_AFTER.full" | awk '{print $1}'  > $INSTALLED_AFTER
 comm -1 -3 "$INSTALLED_BEFORE" "$INSTALLED_AFTER" > "$INSTALLED_AFTER.newonly"
 comm -2 -3 "$ORPHANS_AFTER.tmp" "$INSTALLED_AFTER.newonly" | awk '{print $1}' > $ORPHANS_AFTER
