@@ -195,7 +195,7 @@ rm -rf $tmp_files/
 #[ $FR ] && msg "Veuillez patienter pendant la recherche..."
 #[ $EN ] && msg "Please wait..."
 mkdir -p $tmp_files
-find /etc/ /opt \( -name *.pacsave -o -name *.pacnew \) > $tmp_files/pacbase 
+find /etc/ /opt \( -name "*.pacsave" -o -name "*.pacnew" \) > $tmp_files/pacbase 
 
 #Recherche des fichiers pacsave/pacnew
 for extension in "pacsave" "pacnew"; do
