@@ -39,7 +39,7 @@ searchforpackageswhich(){
 search_which_package_owns(){
 for arg in ${args[@]}; do
 	#msg "who owns $arg ?"
-	title "Searching wich package owns \"$arg\""
+	title $(eval_gettext 'Searching wich package owns "$arg"')
 	argpath=`type -p "$arg"`
 	if [ ! -z "$argpath" ]; then
 		eval $PACMANBIN -Qo "$argpath"
@@ -54,20 +54,21 @@ search_forgotten_orphans(){
 orphans=( `pacman -Qdt | awk '{print $1}'` )
 if [ ${#orphans[@]} -eq 0 ]; then return 0; fi
 for orphan in ${orphans[@]}; do
-      	echo -e "${COL_YELLOW}${orphan} ${NO_COLOR}was installed as dependencies but are no longer required by any installed package"
+      	echo -e "${COL_YELLOW}${orphan} ${NO_COLOR}$(eval_gettext 'was installed as dependencies but are no longer required by any installed package')"
 done
 echo
-prompt "Do you want to remove these packages (with -Rcs options) ? [y/N]"
-read -en $NOENTER remove
+prompt $(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)
+remove=$(userinput)
 echo
-if [ "$remove" = "y" -o "$remove" = "Y" ]; then
+if [ "$remove" = "Y" ]; then
 	$YAOURTCOMMAND -Rcs ${orphans[@]}
 fi
 }
 
 # searching for argument in installed packages
 search_for_installed_package(){
-	title "Searching for \"${args[*]}\" in installed packages"
+	_arg=${args[*]}
+	title $(eval_gettext 'Searching for "$_arg" in installed packages')
 	eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
 	while read line; do
 		package=$(echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///')
@@ -84,30 +85,30 @@ search_for_installed_package(){
 # list installed packages filtered by criteria
 list_installed_packages(){
 	if [ $DEPENDS -eq 1 ]; then
-		title "List all packages installed as dependencies"
-		msg "List all packages installed as dependencies"
+		title $(eval_gettext 'List all packages installed as dependencies')
+		msg $(eval_gettext 'List all packages installed as dependencies')
 	elif [ $EXPLICITE -eq 1 ]; then
 		if [ $UNREQUIRED -eq 1 ]; then
-			title "List all packages explicitly installed and not required by any package"
-			msg "List all packages explicitly installed and not required by any package"
+			title $(eval_gettext 'List all packages explicitly installed and not required by any package')
+			msg $(eval_gettext 'List all packages explicitly installed and not required by any package')
 		else
-			title "List all packages explicitly installed"
-			msg "List all packages explicitly installed"
+			title $(eval_gettext 'List all packages explicitly installed')
+			msg $(eval_gettext 'List all packages explicitly installed')
 		fi
 	elif [ $UNREQUIRED -eq 1 ]; then
-		title "List all packages installed (explicitly or as depends) and not required by any package"
-		msg "List all packages installed (explicitly or as depends) and not required by any package"
+		title $(eval_gettext 'List all packages installed (explicitly or as depends) and not required by any package')
+		msg $(eval_gettext 'List all packages installed (explicitly or as depends) and not required by any package')
 	elif [ $FOREIGN -eq 1 ]; then
-		title "List installed packages not found in sync db(s)"
-		msg "List installed packages not found in sync db(s)"
+		title $(eval_gettext 'List installed packages not found in sync db(s)')
+		msg $(eval_gettext 'List installed packages not found in sync db(s)')
 		eval $PACMANBIN $ARGSANS ${args[*]}
 		return
 	elif [ $GROUP -eq 1 ]; then
-		title "List all installed packages members of a group"
-		msg "List all installed packages members of a group"
+		title $(eval_gettext 'List all installed packages members of a group')
+		msg $(eval_gettext 'List all installed packages members of a group')
 	else
-		msg "List all installed packages"
-		title "List all installed packages"
+		msg $(eval_gettext 'List all installed packages')
+		title $(eval_gettext 'List all installed packages')
 	fi
 	if [ $GROUP -eq 1 ]; then
 		colpkg=2

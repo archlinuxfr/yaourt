@@ -17,9 +17,11 @@
 #
 
 VERSION = 1.0
-
+SHELL = /bin/bash
 INSTALL = /bin/install -c
 GZIP = /bin/gzip
+MSGFMT = /usr/bin/msgfmt
+SED = /bin/sed
 DESTDIR =
 bindir = /usr/bin
 libdir = /usr/lib/yaourt
@@ -27,6 +29,7 @@ man5dir = /usr/man/man5
 man8dir = /usr/man/man8
 sysconfdir = /etc
 completiondir = ${sysconfdir}/bash_completion.d
+localedir = /usr/share/locale
 
 PROGRAMS = yaourt pacdiffviewer
 install: 
@@ -51,5 +54,13 @@ install:
 	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/pacman_conf.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m755 bashcompletion $(DESTDIR)$(completiondir)/yaourt
+	# Install locale
+	for file in po/*/*.po; \
+	do \
+	  package=$$(echo $$file | $(SED) -e 's#po/\([^/]\+\).*#\1#'); \
+	  lang=$$(echo $$file | $(SED) -e 's#.*/\([^/]\+\).po#\1#'); \
+	  $(INSTALL) -d $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
+	  $(MSGFMT) -o $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES/$$package.mo $$file; \
+	done
 
 .PHONY: install

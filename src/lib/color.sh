@@ -79,16 +79,16 @@ list(){
 	echo -e "${COL_ARROW}$1${NO_COLOR}" >&2
 }
 plain(){
-	echo -e "${COL_BOLD}$1${NO_COLOR}" >&2
+	echo -e "${COL_BOLD}$*${NO_COLOR}" >&2
 }
 msg(){
-	echo -e "${COL_GREEN}==> ${NO_COLOR}${COL_BOLD}$1${NO_COLOR}" >&2
+	echo -e "${COL_GREEN}==> ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 }
 warning(){
-	echo -e "${COL_YELLOW}==> WARNING: ${NO_COLOR}${COL_BOLD}$1${NO_COLOR}" >&2
+	echo -e "${COL_YELLOW}==> WARNING: ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 }
 prompt(){
-        echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$1${NO_COLOR}" >&2
+        echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD} ----------------------------------------------${NO_COLOR}" >&2
 	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
 }
@@ -96,7 +96,7 @@ promptlight(){
 	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
 }
 error(){
-	echo -e "${COL_RED}""Error""${NO_COLOR}"": $1\n"
+	echo -e "${COL_RED}""Error""${NO_COLOR}"": $*\n"
 	return 1
 }
 colorizeoutputline(){		

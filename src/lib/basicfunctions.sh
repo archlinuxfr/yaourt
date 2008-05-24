@@ -34,11 +34,28 @@ loadlibrary(){
 }
 
 # ask 
-userinput(){ 
-        read -en $NOENTER 
-        echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'
+userinput () 
+{ 
+	[ -z $1 ] && _key="YN" || _key=$1
+  read -en $NOENTER
+  echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'  | tr "$(eval_gettext $_key)" "$_key"
 }
 
+yes_no ()
+{
+	case $1 in
+		1) 
+		  echo $(eval_gettext "[Y/n]")
+			;;
+	  2)
+		  echo $(eval_gettext "[Y/n]")
+			;;
+	  *)
+		  echo $(eval_gettext "[y/n]")
+			;;
+	esac
+}
+		  
 isnumeric(){
 	if let $1 2>/dev/null; then return 0; else return 1; fi
 }
@@ -223,7 +240,7 @@ while [ "$#" -ne "0" ]; do
 			esac
 			;;
 		*)
-		echo "$1 no recognized in config file"
+		echo "$1 "$(eval_gettext "no recognized in config file")
 		sleep 4
 		;;
 	esac
