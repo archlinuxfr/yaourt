@@ -3,7 +3,7 @@
 # Ce programme permet de rechercher les fichiers pacsave et pacnew, de supprimer les fichiers inutiles et d'éditer les différences entre les fichiers.
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
-. gettext.sh
+type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 
 program_version=0.3.6
@@ -18,6 +18,11 @@ merge_files(){
 	#diff $DIFFOPTS -u "$1$ORIGEXT" "$1">$PATCHFILE
 	echo $(eval_gettext '$systemfile: diff between $originalversionprevious and $originalversioncurrent')
 	diff $DIFFOPTS -u $savedir/$pkgname/$originalversionprevious$systemfile $systemfile
+	msg $(eval_gettext 'Do you really want to apply the above patch ?') $(yes_no 1)
+	msg "----------------------------------------------"
+	promptlight
+	CONTINUE_PATCH=$(userinput)
+	
 	#sdiff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile $systemfile
 	#if patch --dry-run -sp0 "$1$NEWEXT" <$PATCHFILE >/dev/null; then
 			# TODO: can tilde (~) backup files creation be avoided?
@@ -59,15 +64,17 @@ is_mergeable(){
 		#	continue
 		#fi
 		if [ -z "$previousversion" ]; then
-			if `is_x_gt_y $currentversion $candidate`; then
+			dbg "control1 ($systemcurrentfile): is_x_gt_y ${currentversion#$pkgname-} ${candidate#$pkgname-}"
+			if `is_x_gt_y ${currentversion#$pkgname-} ${candidate#$pkgname}`; then
 				previousversion=$candidate
 				dbg $(eval_gettext 'canditate found: $candidate')
 			fi
 			continue
 		fi
-		       
-		if `is_x_gt_y $candidate $previousversion`; then
-			if `is_x_gt_y $currentversion $candidate`; then
+			dbg "control2 ($systemcurrentfile): is_x_gt_y ${candidate#$pkgname-} ${previousversion#$pkgname-}"
+		if `is_x_gt_y ${candidate#$pkgname-} ${previousversion#$pkgname-}`; then
+			dbg "control3 ($systemcurrentfile): is_x_gt_y ${currentversion#$pkgname-} ${candidate#$pkgname-}"
+			if `is_x_gt_y ${currentversion#$pkgname-} ${candidate#$pkgname-}`; then
 				dbg $(eval_gettext 'best canditate than $previousversion found: candidate:$candidate > $previousversion')
 				previousversion=$candidate
 			fi
@@ -84,7 +91,6 @@ is_mergeable(){
 		dbg $(eval_gettext 'Version before $currentversion not found')
 		return 1
 	fi
-
 }
 
 # Save files marked as backup in packages for later merge
@@ -206,11 +212,9 @@ SEARCH_FOR_PACFILES()
 ##########################################################
 {
 # Recherche des fichiers pacsave/pacnew + tri des résultats par date
-	set -x
 for file in `grep ".$extension" $tmp_files/pacbase`; do
 	echo `date +%s -r $file` $(eval_gettext "The ")`date +%m/%d/%Y"$(eval_gettext ' at ')"%T -r $file`": "$file>>$tmp_files/$extension.tmp
 done
-	set +x
 if [ -f $tmp_files/$extension.tmp ]; then
 	sort -r "$tmp_files/$extension.tmp" | cut -d " " -f 2-6 | sed -e s/.$extension//g>$tmp_files/$extension
 	nbresultats=`wc -l $tmp_files/$extension.tmp | cut -d " " -f 1`
@@ -232,14 +236,14 @@ VIEW_DIFF_LIST()
 
 # Recherche des fichiers .pacsave/.pacnew non modifiés
 num=0
-while read ligne; do
+while read line; do
 	num=$(($num+1))
-	fichier[$num]=$ligne
+	fichier[$num]=$line
 done < $tmp_files/$extension
 
 echo $(eval_gettext 'File to merge             Current Version      Previous Version') > $tmp_files/meargeable_files
 
-for i in `seq $num`; do
+for i in `seq 1 $num`; do
 	file[$i]=$(echo ${fichier[$i]} | cut -d " " -f 5)
 	show_file_line="$i. ${fichier[$i]}[.$extension]"
 	#previous_version_for_merge[$i]=`mergeable_with ${file[$i]}`
@@ -269,14 +273,15 @@ plain $(eval_gettext '  6: Enter a command to edit')
 plain $(eval_gettext '  S: suppress .$extension file')
 plain $(eval_gettext '  R: replace actual file by .$extension')
 if [ -f "$tmp_files/mergeable_files" ]; then
-	line=`grep "${file[$numero]}" $tmp_files/mergeable_files`
+	echo "$tmp_files/mergeable_files" 
+	line=`grep "$_file" $tmp_files/mergeable_files`
 	if [ ! -z "$line" ]; then 
 		systemfile=`echo $line | awk '{print $1}'`
 		pkgname=`echo $line | awk '{print $2}'`
 		originalversioncurrent=`echo $line | awk '{print $3}'`
 		originalversionprevious=`echo $line | awk '{print $4}'`
 		mergeable=1 
-		plain "  ${COL_BLINK}$(eval_gettext 'A: Automatically merge with .$extension (use a diff between $originalfilecurrent and $originalfileprevious)')"
+		plain "  ${COL_BLINK}$(eval_gettext 'A: Automatically merge with .$extension (use a diff between $originalversioncurrent and $originalversionprevious)')"
 	else
 		mergeable=0 
 	fi

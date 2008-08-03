@@ -25,8 +25,7 @@
 #       MA 02110-1301, USA.
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
-. gettext.sh
-
+type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 NAME="yaourt"
 VERSION="0.9.01"
@@ -56,7 +55,7 @@ find_pkgbuild_deps (){
 	unset DEPS DEP_AUR
 	readPKGBUILD
 	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read $PKG''s PKGBUILD')
+		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
 	fi
 	for dep in $(echo "${depends[@]} ${makedepends[@]}" | tr -d '\\')
@@ -265,7 +264,7 @@ build_package(){
 
 	readPKGBUILD
 	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read $PKG''s PKGBUILD')
+		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
 	fi
 	return $failed
@@ -284,7 +283,7 @@ sourceforge_mirror_hack(){
 		echo
 		list "1.surfnet(NL) 2.ufpr(BR) 3.heanet(IE) 4.easynews(US) 5.umn(US) 6.switch(CH) 7.belnet(BE) 8.kent(UK)"
 		list "9.mesh(DE) 10.optusnet(AU) 11.jaist(JP) 12.puzzle(CH) 13.superb-east(US) 14.nchc(TW) 15.superb-west(US)"
-		prompt $(eval_gettext 'Enter the mirror''s n° or or mirror''s name or press Enter to use automatic redirect (much slower)')
+		prompt $(eval_gettext 'Enter the number corresponding tor the mirror or the mirror''s name or press Enter to use automatic redirect (much slower)')
 		read -e mirror_reply
 		mirror=( none surfnet ufpr heanet easynews umn switch belnet kent mesh optusnet jaist puzzle superb-east nchc superb-west )
 		if [ -z "${mirror_reply}" ]; then
@@ -943,12 +942,12 @@ show_new_orphans(){
 
 }
 cleandatabase(){
-	# Rercherche dans /var/lib/pacman/ les dépôts ayant été téléchargés
+	# search in /var/lib/pacman/ for repositories
 	# parmis ces dépôts, quels sont les paquetages aussi présents sur le système
 	# si les paquets sont installés sur le systèmes, est-ce bien de CE dépôt qu'ils viennent ?
-	# si les dépôts sont utilisés = on supprime
-	title $(eval_gettext 'clean pacman database')
-	echo $(eval_gettext 'Please wait...')
+	# if repository is not used => remove it
+	title "$(eval_gettext 'clean pacman database')"
+	echo "$(eval_gettext 'Please wait...')"
 	repositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
 	downloadedrepositories=( `ls --almost-all $PACMANROOT/sync | grep -v "\(lost+found\|.*.db.tar.gz\)"` )
 	for repository in ${downloadedrepositories[@]}; do
@@ -1144,7 +1143,7 @@ install_from_aur(){
 	cd "$PKG/"
 	readPKGBUILD
 	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read $PKG''s PKGBUILD')
+		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
 	fi
 
@@ -1329,7 +1328,7 @@ upgrade_from_aur(){
 			echo -e " (${COL_RED}local=$local_version ${NO_COLOR}aur=$aur_version)"
 		else
 			if [ `parsejsoninfo "OutOfDate"` -eq 1 ]; then
-				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flaged as out of date)')"${NO_COLOR}"
+				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flaged as out of date')"${NO_COLOR}"
 			else
 				echo $(eval_gettext 'up to date ')
 			fi
@@ -1408,18 +1407,18 @@ if [ $NOCONFIRM -gt 0 ]; then
 fi
 if [ $FORCE -eq 1 ]; then force="--force"; fi
 if [ $NODEPS -eq 1 ]; then 
-	BUILDPROGRAM="${BUILDPROGRAM} --nodeps"; 
+	BUILDPROGRAM="${BUILDPROGRAM} --nodeps"
 	nodeps="--nodeps"
 fi
 if [ $ASDEPS -eq 1 ]; then 
-	BUILDPROGRAM="${BUILDPROGRAM} --asdeps"; 
+	BUILDPROGRAM="${BUILDPROGRAM} --asdeps"
 	asdeps="--asdeps"
 fi
 
 if [ $EXPORT -eq 1 ]; then BUILDPROGRAM="$BUILDPROGRAM --export $EXPORTDIR"; fi
 
 # Action
-case $MAJOR in
+case "$MAJOR" in
 	remove)
 	#msg "Remove"
 	title $(eval_gettext 'remove packages')
@@ -1428,19 +1427,20 @@ case $MAJOR in
 	pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${args[*]}"
 	show_new_orphans
 	;;
+
 	clean)
 	#msg "Clean"
 	if [ $CLEANDATABASE -eq 1 ]; then
 		cleandatabase
 	else
-		if [ $CLEAN -eq 1 ]
-		then
+		if [ $CLEAN -eq 1 ]; then
 			launch_with_su "pacdiffviewer -c"
 		else
 			launch_with_su "pacdiffviewer"
 		fi
 	fi
 	;;
+
 	stats)
 	loadlibrary pacman_conf
 	loadlibrary alpm_stats
@@ -1451,9 +1451,8 @@ case $MAJOR in
 	showpackagestats
 	showrepostats
 	showdiskusage
-
-
 	;;
+
 	getpkgbuild)
 	title "$(eval_gettext 'get PKGBUILD')"
 	loadlibrary aur
@@ -1480,75 +1479,280 @@ case $MAJOR in
 		BUILD=1
 		install_from_abs $PKG
 	fi
-
 	;;
+
 	backup)
 	case ${#args[@]} in
 		0) savedir="`pwd`";;
-		1) if [ -d "${args[0]}" ]; then
-		savedir=`echo "${args[0]}" | sed "s/\/$//1"`
-	elif [ -f "${args[0]}" ]; then
-		backupfile="${args[0]}"
+		1)  if [ -d "${args[0]}" ]; then
+				savedir=`echo "${args[0]}" | sed "s/\/$//1"`
+			elif [ -f "${args[0]}" ]; then
+				backupfile="${args[0]}"
+			fi
+		;;
+		*) error $(eval_gettext 'wrong argument'); die 1
+		;;
+	esac
+	loadlibrary alpm_backup
+	if [ ! -z "$savedir" ]; then
+		save_alpm_db || die 1
+	elif [ ! -z "$backupfile" ]; then
+		restore_alpm_db || die 1
+	else
+		error $(eval_gettext 'wrong argument'); die 1
 	fi
 	;;
-	*) error $(eval_gettext 'wrong argument'); die 1;;
-esac	
-loadlibrary alpm_backup
-if [ ! -z "$savedir" ]; then
-	save_alpm_db || die 1
-elif [ ! -z "$backupfile" ]; then
-	restore_alpm_db || die 1
-else
-	error $(eval_gettext 'wrong argument'); die 1
-fi
-;;
-sync)
-#msg "Synchronisation"
-if [ $GROUP -eq 1 ]; then
-	title $(eval_gettext 'show groups')
-	pacman_queuing;	eval $PACMANBIN -Sg ${args[*]}
-elif [ $QUERYWHICH -eq 1 ]; then
-	if [ "$QUERYTYPE" = "" ]; then usage; die 1; fi
-	if [ ${#args[@]} -lt 1 ]; then die 1; fi
-	title $(eval_gettext 'query packages')
-	loadlibrary pacman_conf
-	list_repositories
-	loadlibrary alpm_query
-	for arg in ${args[@]}; do
-		case $QUERYTYPE in
-			"%DEPENDS%")
-			msg $(eval_gettext 'packages which depend on $arg:');;
-			"%CONFLICTS%")
-			msg $(eval_gettext 'packages which conflicts with $arg');;
-			"%PROVIDES%")
-			msg $(eval_gettext 'packages which provides $arg');;
-		esac
-		searchforpackageswhich "$QUERYTYPE" "$arg"
-	done
-elif [ $LIST -eq 1 ];then
-	#Searching all packages in repos
-	title $(eval_gettext 'listing all packages in repos')
-	msg $(eval_gettext 'Listing all REPOS''s packages')
-	eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
-	while read line; do
-		package=$(echo $line | awk '{print $2}')
-		repos="${COL_GREEN}$(echo $line | awk '{print $1}')"
-		version=$(echo $line | awk '{print $3}')
-		echo -ne "${repos} ${COL_BOLD}${package} ${NO_COLOR}${version}"
-		if isinstalledcached $package
-		then
-			lversion=`pkgversion $package`
-			if [ "$lversion" = "$version" ];then
-				echo -ne " ${COL_INSTALLED}["$(eval_gettext 'installed')"]${NO_COLOR}"
-			else
-				echo -ne " ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} "$(eval_gettext 'installed')"]${NO_COLOR}"
+	
+	sync)
+	#msg "Synchronisation"
+	if [ $GROUP -eq 1 ]; then
+		title $(eval_gettext 'show groups')
+		pacman_queuing;	eval $PACMANBIN -Sg ${args[*]}
+	elif [ $QUERYWHICH -eq 1 ]; then
+		if [ "$QUERYTYPE" = "" ]; then usage; die 1; fi
+		if [ ${#args[@]} -lt 1 ]; then die 1; fi
+		title $(eval_gettext 'query packages')
+		loadlibrary pacman_conf
+		list_repositories
+		loadlibrary alpm_query
+		for arg in ${args[@]}; do
+			case $QUERYTYPE in
+				"%DEPENDS%")
+				msg $(eval_gettext 'packages which depend on $arg:');;
+				"%CONFLICTS%")
+				msg $(eval_gettext 'packages which conflicts with $arg');;
+				"%PROVIDES%")
+				msg $(eval_gettext 'packages which provides $arg');;
+			esac
+			searchforpackageswhich "$QUERYTYPE" "$arg"
+		done
+	elif [ $LIST -eq 1 ];then
+		#Searching all packages in repos
+		title $(eval_gettext 'listing all packages in repos')
+		msg $(eval_gettext 'Listing all REPOS''s packages')
+		eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
+		while read line; do
+			package=$(echo $line | awk '{print $2}')
+			repos="${COL_GREEN}$(echo $line | awk '{print $1}')"
+			version=$(echo $line | awk '{print $3}')
+			echo -ne "${repos} ${COL_BOLD}${package} ${NO_COLOR}${version}"
+			if isinstalledcached $package; then
+				lversion=`pkgversion $package`
+				if [ "$lversion" = "$version" ];then
+					echo -ne " ${COL_INSTALLED}["$(eval_gettext 'installed')"]${NO_COLOR}"
+				else
+					echo -ne " ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} "$(eval_gettext 'installed')"]${NO_COLOR}"
+				fi
 			fi
+			echo
+		done
+	elif [ $SEARCH -eq 1 ]; then	
+		# Searching for/info/install packages
+		#msg "Recherche dans ABS"
+		lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
+		regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
+		packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
+		for packagefile in ${packagefiles[@]}; do
+			# hack to exclude wrong result like name/version, email etc..
+			if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
+				continue
+			fi
+
+			package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
+			repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
+			version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
+			line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
+			if isinstalled $package; then
+				lversion=`pkgversion $package`
+				if [ "$lversion" = "$version" ];then
+					line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+				else
+					line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+				fi
+			fi
+			echo -e "$line$NO_COLOR"
+			echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
+		done
+		cleanoutput
+		if [ $AURSEARCH -eq 1 ]; then
+			#msg "Search on AUR"
+			for arg in ${args[@]}; do
+				search_on_aur $arg || error $(eval_gettext 'unable to contact AUR')
+			done
 		fi
-		echo
-	done
-elif [ $SEARCH -eq 1 ]; then	
-	# Searching for/info/install packages
+	elif [ $CLEAN -eq 1 ]; then 
+		#msg "clean sources files"
+		launch_with_su "$PACMANBIN $ARGSANS ${args[*]}"
+	elif [ $INFO -eq 1 ]; then
+		#msg "Information"
+		loadlibrary aur
+		for arg in ${args[@]}; do
+			title $(eval_gettext 'Information for $arg')
+			if isavailable ${arg#*/} && [ "${arg%/*}" != "aur" ]; then
+				eval $PACMANBIN -Si $arg
+			else
+				info_from_aur "${arg#*/}"
+			fi
+		done
+	elif [ $SYSUPGRADE -eq 0 -a ${#args[@]} -eq 0 -a $REFRESH -eq 0 ]; then
+		prepare_orphan_list
+		msg $(eval_gettext 'yaourt: no argument')
+		pacman_queuing;	eval $PACMANBIN $ARGSANS
+		show_new_orphans
+	elif [ $SYSUPGRADE -eq 0 ]; then
+		#msg "Install ($ARGSANS)"
+		# Install from a list of packages	
+		loadlibrary abs
+		if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
+			title $(eval_gettext 'Installing from a list of a packages')
+			_pkg_list=${args[0]}
+			msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
+			AURVOTE=0
+			args=( `cat "${args[0]}" | awk '{print $1}'` ) 
+		fi
+		# Install from arguments
+		prepare_orphan_list
+		for arg in ${args[@]}; do
+			repository=`sourcerepository ${arg#*/}`
+			if [ "$repository" != "local" -a $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
+				repos_package[${#repos_package[@]}]=${arg}
+			else
+				install_from_aur "${arg#aur/}" || failed=1
+			fi
+		done
+		[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
+		show_new_orphans
+	elif [ $SYSUPGRADE -eq 1 ]; then
+		#msg "System Upgrade"
+		prepare_orphan_list
+		loadlibrary abs
+		#Downgrade all packages marked as "newer than extra/core/etc..."
+		if [ $DOWNGRADE -eq 1 ]; then
+			msg $(eval_gettext 'Downgrading packages')
+			title $(eval_gettext 'Downgrading packages')
+			downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )				
+			if [ ${#downgradelist[@]} -gt 0 ]; then
+				pacman_queuing;	launch_with_su "$PACMANBIN -S ${downgradelist[*]}"
+				show_new_orphans
+			else
+				echo $(eval_gettext 'No package to downgrade')
+			fi
+			die $?
+			exit
+		fi
+		# Searching for packages to update, buid from sources if necessary
+		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
+		if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
+			pacman_cmd="sudo $PACMANBIN"
+		elif [ "$UID" -eq 0 ]; then
+			pacman_cmd="$PACMANBIN"
+		else
+			msg $(eval_gettext 'Sorry, because of a regression bug in pacman 3.1, you have to use sudo to allow pacman to be run as user\n(see http://bugs.archlinux.org/task/8905)')
+			exit 1
+		fi
+		packages=( `$pacman_cmd --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG \
+		| grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
+		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
+		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
+		for package in ${packages[@]}; do
+			case $package in 
+				pacman|yaourt)
+				warning $(eval_gettext 'New version of $package detected')
+				prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
+				[ "`userinput`" = "N" ] && continue
+				echo
+				msg $(eval_gettext 'Upgrading $package first')
+				pacman_queuing;	launch_with_su "$PACMANBIN -S $package"
+				die 0
+				;;
+				grub|kernel26*)
+				if [ `ls /boot/ | wc -l` -lt 2 ]; then 
+					warning $(eval_gettext 'New version of $package detected')
+					prompt $(eval_gettext 'Please mount your boot partition first then press ENTER to continue')
+					read
+				fi
+				;;
+			esac
+		done
+
+		if [ ${#packages} -gt 0 ]; then
+			# List packages to build
+			if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
+				for package in ${packages[@]}; do
+					if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
+						packagesfromsource[${#packagesfromsource[@]}]=$package
+					fi
+				done
+			fi
+			# Show package list before building
+			if [ ${#packagesfromsource[@]} -gt 0 ]; then
+				eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+				if [ $NOCONFIRM -eq 0 ]; then
+					echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
+					proceed=`userinput`
+				fi
+			fi
+			# Build some packages if needed, then launch pacman classic sysupgrade
+			if [ "$proceed" != "N" ]; then
+				if [ ${#packagesfromsource[@]} -gt 0 ]; then
+					BUILD=1
+					install_from_abs "${packagesfromsource[*]}"
+				fi
+				if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
+					pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
+				fi
+			fi
+		else
+			# Nothing to update. Show various infos
+			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+		fi
+
+		# Upgrade all AUR packages or all Devel packages
+		if [ $DEVEL -eq 1 ]; then upgrade_devel_package; fi
+		if [ $AURUPGRADE -eq 1 ]; then upgrade_from_aur; fi
+		#show package which have not been installed
+		if [ ${#error_package[@]} -gt 0 ]; then
+			echo -e "${COL_YELLOW}" $(eval_gettext 'Following packages have not been installed:')"${NO_COLOR}"
+			echo "${error_package[*]}"
+		fi
+		show_new_orphans
+	fi
+	;;
+
+	query)
+	# action = query
+	loadlibrary alpm_query
+	# query in a backup file or in current alpm db
+	if [ ! -z "$BACKUPFILE" ]; then
+		loadlibrary alpm_backup
+		if is_an_alpm_backup "$BACKUPFILE"; then
+			title $(eval_gettext 'Query backup database')
+			msg $(eval_gettext 'Query backup database')
+		PACMANROOT="$backupdir/"
+			eval $PACMANBIN --dbpath "$backupdir/" $ARGSANS ${args[*]}
+		else
+			die 1
+		fi
+	elif [ $OWNER -eq 1 ]; then
+		search_which_package_owns
+	elif	[ $DEPENDS -eq 1 -a $UNREQUIRED -eq 1 ]; then
+		search_forgotten_orphans
+	elif	[ $SEARCH -eq 1 ]; then
+		search_for_installed_package
+	elif [ $LIST -eq 1 -o $INFO -eq 1 -o $SYSUPGRADE -eq 1 -o $CHANGELOG -eq 1 ]; then
+		# just run pacman -Ql or pacman -Qi
+		eval $PACMANBIN $ARGSANS ${args[*]}
+	else
+		list_installed_packages
+	fi
+	;;
+	
+	interactivesearch)
 	#msg "Recherche dans ABS"
+	tmp_files="$YAOURTTMPDIR/search"
+	mkdir -p $tmp_files || die 1
+	searchfile=$tmp_files/interactivesearch.$$>$searchfile || die 1
+	i=1
 	lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
 	regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
 	packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
@@ -1557,11 +1761,11 @@ elif [ $SEARCH -eq 1 ]; then
 		if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
 			continue
 		fi
-
 		package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
 		repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
 		version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
-		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
+		echo "${repository}/${package}" >> $searchfile
+		line="${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
 		if isinstalled $package; then
 			lversion=`pkgversion $package`
 			if [ "$lversion" = "$version" ];then
@@ -1570,257 +1774,42 @@ elif [ $SEARCH -eq 1 ]; then
 				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
 			fi
 		fi
-		echo -e "$line$NO_COLOR"
+		echo -e "${COL_NUMBER}${i}${NO_COLOR} `colorizeoutputline $line${NO_COLOR}`"
+		(( i ++ ))
+		#show description
 		echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
 	done
 	cleanoutput
 	if [ $AURSEARCH -eq 1 ]; then
 		#msg "Search on AUR"
-		for arg in ${args[@]}; do
-			search_on_aur $arg || error $(eval_gettext 'unable to contact AUR')
-		done
+		search_on_aur "`echo ${args[*]} |tr "\*" "\%"`" || error $(eval_gettext 'unable to contact AUR')
 	fi
-
-elif [ $CLEAN -eq 1 ]; then 
-	#msg "clean sources files"
-	launch_with_su "$PACMANBIN $ARGSANS ${args[*]}"
-elif [ $INFO -eq 1 ]; then
-	#msg "Information"
-	loadlibrary aur
-
-	for arg in ${args[@]}; do
-		title $(eval_gettext 'Information for $arg')
-		if isavailable ${arg#*/} && [ "${arg%/*}" != "aur" ]; then
-			eval $PACMANBIN -Si $arg
-		else
-			info_from_aur "${arg#*/}"
-		fi
-	done
-elif [ $SYSUPGRADE -eq 0 -a ${#args[@]} -eq 0 -a $REFRESH -eq 0 ]; then
-	prepare_orphan_list
-	msg $(eval_gettext 'yaourt: no argument')
-	pacman_queuing;	eval $PACMANBIN $ARGSANS
-	show_new_orphans
-elif [ $SYSUPGRADE -eq 0 ]; then
-	#msg "Install ($ARGSANS)"
-	# Install from a list of packages	
-	loadlibrary abs
-	if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
-		title $(eval_gettext 'Installing from a list of a packages')
-		_pkg_list=${args[0]}
-		msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
-		AURVOTE=0
-		args=( `cat "${args[0]}" | awk '{print $1}'` ) 
+	if [ ! -s "$searchfile" ]; then
+		die 0	
 	fi
-
-	# Install from arguments
-	prepare_orphan_list
-	for arg in ${args[@]}; do
-		repository=`sourcerepository ${arg#*/}`
-		if [ "$repository" != "local" -a $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
-			repos_package[${#repos_package[@]}]=${arg}
-		else
-			install_from_aur "${arg#aur/}" || failed=1
-		fi
-	done
-	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
-	show_new_orphans
-elif [ $SYSUPGRADE -eq 1 ]; then
-	#msg "System Upgrade"
-	prepare_orphan_list
-	loadlibrary abs
-
-	#Downgrade all packages marked as "newer than extra/core/etc..."
-	if [ $DOWNGRADE -eq 1 ]; then
-		msg $(eval_gettext 'Downgrading packages')
-		title $(eval_gettext 'Downgrading packages')
-		downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )				
-		if [ ${#downgradelist[@]} -gt 0 ]; then
-			pacman_queuing;	launch_with_su "$PACMANBIN -S ${downgradelist[*]}"
-			show_new_orphans
-		else
-			echo $(eval_gettext 'No package to downgrade')
-		fi
-		die $?
-		exit
-	fi
-
-	# Searching for packages to update, buid from sources if necessary
-	# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
-	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
-		pacman_cmd="sudo $PACMANBIN"
-	elif [ "$UID" -eq 0 ]; then
-		pacman_cmd="$PACMANBIN"
-	else
-		msg $(eval_gettext 'Sorry, because of a regression bug in pacman 3.1, you have to use sudo to allow pacman to be run as user\n(see http://bugs.archlinux.org/task/8905)')
-		exit 1
-	fi
-
-	packages=( `$pacman_cmd --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG \
-	| grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
-	-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
-
-	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
-	for package in ${packages[@]}; do
-		case $package in 
-			pacman|yaourt)
-			warning $(eval_gettext 'New version of $package detected')
-			prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
-			[ "`userinput`" = "N" ] && continue
-			echo
-			msg $(eval_gettext 'Upgrading $package first')
-			pacman_queuing;	launch_with_su "$PACMANBIN -S $package"
-			die 0
-			;;
-			grub|kernel26*)
-			if [ `ls /boot/ | wc -l` -lt 2 ]; then 
-				warning $(eval_gettext 'New version of $package detected')
-				prompt $(eval_gettext 'Please mount your boot partition first then press ENTER to continue')
-				read
-			fi
-			;;
-		esac
-	done
-
-
-	if [ ${#packages} -gt 0 ]; then
-		# List packages to build
-		if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
-			for package in ${packages[@]}; do
-				if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
-					packagesfromsource[${#packagesfromsource[@]}]=$package
-				fi
+	prompt $(eval_gettext 'Enter n° (separated by blanks, or a range) of packages to be installed\n')
+	prompt $(eval_gettext 'Example:   ''1 6 7 8 9''   or   ''1 6-9''')
+	read -ea packagesnum
+	if [ ${#packagesnum[@]} -eq 0 ]; then die 0; fi
+	for line in ${packagesnum[@]}; do
+		if echo $line | grep -q "[0-9]-[0-9]"; then
+			for multipackages in `seq ${line/-/ }`;do
+				packages[${#packages[@]}]=$(sed -n ${multipackages}p $searchfile)
 			done
-		fi
-
-		# Show package list before building
-		if [ ${#packagesfromsource[@]} -gt 0 ]; then
-			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-			if [ $NOCONFIRM -eq 0 ]; then
-				echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
-				proceed=`userinput`
-			fi
-		fi
-
-		# Build some packages if needed, then launch pacman classic sysupgrade
-		if [ "$proceed" != "N" ]; then
-			if [ ${#packagesfromsource[@]} -gt 0 ]; then
-				BUILD=1
-				install_from_abs "${packagesfromsource[*]}"
-			fi
-			if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
-				pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
-			fi
-		fi
-
-	else
-		# Nothing to update. Show various infos
-		eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-	fi
-
-	# Upgrade all AUR packages or all Devel packages
-	if [ $DEVEL -eq 1 ]; then upgrade_devel_package; fi
-	if [ $AURUPGRADE -eq 1 ]; then upgrade_from_aur; fi
-	#show package which have not been installed
-	if [ ${#error_package[@]} -gt 0 ]; then
-		echo -e "${COL_YELLOW}" $(eval_gettext 'Following packages have not been installed:')"${NO_COLOR}"
-		echo "${error_package[*]}"
-	fi
-	show_new_orphans
-fi
-;;
-query)
-# action = query
-loadlibrary alpm_query
-
-# query in a backup file or in current alpm db
-if [ ! -z "$BACKUPFILE" ]; then
-	loadlibrary alpm_backup
-	if is_an_alpm_backup "$BACKUPFILE"; then
-		title $(eval_gettext 'Query backup database')
-		msg $(eval_gettext 'Query backup database')
-		PACMANROOT="$backupdir/"
-		eval $PACMANBIN --dbpath "$backupdir/" $ARGSANS ${args[*]}
-	else
-		die 1
-	fi
-elif [ $OWNER -eq 1 ]; then
-	search_which_package_owns
-elif	[ $DEPENDS -eq 1 -a $UNREQUIRED -eq 1 ]; then
-	search_forgotten_orphans
-elif	[ $SEARCH -eq 1 ]; then
-	search_for_installed_package
-elif [ $LIST -eq 1 -o $INFO -eq 1 -o $SYSUPGRADE -eq 1 -o $CHANGELOG -eq 1 ]; then
-	# just run pacman -Ql or pacman -Qi
-	eval $PACMANBIN $ARGSANS ${args[*]}
-else
-	list_installed_packages
-fi
-;;
-interactivesearch)
-#msg "Recherche dans ABS"
-tmp_files="$YAOURTTMPDIR/search"
-mkdir -p $tmp_files || die 1
-searchfile=$tmp_files/interactivesearch.$$
->$searchfile || die 1
-i=1
-lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
-regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
-packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
-for packagefile in ${packagefiles[@]}; do
-	# hack to exclude wrong result like name/version, email etc..
-	if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
-		continue
-	fi
-
-	package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
-	repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
-	version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
-	echo "${repository}/${package}" >> $searchfile
-	line="${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
-	if isinstalled $package; then
-		lversion=`pkgversion $package`
-		if [ "$lversion" = "$version" ];then
-			line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+		elif echo $line | grep -q "[0-9]"; then
+			packages[${#packages[@]}]=$(sed -n ${line}p $searchfile)
 		else
-			line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+			die 1
 		fi
-	fi
-	echo -e "${COL_NUMBER}${i}${NO_COLOR} `colorizeoutputline $line${NO_COLOR}`"
-	(( i ++ ))
-	#show description
-	echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
-done
-cleanoutput
-if [ $AURSEARCH -eq 1 ]; then
-	#msg "Search on AUR"
-	search_on_aur "`echo ${args[*]} |tr "\*" "\%"`" || error $(eval_gettext 'unable to contact AUR')
-fi
-if [ ! -s "$searchfile" ]; then
-	die 0	
-fi
-prompt $(eval_gettext 'Enter n° (separated by blanks, or a range) of packages to be installed\n')
-prompt $(eval_gettext 'Example:   ''1 6 7 8 9''   or   ''1 6-9''')
-read -ea packagesnum
-if [ ${#packagesnum[@]} -eq 0 ]; then die 0; fi
-for line in ${packagesnum[@]}; do
-	if echo $line | grep -q "[0-9]-[0-9]"; then
-		for multipackages in `seq ${line/-/ }`;do
-			packages[${#packages[@]}]=$(sed -n ${multipackages}p $searchfile)
-		done
-	elif echo $line | grep -q "[0-9]"; then
-		packages[${#packages[@]}]=$(sed -n ${line}p $searchfile)
-	else
-		die 1
-	fi
-done
-$BUILDPROGRAM ${packages[@]}
-;;
-*)
-#msg "Other action"
-prepare_orphan_list
-pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${args[*]}" || { plain $(eval_gettext 'press a key to continue'); read; }
-show_new_orphans
-;;
+	done
+	$BUILDPROGRAM ${packages[@]}
+	;;
+	
+	*)
+	#msg "Other action"
+	prepare_orphan_list
+	pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${args[*]}" || { plain $(eval_gettext 'press a key to continue'); read; }
+	show_new_orphans
+	;;
 esac
 die $failed

@@ -1,6 +1,6 @@
 post_install() {
 	cat <<-EndOfMessage
-        NOTE 1: if you want to use yaourt as user,
+	NOTE 1: if you want to use yaourt as user,
         you could add some entries in sudoers file:
            user ALL=NOPASSWD: /usr/bin/pacman
            user ALL=NOPASSWD: /usr/bin/pacdiffviewer

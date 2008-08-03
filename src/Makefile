@@ -41,7 +41,8 @@ install:
 	$(INSTALL) -d $(DESTDIR)$(man5dir)
 	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -d $(DESTDIR)$(completiondir)
-	$(INSTALL) -m755 $(PROGRAMS) $(DESTDIR)$(bindir)
+	$(INSTALL) -m755 yaourt.sh $(DESTDIR)$(bindir)/yaourt
+	$(INSTALL) -m755 pacdiffviewer.sh $(DESTDIR)$(bindir)/pacdiffviewer
 	$(INSTALL) -m644 yaourt.8.gz $(DESTDIR)$(man8dir)
 	$(INSTALL) -m644 yaourtrc.5.gz $(DESTDIR)$(man5dir)
 	$(INSTALL) -m644 yaourtrc $(DESTDIR)$(sysconfdir)/yaourtrc

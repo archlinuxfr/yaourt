@@ -12,12 +12,12 @@ backup=('etc/yaourtrc')
 source=('yaourtrc-0.9-1' 'yaourtrc-0.9.1-1')
 
 build() { 
-	cp -r ../../src/ $startdir/src/yaourt/
-	cd $startdir/src/yaourt/
+	cp -r ../../src/ $srcdir/yaourt/
+	cd $srcdir/yaourt/
 	make install DESTDIR=$pkgdir || return 1
 
 	# preinstall original backup files for yaourtrc
-        install -D -m 766 $startdir/src/yaourtrc-0.9-1 $pkgdir/var/lib/yaourt/backupfiles/yaourt/yaourt-0.9-1/yaourtrc
-        install -D -m 766 $startdir/src/yaourtrc-0.9.1-1 $pkgdir/var/lib/yaourt/backupfiles/yaourt/yaourt-0.9.1-1/yaourtrc
+        install -D -m 766 $srcdir/yaourtrc-0.9-1 $pkgdir/var/lib/yaourt/backupfiles/yaourt/yaourt-0.9-1/yaourtrc
+        install -D -m 766 $srcdir/yaourtrc-0.9.1-1 $pkgdir/var/lib/yaourt/backupfiles/yaourt/yaourt-0.9.1-1/yaourtrc
 
 }

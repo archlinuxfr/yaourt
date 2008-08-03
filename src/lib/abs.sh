@@ -118,7 +118,7 @@ for package in $@; do
 	
 	readPKGBUILD
 	if [ -z "$pkgname" ]; then
-       		echo $(eval_gettext 'Unable to read $PKG''s PKGBUILD')
+       		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		manage_error 1 || continue
 	fi
 	

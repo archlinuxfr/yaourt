@@ -44,11 +44,11 @@ userinput ()
 yes_no ()
 {
 	case $1 in
-		1) 
+	  1) 
 		  echo $(eval_gettext "[Y/n]")
 			;;
 	  2)
-		  echo $(eval_gettext "[Y/n]")
+		  echo $(eval_gettext "[y/N]")
 			;;
 	  *)
 		  echo $(eval_gettext "[y/n]")
