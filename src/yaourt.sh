@@ -540,6 +540,7 @@ parameters(){
 	DOWNGRADE=0
 	QUERYTYPE=""
 	QUERYWHICH=0
+	QUIET=0
 	develpkg=0
 	failed=0
 	SUDOINSTALLED=0
@@ -745,7 +746,7 @@ parameters(){
 					l) LIST=1 ;;
 					m) FOREIGN=1 ;;
 					o) OWNER=1 ;;
-					q) QUERYWHICH=1 ;;
+					q) QUERYWHICH=1; QUIET=1 ;;
 					r)
 					ROOT=1
 					NEWROOT="$OPTARG"
@@ -1549,30 +1550,59 @@ case "$MAJOR" in
 	elif [ $SEARCH -eq 1 ]; then	
 		# Searching for/info/install packages
 		#msg "Recherche dans ABS"
-		lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
-		regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
-		packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
-		for packagefile in ${packagefiles[@]}; do
-			# hack to exclude wrong result like name/version, email etc..
-			if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
+		if [ $QUIET -eq 1 ]; then
+			eval $PACMANBIN $ARGSANS --search ${args[*]}
+			die 0
+		fi
+
+		eval $PACMANBIN $ARGSANS --search ${args[*]} | sed 's/^ /_DESCRIPTIONline_/' |
+		while read line; do
+			if echo "$line" | grep -q "^_DESCRIPTIONline_"; then
+				echo -e "$COL_ITALIQUE$line$NO_COLOR" | sed 's/_DESCRIPTIONline_/  /'
+
 				continue
 			fi
-
-			package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
-			repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
-			version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
+			package=`echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///'`
+			repository=`echo $line| sed 's/\/.*//'`
+			version=`echo $line | awk '{print $2}'`
+			group=`echo $line | sed -e 's/^[^(]*//'`
 			line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
-			if isinstalled $package; then
-				lversion=`pkgversion $package`
-				if [ "$lversion" = "$version" ];then
-					line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-				else
-					line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+				if isinstalled $package; then
+					lversion=`pkgversion $package`
+					if [ "$lversion" = "$version" ];then
+						line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+					else
+						line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+					fi
 				fi
-			fi
-			echo -e "$line$NO_COLOR"
-			echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
+			echo -e "$line$NO_COLOR $COL_GROUP$group$NO_COLOR"
 		done
+		########################################################
+		#lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
+		#regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
+		#packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
+		#for packagefile in ${packagefiles[@]}; do
+			# hack to exclude wrong result like name/version, email etc..
+		#	if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
+		#		continue
+		#	fi
+
+		#	package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
+		#	repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
+		#	version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
+		#	line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
+		#	if isinstalled $package; then
+		#		lversion=`pkgversion $package`
+		#		if [ "$lversion" = "$version" ];then
+		#			line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+		#		else
+		#			line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+		#		fi
+		#	fi
+		#	echo -e "$line$NO_COLOR"
+		#	echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
+		#done
+		###################
 		cleanoutput
 		if [ $AURSEARCH -eq 1 ]; then
 			#msg "Search on AUR"
@@ -1596,7 +1626,8 @@ case "$MAJOR" in
 		done
 	elif [ $SYSUPGRADE -eq 0 -a ${#args[@]} -eq 0 -a $REFRESH -eq 0 ]; then
 		prepare_orphan_list
-		msg $(eval_gettext 'yaourt: no argument')
+		msg $(eval_gettext 'yaourt: no argument'):wa
+		
 		pacman_queuing;	eval $PACMANBIN $ARGSANS
 		show_new_orphans
 	elif [ $SYSUPGRADE -eq 0 ]; then

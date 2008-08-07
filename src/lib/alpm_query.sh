@@ -69,16 +69,17 @@ fi
 search_for_installed_package(){
 	_arg=${args[*]}
 	title $(eval_gettext 'Searching for "$_arg" in installed packages')
-	eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
+	eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_DESCRIPTIONline_/' |
 	while read line; do
-		package=$(echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///')
-		version=$(echo $line | grep -v "^_" | awk '{ print $2}' | sed 's/^.*\///')
-		if [ ! -z "$package" ];	then
-			repository=`sourcerepository $package`
-			echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}${NO_COLOR}"` 
-		else
-			echo $line | sed 's/^_/  /'
+		if echo "$line" | grep -q "^_DESCRIPTIONline_"; then
+			echo -e "$COL_ITALIQUE$line$NO_COLOR" | sed 's/_DESCRIPTIONline_/  /'
+			continue
 		fi
+		package=`echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///'`
+		version=`echo $line | grep -v "^_" | awk '{ print $2}' | sed 's/^.*\///'`
+		group=`echo $line | sed -e 's/^[^(]*//'`
+		repository=`sourcerepository $package`
+		echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version} ${COL_GROUP}$group${NO_COLOR}"` 
 	done
 }
 
