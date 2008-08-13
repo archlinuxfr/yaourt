@@ -68,7 +68,7 @@ _available_groups ()
   local available_groups
   local enabled_repos
   enabled_repos=$( grep '\[' /etc/pacman.conf | grep -v -e 'options' -e '^#' | tr -d '[]' )
-  available_groups=$( for r in $enabled_repos; do sed '/%GROUPS%/,/^$/{//d; p}' /var/lib/pacman/sync/$r/*/desc | sort -u; done )
+  available_groups=$( for r in $enabled_repos; do sed -n '/%GROUPS%/,/^$/{//d; p}' /var/lib/pacman/sync/$r/*/desc | sort -u; done )
   COMPREPLY=( $( compgen -W "$( for i in $available_groups; do echo ${i%-*-*}; done )" -- $cur ) )
 }
 
@@ -245,6 +245,7 @@ _yaourt ()
           --devel \
           --downgrade \
           --needed \
+          --holdver \
           --ignore \
           --ignoregroup \
           --config \

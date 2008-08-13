@@ -4,7 +4,12 @@
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
-
+if [ `type -p colordiff` ]; then
+       	showdiff="colordiff"
+else
+	showdiff="diff"
+fi
+DIFFOPTS="--text --ignore-space-change --ignore-blank-lines -u"
 
 program_version=0.3.6
 DEBUG=1
@@ -14,27 +19,34 @@ dbg(){
 }
 
 merge_files(){
-	DIFFOPTS="-abB"
-	#diff $DIFFOPTS -u "$1$ORIGEXT" "$1">$PATCHFILE
-	echo $(eval_gettext '$systemfile: diff between $originalversionprevious and $originalversioncurrent')
-	diff $DIFFOPTS -u $savedir/$pkgname/$originalversionprevious$systemfile $systemfile
+	msg $(eval_gettext '$systemfile: difference between $originalversionprevious and $originalversioncurrent')
+	eval $showdiff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile \
+	$savedir/$pkgname/$originalversioncurrent$systemfile
 	msg $(eval_gettext 'Do you really want to apply the above patch ?') $(yes_no 1)
 	msg "----------------------------------------------"
 	promptlight
-	CONTINUE_PATCH=$(userinput)
+	[[ "`userinput`" = "N" ]] && return 0
 	
-	#sdiff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile $systemfile
-	#if patch --dry-run -sp0 "$1$NEWEXT" <$PATCHFILE >/dev/null; then
-			# TODO: can tilde (~) backup files creation be avoided?
-			# If not remove this backup files
-	#		patch -p0 "$1" <$PATCHFILE
-	#	fi
-
-
-
+       	diff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile \
+	$savedir/$pkgname/$originalversioncurrent$systemfile | patch --dry-run -sp0 "$systemfile" >/dev/null
+	if [ $? -eq 0 ]; then
+		msg $(eval_gettext 'Applying patch')
+       		diff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile \
+		$savedir/$pkgname/$originalversioncurrent$systemfile | patch -sp0 "$systemfile"
+		if [ $? -ne 0 ]; then
+			error "$(eval_gettext 'Patch not applied correctly')"
+		else
+			msg "$(eval_gettext 'File patched ok')"
+		fi
+	else
+		warning "$(eval_gettext 'This patch can not be applied automatically')"
+		patchsaved="$YAOURTTMPDIR/`basename $systemfile`.diff"
+		diff $DIFFOPTS $savedir/$pkgname/$originalversionprevious$systemfile \
+	$savedir/$pkgname/$originalversioncurrent$systemfile > $patchsaved
+		msg "$(eval_gettext 'Saving patch in $patchsaved')"
+	fi
+	list "$(eval_gettext 'Press a key to continue')"
 	read
-
-
 }
 
 
@@ -83,9 +95,11 @@ is_mergeable(){
 			continue
 		fi
 	done
-	if [ ! -z "$previousversion" ]; then
+	if [ ! -z "$previousversion" ] && ! diff $DIFFOPTS $savedir/$pkgname/$previousversion$systemcurrentfile\
+	      	$savedir/$pkgname/$currentversion$systemcurrentfile >/dev/null; then
 		dbg $(eval_gettext 'Version $previousversion before $currentversion')
-		echo "$systemcurrentfile $pkgname $currentversion $previousversion" >> $tmp_files/mergeable_files
+		dbg "systemcurrentfile=$systemcurrentfile pkgname=$pkgname currentversion=$currentversion previousversion=$previousversion"
+			echo "$systemcurrentfile $pkgname $currentversion $previousversion" >> $tmp_files/mergeable_files
 		return 0
 	else
 		dbg $(eval_gettext 'Version before $currentversion not found')
@@ -143,30 +157,17 @@ msg $(eval_gettext 'Do you want to remove this obsolete files ?')
 msg "$(eval_gettext ' (to be confirmed for each file) : ') $(yes_no 2)"
 msg "----------------------------------------------"
 promptlight
-suppress=$(userinputread)
+suppress=$(userinput)
 echo
-if [ "$suppress" = "Y" ]
-then
-	num=0
-	while read ligne; do
-		num=$(($num+1))
-		fichier[$num]=$ligne
-	done < $tmp_files/pacfile.obsolete 
-
-	for i in `seq $num`
-	do
-		file=${fichier[$i]}
-		if [ -w $file ]
-		then
-			promptlight "$(eval_gettext 'Delete file $file ?: ') $(yes_no 2) ->"
-			deletefile=$(userinput)
-			echo
-			if [ "$deletefile" = "Y" ]; then rm $file; fi
+if [ "$suppress" = "Y" ]; then
+	for file in `cat $tmp_files/pacfile.obsolete`; do
+		if [ -w "$file" ]; then
+			echo -n "$(eval_gettext '=> Delete file $file ? ') $(yes_no 2) -> "
+			if [ "`userinput`" = "Y" ]; then rm "$file"; fi
 		else
 			error $(eval_gettext '${file}: You don''t have write access')
 		fi
-	done 
-	sleep 2
+	done
 fi
 }
 
@@ -247,11 +248,11 @@ for i in `seq 1 $num`; do
 	file[$i]=$(echo ${fichier[$i]} | cut -d " " -f 5)
 	show_file_line="$i. ${fichier[$i]}[.$extension]"
 	#previous_version_for_merge[$i]=`mergeable_with ${file[$i]}`
-	if `is_mergeable ${file[$i]}`; then
+	if diff $DIFFOPTS ${file[$i]} ${file[$i]}.$extension > /dev/null; then
+		show_file_line="$show_file_line $(eval_gettext '**same files**')"
+	elif [ "$extension" = "pacnew" ] && `is_mergeable ${file[$i]}`; then
 		#if [ ! -w ${file[$i]} ]; then show_file_line=$(echo $show_file_line" (readonly)"); fi
 		show_file_line="$show_file_line $COL_RED$COL_BLINK$(eval_gettext '**automerge is possible**')"
-	else
-		if diff -Bb ${file[$i]} ${file[$i]}.$extension > /dev/null; then show_file_line="$show_file_line $(eval_gettext '**same files**')";fi
 	fi
 	list "$show_file_line"
 done 
@@ -273,7 +274,6 @@ plain $(eval_gettext '  6: Enter a command to edit')
 plain $(eval_gettext '  S: suppress .$extension file')
 plain $(eval_gettext '  R: replace actual file by .$extension')
 if [ -f "$tmp_files/mergeable_files" ]; then
-	echo "$tmp_files/mergeable_files" 
 	line=`grep "$_file" $tmp_files/mergeable_files`
 	if [ ! -z "$line" ]; then 
 		systemfile=`echo $line | awk '{print $1}'`

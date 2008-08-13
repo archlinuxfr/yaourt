@@ -224,7 +224,7 @@ build_package(){
 		fi
 
 		# Use versionpkg to find latest version
-		if [ $VERSIONPKGINSTALLED -eq 1 ]; then
+		if [ $VERSIONPKGINSTALLED -eq 1 -a $HOLDVER -eq 0 ]; then
 			msg $(eval_gettext 'Searching new CVS/SVN/GIT revision for $PKG')
 			versionpkg --modify-only --force
 			local localversion=`grep -rl --include="desc" "^$PKG$" "$PACMANROOT/local" | sed -e "s/\/desc//" -e "s/.*\///"`
@@ -247,13 +247,16 @@ build_package(){
 	fi
 
 	# Build 
+	mkpkg_opt="$confirmation"
+	[ $NODEPS -eq 1 ] && mkpkg_opt="$mkpkg_opt -d"
+	[ $HOLDVER -eq 1 ] && mkpkg_opt="$mkpkg_opt --holdver"
 	if [ $runasroot -eq 1 ]; then 
-		pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --asroot --syncdeps --force -p ./PKGBUILD
+		pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --asroot --syncdeps --force -p ./PKGBUILD
 	else
 		if [ $SUDOINSTALLED -eq 1 ]; then
-			pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --syncdeps --force -p ./PKGBUILD
+			pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --syncdeps --force -p ./PKGBUILD
 		else
-			eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $confirmation --force -p ./PKGBUILD
+			eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
 		fi
 	fi
 
@@ -314,7 +317,7 @@ upgrade_devel_package(){
 	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
 	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
-	for PKG in $(pacman -Q | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)\ " | awk '{print $1}')
+	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)\ ")
 	do
 		if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
 			echo -e "${PKG}: ${COL_RED} "$(eval_gettext '(ignored from pacman.conf)')"${NO_COLOR}"
@@ -417,6 +420,7 @@ usage(){
 	echo "$(eval_gettext ' -Suf, --force                     force install, overwrite conflicting files')"
 	echo "$(eval_gettext ' -Su --ignore <pkg>                skip some package')"
 	echo "$(eval_gettext ' -Sy,  --refresh                   download fresh package databases from the server')"
+	echo "$(eval_gettext ' --holdver                         avoid building last developement version for git/cvs/svn package')"
 	echo "$(eval_gettext 'Note: yaourt always shows new orphans after package update')"
 	echo
 	echo "$(eval_gettext 'Downgrade:')"
@@ -526,6 +530,7 @@ parameters(){
 
 
 	AUR=0
+	HOLDVER=0
 	IGNORE=0
 	IGNOREPKG=""
 	NEEDED=""
@@ -708,6 +713,7 @@ parameters(){
 			--textonly) COLORMODE="--textonly"; initcolor;;
 			--unrequired) UNREQUIRED=1;;
 			--changelog) CHANGELOG=1;;
+			--holdver) HOLDVER=1;;
 			--*)
 			#			usage
 			#			exit 1
@@ -837,11 +843,8 @@ launch_with_su(){
 ### Package database functions  ###
 ###################################
 isinstalled(){
-	if grep -qrl --include="desc" "^$1$" "$PACMANROOT/local"; then return 0; else return 1; fi
-}
-isinstalledcached(){
 	if [ ${#allpkginstalled[@]} -eq 0 ]; then
-		allpkginstalled=( `pacman -Q | awk '{print $1}'` )
+		allpkginstalled=( `pacman -Qq` )
 	fi
 	for installedpkg in ${allpkginstalled[@]};do
 		if [ "$1" = "$installedpkg" ]; then return 0; else continue; fi
@@ -849,11 +852,12 @@ isinstalledcached(){
 	return 1
 }
 isavailable(){
-	if [ ${#lrepositories[@]} -eq 0 ]; then
-		lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
+	# is the package available in repositories ?
+	if [ ${#allpkgavailable[@]} -eq 0 ]; then
+		allpkgavailable=( `pacman -Sl | awk '{print $2}'` )
 	fi
-	for lrepository in ${lrepositories[@]}; do
-		if grep -qrl --include="desc" "^$1$" "$PACMANROOT/sync/$lrepository"; then return 0; else continue; fi
+	for pkgavailable in ${allpkgavailable[@]};do
+		if [ "$1" = "$pkgavailable" ]; then return 0; else continue; fi
 	done
 	return 1
 }
@@ -865,45 +869,20 @@ isprovided(){
 	return 1
 }
 pkgversion(){
-	# recherche de la version du pkg
-	grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
+	# searching for version of the given package
+	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
+	pacman -Q $1 | awk '{print $2}'
 }
 sourcerepository(){
-	if [ ${#lrepositories[@]} -eq 0 ]; then
-		lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
+	# find the repository where the given package came from
+	local lrepository=`pacman -Si $1 2>/dev/null| head -n1 | awk '{print $3}'`
+	if [ -z "$lrepository" ]; then
+		echo "local"
+	else
+		echo $lrepository
 	fi
-	for lrepository in ${lrepositories[@]}; do
-		if grep -qrl --include="desc" "^$1$" "$PACMANROOT/sync/$lrepository"; then
-			echo $lrepository
-			return 0
-		else
-			continue
-		fi
-	done
-	# no repository found -> so it's local
-	echo "local"
 }
-findindependsfile(){
-	#usage:  findindependsfile <section> <package> <file>
-	local section=$1
-	local package=$2
-	local file=$3
-	local nextiscandidate=0
-	local filecontent=( `cat $file`)
-	for word in ${filecontent[@]};do
-		# parse the appropriate section only for word
-		if [ $(echo "$word" | grep "^%.*%$") ]; then
-			if [ "$word" = "$section" ]; then 
-				iscandidate=1
-			else
-				iscandidate=0
-			fi
-		elif [ $iscandidate -eq 1 -a "${word%%[<>=]*}" = "$package" ]; then
-			return 0
-		fi
-	done
-	return 1
-}
+
 prepare_orphan_list(){
 	# Prepare orphan list before upgrade and remove action
 	mkdir -p "$YAOURTTMPDIR/orphans"
@@ -912,14 +891,14 @@ prepare_orphan_list(){
 	INSTALLED_BEFORE="$YAOURTTMPDIR/orphans/installed_before.$$"
 	INSTALLED_AFTER="$YAOURTTMPDIR/orphans/installed_after.$$"
 	# search orphans before removing or upgrading
-	pacman -Qt | awk '{print $1}' | LC_ALL=C sort > $ORPHANS_BEFORE
+	pacman -Qqt | LC_ALL=C sort > $ORPHANS_BEFORE
 	# store package list before
 	pacman -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
 	cat "$INSTALLED_BEFORE.full" | awk '{print $1}' > $INSTALLED_BEFORE
 }
 show_new_orphans(){
 	# search for new orphans after upgrading or after removing (exclude new installed package)
-	pacman -Qt | awk '{print $1}' | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
+	pacman -Qqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
 	pacman -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
 	cat "$INSTALLED_AFTER.full" | awk '{print $1}'  > $INSTALLED_AFTER
 	comm -1 -3 "$INSTALLED_BEFORE" "$INSTALLED_AFTER" > "$INSTALLED_AFTER.newonly"
@@ -1310,7 +1289,7 @@ upgrade_from_aur(){
 	# Search for new version on AUR
 	local iNum=0
 	msg $(eval_gettext 'Searching for new version on AUR')
-	for PKG in $(pacman -Qm | awk '{print $1}')
+	for PKG in $(pacman -Qqm)
 	do
 		echo -n "$PKG: "
 		initjsoninfo $PKG || { echo -e "${COL_YELLOW}"$(eval_gettext 'not found on AUR')"${NO_COLOR}"; continue; }
@@ -1537,7 +1516,7 @@ case "$MAJOR" in
 			repos="${COL_GREEN}$(echo $line | awk '{print $1}')"
 			version=$(echo $line | awk '{print $3}')
 			echo -ne "${repos} ${COL_BOLD}${package} ${NO_COLOR}${version}"
-			if isinstalledcached $package; then
+			if isinstalled $package; then
 				lversion=`pkgversion $package`
 				if [ "$lversion" = "$version" ];then
 					echo -ne " ${COL_INSTALLED}["$(eval_gettext 'installed')"]${NO_COLOR}"
@@ -1679,10 +1658,13 @@ case "$MAJOR" in
 			pacman_cmd="$PACMANBIN"
 		else
 			msg $(eval_gettext 'Sorry, because of a regression bug in pacman 3.1, you have to use sudo to allow pacman to be run as user\n(see http://bugs.archlinux.org/task/8905)')
-			exit 1
 		fi
-		packages=( `$pacman_cmd --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG \
-		| grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
+		LC_ALL=C $pacman_cmd --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
+		if [ $? -ne 0 ]; then
+			error $(eval_gettext 'problem during full system upgrade')
+			cat $YAOURTTMPDIR/sysupgrade | grep -v ':: Starting full system upgrade'
+		fi
+		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
 		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 		for package in ${packages[@]}; do

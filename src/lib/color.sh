@@ -24,7 +24,7 @@ fi
 COL_BOLD="\033[1m"
 COL_INVERT="\033[7m"
 COL_BLINK="\033[5m"
-COL_ITALIQUE="\033[0m"
+COL_ITALIQUE="\033[3m"
 NO_COLOR="\033[0m"
 
 # Color list

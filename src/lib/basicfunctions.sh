@@ -34,11 +34,17 @@ loadlibrary(){
 }
 
 # ask 
-userinput () 
+userinput() 
 { 
 	[ -z $1 ] && _key="YN" || _key=$1
-  read -en $NOENTER
-  echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'  | tr "$(eval_gettext $_key)" "$_key"
+	read -en $NOENTER
+	echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'  | tr "$(eval_gettext $_key)" "$_key"
+}
+
+_translateme()
+{
+	eval_gettext "YN"
+	eval_gettext "YAN"
 }
 
 yes_no ()

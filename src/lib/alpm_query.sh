@@ -51,7 +51,7 @@ done
 
 # searching for packages installed as dependecy from another packages, but not required anymore
 search_forgotten_orphans(){
-orphans=( `pacman -Qdt | awk '{print $1}'` )
+orphans=( `pacman -Qqdt` )
 if [ ${#orphans[@]} -eq 0 ]; then return 0; fi
 for orphan in ${orphans[@]}; do
       	echo -e "${COL_YELLOW}${orphan} ${NO_COLOR}$(eval_gettext 'was installed as dependencies but are no longer required by any installed package')"
@@ -126,3 +126,26 @@ list_installed_packages(){
 		echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${col1} ${COL_GREEN}${col2}"` 
 	done
 }
+
+findindependsfile(){
+	#usage:  findindependsfile <section> <package> <file>
+	local section=$1
+	local package=$2
+	local file=$3
+	local nextiscandidate=0
+	local filecontent=( `cat $file`)
+	for word in ${filecontent[@]};do
+		# parse the appropriate section only for word
+		if [ $(echo "$word" | grep "^%.*%$") ]; then
+			if [ "$word" = "$section" ]; then 
+				iscandidate=1
+			else
+				iscandidate=0
+			fi
+		elif [ $iscandidate -eq 1 -a "${word%%[<>=]*}" = "$package" ]; then
+			return 0
+		fi
+	done
+	return 1
+}
+

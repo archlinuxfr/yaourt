@@ -106,6 +106,14 @@ yaourt 0.9.1 (pending)
 - bug fixed when building a package with text in name (like per-text-kakaso)
 - new option ForceEnglish in yaourtrc
 - new option AutoSaveBackupFile in yaourtrc (required for automerge with yaourt -C)
+- yaourt -C is now able to automerge change from .pacnew if
+AutoSaveBackupFile is on 
 - fixed FS#110 yaourt -Sb don't refresh PKGBUILD if continue=on is set in
 wgetrc 
 - support for new svn repos.archlinux.org (for yaourt -Sb and -G)
+- Revert to old method: use pacman instead of greping /var/lib/pacman/ files
+for better compatiblity and speed
+- Show group in -Qs and -Ss
+- Show the package that cause problem when -Su fails
+- new option --holdver to avoid building last developement version for git/cvs/svn package
+- gettext support by Tuxce
