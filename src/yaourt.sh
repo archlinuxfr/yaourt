@@ -1067,7 +1067,7 @@ vote_package(){
 	else
 		echo
 		_pkg=$1
-		msg $(eval_gettext 'Checking for $_pkg''s vote status')
+		msg $(eval_gettext 'Checking vote status for $_pkg')
 		pkgvote=`aurvote --id --check "$1/$2"`
 		if [ "${pkgvote}" = "already voted" ]; then
 			_pkg=$1

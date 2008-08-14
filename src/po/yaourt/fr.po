@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-14 00:27+0100\n"
-"PO-Revision-Date: 2008-08-14 00:29+0100\n"
+"POT-Creation-Date: 2008-08-14 16:04+0100\n"
+"PO-Revision-Date: 2008-08-14 16:05+0100\n"
 "Last-Translator: Julien MISCHKOWITZ <wain@archlinux.fr>\n"
 "Language-Team: FRANCAIS <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1291,8 +1291,8 @@ msgstr ""
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1070
 #, sh-format
-msgid "Checking for $_pkgs vote status"
-msgstr "Vérification du vote pour $_pkgs"
+msgid "Checking vote status for $_pkg"
+msgstr "Vérification du vote pour $_pkg"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1074
 #, sh-format
@@ -1651,32 +1651,46 @@ msgstr "Entrer les n° (séparé par un espace, ou un interval) des paquets à i
 msgid "Example:   1 6 7 8 9   or   1 6-9"
 msgstr "Exemple:   1 2 3 4 ou 1 6-9"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:46
+# Yes, No
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:47
 #, sh-format
 msgid "YN"
 msgstr "ON"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:47
+# Yes, All, No
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:48
 #, sh-format
 msgid "YAN"
 msgstr "OTN"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:54
+# Yes, No, Abort
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:49
+#, sh-format
+msgid "YNA"
+msgstr "ONA"
+
+# Yes, No, View package, Check package with namcap
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:50
+#, sh-format
+msgid "YNVC"
+msgstr "ONAV"
+
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:57
 #, sh-format
 msgid "[Y/n]"
 msgstr "[O/n]"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:57
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:60
 #, sh-format
 msgid "[y/N]"
 msgstr "[o/N]"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:60
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:63
 #, sh-format
 msgid "[y/n]"
 msgstr "[o/n]"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:249
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:252
 #, sh-format
 msgid "no recognized in config file"
 msgstr "non reconnu dans le fichier de configuration"
@@ -2018,8 +2032,4 @@ msgstr "Liste les paquetages installés"
 #, fuzzy
 #~ msgid "Unable to read $PKGs PKGBUILD"
 #~ msgstr "Impossible de lire le PKGBUILD de $PKG"
-#~ msgid "YNVC"
-#~ msgstr "ONAV"
-#~ msgid "YNA"
-#~ msgstr "ONA"
 

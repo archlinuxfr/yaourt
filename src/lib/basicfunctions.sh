@@ -41,10 +41,13 @@ userinput()
 	echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'  | tr "$(eval_gettext $_key)" "$_key"
 }
 
-_translateme()
+_translate_me()
 {
-	eval_gettext "YN"
-	eval_gettext "YAN"
+	# Used to detect string with poedit
+	eval_gettext "YN"  # Yes, No
+	eval_gettext "YAN" # Yes, All, No
+	eval_gettext "YNA" # Yes, No, Abort
+	eval_gettext "YNVC" # Yes, No, View package, Check package with namcap
 }
 
 yes_no ()
