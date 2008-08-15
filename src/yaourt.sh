@@ -1658,6 +1658,7 @@ case "$MAJOR" in
 			pacman_cmd="$PACMANBIN"
 		else
 			msg $(eval_gettext 'Sorry, because of a regression bug in pacman 3.1, you have to use sudo to allow pacman to be run as user\n(see http://bugs.archlinux.org/task/8905)')
+			die 1
 		fi
 		LC_ALL=C $pacman_cmd --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
 		if [ $? -ne 0 ]; then

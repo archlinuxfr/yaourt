@@ -130,7 +130,7 @@ backupfiles(){
 					if [ "$pacnewfilemd5" = "$backupfilemd5" ]; then
 						#echo "-*- creation du dossier $savedir/$package/$backupfiledir"
 						mkdir -p "$savedir/$pkgname/$package/$backupfiledir"
-			        		echo "  -> copie de $currentfile"
+						echo "  -> $(eval_gettext 'saving $currentfile')"
 						cp -a "$currentfile" "$savedir/$pkgname/$package/$backupfilepath" || return 1
 						break
 					fi
