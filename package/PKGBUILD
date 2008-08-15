@@ -1,12 +1,13 @@
 # Author: Julien MISCHKOWITZ <wain@archlinux.fr>
-pkgname=yaourt
-pkgver=0.9.1
+pkgname=yaourt-git
+pkgver=$(date +%Y%m%d_%H%M)
 pkgrel=1
 pkgdesc="yaourt test release" 
 arch=(i686 x86_64 ppc)
 url="http://www.archlinux.fr/yaourt-en/" 
 license="GPL" 
 depends=('wget' 'diffutils' 'pacman>=3.1.0') 
+provides=('yaourt')
 install=yaourt.install
 backup=('etc/yaourtrc')
 source=('yaourtrc-0.9-1' 'yaourtrc-0.9.1-1')

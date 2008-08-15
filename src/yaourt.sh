@@ -281,12 +281,12 @@ sourceforge_mirror_hack(){
 	if [ -z "$sfmirror" -a $NOCONFIRM -eq 0 ]; then
 		plain $(eval_gettext 'Please choose a specific mirror:')
 		plain $(eval_gettext '>  TIPS: You can define the mirror by adding this line in yaourtrc')
-		plain $(eval_gettext '>        SourceforgeMirror belnet')
+		plain '>        SourceforgeMirror belnet'
 		plain $(eval_gettext '>  (replace belnet with the name of your favorite sourceforge mirror)')
 		echo
 		list "1.surfnet(NL) 2.ufpr(BR) 3.heanet(IE) 4.easynews(US) 5.umn(US) 6.switch(CH) 7.belnet(BE) 8.kent(UK)"
 		list "9.mesh(DE) 10.optusnet(AU) 11.jaist(JP) 12.puzzle(CH) 13.superb-east(US) 14.nchc(TW) 15.superb-west(US)"
-		prompt $(eval_gettext 'Enter the number corresponding tor the mirror or the mirror''s name or press Enter to use automatic redirect (much slower)')
+		prompt $(eval_gettext 'Enter the number corresponding to the mirror or the mirror''s name or press Enter to use automatic redirect (slower)')
 		read -e mirror_reply
 		mirror=( none surfnet ufpr heanet easynews umn switch belnet kent mesh optusnet jaist puzzle superb-east nchc superb-west )
 		if [ -z "${mirror_reply}" ]; then
@@ -392,7 +392,7 @@ usage(){
 	echo "$(eval_gettext ' --lightbg                         change colors for terminal with light background')"
 	echo "$(eval_gettext ' --nocolor                         don''t use any color')"
 	echo "$(eval_gettext ' --textonly                        good for scripting yaourt''s output')"
-	echo "$(eval_gettext ' --stats                           display various statistics of installed pacakges')"
+	echo "$(eval_gettext ' --stats                           display various statistics of installed packages')"
 	echo
 	echo "$(eval_gettext 'Install:')"
 	echo "$(eval_gettext ' (-S, --sync)     <package>      * download package from repository, and fallback on aur')"
@@ -472,7 +472,7 @@ usage(){
 	echo
 	echo
 	echo "$(eval_gettext 'Runing yaourt as a non-privileged user requiers some entries in sudoers file:')"
-	echo "$(eval_gettext '  - pacman (remove package + refresh database + install AUR''s package)')"
+	echo "$(eval_gettext '  - pacman (remove package + refresh database + install package from AUR package)')"
 	echo "$(eval_gettext '  - pacdiffviewer (manage pacsave/pacnew files)')"
 	echo "______________________________________"
 	echo "$(eval_gettext 'written by Julien MISCHKOWITZ <wain@archlinux.fr>')"
@@ -811,7 +811,12 @@ manage_error(){
 launch_with_su(){
 	# try to launch $1 with sudo, else prompt for root password
 	#msg "try to launch '${@}' with sudo"
-	command=`echo $@ | awk '{print $1}'`
+	if [ "`echo $* | awk '{print $1}'`" = "LC_ALL=C" ]; then
+		command=`echo $* | awk '{print $2}'`
+	else
+		command=`echo $* | awk '{print $1}'`
+	fi
+
 	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(${command}\ *$\|ALL\)" 1>/dev/null; then
 		#echo "Allowed to use sudo $command"
 		sudo $@ || return 1
@@ -819,7 +824,7 @@ launch_with_su(){
 		UID_ROOT=0
 		if [ "$UID" -ne "$UID_ROOT" ]
 		then
-			echo -e $(eval_gettext 'You''re not allowed to launch $command with sudo\nPlease enter root password')
+			echo -e $(eval_gettext 'You are not allowed to launch $command with sudo\nPlease enter root password')
 		fi
 		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
 		errorfile="/tmp/yaourt_error.$RANDOM"
@@ -1193,7 +1198,7 @@ install_from_aur(){
 	fi
 
 	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)
+		prompt $(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)
 		if [ "`userinput`" = "N" ]; then
 			return 0
 		fi
@@ -1509,7 +1514,7 @@ case "$MAJOR" in
 	elif [ $LIST -eq 1 ];then
 		#Searching all packages in repos
 		title $(eval_gettext 'listing all packages in repos')
-		msg $(eval_gettext 'Listing all REPOS''s packages')
+		msg $(eval_gettext 'Listing all packages in repos')
 		eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
 		while read line; do
 			package=$(echo $line | awk '{print $2}')
@@ -1653,14 +1658,12 @@ case "$MAJOR" in
 		# Searching for packages to update, buid from sources if necessary
 		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
 		if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
-			pacman_cmd="sudo $PACMANBIN"
+			LC_ALL=C sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
 		elif [ "$UID" -eq 0 ]; then
-			pacman_cmd="$PACMANBIN"
+			LC_ALL=C $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
 		else
-			msg $(eval_gettext 'Sorry, because of a regression bug in pacman 3.1, you have to use sudo to allow pacman to be run as user\n(see http://bugs.archlinux.org/task/8905)')
-			die 1
+			launch_with_su "LC_ALL=C $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade"
 		fi
-		LC_ALL=C $pacman_cmd --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
 		if [ $? -ne 0 ]; then
 			error $(eval_gettext 'problem during full system upgrade')
 			cat $YAOURTTMPDIR/sysupgrade | grep -v ':: Starting full system upgrade'
