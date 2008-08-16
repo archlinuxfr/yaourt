@@ -811,11 +811,7 @@ manage_error(){
 launch_with_su(){
 	# try to launch $1 with sudo, else prompt for root password
 	#msg "try to launch '${@}' with sudo"
-	if [ "`echo $* | awk '{print $1}'`" = "LC_ALL=C" ]; then
-		command=`echo $* | awk '{print $2}'`
-	else
-		command=`echo $* | awk '{print $1}'`
-	fi
+	command=`echo $* | awk '{print $1}'`
 
 	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(${command}\ *$\|ALL\)" 1>/dev/null; then
 		#echo "Allowed to use sudo $command"
@@ -1658,15 +1654,14 @@ case "$MAJOR" in
 		# Searching for packages to update, buid from sources if necessary
 		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
 		if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
-			LC_ALL=C sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
+			sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
 		elif [ "$UID" -eq 0 ]; then
-			LC_ALL=C $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade
+			$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade
 		else
-			launch_with_su "LC_ALL=C $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG &> $YAOURTTMPDIR/sysupgrade"
+			launch_with_su "$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade"
 		fi
 		if [ $? -ne 0 ]; then
-			error $(eval_gettext 'problem during full system upgrade')
-			cat $YAOURTTMPDIR/sysupgrade | grep -v ':: Starting full system upgrade'
+			cat $YAOURTTMPDIR/sysupgrade
 		fi
 		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
 		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
