@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-16 17:10+0100\n"
-"PO-Revision-Date: 2008-08-16 17:11+0100\n"
+"POT-Creation-Date: 2008-08-17 14:10+0100\n"
+"PO-Revision-Date: 2008-08-17 14:10+0100\n"
 "Last-Translator: Julien MISCHKOWITZ <wain@archlinux.fr>\n"
 "Language-Team: FRANCAIS <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1405,7 +1405,7 @@ msgid "Dependencies have been installed before the failure"
 msgstr "Des dépendances ont été installées avant l'échec"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1215
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1823
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1849
 #, sh-format
 msgid "press a key to continue"
 msgstr "appuyer sur une touche pour continuer"
@@ -1569,7 +1569,7 @@ msgid "Listing all packages in repos"
 msgstr "liste tous les paquetages du dépôt"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1590
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1797
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1824
 #, sh-format
 msgid "unable to contact AUR"
 msgstr "impossible de contacter le site AUR"
@@ -1626,15 +1626,10 @@ msgstr "Les paquetages suivant n'ont pas été installés"
 msgid "Query backup database"
 msgstr "Recherche dans la base de sauvegarde"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1802
-#, sh-format
-msgid "Enter n° (separated by blanks, or a range) of packages to be installed\\n"
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1829
+#, fuzzy, sh-format
+msgid "Enter n° (separated by blanks, or a range) of packages to be installed"
 msgstr "Entrer les n° (séparés par un espace, ou une intervalle) des paquetages à installer "
-
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1803
-#, sh-format
-msgid "Example:   1 6 7 8 9   or   1 6-9"
-msgstr "Exemple:   1 2 3 4 ou 1 6-9"
 
 # Yes, No
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/basicfunctions.sh:47
@@ -2019,6 +2014,8 @@ msgstr "Liste les paquetages installés appartenant à un groupe"
 msgid "List all installed packages"
 msgstr "Liste tous les paquetages installés"
 
+#~ msgid "Example:   1 6 7 8 9   or   1 6-9"
+#~ msgstr "Exemple:   1 2 3 4 ou 1 6-9"
 #~ msgid "problem during full system upgrade"
 #~ msgstr "problème durant la mise à jour du système"
 #~ msgid ">        SourceforgeMirror belnet"

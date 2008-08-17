@@ -1250,7 +1250,7 @@ install_from_aur(){
 }
 search_on_aur(){
 	#msg "Search for $1 on AUR"
-	_pkg=$1
+	_pkg=`echo $1 | sed 's/ AND / /'`
 	title $(eval_gettext 'searching for $_pkg on AUR')
 	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
 	wget -q "${AUR_URL}${1}" -O - | grep -A 2 "<a href='/packages.php?ID=" \
@@ -1309,7 +1309,7 @@ upgrade_from_aur(){
 			echo -e " (${COL_RED}local=$local_version ${NO_COLOR}aur=$aur_version)"
 		else
 			if [ `parsejsoninfo "OutOfDate"` -eq 1 ]; then
-				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flaged as out of date')"${NO_COLOR}"
+				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flaged as out of date')")${NO_COLOR}"
 			else
 				echo $(eval_gettext 'up to date ')
 			fi
@@ -1765,19 +1765,19 @@ case "$MAJOR" in
 	mkdir -p $tmp_files || die 1
 	searchfile=$tmp_files/interactivesearch.$$>$searchfile || die 1
 	i=1
-	lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
-	regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
-	packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
-	for packagefile in ${packagefiles[@]}; do
-		# hack to exclude wrong result like name/version, email etc..
-		if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
+	#####
+	eval $PACMANBIN --sync --search ${args[*]} | sed 's/^ /_DESCRIPTIONline_/' |
+	while read line; do
+		if echo "$line" | grep -q "^_DESCRIPTIONline_"; then
+			echo -e "$COL_ITALIQUE$line$NO_COLOR" | sed 's/_DESCRIPTIONline_/  /'
 			continue
 		fi
-		package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
-		repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
-		version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
+		package=`echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///'`
+		repository=`echo $line| sed 's/\/.*//'`
+		version=`echo $line | awk '{print $2}'`
+		group=`echo $line | sed -e 's/^[^(]*//'`
+		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
 		echo "${repository}/${package}" >> $searchfile
-		line="${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
 		if isinstalled $package; then
 			lversion=`pkgversion $package`
 			if [ "$lversion" = "$version" ];then
@@ -1786,11 +1786,38 @@ case "$MAJOR" in
 				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
 			fi
 		fi
-		echo -e "${COL_NUMBER}${i}${NO_COLOR} `colorizeoutputline $line${NO_COLOR}`"
+		echo -e "${COL_NUMBER}${i}${NO_COLOR} $line$NO_COLOR $COL_GROUP$group$NO_COLOR"
 		(( i ++ ))
-		#show description
-		echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
 	done
+
+	########################################################
+	#lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
+	#regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
+	#packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
+	#for packagefile in ${packagefiles[@]}; do
+		# hack to exclude wrong result like name/version, email etc..
+	#	if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
+	#		continue
+	#	fi
+	#	package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
+	#	repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
+	#	version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
+	#	echo "${repository}/${package}" >> $searchfile
+	#	line="${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
+	#	if isinstalled $package; then
+	#		lversion=`pkgversion $package`
+	#		if [ "$lversion" = "$version" ];then
+	#			line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+	#		else
+	#			line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+	#		fi
+	#	fi
+	#	echo -e "${COL_NUMBER}${i}${NO_COLOR} `colorizeoutputline $line${NO_COLOR}`"
+	#	(( i ++ ))
+		#show description
+	#	echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
+	#done
+	#####################################################
 	cleanoutput
 	if [ $AURSEARCH -eq 1 ]; then
 		#msg "Search on AUR"
@@ -1799,8 +1826,7 @@ case "$MAJOR" in
 	if [ ! -s "$searchfile" ]; then
 		die 0	
 	fi
-	prompt $(eval_gettext 'Enter n° (separated by blanks, or a range) of packages to be installed\n')
-	prompt $(eval_gettext 'Example:   ''1 6 7 8 9''   or   ''1 6-9''')
+	prompt $(eval_gettext 'Enter n° (separated by blanks, or a range) of packages to be installed')
 	read -ea packagesnum
 	if [ ${#packagesnum[@]} -eq 0 ]; then die 0; fi
 	for line in ${packagesnum[@]}; do
