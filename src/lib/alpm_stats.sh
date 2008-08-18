@@ -44,7 +44,7 @@ buildpackagelist()
 
 showpackagestats(){
 	echo -e "${COL_BLUE} -------------------------------------------${NO_COLOR}"	
-	echo -e "${COL_BLUE}|$NO_COLOR    $(eval_gettext 'Archlinux Core Dump')   $COL_GREEN($NAME $VERSION)$COL_BLUE |${NO_COLOR}"	
+	echo -e "${COL_BLUE}|$NO_COLOR    $(eval_gettext 'Archlinux Core Dump')    $COL_GREEN($NAME $VERSION)$COL_BLUE  |${NO_COLOR}"	
 	echo -e "${COL_BLUE} -------------------------------------------${NO_COLOR}\n"	
 	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
 	echo -e "${COL_GREEN}$(eval_gettext 'Total installed packages:')  ${COL_YELLOW}`pacman -Q | wc -l`"	

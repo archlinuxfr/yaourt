@@ -14,6 +14,7 @@ source=('yaourtrc-0.9-1' 'yaourtrc-0.9.1-1')
 
 build() { 
 	cp -r ../../src/ $srcdir/yaourt/
+	cp ../../src/ChangeLog $startdir/
 	cd $srcdir/yaourt/
 	make install DESTDIR=$pkgdir || return 1
 

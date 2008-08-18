@@ -28,7 +28,7 @@ export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 NAME="yaourt"
-VERSION="0.9.01"
+VERSION="0.9.1"
 AUR_URL="http://aur.archlinux.org/packages.php?setlang=en&do_Search=SeB=nd&L=2&C=0&PP=100&K="
 AUR_URL3="http://aur.archlinux.org/packages.php?setlang=en&ID="
 ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
