@@ -107,10 +107,6 @@ list_installed_packages(){
 	elif [ $GROUP -eq 1 ]; then
 		title $(eval_gettext 'List all installed packages members of a group')
 		msg $(eval_gettext 'List all installed packages members of a group')
-	elif [ $DATE -eq 1 ]; then
-		msg $(eval_gettext 'List last installed packages ')
-		title $(eval_gettext 'List last installed packages')
-		> $YAOURTTMPDIR/instdate
 	else
 		msg $(eval_gettext 'List all installed packages')
 		title $(eval_gettext 'List all installed packages')
@@ -127,21 +123,8 @@ list_installed_packages(){
 		local col1=$(echo $line | awk '{print $'$colpkg'}')
 		local col2=$(echo $line | awk '{print $'$colsecond'}')
 		local repository=`sourcerepository $col1`
-		if [ $DATE -eq 1 ]; then
-			installdate=`LC_ALL=C pacman -Qi $col1 | grep "^Install Date"| awk -F " : " '{print $2}'`
-			echo -e "`date --date "$installdate" +%s` `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${col1} ${COL_GREEN}${col2}$NO_COLOR"`" >> $YAOURTTMPDIR/instdate 
-		else
-			echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${col1} ${COL_GREEN}${col2}$NO_COLOR"` 
-		fi
+		echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${col1} ${COL_GREEN}${col2}"` 
 	done
-	if [ $DATE -eq 1 ]; then
-		cat $YAOURTTMPDIR/instdate | sort |
-		awk '
-		{
-			printf("%s: %s %s\n",
-			strftime("%X %x",$1), $2, $3)
-		}'
-	fi
 }
 
 findindependsfile(){
