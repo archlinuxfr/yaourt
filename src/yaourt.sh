@@ -443,6 +443,7 @@ usage(){
 	echo "$(eval_gettext ' Example: you want to reinstall archlinux with the same packages as your backup pacman-2008-02-22_10h12.tar.bz2')"
 	echo "$(eval_gettext '  just run yaourt -Qet --backupfile pacman-2008-02-22_10h12.tar.bz2 > TopLevelPackages.txt')"
 	echo "$(eval_gettext '  To reinstall later, just run yaourt -S TopLevelPackages.txt')"
+	echo "$(eval_gettext ' (-Q) --date                  * list last installed packages, ordered by install date')"
 	echo
 	echo "$(eval_gettext 'Remote search:')"
 	echo "$(eval_gettext ' (-S, --sync)  -s [string]    * search remote repositories and AUR for matching strings')"
@@ -507,11 +508,10 @@ title(){
 }
 die(){
 	# reset term title
-	if [ $TERMINALTITLE -eq 0 -o -z "$DISPLAY" ]; then
-		exit $1
-	fi
-	echo -n -e "\033]0;$TERM\007"
 	tput sgr0
+	if [ $TERMINALTITLE -eq 1 -o ! -z "$DISPLAY" ]; then
+		echo -n -e "\033]0;$TERM\007"
+	fi
 	exit $1
 }
 parameters(){
@@ -537,6 +537,7 @@ parameters(){
 	CLEAN=0
 	LIST=0
 	CLEANDATABASE=0
+	DATE=0
 	UNREQUIRED=0
 	CHANGELOG=0
 	FOREIGN=0
@@ -705,6 +706,7 @@ parameters(){
 			warning $(eval_gettext '--svn is obsolete. Please use --devel instead');;
 			--devel) DEVEL=1;;
 			--database) CLEANDATABASE=1;;
+			--date) DATE=1;;
 			--depends) QUERYTYPE="%DEPENDS%";;
 			--conflicts) QUERYTYPE="%CONFLICTS%";;
 			--provides) QUERYTYPE="%PROVIDES%";;
@@ -859,6 +861,12 @@ isavailable(){
 	fi
 	for pkgavailable in ${allpkgavailable[@]};do
 		if [ "$1" = "$pkgavailable" ]; then return 0; else continue; fi
+	done
+	if [ ${#allgroupavailable[@]} -eq 0 ]; then
+		allgroupavailable=( `pacman -Sg` )
+	fi
+	for groupavailable in ${allgroupavailable[@]};do
+		if [ "$1" = "$groupavailable" ]; then return 0; else continue; fi
 	done
 	return 1
 }
@@ -1624,8 +1632,7 @@ case "$MAJOR" in
 		# Install from arguments
 		prepare_orphan_list
 		for arg in ${args[@]}; do
-			repository=`sourcerepository ${arg#*/}`
-			if [ "$repository" != "local" -a $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
+			if `isavailable ${arg#*/}` && [ $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
 				repos_package[${#repos_package[@]}]=${arg}
 			else
 				install_from_aur "${arg#aur/}" || failed=1
@@ -1649,7 +1656,6 @@ case "$MAJOR" in
 				echo $(eval_gettext 'No package to downgrade')
 			fi
 			die $?
-			exit
 		fi
 		# Searching for packages to update, buid from sources if necessary
 		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
@@ -1665,6 +1671,7 @@ case "$MAJOR" in
 		fi
 		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
 		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
+
 		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 		for package in ${packages[@]}; do
 			case $package in 
