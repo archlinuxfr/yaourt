@@ -537,6 +537,7 @@ parameters(){
 	CLEAN=0
 	LIST=0
 	CLEANDATABASE=0
+	DATE=0
 	UNREQUIRED=0
 	CHANGELOG=0
 	FOREIGN=0
@@ -705,6 +706,7 @@ parameters(){
 			warning $(eval_gettext '--svn is obsolete. Please use --devel instead');;
 			--devel) DEVEL=1;;
 			--database) CLEANDATABASE=1;;
+			--date) DATE=1;;
 			--depends) QUERYTYPE="%DEPENDS%";;
 			--conflicts) QUERYTYPE="%CONFLICTS%";;
 			--provides) QUERYTYPE="%PROVIDES%";;
@@ -1665,6 +1667,9 @@ case "$MAJOR" in
 		fi
 		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
 		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
+		pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[0-9]*/ &/"`)
+		
+		exit
 		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 		for package in ${packages[@]}; do
 			case $package in 
