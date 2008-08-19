@@ -276,6 +276,7 @@ _yaourt ()
           -t --unrequired \
           -u --upgrades \
           --config \
+          --date \
           --logfile \
           --noconfirm \
           --noprogressbar \
