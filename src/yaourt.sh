@@ -28,7 +28,7 @@ export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 NAME="yaourt"
-VERSION="0.9.01"
+VERSION="0.9.1"
 AUR_URL="http://aur.archlinux.org/packages.php?setlang=en&do_Search=SeB=nd&L=2&C=0&PP=100&K="
 AUR_URL3="http://aur.archlinux.org/packages.php?setlang=en&ID="
 ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
@@ -507,11 +507,10 @@ title(){
 }
 die(){
 	# reset term title
-	if [ $TERMINALTITLE -eq 0 -o -z "$DISPLAY" ]; then
-		exit $1
-	fi
-	echo -n -e "\033]0;$TERM\007"
 	tput sgr0
+	if [ $TERMINALTITLE -eq 1 -o ! -z "$DISPLAY" ]; then
+		echo -n -e "\033]0;$TERM\007"
+	fi
 	exit $1
 }
 parameters(){
@@ -874,7 +873,7 @@ isprovided(){
 pkgversion(){
 	# searching for version of the given package
 	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
-	pacman -Q $1 | awk '{print $2}'
+	pacman -Q $1 | awk '{print $2}' 2>/dev/null
 }
 sourcerepository(){
 	# find the repository where the given package came from
@@ -1651,7 +1650,6 @@ case "$MAJOR" in
 				echo $(eval_gettext 'No package to downgrade')
 			fi
 			die $?
-			exit
 		fi
 		# Searching for packages to update, buid from sources if necessary
 		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
@@ -1667,7 +1665,17 @@ case "$MAJOR" in
 		fi
 		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
 		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
-		pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[0-9]*/ &/"`)
+		pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[0-9]*/##&/" | sort`)
+		for pkg in ${pkg_name_ver[@]}; do
+			pkgname=`echo $pkg| awk -F '##-' '{print $1}'`
+			rversion=`echo $pkg| awk -F '##-' '{print $2}'`
+			if `isinstalled $pkgname`; then
+				lversion=`pkgversion $pkgname`
+				echo "name=$pkgname, $lversion -> $rversion"
+			else
+				echo "Nouveau pkg: name=$pkgname-$rversion"
+			fi
+		done
 		
 		exit
 		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
