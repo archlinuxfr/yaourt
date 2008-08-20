@@ -443,6 +443,7 @@ usage(){
 	echo "$(eval_gettext ' Example: you want to reinstall archlinux with the same packages as your backup pacman-2008-02-22_10h12.tar.bz2')"
 	echo "$(eval_gettext '  just run yaourt -Qet --backupfile pacman-2008-02-22_10h12.tar.bz2 > TopLevelPackages.txt')"
 	echo "$(eval_gettext '  To reinstall later, just run yaourt -S TopLevelPackages.txt')"
+	echo "$(eval_gettext ' (-Q) --date                  * list last installed packages, ordered by install date')"
 	echo
 	echo "$(eval_gettext 'Remote search:')"
 	echo "$(eval_gettext ' (-S, --sync)  -s [string]    * search remote repositories and AUR for matching strings')"
@@ -860,6 +861,12 @@ isavailable(){
 	fi
 	for pkgavailable in ${allpkgavailable[@]};do
 		if [ "$1" = "$pkgavailable" ]; then return 0; else continue; fi
+	done
+	if [ ${#allgroupavailable[@]} -eq 0 ]; then
+		allgroupavailable=( `pacman -Sg` )
+	fi
+	for groupavailable in ${allgroupavailable[@]};do
+		if [ "$1" = "$groupavailable" ]; then return 0; else continue; fi
 	done
 	return 1
 }
@@ -1625,8 +1632,7 @@ case "$MAJOR" in
 		# Install from arguments
 		prepare_orphan_list
 		for arg in ${args[@]}; do
-			repository=`sourcerepository ${arg#*/}`
-			if [ "$repository" != "local" -a $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
+			if `isavailable ${arg#*/}` && [ $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
 				repos_package[${#repos_package[@]}]=${arg}
 			else
 				install_from_aur "${arg#aur/}" || failed=1
