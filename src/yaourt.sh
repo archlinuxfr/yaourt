@@ -1278,10 +1278,12 @@ search_on_aur(){
 			else
 				line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
 			fi
-			[ "$MAJOR" = "interactivesearch" ] && line="${COL_NUMBER}${i}${NO_COLOR} $line"
+			if [ "$MAJOR" = "interactivesearch" ]; then
+				line="${COL_NUMBER}${i}${NO_COLOR} $line"
+				echo "aur/${package}" >> $searchfile 
+				(( i ++ ))
+			fi
 			echo -e "$line${NO_COLOR}"
-			[ "$MAJOR" = "interactivesearch" ] && echo "aur/${package}" >> $searchfile 
-			[ "$MAJOR" = "interactivesearch" ] && (( i ++ ))
 		else
 			echo -e "    ${COL_ITALIQUE}$line${NO_COLOR}"
 		fi
@@ -1671,19 +1673,73 @@ case "$MAJOR" in
 		fi
 		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
 		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
-		pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[0-9]*/##&/" | sort`)
+		#pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[0-9]*/##&/" | sort`)
+		pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
 		for pkg in ${pkg_name_ver[@]}; do
 			pkgname=`echo $pkg| awk -F '##-' '{print $1}'`
 			rversion=`echo $pkg| awk -F '##-' '{print $2}'`
+			repository=`sourcerepository $pkgname`
 			if `isinstalled $pkgname`; then
 				lversion=`pkgversion $pkgname`
-				echo "name=$pkgname, $lversion -> $rversion"
+				lrel=${lversion#*-}
+				rrel=${rversion#*-}
+				lver=${lversion%-*}
+				rver=${rversion%-*}
+				if [ "$rver" = "$lver" -a $rrel -gt $lrel ]; then
+					# new release not a new version
+					newrelease[${#newrelease[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR"##$COL_GREEN$rver$NO_COLOR##$COL_BOLD$lrel$NO_COLOR##$COL_RED$rrel$NO_COLOR"
+				else
+					# new version
+					newversion[${#newversion[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR"##$COL_GREEN$lversion$NO_COLOR##$COL_RED$rversion$NO_COLOR"
+				fi
+
 			else
-				echo "Nouveau pkg: name=$pkgname-$rversion"
+				newpkg[${#newpkg[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"##$COL_GREEN$rversion$NO_COLOR"
 			fi
 		done
+
+		# show new release
+		if [ ${#newrelease[@]} -gt 0 ]; then
+			msg $(eval_gettext 'Package upgrade only (new release):')
+			for line in ${newrelease[@]}; do
+				echo -e $line | awk -F '##' '{print $1" version "$2" release "$3" -> "$4}'
+			done
+			echo
+		fi
+
+		# show new version
+		if [ ${#newversion[@]} -gt 0 ]; then
+			msg $(eval_gettext 'Software upgrade (new version) :')
+			for line in ${newversion[@]}; do
+				echo -e $line | awk -F '##' '{print $1" "$2" -> "$3}'
+			done
+			echo
+		fi
+
 		
-		exit
+		# show new package
+		if [ ${#newpkg[@]} -gt 0 ]; then
+			msg $(eval_gettext 'New package :')
+			for line in ${newpkg[@]}; do
+				echo -e $line | awk -F '##' '{print $1" "$2}'
+			done
+			echo
+		fi
+		
+		# Show detail on upgrades
+		if [ ${#packages[@]} -gt 0 ]; then
+			prompt $(eval_gettext 'Continue install ? Yes/No [v]iew package detail ')
+			read
+			#CONTINUE_INSTALLING=$(userinput "YNVC")
+			#echo
+			#if [ "$CONTINUE_INSTALLING" = "V" ]; then
+		#			eval $YAOURTCOMMAND -Q  
+		#	fi
+
+		fi
+
+		#LC_ALL=C pacman -Si `echo $line`pacman | grep "^Description" | awk -F 'Description    : ' '{print $2}'
+
 		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 		for package in ${packages[@]}; do
 			case $package in 
