@@ -25,26 +25,18 @@ SED = /bin/sed
 DESTDIR =
 bindir = /usr/bin
 libdir = /usr/lib/yaourt
-man5dir = /usr/man/man5
-man8dir = /usr/man/man8
 sysconfdir = /etc
 completiondir = ${sysconfdir}/bash_completion.d
 localedir = /usr/share/locale
 
 PROGRAMS = yaourt pacdiffviewer
 install: 
-	${GZIP} -c yaourt.8 > yaourt.8.gz
-	${GZIP} -c yaourtrc.5 > yaourtrc.5.gz
 	$(INSTALL) -d $(DESTDIR)$(bindir)
 	$(INSTALL) -d $(DESTDIR)$(libdir)
-	$(INSTALL) -d $(DESTDIR)$(man8dir)
-	$(INSTALL) -d $(DESTDIR)$(man5dir)
 	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -d $(DESTDIR)$(completiondir)
 	$(INSTALL) -m755 yaourt.sh $(DESTDIR)$(bindir)/yaourt
 	$(INSTALL) -m755 pacdiffviewer.sh $(DESTDIR)$(bindir)/pacdiffviewer
-	$(INSTALL) -m644 yaourt.8.gz $(DESTDIR)$(man8dir)
-	$(INSTALL) -m644 yaourtrc.5.gz $(DESTDIR)$(man5dir)
 	$(INSTALL) -m644 yaourtrc $(DESTDIR)$(sysconfdir)/yaourtrc
 	$(INSTALL) -m644 lib/alpm_backup.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/alpm_query.sh $(DESTDIR)$(libdir)
@@ -63,5 +55,8 @@ install:
 	  $(INSTALL) -d $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
 	  $(MSGFMT) -o $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES/$$package.mo $$file; \
 	done
+	# Install Man Page
+	cd man/ ; \
+	make install ; \
 
 .PHONY: install
