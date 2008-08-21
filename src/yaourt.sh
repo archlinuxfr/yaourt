@@ -1700,34 +1700,35 @@ case "$MAJOR" in
 
 		# show new release
 		if [ ${#newrelease[@]} -gt 0 ]; then
+			echo
 			msg $(eval_gettext 'Package upgrade only (new release):')
 			for line in ${newrelease[@]}; do
 				echo -e $line | awk -F '##' '{print $1" version "$2" release "$3" -> "$4}'
 			done
-			echo
 		fi
 
 		# show new version
 		if [ ${#newversion[@]} -gt 0 ]; then
+			echo
 			msg $(eval_gettext 'Software upgrade (new version) :')
 			for line in ${newversion[@]}; do
 				echo -e $line | awk -F '##' '{print $1" "$2" -> "$3}'
 			done
-			echo
 		fi
 
 		
 		# show new package
 		if [ ${#newpkg[@]} -gt 0 ]; then
+			echo
 			msg $(eval_gettext 'New package :')
 			for line in ${newpkg[@]}; do
 				echo -e $line | awk -F '##' '{print $1" "$2}'
 			done
-			echo
 		fi
 		
 		# Show detail on upgrades
 		if [ ${#packages[@]} -gt 0 ]; then
+			echo
 			prompt $(eval_gettext 'Continue install ? Yes/No [v]iew package detail ')
 			read
 			#CONTINUE_INSTALLING=$(userinput "YNVC")
