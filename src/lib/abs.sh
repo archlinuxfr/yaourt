@@ -228,7 +228,7 @@ sysupgrade()
 	if [ $? -ne 0 ]; then
 		cat $YAOURTTMPDIR/sysupgrade
 	fi
-	packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
+	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//" \
 	-e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
 
@@ -256,11 +256,11 @@ sysupgrade()
 
 
 	### classify pkg to upgrade filtered by category "new release", "new version", "new pkg"
-	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | awk -F '/' '{print $(NF-3)"##"$NF}' | sed -e "s/-[^-]*.pkg.tar.gz$//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
+	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/-i686.pkg.tar.gz$//" -e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
 	for pkg in ${pkg_repository_name_ver[@]}; do
-		repository=`echo $pkg| awk -F '##' '{print $1}'`
-		pkgname=`echo $pkg| awk -F '##' '{print $2}'`
-		rversion=`echo $pkg| awk -F '##' '{print $3}' | sed 's/^-//'`
+		pkgname=`echo $pkg| awk -F '##' '{print $1}'`
+		repository=`sourcerepository $pkgname`
+		rversion=`echo $pkg| awk -F '##' '{print $2}' | sed 's/^-//'`
 		if `isinstalled $pkgname`; then
 			lversion=`pkgversion $pkgname`
 			lrel=${lversion#*-}
@@ -269,7 +269,6 @@ sysupgrade()
 			rver=${rversion%-*}
 			if [ "$rver" = "$lver" -a $rrel -gt $lrel ]; then
 				# new release not a new version
-				#newrelease[${#newrelease[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR"##$COL_GREEN$rver$NO_COLOR##$COL_BOLD$lrel$NO_COLOR##$COL_RED$rrel$NO_COLOR"
 				newrelease[${#newrelease[@]}]="$repository##$pkgname##$rver##$lrel##$rrel"
 			else
 			        # new version
@@ -281,7 +280,26 @@ sysupgrade()
 		fi
 	done
 
-showupgradepackage lite
+	showupgradepackage lite
+        
+	# Show detail on upgrades
+	if [ ${#packages[@]} -gt 0 ]; then                                                                                                           
+		if [ $NOCONFIRM -eq 0 ]; then
+			CONTINUE_INSTALLING="V"
+			while [ "$CONTINUE_INSTALLING" = "V" -o "$CONTINUE_INSTALLING" = "C" ]; do
+				echo
+				echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}"$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)"${NO_COLOR}" >&2
+				prompt $(eval_gettext '[v]iew package detail   [c]heck depends')
+				CONTINUE_INSTALLING=$(userinput "YNVC")
+				echo
+				if [ "$CONTINUE_INSTALLING" = "V" ]; then
+					showupgradepackage full
+				elif [ "$CONTINUE_INSTALLING" = "C" ]; then
+					echo "Not implemented"
+				fi
+			done
+		fi
+	fi  
 }
 
 ## show package to upgrade
@@ -292,6 +310,7 @@ showupgradepackage()
 	# show new release
 	if [ ${#newrelease[@]} -gt 0 ]; then
 		echo
+		declare newrelease=`echo -e ${newrelease[*]} | tr ' ' '\n' | sort`
 		msg $(eval_gettext 'Package upgrade only (new release):')
 		for line in ${newrelease[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
@@ -300,12 +319,14 @@ showupgradepackage()
 			lrel=`echo $line| awk -F '##' '{print $4}'`
 			rrel=`echo $line| awk -F '##' '{print $5}'`
 			echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
+			[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
 		done
 	fi
 	
 	# show new version
 	if [ ${#newversion[@]} -gt 0 ]; then
 		echo
+		declare newversion=`echo -e ${newversion[*]} | tr ' ' '\n' | sort`
 		msg $(eval_gettext 'Software upgrade (new version) :')
 		for line in ${newversion[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
@@ -313,22 +334,20 @@ showupgradepackage()
 			lversion=`echo $line| awk -F '##' '{print $3}'`
 			rversion=`echo $line| awk -F '##' '{print $4}'`
                         echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR" $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
+			[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
 		done
 	fi
 
         # show new package
         if [ ${#newpkg[@]} -gt 0 ]; then
         	echo
+		declare newpkg=`echo -e ${newpkg[*]} | tr ' ' '\n' | sort`
 		msg $(eval_gettext 'New package :')
 		for line in ${newpkg[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
 			echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion$NO_COLOR"
+			[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
 		done
 	fi
-
-
-
 }
-
-

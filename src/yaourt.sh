@@ -882,6 +882,9 @@ pkgversion(){
 	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
 	pacman -Q $1 | awk '{print $2}' 2>/dev/null
 }
+pkgdescription(){
+	LC_ALL=C pacman -Si $1 | grep "^Description" | awk -F 'Description    : ' '{print $2}'
+}
 sourcerepository(){
 	# find the repository where the given package came from
 	local lrepository=`pacman -Si $1 2>/dev/null| head -n1 | awk '{print $3}'`
@@ -1649,20 +1652,6 @@ case "$MAJOR" in
 		sysdowngrade
 		sysupgrade
 
-		# Show detail on upgrades
-		if [ ${#packages[@]} -gt 0 ]; then
-			echo
-			prompt $(eval_gettext 'Continue install ? Yes/No [v]iew package detail ')
-			read
-			#CONTINUE_INSTALLING=$(userinput "YNVC")
-			#echo
-			#if [ "$CONTINUE_INSTALLING" = "V" ]; then
-		#			eval $YAOURTCOMMAND -Q  
-		#	fi
-
-		fi
-
-		#LC_ALL=C pacman -Si `echo $line`pacman | grep "^Description" | awk -F 'Description    : ' '{print $2}'
 
 		if [ ${#packages} -gt 0 ]; then
 			# List packages to build
