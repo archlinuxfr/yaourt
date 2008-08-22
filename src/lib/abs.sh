@@ -181,7 +181,8 @@ done
 
 # Install precompiled packages
 if [ ${#binariespackages[@]} -gt 0 ]; then
-	pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
+	#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
+	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $nodeps $asdeps ${binariespackages[*]}"
 fi
 
 # Vote for community packages
@@ -204,7 +205,9 @@ sysdowngrade()
 		title $(eval_gettext 'Downgrading packages')
 		downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )    
 		if [ ${#downgradelist[@]} -gt 0 ]; then
-			pacman_queuing; launch_with_su "$PACMANBIN -S ${downgradelist[*]}"
+			prepare_orphan_list
+			SYSUPGRADE=2
+			install_from_abs ${downgradelist[*]}"
 			show_new_orphans
 		else
 			echo $(eval_gettext 'No package to downgrade')
@@ -231,6 +234,8 @@ sysupgrade()
 	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//" \
 	-e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
+	# Show various avertissements
+	pacman -Qu | sed -n '2,/^$/p' | sed '/^$/d'
 
 	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 	for package in ${packages[@]}; do
@@ -310,6 +315,7 @@ sysupgrade()
 					( $edit_prog $YAOURTTMPDIR/sysuplist )
 					wait
 					declare args="$YAOURTTMPDIR/sysuplist"
+					SYSUPGRADE=2
 					sync_packages
 					return
 				elif [ "$CONTINUE_INSTALLING" = "N" ]; then
@@ -318,7 +324,7 @@ sysupgrade()
 			done
 		fi
 	fi  
-echo "DEBUG"
+
 	# ok let's do real sysupgrade
 	if [ ${#packages[@]} -gt 0 ]; then
 		# List packages to build
@@ -326,31 +332,31 @@ echo "DEBUG"
 			for package in ${packages[@]}; do
 				if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
 					packagesfromsource[${#packagesfromsource[@]}]=$package
-					fi
-				done
-			fi
-			# Show package list before building
-			if [ ${#packagesfromsource[@]} -gt 0 ]; then
-				eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-				if [ $NOCONFIRM -eq 0 ]; then
-					echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
-					proceed=`userinput`
 				fi
-			fi
-			# Build some packages if needed, then launch pacman classic sysupgrade
-			if [ "$proceed" != "N" ]; then
-				if [ ${#packagesfromsource[@]} -gt 0 ]; then
-					BUILD=1
-					install_from_abs "${packagesfromsource[*]}"
-				fi
-				if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
-					pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
-				fi
-			fi
-		else
-			# Nothing to update. Show various infos
-			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+			done
 		fi
+		# Show package list before building
+		if [ ${#packagesfromsource[@]} -gt 0 ]; then
+			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+			if [ $NOCONFIRM -eq 0 ]; then
+				echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
+				proceed=`userinput`
+			fi
+		fi
+		# Build some packages if needed, then launch pacman classic sysupgrade
+		if [ "$proceed" != "N" ]; then
+			if [ ${#packagesfromsource[@]} -gt 0 ]; then
+				BUILD=1
+				install_from_abs "${packagesfromsource[*]}"
+			fi
+			if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
+				pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
+			fi
+		fi
+	else
+		# Nothing to update. Show various infos
+		eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+	fi
 }
 
 ## show package to upgrade
@@ -359,7 +365,7 @@ showupgradepackage()
 	# $1=full or $1=lite or $1=manual
 	if [ "$1" = "manual" ]; then
 		> $YAOURTTMPDIR/sysuplist
-		local separator="################################################\n"
+		local separator="################################################"
 	fi
 
 	# show new release
@@ -367,7 +373,7 @@ showupgradepackage()
 		echo
 		declare newrelease=`echo -e ${newrelease[*]} | tr ' ' '\n' | sort`
 		if [ "$1" = "manual" ]; then
-			echo -e "$separator# $(eval_gettext 'Package upgrade only (new release):')\n$separator" >> $YAOURTTMPDIR/sysuplist
+			echo -e "$separator\n# $(eval_gettext 'Package upgrade only (new release):')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'Package upgrade only (new release):')
 		fi
@@ -378,7 +384,7 @@ showupgradepackage()
 			lrel=`echo $line| awk -F '##' '{print $4}'`
 			rrel=`echo $line| awk -F '##' '{print $5}'`
 			if [ "$1" = "manual" ]; then
-				echo "$repository/$pkgname version $rver release $lrel -> $rrel"  >> $YAOURTTMPDIR/sysuplist
+				echo -e "\n$repository/$pkgname version $rver release $lrel -> $rrel"  >> $YAOURTTMPDIR/sysuplist
 				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
 			else
 				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
@@ -392,7 +398,7 @@ showupgradepackage()
 		echo
 		declare newversion=`echo -e ${newversion[*]} | tr ' ' '\n' | sort`
 		if [ "$1" = "manual" ]; then
-			echo -e "$separator# $(eval_gettext 'Software upgrade (new version) :')\n$separator" >> $YAOURTTMPDIR/sysuplist
+			echo -e "\n\n$separator\n# $(eval_gettext 'Software upgrade (new version) :')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'Software upgrade (new version) :')
 		fi
@@ -416,7 +422,7 @@ showupgradepackage()
         	echo
 		declare newpkg=`echo -e ${newpkg[*]} | tr ' ' '\n' | sort`
 		if [ "$1" = "manual" ]; then
-			echo -e "$separator# $(eval_gettext 'New package :')\n$separator" >> $YAOURTTMPDIR/sysuplist
+			echo -e "\n$separator\n# $(eval_gettext 'New package :')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'New package :')
 		fi
@@ -424,7 +430,7 @@ showupgradepackage()
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
 			if [ "$1" = "manual" ]; then
-				echo "$repository/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
+				echo -e "\n$repository/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
 				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
 			else
 				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion$NO_COLOR"
@@ -438,11 +444,12 @@ showupgradepackage()
 sync_packages()
 {
 	# Install from a list of packages
-	echo "xxxxxxdebug: ${ARGSANS[*]}"
 	if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
-		title $(eval_gettext 'Installing from a list of a packages')
+		if [ $SYSUPGRADE -eq 0 ]; then 
+			title $(eval_gettext 'Installing from a list of a packages')
+			msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
+		fi
 		_pkg_list=${args[0]}
-		msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
 		AURVOTE=0
 		args=( `cat "${args[0]}" | grep -v "^#" | awk '{print $1}'` ) 
 	fi
