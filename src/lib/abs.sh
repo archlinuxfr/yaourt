@@ -194,3 +194,141 @@ if [ ${#communitypackages[@]} -gt 0 -a $AURVOTE -eq 1 ]; then
 fi
 
 }
+
+
+#Downgrade all packages marked as "newer than extra/core/etc..."
+sysdowngrade()
+{
+	if [ $DOWNGRADE -eq 1 ]; then
+		msg $(eval_gettext 'Downgrading packages')
+		title $(eval_gettext 'Downgrading packages')
+		downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )    
+		if [ ${#downgradelist[@]} -gt 0 ]; then
+			pacman_queuing; launch_with_su "$PACMANBIN -S ${downgradelist[*]}"
+			show_new_orphans
+		else
+			echo $(eval_gettext 'No package to downgrade')
+		fi
+		die
+	fi
+}
+
+
+# Searching for packages to update, buid from sources if necessary
+sysupgrade()
+{
+	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
+		sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
+	elif [ "$UID" -eq 0 ]; then
+		$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade
+	else
+		launch_with_su "$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade"
+	fi
+	
+	if [ $? -ne 0 ]; then
+		cat $YAOURTTMPDIR/sysupgrade
+	fi
+	packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
+	-e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
+
+
+	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
+	for package in ${packages[@]}; do
+		case $package in
+			pacman|yaourt)
+			warning $(eval_gettext 'New version of $package detected')
+			prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
+			[ "`userinput`" = "N" ] && continue
+			echo
+			msg $(eval_gettext 'Upgrading $package first')
+			pacman_queuing; launch_with_su "$PACMANBIN -S $package"
+		        die 0
+			;;
+			grub|kernel26*)
+			if [ `ls /boot/ | wc -l` -lt 2 ]; then
+				warning $(eval_gettext 'New version of $package detected')
+				prompt $(eval_gettext 'Please mount your boot partition first then press ENTER to continue')
+				read
+			fi
+			;;
+		esac
+	done
+
+
+	### classify pkg to upgrade filtered by category "new release", "new version", "new pkg"
+	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | awk -F '/' '{print $(NF-3)"##"$NF}' | sed -e "s/-[^-]*.pkg.tar.gz$//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
+	for pkg in ${pkg_repository_name_ver[@]}; do
+		repository=`echo $pkg| awk -F '##' '{print $1}'`
+		pkgname=`echo $pkg| awk -F '##' '{print $2}'`
+		rversion=`echo $pkg| awk -F '##' '{print $3}' | sed 's/^-//'`
+		if `isinstalled $pkgname`; then
+			lversion=`pkgversion $pkgname`
+			lrel=${lversion#*-}
+			rrel=${rversion#*-}
+			lver=${lversion%-*}
+			rver=${rversion%-*}
+			if [ "$rver" = "$lver" -a $rrel -gt $lrel ]; then
+				# new release not a new version
+				#newrelease[${#newrelease[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR"##$COL_GREEN$rver$NO_COLOR##$COL_BOLD$lrel$NO_COLOR##$COL_RED$rrel$NO_COLOR"
+				newrelease[${#newrelease[@]}]="$repository##$pkgname##$rver##$lrel##$rrel"
+			else
+			        # new version
+			        newversion[${#newversion[@]}]="$repository##$pkgname##$lversion##$rversion"
+			fi
+		else
+			# new package (not installed at this time)
+			newpkg[${#newpkg[@]}]="$repository##$pkgname##$rversion"
+		fi
+	done
+
+showupgradepackage lite
+}
+
+## show package to upgrade
+showupgradepackage()
+{
+	# $1=full or $1=lite
+	
+	# show new release
+	if [ ${#newrelease[@]} -gt 0 ]; then
+		echo
+		msg $(eval_gettext 'Package upgrade only (new release):')
+		for line in ${newrelease[@]}; do
+			repository=`echo $line| awk -F '##' '{print $1}'`
+			pkgname=`echo $line| awk -F '##' '{print $2}'`
+			rver=`echo $line| awk -F '##' '{print $3}'`
+			lrel=`echo $line| awk -F '##' '{print $4}'`
+			rrel=`echo $line| awk -F '##' '{print $5}'`
+			echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
+		done
+	fi
+	
+	# show new version
+	if [ ${#newversion[@]} -gt 0 ]; then
+		echo
+		msg $(eval_gettext 'Software upgrade (new version) :')
+		for line in ${newversion[@]}; do
+			repository=`echo $line| awk -F '##' '{print $1}'`
+			pkgname=`echo $line| awk -F '##' '{print $2}'`
+			lversion=`echo $line| awk -F '##' '{print $3}'`
+			rversion=`echo $line| awk -F '##' '{print $4}'`
+                        echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR" $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
+		done
+	fi
+
+        # show new package
+        if [ ${#newpkg[@]} -gt 0 ]; then
+        	echo
+		msg $(eval_gettext 'New package :')
+		for line in ${newpkg[@]}; do
+			repository=`echo $line| awk -F '##' '{print $1}'`
+			pkgname=`echo $line| awk -F '##' '{print $2}'`
+			echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion$NO_COLOR"
+		done
+	fi
+
+
+
+}
+
+

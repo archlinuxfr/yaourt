@@ -1646,86 +1646,9 @@ case "$MAJOR" in
 		#msg "System Upgrade"
 		prepare_orphan_list
 		loadlibrary abs
-		#Downgrade all packages marked as "newer than extra/core/etc..."
-		if [ $DOWNGRADE -eq 1 ]; then
-			msg $(eval_gettext 'Downgrading packages')
-			title $(eval_gettext 'Downgrading packages')
-			downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )				
-			if [ ${#downgradelist[@]} -gt 0 ]; then
-				pacman_queuing;	launch_with_su "$PACMANBIN -S ${downgradelist[*]}"
-				show_new_orphans
-			else
-				echo $(eval_gettext 'No package to downgrade')
-			fi
-			die $?
-		fi
-		# Searching for packages to update, buid from sources if necessary
-		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
-		if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
-			sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
-		elif [ "$UID" -eq 0 ]; then
-			$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade
-		else
-			launch_with_su "$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade"
-		fi
-		if [ $? -ne 0 ]; then
-			cat $YAOURTTMPDIR/sysupgrade
-		fi
-		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
-		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
-		#pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[0-9]*/##&/" | sort`)
-		pkg_name_ver=( `grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//"                 -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
-		for pkg in ${pkg_name_ver[@]}; do
-			pkgname=`echo $pkg| awk -F '##-' '{print $1}'`
-			rversion=`echo $pkg| awk -F '##-' '{print $2}'`
-			repository=`sourcerepository $pkgname`
-			if `isinstalled $pkgname`; then
-				lversion=`pkgversion $pkgname`
-				lrel=${lversion#*-}
-				rrel=${rversion#*-}
-				lver=${lversion%-*}
-				rver=${rversion%-*}
-				if [ "$rver" = "$lver" -a $rrel -gt $lrel ]; then
-					# new release not a new version
-					newrelease[${#newrelease[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR"##$COL_GREEN$rver$NO_COLOR##$COL_BOLD$lrel$NO_COLOR##$COL_RED$rrel$NO_COLOR"
-				else
-					# new version
-					newversion[${#newversion[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR"##$COL_GREEN$lversion$NO_COLOR##$COL_RED$rversion$NO_COLOR"
-				fi
+		sysdowngrade
+		sysupgrade
 
-			else
-				newpkg[${#newpkg[@]}]=`colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"##$COL_GREEN$rversion$NO_COLOR"
-			fi
-		done
-
-		# show new release
-		if [ ${#newrelease[@]} -gt 0 ]; then
-			echo
-			msg $(eval_gettext 'Package upgrade only (new release):')
-			for line in ${newrelease[@]}; do
-				echo -e $line | awk -F '##' '{print $1" version "$2" release "$3" -> "$4}'
-			done
-		fi
-
-		# show new version
-		if [ ${#newversion[@]} -gt 0 ]; then
-			echo
-			msg $(eval_gettext 'Software upgrade (new version) :')
-			for line in ${newversion[@]}; do
-				echo -e $line | awk -F '##' '{print $1" "$2" -> "$3}'
-			done
-		fi
-
-		
-		# show new package
-		if [ ${#newpkg[@]} -gt 0 ]; then
-			echo
-			msg $(eval_gettext 'New package :')
-			for line in ${newpkg[@]}; do
-				echo -e $line | awk -F '##' '{print $1" "$2}'
-			done
-		fi
-		
 		# Show detail on upgrades
 		if [ ${#packages[@]} -gt 0 ]; then
 			echo
@@ -1740,28 +1663,6 @@ case "$MAJOR" in
 		fi
 
 		#LC_ALL=C pacman -Si `echo $line`pacman | grep "^Description" | awk -F 'Description    : ' '{print $2}'
-
-		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
-		for package in ${packages[@]}; do
-			case $package in 
-				pacman|yaourt)
-				warning $(eval_gettext 'New version of $package detected')
-				prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
-				[ "`userinput`" = "N" ] && continue
-				echo
-				msg $(eval_gettext 'Upgrading $package first')
-				pacman_queuing;	launch_with_su "$PACMANBIN -S $package"
-				die 0
-				;;
-				grub|kernel26*)
-				if [ `ls /boot/ | wc -l` -lt 2 ]; then 
-					warning $(eval_gettext 'New version of $package detected')
-					prompt $(eval_gettext 'Please mount your boot partition first then press ENTER to continue')
-					read
-				fi
-				;;
-			esac
-		done
 
 		if [ ${#packages} -gt 0 ]; then
 			# List packages to build
