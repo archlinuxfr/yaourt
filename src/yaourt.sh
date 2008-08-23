@@ -1651,40 +1651,6 @@ case "$MAJOR" in
 		loadlibrary abs
 		sysdowngrade
 		sysupgrade
-
-
-		if [ ${#packages} -gt 0 ]; then
-			# List packages to build
-			if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
-				for package in ${packages[@]}; do
-					if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
-						packagesfromsource[${#packagesfromsource[@]}]=$package
-					fi
-				done
-			fi
-			# Show package list before building
-			if [ ${#packagesfromsource[@]} -gt 0 ]; then
-				eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-				if [ $NOCONFIRM -eq 0 ]; then
-					echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
-					proceed=`userinput`
-				fi
-			fi
-			# Build some packages if needed, then launch pacman classic sysupgrade
-			if [ "$proceed" != "N" ]; then
-				if [ ${#packagesfromsource[@]} -gt 0 ]; then
-					BUILD=1
-					install_from_abs "${packagesfromsource[*]}"
-				fi
-				if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
-					pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
-				fi
-			fi
-		else
-			# Nothing to update. Show various infos
-			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-		fi
-
 		# Upgrade all AUR packages or all Devel packages
 		if [ $DEVEL -eq 1 ]; then upgrade_devel_package; fi
 		if [ $AURUPGRADE -eq 1 ]; then upgrade_from_aur; fi

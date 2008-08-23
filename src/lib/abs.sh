@@ -255,7 +255,7 @@ sysupgrade()
 	done
 
 
-	### classify pkg to upgrade filtered by category "new release", "new version", "new pkg"
+	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
 	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/-i686.pkg.tar.gz$//" -e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
 	for pkg in ${pkg_repository_name_ver[@]}; do
 		pkgname=`echo $pkg| awk -F '##' '{print $1}'`
@@ -267,7 +267,7 @@ sysupgrade()
 			rrel=${rversion#*-}
 			lver=${lversion%-*}
 			rver=${rversion%-*}
-			if [ "$rver" = "$lver" -a `is_x_gt_y $rrel $lrel` ]; then
+			if [ "$rver" = "$lver" ] && `is_x_gt_y $rrel $lrel`; then
 				# new release not a new version
 				newrelease[${#newrelease[@]}]="$repository##$pkgname##$rver##$lrel##$rrel"
 			else
@@ -296,10 +296,45 @@ sysupgrade()
 					showupgradepackage full
 				elif [ "$CONTINUE_INSTALLING" = "C" ]; then
 					echo "Not implemented"
+				elif [ "$CONTINUE_INSTALLING" = "N" ]; then
+					die 0
 				fi
 			done
 		fi
 	fi  
+
+	# ok let's do real sysupgrade
+	if [ ${#packages[@]} -gt 0 ]; then
+		# List packages to build
+		if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
+			for package in ${packages[@]}; do
+				if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
+					packagesfromsource[${#packagesfromsource[@]}]=$package
+					fi
+				done
+			fi
+			# Show package list before building
+			if [ ${#packagesfromsource[@]} -gt 0 ]; then
+				eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+				if [ $NOCONFIRM -eq 0 ]; then
+					echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
+					proceed=`userinput`
+				fi
+			fi
+			# Build some packages if needed, then launch pacman classic sysupgrade
+			if [ "$proceed" != "N" ]; then
+				if [ ${#packagesfromsource[@]} -gt 0 ]; then
+					BUILD=1
+					install_from_abs "${packagesfromsource[*]}"
+				fi
+				if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
+					pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
+				fi
+			fi
+		else
+			# Nothing to update. Show various infos
+			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+		fi
 }
 
 ## show package to upgrade
