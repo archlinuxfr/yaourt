@@ -307,56 +307,13 @@ sourceforge_mirror_hack(){
 }
 
 ###################################
-### Sync functions              ###
-###################################
-upgrade_devel_package(){
-	tmp_files="$YAOURTTMPDIR/search/"
-	mkdir -p $tmp_files
-	local i=0
-	title $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
-	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
-	loadlibrary pacman_conf
-	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
-	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\) ")
-	do
-		if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
-			echo -e "${PKG}: ${COL_RED} "$(eval_gettext '(ignored from pacman.conf)')"${NO_COLOR}"
-		else
-			devel_package[$i]=$PKG
-			(( i ++ ))
-		fi
-	done
-	[ $i -lt 1 ] && return 0
-	plain "\n---------------------------------------------"
-	plain $(eval_gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
-	echo "${devel_package[@]}"
-	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)
-		[ "`userinput`" = "N" ] && return 0
-	fi
-	for PKG in ${devel_package[@]}; do
-		local repository=`sourcerepository $PKG`
-		case $repository in
-			core|extra|unstable|testing|community)	
-			BUILD=1
-			repos_package[${#repos_package[@]}]=${PKG}
-			;;
-			*)	       
-			install_from_aur "$PKG" 
-			;;
-		esac
-	done
-	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
-}
-
-###################################
 ### General functions           ###
 ###################################
 
 usage(){
 	echo "$(eval_gettext '    ---  Yaourt version $VERSION  ---')"
 	echo
-	echo "$(eval_gettext 'yaourt is a pacman frontend whith a lot of features like:')"
+	echo "$(eval_gettext 'yaourt is a pacman frontend with a lot of features like:')"
 	echo
 	echo "$(eval_gettext '. AUR support (search, easy install, vote etc..)')"
 	echo "$(eval_gettext '. interactiv search + install (with AUR Unsupported results integrated)')"
@@ -880,7 +837,10 @@ isprovided(){
 pkgversion(){
 	# searching for version of the given package
 	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
-	pacman -Q $1 | awk '{print $2}'
+	pacman -Q $1 | awk '{print $2}' | head -n1 2>/dev/null
+}
+pkgdescription(){
+	LC_ALL=C pacman -Si $1 | grep -m1 "^Description" | awk -F 'Description    : ' '{print $2}'
 }
 sourcerepository(){
 	# find the repository where the given package came from
@@ -1278,10 +1238,12 @@ search_on_aur(){
 			else
 				line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
 			fi
-			[ "$MAJOR" = "interactivesearch" ] && line="${COL_NUMBER}${i}${NO_COLOR} $line"
+			if [ "$MAJOR" = "interactivesearch" ]; then
+				line="${COL_NUMBER}${i}${NO_COLOR} $line"
+				echo "aur/${package}" >> $searchfile 
+				(( i ++ ))
+			fi
 			echo -e "$line${NO_COLOR}"
-			[ "$MAJOR" = "interactivesearch" ] && echo "aur/${package}" >> $searchfile 
-			[ "$MAJOR" = "interactivesearch" ] && (( i ++ ))
 		else
 			echo -e "    ${COL_ITALIQUE}$line${NO_COLOR}"
 		fi
@@ -1565,32 +1527,6 @@ case "$MAJOR" in
 				fi
 			echo -e "$line$NO_COLOR $COL_GROUP$group$NO_COLOR"
 		done
-		########################################################
-		#lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
-		#regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
-		#packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
-		#for packagefile in ${packagefiles[@]}; do
-			# hack to exclude wrong result like name/version, email etc..
-		#	if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
-		#		continue
-		#	fi
-
-		#	package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
-		#	repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
-		#	version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
-		#	line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
-		#	if isinstalled $package; then
-		#		lversion=`pkgversion $package`
-		#		if [ "$lversion" = "$version" ];then
-		#			line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-		#		else
-		#			line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
-		#		fi
-		#	fi
-		#	echo -e "$line$NO_COLOR"
-		#	echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
-		#done
-		###################
 		cleanoutput
 		if [ $AURSEARCH -eq 1 ]; then
 			#msg "Search on AUR"
@@ -1620,112 +1556,13 @@ case "$MAJOR" in
 		show_new_orphans
 	elif [ $SYSUPGRADE -eq 0 ]; then
 		#msg "Install ($ARGSANS)"
-		# Install from a list of packages	
 		loadlibrary abs
-		if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
-			title $(eval_gettext 'Installing from a list of a packages')
-			_pkg_list=${args[0]}
-			msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
-			AURVOTE=0
-			args=( `cat "${args[0]}" | awk '{print $1}'` ) 
-		fi
-		# Install from arguments
-		prepare_orphan_list
-		for arg in ${args[@]}; do
-			if `isavailable ${arg#*/}` && [ $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
-				repos_package[${#repos_package[@]}]=${arg}
-			else
-				install_from_aur "${arg#aur/}" || failed=1
-			fi
-		done
-		[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
-		show_new_orphans
+		sync_packages
 	elif [ $SYSUPGRADE -eq 1 ]; then
 		#msg "System Upgrade"
-		prepare_orphan_list
 		loadlibrary abs
-		#Downgrade all packages marked as "newer than extra/core/etc..."
-		if [ $DOWNGRADE -eq 1 ]; then
-			msg $(eval_gettext 'Downgrading packages')
-			title $(eval_gettext 'Downgrading packages')
-			downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )				
-			if [ ${#downgradelist[@]} -gt 0 ]; then
-				pacman_queuing;	launch_with_su "$PACMANBIN -S ${downgradelist[*]}"
-				show_new_orphans
-			else
-				echo $(eval_gettext 'No package to downgrade')
-			fi
-			die $?
-		fi
-		# Searching for packages to update, buid from sources if necessary
-		# Hack while waiting that this pacman's bug (http://bugs.archlinux.org/task/8905) will be fixed:
-		if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
-			sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
-		elif [ "$UID" -eq 0 ]; then
-			$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade
-		else
-			launch_with_su "$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade"
-		fi
-		if [ $? -ne 0 ]; then
-			cat $YAOURTTMPDIR/sysupgrade
-		fi
-		packages=( `cat $YAOURTTMPDIR/sysupgrade | grep "^\(ftp:\/\/\|http:\/\/\|file:\/\/\)" | sed -e "s/-i686.pkg.tar.gz$//" \
-		-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
-
-		# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
-		for package in ${packages[@]}; do
-			case $package in 
-				pacman|yaourt)
-				warning $(eval_gettext 'New version of $package detected')
-				prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
-				[ "`userinput`" = "N" ] && continue
-				echo
-				msg $(eval_gettext 'Upgrading $package first')
-				pacman_queuing;	launch_with_su "$PACMANBIN -S $package"
-				die 0
-				;;
-				grub|kernel26*)
-				if [ `ls /boot/ | wc -l` -lt 2 ]; then 
-					warning $(eval_gettext 'New version of $package detected')
-					prompt $(eval_gettext 'Please mount your boot partition first then press ENTER to continue')
-					read
-				fi
-				;;
-			esac
-		done
-
-		if [ ${#packages} -gt 0 ]; then
-			# List packages to build
-			if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
-				for package in ${packages[@]}; do
-					if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
-						packagesfromsource[${#packagesfromsource[@]}]=$package
-					fi
-				done
-			fi
-			# Show package list before building
-			if [ ${#packagesfromsource[@]} -gt 0 ]; then
-				eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-				if [ $NOCONFIRM -eq 0 ]; then
-					echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
-					proceed=`userinput`
-				fi
-			fi
-			# Build some packages if needed, then launch pacman classic sysupgrade
-			if [ "$proceed" != "N" ]; then
-				if [ ${#packagesfromsource[@]} -gt 0 ]; then
-					BUILD=1
-					install_from_abs "${packagesfromsource[*]}"
-				fi
-				if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
-					pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
-				fi
-			fi
-		else
-			# Nothing to update. Show various infos
-			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-		fi
-
+		sysdowngrade
+		sysupgrade
 		# Upgrade all AUR packages or all Devel packages
 		if [ $DEVEL -eq 1 ]; then upgrade_devel_package; fi
 		if [ $AURUPGRADE -eq 1 ]; then upgrade_from_aur; fi
@@ -1797,34 +1634,6 @@ case "$MAJOR" in
 		(( i ++ ))
 	done
 
-	########################################################
-	#lrepositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
-	#regexp=`echo ${args[*]} | sed "s/\*/\.\*/"`
-	#packagefiles=( `grep -irl --include="desc" ${regexp} ${lrepositories[*]/#/$PACMANROOT/sync/}` )
-	#for packagefile in ${packagefiles[@]}; do
-		# hack to exclude wrong result like name/version, email etc..
-	#	if ! sed '/%CSIZE%/, //d' $packagefile | grep -qi "${regexp}"; then
-	#		continue
-	#	fi
-	#	package=`echo $packagefile| sed -e "s/\/desc//" -e "s/.*\///" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$//g"`
-	#	repository=`echo $packagefile| sed -e "s/\/[^/]*\/desc//" -e "s/.*\///"`
-	#	version=`echo $packagefile| sed -e "s/^.*$repository\/$package-//" -e "s/\/desc//"`
-	#	echo "${repository}/${package}" >> $searchfile
-	#	line="${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
-	#	if isinstalled $package; then
-	#		lversion=`pkgversion $package`
-	#		if [ "$lversion" = "$version" ];then
-	#			line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-	#		else
-	#			line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
-	#		fi
-	#	fi
-	#	echo -e "${COL_NUMBER}${i}${NO_COLOR} `colorizeoutputline $line${NO_COLOR}`"
-	#	(( i ++ ))
-		#show description
-	#	echo -e "$COL_ITALIQUE    `grep -A 1 "%DESC%" $packagefile | tail -n 1`"
-	#done
-	#####################################################
 	cleanoutput
 	if [ $AURSEARCH -eq 1 ]; then
 		#msg "Search on AUR"

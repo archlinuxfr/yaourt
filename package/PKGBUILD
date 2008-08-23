@@ -10,16 +10,11 @@ depends=('wget' 'diffutils' 'pacman>=3.1.0')
 provides=('yaourt')
 install=yaourt.install
 backup=('etc/yaourtrc')
-source=('yaourtrc-0.9-1' 'yaourtrc-0.9.1-1')
+source=()
 
 build() { 
 	cp -r ../../src/ $srcdir/yaourt/
 	cp ../../src/ChangeLog $startdir/
 	cd $srcdir/yaourt/
 	make install DESTDIR=$pkgdir || return 1
-
-	# preinstall original backup files for yaourtrc
-        install -D -m 766 $srcdir/yaourtrc-0.9-1 $pkgdir/var/lib/yaourt/backupfiles/yaourt/yaourt-0.9-1/yaourtrc
-        install -D -m 766 $srcdir/yaourtrc-0.9.1-1 $pkgdir/var/lib/yaourt/backupfiles/yaourt/yaourt-0.9.1-1/yaourtrc
-
 }
