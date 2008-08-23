@@ -267,7 +267,7 @@ sysupgrade()
 			rrel=${rversion#*-}
 			lver=${lversion%-*}
 			rver=${rversion%-*}
-			if [ "$rver" = "$lver" -a $rrel -gt $lrel ]; then
+			if [ "$rver" = "$lver" -a `is_x_gt_y $rrel $lrel` ]; then
 				# new release not a new version
 				newrelease[${#newrelease[@]}]="$repository##$pkgname##$rver##$lrel##$rrel"
 			else

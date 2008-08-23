@@ -880,10 +880,10 @@ isprovided(){
 pkgversion(){
 	# searching for version of the given package
 	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
-	pacman -Q $1 | awk '{print $2}' 2>/dev/null
+	pacman -Q $1 | awk '{print $2}' | head -n1 2>/dev/null
 }
 pkgdescription(){
-	LC_ALL=C pacman -Si $1 | grep "^Description" | awk -F 'Description    : ' '{print $2}'
+	LC_ALL=C pacman -Si $1 | grep -m1 "^Description" | awk -F 'Description    : ' '{print $2}'
 }
 sourcerepository(){
 	# find the repository where the given package came from
