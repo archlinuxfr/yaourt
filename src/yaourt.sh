@@ -356,7 +356,7 @@ upgrade_devel_package(){
 usage(){
 	echo "$(eval_gettext '    ---  Yaourt version $VERSION  ---')"
 	echo
-	echo "$(eval_gettext 'yaourt is a pacman frontend whith a lot of features like:')"
+	echo "$(eval_gettext 'yaourt is a pacman frontend with a lot of features like:')"
 	echo
 	echo "$(eval_gettext '. AUR support (search, easy install, vote etc..)')"
 	echo "$(eval_gettext '. interactiv search + install (with AUR Unsupported results integrated)')"
@@ -1625,26 +1625,8 @@ case "$MAJOR" in
 		show_new_orphans
 	elif [ $SYSUPGRADE -eq 0 ]; then
 		#msg "Install ($ARGSANS)"
-		# Install from a list of packages	
 		loadlibrary abs
-		if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
-			title $(eval_gettext 'Installing from a list of a packages')
-			_pkg_list=${args[0]}
-			msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
-			AURVOTE=0
-			args=( `cat "${args[0]}" | awk '{print $1}'` ) 
-		fi
-		# Install from arguments
-		prepare_orphan_list
-		for arg in ${args[@]}; do
-			if `isavailable ${arg#*/}` && [ $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
-				repos_package[${#repos_package[@]}]=${arg}
-			else
-				install_from_aur "${arg#aur/}" || failed=1
-			fi
-		done
-		[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
-		show_new_orphans
+		sync_packages
 	elif [ $SYSUPGRADE -eq 1 ]; then
 		#msg "System Upgrade"
 		prepare_orphan_list

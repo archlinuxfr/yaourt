@@ -289,20 +289,36 @@ sysupgrade()
 			while [ "$CONTINUE_INSTALLING" = "V" -o "$CONTINUE_INSTALLING" = "C" ]; do
 				echo
 				echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}"$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)"${NO_COLOR}" >&2
-				prompt $(eval_gettext '[v]iew package detail   [c]heck depends')
-				CONTINUE_INSTALLING=$(userinput "YNVC")
+				prompt $(eval_gettext '[V]iew package detail   [M]anualy select packages')
+				CONTINUE_INSTALLING=$(userinput "YNVM")
 				echo
 				if [ "$CONTINUE_INSTALLING" = "V" ]; then
 					showupgradepackage full
-				elif [ "$CONTINUE_INSTALLING" = "C" ]; then
-					echo "Not implemented"
+				elif [ "$CONTINUE_INSTALLING" = "M" ]; then
+					showupgradepackage manual
+					if [ -z "$EDITOR" ]; then
+						echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
+						echo -e ${NO_COLOR}$(eval_gettext 'for example:')
+						echo -e ${COL_BLUE}"export EDITOR=\"gvim\""${NO_COLOR}" $(eval_gettext '(in ~/.bashrc)')"
+						echo $(eval_gettext '(replace gvim with your favorite editor)')
+						echo
+						echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit PKGBUILD with: ')
+						read -e EDITOR
+						echo
+					fi
+					if [ "$EDITOR" = "gvim" ]; then edit_prog="gvim --nofork"; else edit_prog="$EDITOR";fi
+					( $edit_prog $YAOURTTMPDIR/sysuplist )
+					wait
+					declare args="$YAOURTTMPDIR/sysuplist"
+					sync_packages
+					return
 				elif [ "$CONTINUE_INSTALLING" = "N" ]; then
 					die 0
 				fi
 			done
 		fi
 	fi  
-
+echo "DEBUG"
 	# ok let's do real sysupgrade
 	if [ ${#packages[@]} -gt 0 ]; then
 		# List packages to build
@@ -340,21 +356,34 @@ sysupgrade()
 ## show package to upgrade
 showupgradepackage()
 {
-	# $1=full or $1=lite
-	
+	# $1=full or $1=lite or $1=manual
+	if [ "$1" = "manual" ]; then
+		> $YAOURTTMPDIR/sysuplist
+		local separator="################################################\n"
+	fi
+
 	# show new release
 	if [ ${#newrelease[@]} -gt 0 ]; then
 		echo
 		declare newrelease=`echo -e ${newrelease[*]} | tr ' ' '\n' | sort`
-		msg $(eval_gettext 'Package upgrade only (new release):')
+		if [ "$1" = "manual" ]; then
+			echo -e "$separator# $(eval_gettext 'Package upgrade only (new release):')\n$separator" >> $YAOURTTMPDIR/sysuplist
+		else
+			msg $(eval_gettext 'Package upgrade only (new release):')
+		fi
 		for line in ${newrelease[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
 			rver=`echo $line| awk -F '##' '{print $3}'`
 			lrel=`echo $line| awk -F '##' '{print $4}'`
 			rrel=`echo $line| awk -F '##' '{print $5}'`
-			echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
-			[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+			if [ "$1" = "manual" ]; then
+				echo "$repository/$pkgname version $rver release $lrel -> $rrel"  >> $YAOURTTMPDIR/sysuplist
+				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
+			else
+				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
+				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+			fi
 		done
 	fi
 	
@@ -362,14 +391,23 @@ showupgradepackage()
 	if [ ${#newversion[@]} -gt 0 ]; then
 		echo
 		declare newversion=`echo -e ${newversion[*]} | tr ' ' '\n' | sort`
-		msg $(eval_gettext 'Software upgrade (new version) :')
+		if [ "$1" = "manual" ]; then
+			echo -e "$separator# $(eval_gettext 'Software upgrade (new version) :')\n$separator" >> $YAOURTTMPDIR/sysuplist
+		else
+			msg $(eval_gettext 'Software upgrade (new version) :')
+		fi
 		for line in ${newversion[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
 			lversion=`echo $line| awk -F '##' '{print $3}'`
 			rversion=`echo $line| awk -F '##' '{print $4}'`
-                        echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR" $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
-			[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+			if [ "$1" = "manual" ]; then
+                        	echo -e "\n$repository/$pkgname $lversion -> $rversion" >> $YAOURTTMPDIR/sysuplist
+				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
+			else
+                        	echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR" $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
+				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+			fi
 		done
 	fi
 
@@ -377,12 +415,47 @@ showupgradepackage()
         if [ ${#newpkg[@]} -gt 0 ]; then
         	echo
 		declare newpkg=`echo -e ${newpkg[*]} | tr ' ' '\n' | sort`
-		msg $(eval_gettext 'New package :')
+		if [ "$1" = "manual" ]; then
+			echo -e "$separator# $(eval_gettext 'New package :')\n$separator" >> $YAOURTTMPDIR/sysuplist
+		else
+			msg $(eval_gettext 'New package :')
+		fi
 		for line in ${newpkg[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
-			echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion$NO_COLOR"
-			[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+			if [ "$1" = "manual" ]; then
+				echo "$repository/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
+				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
+			else
+				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion$NO_COLOR"
+				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+			fi
 		done
 	fi
+}
+
+# Sync packages
+sync_packages()
+{
+	# Install from a list of packages
+	echo "xxxxxxdebug: ${ARGSANS[*]}"
+	if [ -f "${args[0]}" ] && file -b "${args[0]}" | grep -qi text ; then
+		title $(eval_gettext 'Installing from a list of a packages')
+		_pkg_list=${args[0]}
+		msg $(eval_gettext 'Installing from a list of a packages ($_pkg_list)')
+		AURVOTE=0
+		args=( `cat "${args[0]}" | grep -v "^#" | awk '{print $1}'` ) 
+	fi
+
+	# Install from arguments
+	prepare_orphan_list
+	for arg in ${args[@]}; do
+		if `isavailable ${arg#*/}` && [ $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
+			repos_package[${#repos_package[@]}]=${arg}
+		else
+			install_from_aur "${arg#aur/}" || failed=1
+		fi
+	done
+	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
+	show_new_orphans
 }

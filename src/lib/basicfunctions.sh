@@ -48,6 +48,7 @@ _translate_me()
 	eval_gettext "YAN" # Yes, All, No
 	eval_gettext "YNA" # Yes, No, Abort
 	eval_gettext "YNVC" # Yes, No, View package, Check package with namcap
+	eval_gettext "YNVM" # Yes, No, View more infos, Manualy select packages
 }
 
 yes_no ()
