@@ -307,49 +307,6 @@ sourceforge_mirror_hack(){
 }
 
 ###################################
-### Sync functions              ###
-###################################
-upgrade_devel_package(){
-	tmp_files="$YAOURTTMPDIR/search/"
-	mkdir -p $tmp_files
-	local i=0
-	title $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
-	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
-	loadlibrary pacman_conf
-	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
-	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\) ")
-	do
-		if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
-			echo -e "${PKG}: ${COL_RED} "$(eval_gettext '(ignored from pacman.conf)')"${NO_COLOR}"
-		else
-			devel_package[$i]=$PKG
-			(( i ++ ))
-		fi
-	done
-	[ $i -lt 1 ] && return 0
-	plain "\n---------------------------------------------"
-	plain $(eval_gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
-	echo "${devel_package[@]}"
-	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)
-		[ "`userinput`" = "N" ] && return 0
-	fi
-	for PKG in ${devel_package[@]}; do
-		local repository=`sourcerepository $PKG`
-		case $repository in
-			core|extra|unstable|testing|community)	
-			BUILD=1
-			repos_package[${#repos_package[@]}]=${PKG}
-			;;
-			*)	       
-			install_from_aur "$PKG" 
-			;;
-		esac
-	done
-	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
-}
-
-###################################
 ### General functions           ###
 ###################################
 
