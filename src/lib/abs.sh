@@ -207,7 +207,7 @@ sysdowngrade()
 		if [ ${#downgradelist[@]} -gt 0 ]; then
 			prepare_orphan_list
 			SYSUPGRADE=2
-			install_from_abs ${downgradelist[*]}"
+			install_from_abs ${downgradelist[*]}
 			show_new_orphans
 		else
 			echo $(eval_gettext 'No package to downgrade')
