@@ -13,9 +13,8 @@
 #       VERSION:  1.0
 #===============================================================================
 
-# grab PKGBUILD from repos.archlinux.org and run makepkg
+# download package from repos or grab PKGBUILD from repos.archlinux.org and run makepkg
 install_from_abs(){
-#msg "install $* from source with abs or with pacman"
 if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	echo
 	_pkgs="$*"
@@ -25,7 +24,7 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
 USETESTING=0
-if { LC_ALL="C"; pacman --debug 2>/dev/null| grep -q "debug: opening database 'testing'"; }; then USETESTING=1;fi
+if { LC_ALL=C pacman --debug 2>/dev/null| grep -q "debug: opening database 'testing'"; }; then USETESTING=1;fi
 for package in $@; do
 	PKG=${package#*/}
 	local repository=`sourcerepository $PKG`
@@ -182,6 +181,7 @@ done
 # Install precompiled packages
 if [ ${#binariespackages[@]} -gt 0 ]; then
 	#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
+	echo "$PACMANBIN --sync $force $confirmation $nodeps $asdeps ${binariespackages[*]}"
 	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $nodeps $asdeps ${binariespackages[*]}"
 fi
 
@@ -220,6 +220,7 @@ sysdowngrade()
 # Searching for packages to update, buid from sources if necessary
 sysupgrade()
 {
+	prepare_orphan_list
 	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
 		sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
 	elif [ "$UID" -eq 0 ]; then
@@ -317,7 +318,7 @@ sysupgrade()
 					declare args="$YAOURTTMPDIR/sysuplist"
 					SYSUPGRADE=2
 					sync_packages
-					return
+					die 0
 				elif [ "$CONTINUE_INSTALLING" = "N" ]; then
 					die 0
 				fi
@@ -353,9 +354,9 @@ sysupgrade()
 				pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
 			fi
 		fi
-	else
+	#else
 		# Nothing to update. Show various infos
-		eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+		#eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
 	fi
 }
 
@@ -465,4 +466,44 @@ sync_packages()
 	done
 	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
 	show_new_orphans
+}
+
+upgrade_devel_package(){
+	tmp_files="$YAOURTTMPDIR/search/"
+	mkdir -p $tmp_files
+	local i=0
+	title $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
+	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
+	loadlibrary pacman_conf
+	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
+	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\) ")
+	do
+		if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
+			echo -e "${PKG}: ${COL_RED} "$(eval_gettext '(ignored from pacman.conf)')"${NO_COLOR}"
+		else
+			devel_package[$i]=$PKG
+			(( i ++ ))
+		fi
+	done
+	[ $i -lt 1 ] && return 0
+	plain "\n---------------------------------------------"
+	plain $(eval_gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
+	echo "${devel_package[@]}"
+	if [ $NOCONFIRM -eq 0 ]; then
+		prompt $(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)
+		[ "`userinput`" = "N" ] && return 0
+	fi
+	for PKG in ${devel_package[@]}; do
+		local repository=`sourcerepository $PKG`
+		case $repository in
+			core|extra|unstable|testing|community)	
+			BUILD=1
+			repos_package[${#repos_package[@]}]=${PKG}
+			;;
+			*)	       
+			install_from_aur "$PKG" 
+			;;
+		esac
+	done
+	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
 }
