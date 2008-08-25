@@ -317,7 +317,7 @@ upgrade_devel_package(){
 	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
 	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
-	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)\ ")
+	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\) ")
 	do
 		if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
 			echo -e "${PKG}: ${COL_RED} "$(eval_gettext '(ignored from pacman.conf)')"${NO_COLOR}"
