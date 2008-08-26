@@ -181,7 +181,6 @@ done
 # Install precompiled packages
 if [ ${#binariespackages[@]} -gt 0 ]; then
 	#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
-	echo "$PACMANBIN --sync $force $confirmation $nodeps $asdeps ${binariespackages[*]}"
 	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $nodeps $asdeps ${binariespackages[*]}"
 fi
 
@@ -476,7 +475,7 @@ upgrade_devel_package(){
 	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
 	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
-	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\) ")
+	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
 	do
 		if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
 			echo -e "${PKG}: ${COL_RED} "$(eval_gettext '(ignored from pacman.conf)')"${NO_COLOR}"
