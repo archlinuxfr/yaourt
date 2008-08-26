@@ -235,7 +235,7 @@ sysupgrade()
 	-e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
 	# Show various avertissements
-	pacman -Qu | sed -n '2,/^$/p' | sed '/^$/d'
+	pacman -Qu | sed -n '1,/^$/p' | sed '/^$/d'
 
 	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 	for package in ${packages[@]}; do
