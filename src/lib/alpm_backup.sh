@@ -18,14 +18,17 @@
 save_alpm_db(){
 	msg $(eval_gettext 'Saving pacman database in $savedir')
 	title $(eval_gettext 'Saving pacman database in $savedir')
-	if [ ! -w "$savedir" ]; then
-		error $(eval_gettext '$savedir is not a writable directory'); return 1
+	local curentdir=`pwd`
+	cd $savedir >/dev/null
+	if [ $? -ne 0 ]; then
+		error $(eval_gettext '$savedir is not a writable directory')
+		return 1
 	fi
-	savefile="pacman-`date +%Y-%m-%d_%Hh%M`.tar.bz2"
-	cd "$PACMANROOT"
-	tar -cjf "$savedir/$savefile" "local/"
-	[ $? -eq 0 ] && msg $(eval_gettext 'Pacman database successfully saved in "$savedir/$savefile"')
-	cd - >/dev/null
+	savefile="`pwd`/pacman-`date +%Y-%m-%d_%Hh%M`.tar.bz2"
+	cd "$PACMANROOT" >/dev/null
+	tar -cjf "$savefile" "local/"
+	[ $? -eq 0 ] && msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
+	cd $curentdir >/dev/null
 	return 0
 }
 
