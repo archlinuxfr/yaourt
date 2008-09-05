@@ -466,7 +466,7 @@ title(){
 die(){
 	# reset term title
 	tput sgr0
-	if [ $TERMINALTITLE -eq 1 -o ! -z "$DISPLAY" ]; then
+	if [ $TERMINALTITLE -eq 1 -a ! -z "$DISPLAY" ]; then
 		echo -n -e "\033]0;$TERM\007"
 	fi
 	exit $1

@@ -18,14 +18,18 @@ initcolor(){
 if [ "$COLORMODE" = "--textonly" ]; then
 	TERMINALTITLE=0
 	return 0
+else
+	# font type
+	COL_BOLD="\033[1m"
+	COL_INVERT="\033[7m"
+	COL_BLINK="\033[5m"
+	NO_COLOR="\033[0m"
+	if [ ! -z "$DISPLAY" ]; then
+		COL_ITALIQUE="\033[3m"
+		local _colitalique="\033[3m\\"
+	fi
 fi
 
-# font type
-COL_BOLD="\033[1m"
-COL_INVERT="\033[7m"
-COL_BLINK="\033[5m"
-COL_ITALIQUE="\033[3m"
-NO_COLOR="\033[0m"
 
 # Color list
 case $COLORMODE in
@@ -68,11 +72,11 @@ esac
 COL_INSTALLED="$COL_INVERT$COL_YELLOW" # show [installed] packages
 COL_ARROW="$COL_YELLOW" # show ==>
 COL_NUMBER="$COL_INVERT$COL_YELLOW" # show number) in listing
-COL_CORE="$COL_ITALIQUE\\$COL_RED"
-COL_EXTRA="$COL_ITALIQUE\\$COL_GREEN"
-COL_LOCAL="$COL_ITALIQUE\\$COL_YELLOW"
-COL_COMMUNITY="$COL_ITALIQUE\\$COL_PINK"
-COL_UNSTABLE="$COL_ITALIQUE\\$COL_RED"
+COL_CORE="$_colitalique$COL_RED"
+COL_EXTRA="$_colitalique$COL_GREEN"
+COL_LOCAL="$_colitalique$COL_YELLOW"
+COL_COMMUNITY="$_colitalique$COL_PINK"
+COL_UNSTABLE="$_colitalique$COL_RED"
 COL_REPOS="$COL_PINK"
 COL_GROUP="$COL_BLUE"
 }
