@@ -772,7 +772,7 @@ launch_with_su(){
 	#msg "try to launch '${@}' with sudo"
 	command=`echo $* | awk '{print $1}'`
 
-	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(${command}\ *$\|ALL\)" 1>/dev/null; then
+	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep -F "NOPASSWD:" | sed 's/\,/\n/g' | grep "\(\ $command$\|ALL\)" 1>/dev/null; then
 		#echo "Allowed to use sudo $command"
 		sudo $@ || return 1
 	else
