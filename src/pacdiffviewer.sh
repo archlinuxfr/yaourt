@@ -200,7 +200,7 @@ CREATE_DB()
 rm -rf $tmp_files/
 #msg "Please wait..."
 mkdir -p $tmp_files
-find /etc/ /opt \( -name "*.pacsave" -o -name "*.pacnew" \) > $tmp_files/pacbase 
+find /etc/ /opt/ /usr/share/ /usr/lib/ \( -name "*.pacsave" -o -name "*.pacnew" \) > $tmp_files/pacbase 
 
 #Recherche des fichiers pacsave/pacnew
 for extension in "pacsave" "pacnew"; do

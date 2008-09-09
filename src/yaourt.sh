@@ -227,9 +227,8 @@ build_package(){
 		if [ $VERSIONPKGINSTALLED -eq 1 -a $HOLDVER -eq 0 ]; then
 			msg $(eval_gettext 'Searching new CVS/SVN/GIT revision for $PKG')
 			versionpkg --modify-only --force
-			local localversion=`grep -rl --include="desc" "^$PKG$" "$PACMANROOT/local" | sed -e "s/\/desc//" -e "s/.*\///"`
 			readPKGBUILD
-			if [ "$localversion" = "$pkgname-$pkgver-$pkgrel" ]; then
+			if [ "`pkgversion $pkgname`" = "$pkgname-$pkgver-$pkgrel" ]; then
 				msg $(eval_gettext 'There is no CVS/SVN/GIT update available for $PKG.. Aborted')
 				sleep 1
 				return 90
