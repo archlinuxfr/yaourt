@@ -115,15 +115,17 @@ INENGLISH=""
 sfmirror=""
 
 while [ "$#" -ne "0" ]; do
-	if [ "$2" = "yes" ]; then
-		value=1
-	elif [ "$2" = "no" ]; then
-		value=0
-	else
-		value=-1
-	fi
+	lowcasearg=`echo $2 | tr A-Z a-z`
+	case $lowcasearg in
+		yes) value=1
+		;;
+		no) value=0
+		;;
+		*)value=-1
+		;;
+	esac
 
-	case $1 in
+	case "`echo $1 | tr A-Z a-z`" in
 		noconfirm)
 			if [ $value -gt -1 ]; then
 				NOCONFIRM=$value; shift
@@ -215,8 +217,8 @@ while [ "$#" -ne "0" ]; do
 		        fi
 			;;	       
 		lastcommentsorder)
-			if [ "$2" = "asc" -o "$2" = "desc" ]; then
-			       ORDERBY=$2; shift
+			if [ "$lowcasearg" = "asc" -o "$lowcasearg" = "desc" ]; then
+			       ORDERBY=$lowcasearg; shift
 			else
 				error "Wrong value for LastCommentsOrder"
 		        fi
@@ -236,7 +238,7 @@ while [ "$#" -ne "0" ]; do
 			fi
 			;;
 		colormod)
-			case $2 in
+			case $lowcasearg in
 				lightbackground)
 					COLORMODE="--lightbg"; shift
 				;;
@@ -274,6 +276,6 @@ else
 fi
 
 loadlibrary color
-readconfigfile `grep "^[\ ]*[a-Z]" $configfile | tr A-Z a-z`
+readconfigfile `grep "^[\ ]*[a-zA-Z]" $configfile`
 initcolor
 initpath
