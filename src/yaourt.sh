@@ -1278,7 +1278,7 @@ upgrade_from_aur(){
 			echo -e " (${COL_RED}local=$local_version ${NO_COLOR}aur=$aur_version)"
 		else
 			if [ `parsejsoninfo "OutOfDate"` -eq 1 ]; then
-				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flaged as out of date')")${NO_COLOR}"
+				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flagged as out of date')")${NO_COLOR}"
 			else
 				echo $(eval_gettext 'up to date ')
 			fi

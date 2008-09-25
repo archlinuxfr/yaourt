@@ -281,10 +281,11 @@ sysupgrade()
 			fi
 		else
 			# new package (not installed at this time)
-			newpkg[${#newpkg[@]}]="$repository##$pkgname##$rversion"
+			newpkgs[${#newpkgs[@]}]="$repository##$pkgname##$rversion"
 		fi
 	done
 
+	# Show result
 	showupgradepackage lite
         
 	# Show detail on upgrades
@@ -418,22 +419,32 @@ showupgradepackage()
 	fi
 
         # show new package
-        if [ ${#newpkg[@]} -gt 0 ]; then
+        if [ ${#newpkgs[@]} -gt 0 ]; then
         	echo
-		declare newpkg=`echo -e ${newpkg[*]} | tr ' ' '\n' | sort`
+		declare newpkgs=`echo -e ${newpkgs[*]} | tr ' ' '\n' | sort`
 		if [ "$1" = "manual" ]; then
 			echo -e "\n$separator\n# $(eval_gettext 'New package :')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'New package :')
 		fi
-		for line in ${newpkg[@]}; do
+		for line in ${newpkgs[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
+			### Searching for package which depends on 'new package'
+			requiredbypkg=$(eval_gettext 'not found')
+			for pkg in ${pkg_repository_name_ver[@]%\#\#*}; do
+				if [ "$pkg" != "$pkgname" ] && `LC_ALL=C pacman -Si $pkg |grep -m1 -A15 "^Repository"| sed -e '1,/^Provides/d' -e '/^Optional\ Deps/,$d'\
+				       | grep -q "\ $pkgname[ >=<]"`; then
+					requiredbypkg=$pkg
+					break
+				fi
+			done
+
 			if [ "$1" = "manual" ]; then
 				echo -e "\n$repository/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
-				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
+				echo "#    `pkgdescription $pkgname` $(eval_gettext '(required by $requiredbypkg)')" >> $YAOURTTMPDIR/sysuplist
 			else
-				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion$NO_COLOR"
+				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion $COL_RED $(eval_gettext '(required by $requiredbypkg)')$NO_COLOR"
 				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
 			fi
 		done

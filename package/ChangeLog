@@ -102,7 +102,7 @@ yaourt 0.9.0
 
 yaourt 0.9.1
 - some code rewrite for AUR (access by JSON RPC interface)
-- yaourt -Su --aur now show packages flaged by another user as out of date
+- yaourt -Su --aur now show packages flagged by another user as out of date
 - bug fixed when building a package with text in name (like per-text-kakaso)
 - new option ForceEnglish in yaourtrc
 - new option AutoSaveBackupFile in yaourtrc (required for automerge with yaourt -C)
