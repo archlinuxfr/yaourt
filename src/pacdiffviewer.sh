@@ -153,7 +153,7 @@ plain $(eval_gettext '    (Packages are no longer installed)')
 list "-------------------------------------------------------"
 sleep 1
 list "$(cat $tmp_files/pacfile.obsolete)"
-msg $(eval_gettext 'Do you want to remove this obsolete files ?')
+msg $(eval_gettext 'Do you want to remove these obsolete files ?')
 msg "$(eval_gettext ' (to be confirmed for each file) : ') $(yes_no 2)"
 msg "----------------------------------------------"
 promptlight
@@ -200,7 +200,7 @@ CREATE_DB()
 rm -rf $tmp_files/
 #msg "Please wait..."
 mkdir -p $tmp_files
-find /etc/ /opt/ /usr/share/ /usr/lib/ \( -name "*.pacsave" -o -name "*.pacnew" \) > $tmp_files/pacbase 
+find /boot/ /etc/ /opt/ /usr/share/ /usr/lib/ \( -name "*.pacsave" -o -name "*.pacnew" \) > $tmp_files/pacbase 
 
 #Recherche des fichiers pacsave/pacnew
 for extension in "pacsave" "pacnew"; do
@@ -511,7 +511,7 @@ then
 		list "--------------------------------------------"
 		plain $(eval_gettext '              .pacsave files')
 		list "--------------------------------------------"
-		plain $(eval_gettext 'Maybe you have changed this files, but they have been')
+		plain $(eval_gettext 'Maybe you have changed these files, but they have been')
 		plain $(eval_gettext 'replaced during packages update:')
 		VIEW_DIFF_LIST
 		msg $(eval_gettext 'Enter the number of the file to be modified or press ENTER to cancel')
