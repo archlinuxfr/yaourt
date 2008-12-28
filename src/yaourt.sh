@@ -248,6 +248,7 @@ build_package(){
 	# Build 
 	mkpkg_opt="$confirmation"
 	[ $NODEPS -eq 1 ] && mkpkg_opt="$mkpkg_opt -d"
+	[ $IGNOREARCH -eq 1 ] && mkpkg_opt="$mkpkg_opt -A"
 	[ $HOLDVER -eq 1 ] && mkpkg_opt="$mkpkg_opt --holdver"
 	if [ $runasroot -eq 1 ]; then 
 		pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --asroot --syncdeps --force -p ./PKGBUILD
@@ -367,6 +368,7 @@ usage(){
 	echo "$(eval_gettext ' (<no option>) <file.pkg.tar.gz> * upgrade a package from <file.pkg.tar.gz>')"
 	echo "$(eval_gettext ' (-G, --getpkgbuild) <pkg>       * Retrieve PKGBUILD and local sources for package name')"
 	echo "$(eval_gettext '  --asdeps                         Install packages non-explicitly to be installed as a dependency')"
+	echo "$(eval_gettext ' --ignorearch                      ignore incomplete arch field PKGBUILD')"
 	echo
 	echo "$(eval_gettext 'Upgrade:')"
 	echo "$(eval_gettext ' -Su,  --sysupgrade                upgrade all packages that are out of date')"
@@ -489,6 +491,7 @@ parameters(){
 	HOLDVER=0
 	IGNORE=0
 	IGNOREPKG=""
+	IGNOREARCH=0
 	NEEDED=""
 	CLEAN=0
 	LIST=0
@@ -672,6 +675,7 @@ parameters(){
 			--unrequired) UNREQUIRED=1;;
 			--changelog) CHANGELOG=1;;
 			--holdver) HOLDVER=1;;
+			--ignorearch) IGNOREARCH=1;;
 			--*)
 			#			usage
 			#			exit 1
@@ -1359,6 +1363,9 @@ if [ $FORCE -eq 1 ]; then force="--force"; fi
 if [ $NODEPS -eq 1 ]; then 
 	BUILDPROGRAM="${BUILDPROGRAM} --nodeps"
 	nodeps="--nodeps"
+fi
+if [ $IGNOREARCH -eq 1 ]; then 
+	BUILDPROGRAM="${BUILDPROGRAM} --ignorearch"
 fi
 if [ $ASDEPS -eq 1 ]; then 
 	BUILDPROGRAM="${BUILDPROGRAM} --asdeps"
