@@ -1219,40 +1219,7 @@ install_from_aur(){
 	echo
 	return $failed
 }
-search_on_aur(){
-	#msg "Search for $1 on AUR"
-	_pkg=`echo $1 | sed 's/ AND / /'`
-	title $(eval_gettext 'searching for $_pkg on AUR')
-	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
-	wget -q "${AUR_URL}${1}" -O - | grep -A 2 "<a href='/packages.php?ID=" \
-	| sed -e "s/<\/span>.*$//" -e "s/^.*packages.php?ID=.*span class.*'>/aur\//" -e "s/^.*span class.*'>//" \
-	| grep -v "&nbsp;" | grep -v "^--" |
-	while read line; do
-		if [ "${line%\/*}" = "aur" ]; then
-			package=$(echo $line | awk '{ print $1}' | sed 's/^.*\///')
-			version=$(echo $line | awk '{print $2}')
-			if isinstalled $package; then
-				lversion=`pkgversion $package`
-				if [ "$lversion" = "$version" ];then
-					line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version} ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-				else
-					line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version} ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
-				fi
-			else
-				line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
-			fi
-			if [ "$MAJOR" = "interactivesearch" ]; then
-				line="${COL_NUMBER}${i}${NO_COLOR} $line"
-				echo "aur/${package}" >> $searchfile 
-				(( i ++ ))
-			fi
-			echo -e "$line${NO_COLOR}"
-		else
-			echo -e "    ${COL_ITALIQUE}$line${NO_COLOR}"
-		fi
-	done
-	cleanoutput
-}
+
 upgrade_from_aur(){
 	title $(eval_gettext 'upgrading AUR unsupported packages')
 	tmp_files="$YAOURTTMPDIR/search/"
@@ -1535,6 +1502,7 @@ case "$MAJOR" in
 		done
 		cleanoutput
 		if [ $AURSEARCH -eq 1 ]; then
+			loadlibrary aur
 			#msg "Search on AUR"
 			for arg in ${args[@]}; do
 				search_on_aur $arg || error $(eval_gettext 'unable to contact AUR')
@@ -1642,6 +1610,7 @@ case "$MAJOR" in
 
 	cleanoutput
 	if [ $AURSEARCH -eq 1 ]; then
+		loadlibrary aur
 		#msg "Search on AUR"
 		search_on_aur "`echo ${args[*]} |tr "\*" "\%"`" || error $(eval_gettext 'unable to contact AUR')
 	fi

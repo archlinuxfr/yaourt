@@ -13,7 +13,7 @@
 #       VERSION:  1.0
 #===============================================================================
 
-# get info for aur package from json RPC interface and store it in jsonfinfo variable for later use
+# get info for aur package from json RPC interface and store it in jsoninfo variable for later use
 initjsoninfo(){
 unset jsoninfo
 jsoninfo=`wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$1"`
@@ -68,4 +68,42 @@ echo -n "Replaces	: "; if [[ ! -z "${replaces[@]}" ]]; then echo "${replaces[@]}
 echo "Description	: $pkgdesc"
 echo "Last update	: `ls -l --time-style="long-iso" PKGBUILD | awk '{print $6" "$7}'`"
 echo
+}
+
+# search for keyword on AUR an list result
+search_on_aur(){
+	#msg "Search for $1 on AUR"
+	_pkg=`echo $1 | sed 's/ AND / /'`
+	title $(eval_gettext 'searching for $_pkg on AUR')
+	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
+	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$1" | sed 's/{"ID":/\n/g' | sed '1d'|
+	while read jsoninfo; do
+		# exclude first line
+		[ $(echo $jsoninfo | awk -F '"[:,]"' '{print NF}') -lt 10 ] && continue
+		package=$(parsejsoninfo Name)
+		version=$(parsejsoninfo Version)
+		description=$(parsejsoninfo Description)
+		numvotes=$(parsejsoninfo NumVotes)
+		outofdate=$(parsejsoninfo OutOfDate)
+		line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
+		if isinstalled $package; then
+			lversion=`pkgversion $package`
+			if [ "$lversion" = "$version" ];then
+				line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+			else
+				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+			fi
+		fi
+		if [ $outofdate -eq 1 ]; then
+			line="$line${NO_COLOR} ${COL_INSTALLED}($(eval_gettext 'Out of Date'))"
+		fi
+		if [ "$MAJOR" = "interactivesearch" ]; then
+			line="${COL_NUMBER}${i}${NO_COLOR} $line"
+			echo "aur/${package}" >> $searchfile 
+			(( i ++ ))
+		fi
+		echo -e "$line$NO_COLOR $COL_NUMBER($numvotes)${NO_COLOR}"
+		echo -e "    ${COL_ITALIQUE}$description${NO_COLOR}"
+	done
+	cleanoutput
 }
