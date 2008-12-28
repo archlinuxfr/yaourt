@@ -24,7 +24,9 @@ else
 	COL_INVERT="\033[7m"
 	COL_BLINK="\033[5m"
 	NO_COLOR="\033[0m"
-	if [ ! -z "$DISPLAY" ]; then
+
+	# No italic out of Xorg or under screen
+	if [ ! -z "$DISPLAY" ] && [ "$TERM" != "screen" ]; then
 		COL_ITALIQUE="\033[3m"
 		local _colitalique="\033[3m\\"
 	fi
