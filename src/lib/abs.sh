@@ -235,7 +235,7 @@ sysupgrade()
 	-e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
 	# Show various avertissements
-	pacman -Qu | sed -n '1,/^$/p' | sed '/^$/d'
+	eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
 
 	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 	for package in ${packages[@]}; do
@@ -259,7 +259,31 @@ sysupgrade()
 		esac
 	done
 
+	# Specific upgrade: packages to build from sources
+	if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
+		for package in ${packages[@]}; do
+			if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
+				packagesfromsource[${#packagesfromsource[@]}]=$package
+			fi
+		done
+		if [ ${#packagesfromsource[@]} -gt 0 ]; then
+			msg $(eval_gettext 'Packages to build from sources:')
+			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+			# Show package list before building
+			if [ $NOCONFIRM -eq 0 ]; then
+				echo -n $(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)
+				proceed=`userinput`
+			fi
+			# Build packages if needed
+			if [ "$proceed" != "N" ]; then
+				BUILD=1
+				install_from_abs "${packagesfromsource[*]}"
+		        	die 0
+			fi
+		fi
+	fi
 
+	# Classic sysupgrade
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
 	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/-i686.pkg.tar.gz$//" -e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
 	for pkg in ${pkg_repository_name_ver[@]}; do
@@ -328,35 +352,7 @@ sysupgrade()
 
 	# ok let's do real sysupgrade
 	if [ ${#packages[@]} -gt 0 ]; then
-		# List packages to build
-		if [ $BUILD -eq 1 -o $CUSTOMIZEPKGINSTALLED -eq 1 ] && [ $DOWNLOAD -eq 0 ]; then
-			for package in ${packages[@]}; do
-				if [ $BUILD -eq 1 -o -f "/etc/customizepkg.d/$package" ]; then
-					packagesfromsource[${#packagesfromsource[@]}]=$package
-				fi
-			done
-		fi
-		# Show package list before building
-		if [ ${#packagesfromsource[@]} -gt 0 ]; then
-			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
-			if [ $NOCONFIRM -eq 0 ]; then
-				echo -n $(eval_gettext 'Proceed with installation? ')$(yes_no 1)
-				proceed=`userinput`
-			fi
-		fi
-		# Build some packages if needed, then launch pacman classic sysupgrade
-		if [ "$proceed" != "N" ]; then
-			if [ ${#packagesfromsource[@]} -gt 0 ]; then
-				BUILD=1
-				install_from_abs "${packagesfromsource[*]}"
-			fi
-			if [ ${#packages[@]} -gt ${#packagesfromsource[@]} ]; then
-				pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
-			fi
-		fi
-	#else
-		# Nothing to update. Show various infos
-		#eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+		pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
 	fi
 }
 
