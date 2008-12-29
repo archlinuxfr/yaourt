@@ -137,3 +137,6 @@ yaourt 0.9.2
 
 yaourt 0.9.2.1
 - fixed aur search
+
+yaourt 0.9.2.2
+- fixed NOPASSWD with sudo

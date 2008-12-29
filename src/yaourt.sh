@@ -28,7 +28,7 @@ export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 NAME="yaourt"
-VERSION="0.9.2.1"
+VERSION="0.9.2.2"
 AUR_URL="http://aur.archlinux.org/packages.php?setlang=en&do_Search=SeB=nd&L=2&C=0&PP=100&K="
 AUR_URL3="http://aur.archlinux.org/packages.php?setlang=en&ID="
 ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
@@ -775,7 +775,7 @@ launch_with_su(){
 	#msg "try to launch '${@}' with sudo"
 	command=`echo $* | awk '{print $1}'`
 
-	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep -F "NOPASSWD:" | sed 's/\,/\n/g' | grep "\(\ $command$\|ALL\)" 1>/dev/null; then
+	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | sed 's/\,/\n/g' | grep "\(\ $command$\|ALL\)" 1>/dev/null; then
 		#echo "Allowed to use sudo $command"
 		sudo $@ || return 1
 	else
