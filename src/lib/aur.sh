@@ -76,10 +76,9 @@ search_on_aur(){
 	_pkg=`echo $1 | sed 's/ AND / /'`
 	title $(eval_gettext 'searching for $_pkg on AUR')
 	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
-	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$1" | sed 's/{"ID":/\n/g' | sed '1d'|
+	# grab info from json rpc url and exclude community packages, then parse result
+	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$1" | sed 's/{"ID":/\n/g' | sed '1d'| grep -Fv '"URLPath":""' |
 	while read jsoninfo; do
-		# exclude first line
-		[ $(echo $jsoninfo | awk -F '"[:,]"' '{print NF}') -lt 10 ] && continue
 		package=$(parsejsoninfo Name)
 		version=$(parsejsoninfo Version)
 		description=$(parsejsoninfo Description)

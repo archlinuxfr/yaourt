@@ -124,6 +124,7 @@ yaourt 0.9.2
 - removed italic font when yaourt is run in screen or terminal
 - fixed searching on AUR
 - new option --ignorearch (by Cookiecaper) to ignore incomplete arch field in PKGBUILD
+- now pacdiffviewer search in /opt/
 - show wich package needs a new depend in -Su
 - fixed lowercase bug + locale bug in readonfigfile()
 - now search .pacsave/.pacnew in /usr/share, /usr/lib and /opt
@@ -133,3 +134,6 @@ yaourt 0.9.2
 - fix for -Su --devel (FS#118 from psychoweb)
 - new flag -Q --last to list last installed packages 
 - fixed -S group
+
+yaourt 0.9.2.1
+- fixed aur search
