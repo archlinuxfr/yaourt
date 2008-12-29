@@ -118,3 +118,19 @@ for better compatiblity and speed in search
 - new option --holdver to avoid building last developement version for git/cvs/svn package
 - gettext support + french translation by Tuxce
 - hack: yaourt needs root or sudo for -Spu
+
+yaourt 0.9.2
+- new -Su interface
+- removed italic font when yaourt is run in screen or terminal
+- fixed searching on AUR
+- new option --ignorearch (by Cookiecaper) to ignore incomplete arch field in PKGBUILD
+- now pacdiffviewer search in /opt/
+- show wich package needs a new depend in -Su
+- fixed lowercase bug + locale bug in readonfigfile()
+- now search .pacsave/.pacnew in /usr/share, /usr/lib and /opt
+- fix for complex sudoers files
+- fixed FS#119: relative path with yaourt --backup
+- fixed git/svn/cvs install
+- fix for -Su --devel (FS#118 from psychoweb)
+- new flag -Q --last to list last installed packages 
+- fixed -S group
