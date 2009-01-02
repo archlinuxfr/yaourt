@@ -26,7 +26,7 @@ else
 	NO_COLOR="\033[0m"
 
 	# No italic out of Xorg or under screen
-	if [ ! -z "$DISPLAY" ] && [ "$TERM" != "screen" ]; then
+	if [ ! -z "$DISPLAY" ] && [ "${TERM:0:6}" != "screen" ]; then
 		COL_ITALIQUE="\033[3m"
 		local _colitalique="\033[3m\\"
 	fi
