@@ -232,7 +232,7 @@ sysupgrade()
 		cat $YAOURTTMPDIR/sysupgrade
 	fi
 	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//" \
-	-e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
+	-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
 	# Show various avertissements
 	eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
