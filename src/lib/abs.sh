@@ -285,7 +285,7 @@ sysupgrade()
 
 	# Classic sysupgrade
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
-	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/-i686.pkg.tar.gz$//" -e "s/-[^ ]x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
+	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/-i686.pkg.tar.gz$//" -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
 	for pkg in ${pkg_repository_name_ver[@]}; do
 		pkgname=`echo $pkg| awk -F '##' '{print $1}'`
 		repository=`sourcerepository $pkgname`

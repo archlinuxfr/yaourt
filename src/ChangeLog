@@ -140,3 +140,7 @@ yaourt 0.9.2.1
 
 yaourt 0.9.2.2
 - fixed NOPASSWD with sudo
+
+yaourt 0.9.2.3
+- fixed sysupgrade with x86_64
+- fixed italic with screen-256color
