@@ -231,8 +231,8 @@ sysupgrade()
 	if [ $? -ne 0 ]; then
 		cat $YAOURTTMPDIR/sysupgrade
 	fi
-	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/-i686.pkg.tar.gz$//" \
-	-e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/^.*\///" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
+	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/.pkg.tar.*$//" -e "s/-i686$//" -e "s/-x86_64$//" \
+	-e "s/-any$//" -e "s/-ppc$//" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
 	# Show various avertissements
 	eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
@@ -285,7 +285,8 @@ sysupgrade()
 
 	# Classic sysupgrade
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
-	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/-i686.pkg.tar.gz$//" -e "s/-x86_64.pkg.tar.gz$//" -e "s/-any.pkg.tar.gz$//" -e "s/.pkg.tar.gz//" -e "s/-[a-z0-9_.]*-[a-z0-9.]*$/##&/" | sort`)
+	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/.pkg.tar.*$//" \
+       	-e "s/-i686$//" -e "s/-x86_64$//" -e "s/-any$//" -e "s/-ppc$//" -e "s/-[^-]*-[^-]*$/##&/" | sort`)
 	for pkg in ${pkg_repository_name_ver[@]}; do
 		pkgname=`echo $pkg| awk -F '##' '{print $1}'`
 		repository=`sourcerepository $pkgname`
@@ -426,6 +427,7 @@ showupgradepackage()
 		for line in ${newpkgs[@]}; do
 			repository=`echo $line| awk -F '##' '{print $1}'`
 			pkgname=`echo $line| awk -F '##' '{print $2}'`
+			rversion=`echo $line| awk -F '##' '{print $3}'`
 			### Searching for package which depends on 'new package'
 			requiredbypkg=$(eval_gettext 'not found')
 			for pkg in ${pkg_repository_name_ver[@]%\#\#*}; do

@@ -87,9 +87,7 @@ install_package(){
 		if [ $EXPORT -eq 1 ]
 		then
 			#msg "Delete old ${pkgname} package"
-			# remove this line if you want to keep old pkg.tar.gz files or use rm -i for interactive mode
-			#rm -i $EXPORTDIR/$pkgname-[0-9]*.pkg.tar.gz
-			rm -f $EXPORTDIR/$pkgname-[0-9]*-*.pkg.tar.gz
+			rm -f $EXPORTDIR/$pkgname-*-*{-$PARCH,}${PKGEXT}
 			msg $(eval_gettext 'Exporting ${pkgname} to ${EXPORTDIR} repository')
 			mkdir -p $EXPORTDIR/$pkgname
 			manage_error $? || { error $(eval_gettext 'Unable to write ${EXPORTDIR}/${pkgname}/ directory'); die 1; }
@@ -106,8 +104,8 @@ install_package(){
 				cp -pf "$file" $EXPORTDIR/$pkgname/ 
 				manage_error $? || { error $(eval_gettext 'Unable to copy $file to ${EXPORTDIR}/${pkgname}/ directory'); return 1; }
 			done
-			localsource[${#localsource[@]}]="$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz" 
-			cp -fp ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz $EXPORTDIR/ || error $(eval_gettext 'can not copy $pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz to $EXPORTDIR')
+			localsource[${#localsource[@]}]="$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}" 
+			cp -fp ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT} $EXPORTDIR/ || error $(eval_gettext 'can not copy $pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT} to $EXPORTDIR')
 		fi
 
 		echo
@@ -119,12 +117,12 @@ install_package(){
 				CONTINUE_INSTALLING=$(userinput "YNVC")
 				echo
 				if [ "$CONTINUE_INSTALLING" = "V" ]; then
-					eval $PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
-					eval $PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
+					eval $PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
+					eval $PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
 				elif [ "$CONTINUE_INSTALLING" = "C" ]; then
 					echo
 					if [ `type -p namcap` ]; then
-						namcap ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz
+						namcap ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
 					else
 						warning $(eval_gettext 'namcap is not installed')
 					fi
@@ -138,7 +136,7 @@ install_package(){
 			failed=1
 		else
 			[ -z "$CONTINUE_INSTALLING" ] && echo
-			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation ./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz"
+			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}"
 			if [ $? -ne 0 ]; then
 				failed=1
 			else
@@ -146,8 +144,8 @@ install_package(){
 			fi
 		fi
 		if [ $failed -eq 1 ]; then 
-			warning $(eval_gettext 'Your package is saved in /tmp/$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz')
-			cp -i "./$pkgname-$pkgver-$pkgrel-$PARCH.pkg.tar.gz" /tmp/ || warning $(eval_gettext 'Unable to copy $pkgname-$pkgrel-$PARCH.pkg.tar.gz to /tmp/ directory')
+			warning $(eval_gettext 'Your package is saved in $YAOURTTMPDIR/$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}')
+			cp -i "./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}" $YAOURTTMPDIR/ || warning $(eval_gettext 'Unable to copy $pkgname-$pkgrel-$PARCH${PKGEXT} to $YAOURTTMPDIR/ directory')
 		fi
 		cd ../..
 
@@ -748,7 +746,7 @@ parameters(){
 			die 1
 		else
 			for file in `echo $ARGLIST`; do
-				if echo $file | grep -q ".pkg.tar.gz"; then
+				if echo $file | grep -q ".pkg.tar.\(gz\|bz2\)"; then
 					filelist[${#filelist[@]}]=$file
 				fi
 			done
@@ -976,314 +974,6 @@ search_packages_by_installreason(){
 		if [ $pkgreason -eq $reason ]; then echo "$pkg"; fi
 	done
 
-}
-
-###################################
-### AUR specific functions      ###
-###################################
-aurcomments(){
-	wget --quiet "${AUR_URL3}${1}" -O - \
-	| tr '\r' '\n' | sed -e '/-- End of main content --/,//d' \
-	-e 's|<[^<]*>||g' \
-	-e 's|&quot;|"|g' \
-	-e 's|&lt;|<|g' \
-	-e 's|&gt;|>|g' \
-	-e '/^ *$/d' > ./aurpage
-	if [ $AURCOMMENT -eq 1 ]; then
-		numcomment=0
-		rm -rf ./comments || error $(eval_gettext 'can not remove old comments')
-		mkdir -p comments
-		cat ./aurpage | sed '1,/Comments/d' |
-		while read line; do
-			if echo $line |grep -q "Comment by:"; then
-				(( numcomment ++ ))
-				if [ $numcomment -gt $MAXCOMMENTS -a $MAXCOMMENTS -ne 0 ]; then
-					msg $(eval_gettext 'Last $MAXCOMMENTS comments ordered by date ($ORDERBY):')
-					break
-				fi
-			fi
-			echo $line >> comments/$numcomment
-		done
-
-		numcomment=`ls comments/ | wc -l`
-		if [ $numcomment -gt $MAXCOMMENTS -a $MAXCOMMENTS -ne 0 ]; then
-			limit=$MAXCOMMENTS
-		else
-			limit=$numcomment
-		fi      
-		if [ "$ORDERBY" = "asc" ]; then
-			liste=`seq $limit -1 1`
-		elif [ "$ORDERBY" = "desc" ]; then
-			liste=`seq 1 1 $limit`
-		fi
-		for comment in ${liste[*]}; do
-			if [ -f "comments/$comment" ]; then
-				cat comments/$comment |
-				while read line; do
-					echo -e ${line/#Comment by:/\\n${COL_YELLOW}Comment by:}$NO_COLOR
-				done
-			fi
-		done
-	fi
-	echo
-	grep "First Submitted" ./aurpage | sed "s/First/\n      &/" |sort
-}
-findaurid(){
-	wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$1"| sed -e 's/^.*{"ID":"//' -e 's/",".*$//'| sed '/^$/d'
-}
-vote_package(){
-	# vote for package
-	# Check if this package has been voted on AUR, and vote for it
-	if [ $AURVOTEINSTALLED -eq 0 ]; then
-		echo -e "${COL_ITALIQUE}"$(eval_gettext 'If you like this package, please install aurvote\nand vote for its inclusion/keeping in [community]')"${NO_COLOR}"
-	else
-		echo
-		_pkg=$1
-		msg $(eval_gettext 'Checking vote status for $_pkg')
-		pkgvote=`aurvote --id --check "$1/$2"`
-		if [ "${pkgvote}" = "already voted" ]; then
-			_pkg=$1
-			echo $(eval_gettext 'You have already voted for $_pkg inclusion/keeping in [community]')
-		elif [ "$pkgvote" = "not voted" ]; then
-			echo
-			if [ $NOCONFIRM -eq 0 ]; then
-				_pkg=$1
-				prompt $(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)
-				VOTE=`userinput`
-			fi
-			if [ "$VOTE" != "N" ]; then
-				aurvote --id --vote "$1/$2"
-			fi
-		else
-			echo $pkgvote
-		fi
-	fi
-
-}
-install_from_aur(){
-	loadlibrary aur
-	pkgname=
-	pkgdesc=
-	pkgver=
-	pkgrel=
-	runasroot=0
-	failed=0
-	DEP_AUR=( )
-	local PKG="$1"
-	title $(eval_gettext 'Installing $PKG from AUR')
-	UID_ROOT=0
-	if [ "$UID" -eq "$UID_ROOT" ]
-	then
-		runasroot=1
-		warning $(eval_gettext 'Building unsupported package as root is dangerous.\n Please run yaourt as a non-privileged user.')
-		sleep 2
-	fi
-
-	wdir="$YAOURTTMPDIR/aur-$PKG"
-
-	if [ -d "$wdir" ]; then
-		msg $(eval_gettext 'Resuming previous build')
-	else
-		mkdir -p "$wdir" || { error $(eval_gettext 'Unable to create directory $wdir.'); return 1; }
-	fi
-	cd "$wdir/"
-
-	echo
-	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	wget -q "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error $(eval_gettext '$PKG not found in AUR.'); return 1; }
-	tar xfvz "$PKG.tar.gz" > /dev/null || return 1
-	cd "$PKG/"
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
-
-	# Customise PKGBUILD
-	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
-
-	# Eclude package moved into community repository	
-	if `is_in_community $PKG`; then
-		warning $(eval_gettext '${PKG} is now available in [community]. Aborted')
-		error_package[${#error_package[@]}]="$PKG"
-		return 1
-	fi
-
-	# Test if AUR page exists and show comments
-	aurid=`findaurid "$PKG"`
-	if [ -z "$aurid" ]; then
-		warning $(eval_gettext 'It seems like ${PKG} was removed from AUR probably for security reason. Please Abort')
-		sleep 2
-		echo -e "${COL_BOLD}${pkgname} ${pkgver}-${pkgrel} ${COL_BLINK}${COL_RED}"$(eval_gettext '(NOT SAFE)')"${NO_COLOR}: ${pkgdesc}"
-	else
-		# grab AUR comments
-		echo
-		aurcomments $aurid $PKG
-		echo -e "${COL_BOLD}${pkgname} ${pkgver}-${pkgrel} ${COL_BLINK}${COL_RED}"$(eval_gettext '(Unsupported)')"${NO_COLOR}: ${pkgdesc}"
-	fi
-
-	find_pkgbuild_deps || return 1
-	edit=0
-	if [ $EDITPKGBUILD -eq 1 ]; then
-		prompt $(eval_gettext 'Edit the PKGBUILD (recommended) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
-		EDIT_PKGBUILD=$(userinput "YNA")
-		echo
-		if [ "$EDIT_PKGBUILD" = "A" ]; then
-			echo $(eval_gettext 'Aborted...')
-			return 1
-		elif [ "$EDIT_PKGBUILD" != "N" ]; then
-			edit=1
-		fi
-	fi
-
-	if [ $edit -eq 1 ]; then
-		edit_file ./PKGBUILD
-		find_pkgbuild_deps || return 1
-	fi
-
-	# if install variable is set in PKGBUILD, propose to edit file(s)
-	readPKGBUILD
-	if [ -f "${install[0]}" -a $EDITPKGBUILD -eq 1 ]; then
-		echo 
-		warning $(eval_gettext 'This PKGBUILD contains install file that can be dangerous.')
-		for installfile in ${install[@]}; do
-			edit=0
-			list $installfile
-			prompt $(eval_gettext 'Edit $installfile (recommended) ? ')$(yes_no 1) $(eval_gettext '("A" to abort)')
-			EDIT_INSTALLFILE=$(userinput "YNA")
-			echo
-			if [ "$EDIT_INSTALLFILE" = "A" ]; then
-				echo $(eval_gettext 'Aborted...')
-				return 1
-			elif [ "$EDIT_INSTALLFILE" != "N" ]; then
-				edit=1
-			fi
-			if [ $edit -eq 1 ]; then
-				edit_file $installfile
-			fi
-		done
-	fi
-
-	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)
-		if [ "`userinput`" = "N" ]; then
-			return 0
-		fi
-	fi
-
-	echo
-	# install new dependencies from AUR
-	if [ ${#DEP_AUR[@]} -gt 0 ]; then
-		msg $(eval_gettext 'Building missing dependencies from AUR:')
-		local depindex=0
-		for newdep in ${DEP_AUR[@]}; do
-			$BUILDPROGRAM --asdeps "$newdep" || failed=1
-			# remove dependencies if failed 
-			if [ $failed -eq 1 ]; then
-				if [ $depindex -gt 0 ]; then
-					warning $(eval_gettext 'Dependencies have been installed before the failure')
-					$YAOURTCOMMAND -Rcsn "${DEP_AUR[@]:0:$depindex}"
-					plain $(eval_gettext 'press a key to continue')
-					read
-				fi
-				break
-			fi
-			(( depindex ++ ))
-		done
-	fi
-	echo
-
-	# if dep's building not failed; search for sourceforge mirror
-	[ $failed -ne 1 ] && sourceforge_mirror_hack
-
-	# compil PKGBUILD if dep's building not failed
-	[ $failed -ne 1 ] && build_package
-	retval=$?
-	if [ $retval -eq 1 ]; then
-		manage_error 1 || return 1
-	elif [ $retval -eq 90 ]; then
-		return 0
-	fi
-
-	# Install, export, copy package after build 
-	[ $failed -ne 1 ] && install_package
-
-	# Check if this package has been voted on AUR, and vote for it
-	if [ $AURVOTE -eq 1 ]; then
-		vote_package "$pkgname" "$aurid"
-	fi
-
-	#msg "Delete $wdir"
-	rm -rf "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
-	cleanoutput
-	echo
-	return $failed
-}
-
-upgrade_from_aur(){
-	title $(eval_gettext 'upgrading AUR unsupported packages')
-	tmp_files="$YAOURTTMPDIR/search/"
-	mkdir -p $tmp_files
-	loadlibrary pacman_conf
-	loadlibrary aur
-	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
-	# Search for new version on AUR
-	local iNum=0
-	msg $(eval_gettext 'Searching for new version on AUR')
-	for PKG in $(pacman -Qqm)
-	do
-		echo -n "$PKG: "
-		initjsoninfo $PKG || { echo -e "${COL_YELLOW}"$(eval_gettext 'not found on AUR')"${NO_COLOR}"; continue; }
-		local_version=`pkgversion $PKG`
-		aur_version=`parsejsoninfo Version`
-		if `is_x_gt_y $aur_version $local_version`; then
-			echo -en "${COL_GREEN}${local_version} => ${aur_version}${NO_COLOR}"
-			if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
-				echo -e "${COL_RED} "$(eval_gettext '(ignoring package upgrade)')"${NO_COLOR}"
-			else
-				echo 
-				aur_package[$iNum]=$PKG
-				(( iNum ++ ))
-			fi
-		elif [ $local_version != $aur_version ]; then
-			echo -e " (${COL_RED}local=$local_version ${NO_COLOR}aur=$aur_version)"
-		else
-			if [ `parsejsoninfo "OutOfDate"` -eq 1 ]; then
-				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flagged as out of date')")${NO_COLOR}"
-			else
-				echo $(eval_gettext 'up to date ')
-			fi
-		fi
-	done
-	cleanoutput
-
-	[ $iNum -lt 1 ] && return 0
-
-	# upgrade yaourt first
-	for package in ${aur_package[@]}; do
-		if [ "$package" = "yaourt" ]; then
-			warning $(eval_gettext 'New version of $package detected')
-			prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
-			[ "`userinput`" = "N" ] && break
-			echo
-			msg $(eval_gettext 'Upgrading $package first')
-			install_from_aur "$package" || error $(eval_gettext 'unable to update $package')
-			die 0
-		fi
-	done
-
-	plain "\n---------------------------------------------"
-	plain $(eval_gettext 'Packages that can be updated from AUR:')
-	echo "${aur_package[*]}"
-	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Do you want to update these packages ? ')$(yes_no 1)
-		[ "`userinput`" = "N" ] && return 0
-		echo
-	fi
-	for PKG in ${aur_package[@]}; do
-		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
-	done
-	cleanoutput
 }
 
 ###################################
@@ -1531,10 +1221,12 @@ case "$MAJOR" in
 	elif [ $SYSUPGRADE -eq 0 ]; then
 		#msg "Install ($ARGSANS)"
 		loadlibrary abs
+		loadlibrary aur
 		sync_packages
 	elif [ $SYSUPGRADE -eq 1 ]; then
 		#msg "System Upgrade"
 		loadlibrary abs
+		loadlibrary aur
 		sysdowngrade
 		sysupgrade
 		# Upgrade all AUR packages or all Devel packages
