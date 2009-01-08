@@ -144,3 +144,7 @@ yaourt 0.9.2.2
 yaourt 0.9.2.3
 - fixed sysupgrade with x86_64
 - fixed italic with screen-256color
+
+yaourt 0.9.2.4
+- honnor $PKGEXT (new .pkg.tar.bz2)
+- moved "editing PKGBUILD" before "reading"
