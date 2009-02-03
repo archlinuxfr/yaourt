@@ -771,7 +771,7 @@ manage_error(){
 launch_with_su(){
 	# try to launch $1 with sudo, else prompt for root password
 	#msg "try to launch '${@}' with sudo"
-	command=`echo $* | awk '{print $1}'`
+	command=`echo $* | awk '{gsub(/LC_ALL=\"C\"/,""); print $1}'`
 
 	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | sed 's/\,/\n/g' | grep "\(\ $command$\|ALL\)" 1>/dev/null; then
 		#echo "Allowed to use sudo $command"
