@@ -131,12 +131,13 @@ aurcomments(){
 	-e 's|&quot;|"|g' \
 	-e 's|&lt;|<|g' \
 	-e 's|&gt;|>|g' \
+	-e '/^\t*$/d' \
 	-e '/^ *$/d' > ./aurpage
 	if [ $AURCOMMENT -eq 1 ]; then
 		numcomment=0
 		rm -rf ./comments || error $(eval_gettext 'can not remove old comments')
 		mkdir -p comments
-		cat ./aurpage | sed '1,/Comments/d' |
+		cat ./aurpage | sed -e '1,/^Tarball ::/d' -e '/^$/d' |
 		while read line; do
 			if echo $line |grep -q "Comment by:"; then
 				(( numcomment ++ ))
