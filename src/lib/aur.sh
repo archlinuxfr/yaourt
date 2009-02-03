@@ -54,7 +54,7 @@ cd $tmpdir
 wget -O PKGBUILD -q http://aur.archlinux.org/packages/$PKG/$PKG/PKGBUILD || { echo "$PKG not found in repos nor in AUR"; return 1; }
 
 while true; do
-	prompt $(eval_gettext 'Edit the PKGBUILD (recommended) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
+	prompt $(eval_gettext 'Edit the PKGBUILD (highly recommended for security reasons) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
 	EDIT_PKGBUILD=$(userinput "YNA")
 	echo
 	if [ "$EDIT_PKGBUILD" = "A" ]; then
@@ -249,7 +249,8 @@ install_from_aur(){
 	tar xfvz "$PKG.tar.gz" > /dev/null || return 1
 	cd "$PKG/"
 	aurcomments $aurid
-	echo -e "${COL_BOLD}${PKG} ${version} ${COL_BLINK}${COL_RED}"$(eval_gettext '(Unsupported)')"${NO_COLOR}: ${description}"
+	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
+	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(eval_gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"
 
 	# Customise PKGBUILD
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
@@ -263,7 +264,7 @@ install_from_aur(){
 	loop=0
 	while [ $EDITPKGBUILD -eq 1 -a $edit -eq 1 ]; do
 		edit=0
-		prompt $(eval_gettext 'Edit the PKGBUILD (recommended) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
+		prompt $(eval_gettext 'Edit the PKGBUILD (highly recommended for security reasons) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
 		EDIT_PKGBUILD=$(userinput "YNA")
 		echo
 		if [ "$EDIT_PKGBUILD" = "A" ]; then
@@ -287,7 +288,7 @@ install_from_aur(){
 		for installfile in ${install[@]}; do
 			edit=0
 			list $installfile
-			prompt $(eval_gettext 'Edit $installfile (recommended) ? ')$(yes_no 1) $(eval_gettext '("A" to abort)')
+			prompt $(eval_gettext 'Edit $installfile (highly recommended for security reasons) ? ')$(yes_no 1) $(eval_gettext '("A" to abort)')
 			EDIT_INSTALLFILE=$(userinput "YNA")
 			echo
 			if [ "$EDIT_INSTALLFILE" = "A" ]; then
@@ -315,8 +316,12 @@ install_from_aur(){
 		msg $(eval_gettext 'Building missing dependencies from AUR:')
 		local depindex=0
 		for newdep in ${DEP_AUR[@]}; do
+			echo $BUILDPROGRAM --asdeps "$newdep"
+			read
 			$BUILDPROGRAM --asdeps "$newdep"
-			if ! isinstalled $package; then
+			if `isinstalled $newdep`; then
+				failed=0
+			else
 				failed=1
 			fi
 
@@ -426,3 +431,32 @@ upgrade_from_aur(){
 	done
 	cleanoutput
 }
+find_pkgbuild_deps (){
+	unset DEPS DEP_AUR
+	readPKGBUILD
+	if [ -z "$pkgname" ]; then
+		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
+		return 1
+	fi
+	for dep in $(echo "${depends[@]} ${makedepends[@]}" | tr -d '\\')
+	do
+		DEPS[${#DEPS[@]}]=$(echo $dep | sed 's/=.*//' \
+		| sed 's/>.*//' \
+		| sed 's/<.*//')
+	done
+	[ ${#DEPS[@]} -eq 0 ] && return 0
+
+	echo
+	msg "$(eval_gettext '$PKG dependencies:')"
+	DEP_PACMAN=0
+
+	for dep in ${DEPS[@]}; do
+		if isinstalled $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(already installed)'); continue; fi
+		if isprovided $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(package that provides ${dep} already installed)'); continue; fi
+		if isavailable $dep; then echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(eval_gettext '(package found)'); DEP_PACMAN=1; continue; fi
+		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(eval_gettext '(building from AUR)') 
+		DEP_AUR[${#DEP_AUR[@]}]=$dep 
+	done
+
+}
+

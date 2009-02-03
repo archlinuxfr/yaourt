@@ -51,125 +51,11 @@ setPARCH(){
 		PARCH="$CARCH"	
 	fi
 }
-find_pkgbuild_deps (){
-	unset DEPS DEP_AUR
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
-	for dep in $(echo "${depends[@]} ${makedepends[@]}" | tr -d '\\')
-	do
-		DEPS[${#DEPS[@]}]=$(echo $dep | sed 's/=.*//' \
-		| sed 's/>.*//' \
-		| sed 's/<.*//')
-	done
-	[ ${#DEPS[@]} -eq 0 ] && return 0
 
-	echo
-	msg "$(eval_gettext '$PKG dependencies:')"
-	DEP_PACMAN=0
-
-	for dep in ${DEPS[@]}; do
-		if isinstalled $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(already installed)'); continue; fi
-		if isprovided $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(package that provides ${dep} already installed)'); continue; fi
-		if isavailable $dep; then echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(eval_gettext '(package found)'); DEP_PACMAN=1; continue; fi
-		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(eval_gettext '(building from AUR)') 
-		DEP_AUR[${#DEP_AUR[@]}]=$dep 
-	done
-
-}
-install_package(){
-	# Install, export, copy package after build 
-	source /etc/makepkg.conf || return 1
-	setPARCH
-	if [ $failed -ne 1 ]; then
-		if [ $EXPORT -eq 1 ]
-		then
-			#msg "Delete old ${pkgname} package"
-			rm -f $EXPORTDIR/$pkgname-*-*{-$PARCH,}${PKGEXT}
-			msg $(eval_gettext 'Exporting ${pkgname} to ${EXPORTDIR} repository')
-			mkdir -p $EXPORTDIR/$pkgname
-			manage_error $? || { error $(eval_gettext 'Unable to write ${EXPORTDIR}/${pkgname}/ directory'); die 1; }
-			readPKGBUILD
-			unset localsource
-			for src in ${source[@]}; do
-				if [ `echo $src | grep -v ^\\\\\\(ftp\\\\\\|http\\\\\\)` ]; then
-					localsource[${#localsource[@]}]=$src
-				fi
-			done
-			localsource[${#localsource[@]}]="PKGBUILD"
-			if [ ! -z "$install" ]; then localsource[${#localsource[@]}]="$install";fi
-			for file in ${localsource[@]}; do
-				cp -pf "$file" $EXPORTDIR/$pkgname/ 
-				manage_error $? || { error $(eval_gettext 'Unable to copy $file to ${EXPORTDIR}/${pkgname}/ directory'); return 1; }
-			done
-			localsource[${#localsource[@]}]="$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}" 
-			cp -fp ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT} $EXPORTDIR/ || error $(eval_gettext 'can not copy $pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT} to $EXPORTDIR')
-		fi
-
-		echo
-		if [ $NOCONFIRM -eq 0 ]; then
-			CONTINUE_INSTALLING="V"
-			while [ "$CONTINUE_INSTALLING" = "V" -o "$CONTINUE_INSTALLING" = "C" ]; do
-				echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}"$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)"${NO_COLOR}" >&2
-				prompt $(eval_gettext '[v]iew package contents   [c]heck package with namcap')
-				CONTINUE_INSTALLING=$(userinput "YNVC")
-				echo
-				if [ "$CONTINUE_INSTALLING" = "V" ]; then
-					eval $PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
-					eval $PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
-				elif [ "$CONTINUE_INSTALLING" = "C" ]; then
-					echo
-					if [ `type -p namcap` ]; then
-						namcap ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
-					else
-						warning $(eval_gettext 'namcap is not installed')
-					fi
-					echo
-				fi
-			done
-		fi
-
-		if [ "$CONTINUE_INSTALLING" = "N" ]; then
-			msg $(eval_gettext 'Package not installed')
-			failed=1
-		else
-			[ -z "$CONTINUE_INSTALLING" ] && echo
-			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}"
-			if [ $? -ne 0 ]; then
-				failed=1
-			else
-				failed=0
-			fi
-		fi
-		if [ $failed -eq 1 ]; then 
-			warning $(eval_gettext 'Your package is saved in $YAOURTTMPDIR/$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}')
-			cp -i "./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}" $YAOURTTMPDIR/ || warning $(eval_gettext 'Unable to copy $pkgname-$pkgrel-$PARCH${PKGEXT} to $YAOURTTMPDIR/ directory')
-		fi
-		cd ../..
-
-	else
-		dirtosave=`pwd`
-		cd ../
-		if [ $SYSUPGRADE -ne 1 -a $develpkg -eq 0 ]; then
-			plain $(eval_gettext 'Build process aborted for $PKG')
-			if [ $NOCONFIRM -eq 0 ]; then
-				prompt $(eval_gettext 'Copy ${PKG} directory to /var/abs/local ? ') $(yes_no 2)
-				CONTINUE_COPY=$(userinput)
-				echo
-			fi
-			if [ "$CONTINUE_COPY" = "Y" ]; then
-				mv "$dirtosave" "/var/abs/local/$PKG" || launch_with_su "mv ${dirtosave} /var/abs/local/${PKG}" || { warning $(eval_gettext 'Unable to copy $PKG directory to $ABSROOT/local'); return 1; }
-			fi
-		fi
-	fi
-	return $failed
-}
 edit_file(){
 	local file=$1
 	if [ -z "$EDITOR" ]; then
-		echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
+		echo -e ${COL_RED}$(eval_gettext 'Please add EDITOR to your environment variables')
 		echo -e ${NO_COLOR}$(eval_gettext 'for example:')
 		echo -ne ${COL_ARROW}"==> "${NO_COLOR} $(eval_gettext 'Edit PKGBUILD with: ')
 		echo $(eval_gettext '(replace gvim with your favorite editor)')
@@ -180,95 +66,6 @@ edit_file(){
 	if [ "$EDITOR" = "gvim" ]; then edit_prog="gvim --nofork"; else edit_prog="$EDITOR";fi
 	( $edit_prog "$file" )
 	wait
-}
-build_package(){
-	failed=0
-	# Test PKGBUILD for last svn/cvs/... version
-	msg "$(eval_gettext 'Building and installing package')"
-	develpkg=0
-	if [ ! -z "${_svntrunk}" -a ! -z "${_svnmod}" ] \
-		|| [ ! -z "${_cvsroot}" -a ! -z "${_cvsmod}" ] \
-		|| [ ! -z "${_hgroot}" -a ! -z "${_hgrepo}" ] \
-		|| [ ! -z "${_darcsmod}" -a ! -z "${_darcstrunk}" ] \
-		|| [ ! -z "${_bzrtrunk}" -a ! -z "${_bzrmod}" ] \
-		|| [ ! -z "${_gitroot}" -a ! -z "${_gitname}" ]; then
-		develpkg=1
-	fi
-
-	if [ $develpkg -eq 1 ];then
-		#msg "Building last CVS/SVN/HG/GIT version"
-		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgname}"
-		# Using previous build directory
-		if [ -d "$wdirDEVEL" ]; then
-			if [ $NOCONFIRM -eq 0 ]; then
-				prompt $(eval_gettext 'Yaourt has detected previous ${pkgname} build. Do you want to use it (faster) ? ') $(yes_no 1)
-				USE_OLD_BUILD=$(userinput)
-				echo
-			fi
-			if [ "$USE_OLD_BUILD" != "N" ] || [ $NOCONFIRM -gt 0 ]; then
-				cp ./* "$wdirDEVEL/"
-				cd $wdirDEVEL
-			fi
-		else
-			mkdir -p $wdirDEVEL
-			if [ $? -eq 1 ]; then
-				warning $(eval_gettext 'Unable to write in ${wdirDEVEL} directory. Using /tmp directory')
-				wdirDEVEL="$wdir/$PKG"
-				sleep 3
-			else
-				cp -r ./* "$wdirDEVEL/"
-				cd "$wdirDEVEL"
-			fi
-		fi
-
-		# Use versionpkg to find latest version
-		if [ $VERSIONPKGINSTALLED -eq 1 -a $HOLDVER -eq 0 ]; then
-			msg $(eval_gettext 'Searching new CVS/SVN/GIT revision for $PKG')
-			versionpkg --modify-only --force
-			readPKGBUILD
-			if [ "`pkgversion $pkgname`" = "$pkgname-$pkgver-$pkgrel" ]; then
-				msg $(eval_gettext 'There is no CVS/SVN/GIT update available for $PKG.. Aborted')
-				sleep 1
-				return 90
-			fi
-		fi
-	fi
-
-	# Check for arch variable
-	readPKGBUILD
-	if [ -z "$arch" ]; then
-		source /etc/makepkg.conf
-		[ -z "$CARCH" ] && CARCH="i686"
-		warning $(eval_gettext 'the arch variable is missing !\nyaourt will add arch=(''$CARCH'') automatically.')
-		sed -i "/^build/iarch=('$CARCH')\n" ./PKGBUILD
-	fi
-
-	# Build 
-	mkpkg_opt="$confirmation"
-	[ $NODEPS -eq 1 ] && mkpkg_opt="$mkpkg_opt -d"
-	[ $IGNOREARCH -eq 1 ] && mkpkg_opt="$mkpkg_opt -A"
-	[ $HOLDVER -eq 1 ] && mkpkg_opt="$mkpkg_opt --holdver"
-	if [ $runasroot -eq 1 ]; then 
-		pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --asroot --syncdeps --force -p ./PKGBUILD
-	else
-		if [ $SUDOINSTALLED -eq 1 ]; then
-			pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --syncdeps --force -p ./PKGBUILD
-		else
-			eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
-		fi
-	fi
-
-	if [ $? -ne 0 ]; then
-		error $(eval_gettext 'Makepkg was unable to build $PKG package.')
-		failed=1
-	fi
-
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
-	return $failed
 }
 sourceforge_mirror_hack(){
 	readPKGBUILD
@@ -804,18 +601,12 @@ launch_with_su(){
 ### Package database functions  ###
 ###################################
 isinstalled(){
-	if [ ${#allpkginstalled[@]} -eq 0 ]; then
-		allpkginstalled=( `pacman -Qq` )
-	fi
-	for installedpkg in ${allpkginstalled[@]};do
-		if [ "$1" = "$installedpkg" ]; then return 0; else continue; fi
-	done
-	return 1
+	pacman -Qq $1 &>/dev/null
 }
 isavailable(){
 	# is the package available in repositories ?
 	if [ ${#allpkgavailable[@]} -eq 0 ]; then
-		allpkgavailable=( `pacman -Sl | awk '{print $2}'` )
+		allpkgavailable=( `pacman -Slq` )
 	fi
 	for pkgavailable in ${allpkgavailable[@]};do
 		if [ "$1" = "$pkgavailable" ]; then return 0; else continue; fi
