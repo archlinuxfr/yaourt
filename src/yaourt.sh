@@ -785,7 +785,7 @@ launch_with_su(){
 		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
 		errorfile="/tmp/yaourt_error.$RANDOM"
 		for i in 1 2 3; do 
-			su root --command "$* || touch $errorfile"
+			su --command "$* || touch $errorfile"
 			if [ $? -eq 1 ] && [ ! -f "$errorfile" ]; then
 				continue
 			else
