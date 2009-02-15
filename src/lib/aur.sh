@@ -29,6 +29,16 @@ parsejsoninfo(){
 	echo $jsoninfo | sed -e 's/^.*[{,]"'$1'":"//' -e 's/"[,}].*$//'
 }
 
+#Extracts value of json field and adds to start of line for use as sort key for each line
+presortjsoninfo(){
+	awk '{sortkey=$0; sub(/^.*[{,]"'$1'":"/, "", sortkey); sub(/"[,}].*$/, "", sortkey); print sortkey $0}'
+}
+
+#Removes sort key from each line
+postsortjsoninfo(){
+	awk '{sub(/"[^"]+"/, ""); print $0}'
+}
+
 # return 0 if package is on AUR Unsupported else 1
 is_unsupported(){
 	initjsoninfo $1 || return 1
@@ -92,6 +102,7 @@ search_on_aur(){
 	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
 	# grab info from json rpc url and exclude community packages, then parse result
 	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$1" | sed 's/{"ID":/\n/g' | sed '1d'| grep -Fv '"URLPath":""' |
+	presortjsoninfo Name | sort | postsortjsoninfo |
 	while read jsoninfo; do
 		# exclude first line
 		[ $(echo $jsoninfo | awk -F '"[:,]"' '{print NF}') -lt 10 ] && continue
