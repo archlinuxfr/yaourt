@@ -328,8 +328,6 @@ install_from_aur(){
 		msg $(eval_gettext 'Building missing dependencies from AUR:')
 		local depindex=0
 		for newdep in ${DEP_AUR[@]}; do
-			echo $BUILDPROGRAM --asdeps "$newdep"
-			read
 			$BUILDPROGRAM --asdeps "$newdep"
 			if `isinstalled $newdep`; then
 				failed=0
