@@ -7,6 +7,7 @@ arch=(i686 x86_64 ppc)
 url="http://www.archlinux.fr/yaourt-en/" 
 license="GPL" 
 depends=('wget' 'diffutils' 'pacman>=3.1.0') 
+makedepends=('gettext')
 optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
 	'customizepkg: automatically modify PKGUILD during install/upgrade'
 	'pacman-color: fully colorized output'
