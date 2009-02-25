@@ -28,7 +28,7 @@ export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 NAME="yaourt"
-VERSION="0.9.2.4"
+VERSION="0.9.2.5"
 AUR_URL="http://aur.archlinux.org/packages.php?setlang=en&do_Search=SeB=nd&L=2&C=0&PP=100&K="
 AUR_URL3="http://aur.archlinux.org/packages.php?setlang=en&ID="
 ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
@@ -662,11 +662,12 @@ show_new_orphans(){
 	pacman -Qqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
 	pacman -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
 	cat "$INSTALLED_AFTER.full" | awk '{print $1}'  > $INSTALLED_AFTER
-	comm -1 -3 "$INSTALLED_BEFORE" "$INSTALLED_AFTER" > "$INSTALLED_AFTER.newonly"
-	comm -2 -3 "$ORPHANS_AFTER.tmp" "$INSTALLED_AFTER.newonly" | awk '{print $1}' > $ORPHANS_AFTER
+
+	LC_ALL=C comm -1 -3 "$INSTALLED_BEFORE" "$INSTALLED_AFTER" > "$INSTALLED_AFTER.newonly"
+	LC_ALL=C comm -2 -3 "$ORPHANS_AFTER.tmp" "$INSTALLED_AFTER.newonly" | awk '{print $1}' > $ORPHANS_AFTER
 
 	# show new orphans after removing/upgrading
-	neworphans=$(comm -1 -3 $ORPHANS_BEFORE $ORPHANS_AFTER | awk '{print $1}' )
+	neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" | awk '{print $1}' )
 	if [ ! -z "$neworphans" ]; then
 		plain $(eval_gettext 'Packages that were installed as dependencies but are no longer required by any installed package:')
 		list "$neworphans"

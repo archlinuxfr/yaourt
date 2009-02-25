@@ -39,7 +39,7 @@ is_an_alpm_backup(){
 	backupdir="$YAOURTTMPDIR/backup/$$"
 	mkdir -p "$backupdir"
 	tar xjf $1 -C "$backupdir/"
-	eval $PACMANBIN --dbpath "$backupdir/" --query | sort > "$YAOURTTMPDIR/backup/backupdb"
+	eval $PACMANBIN --dbpath "$backupdir/" --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/backupdb"
 	if [ ! -s "$YAOURTTMPDIR/backup/backupdb" ]; then
 		_file=$1
 		error $(eval_gettext '$_file is not a valid alpm database backup')
@@ -53,12 +53,12 @@ restore_alpm_db(){
 	if ! is_an_alpm_backup "$backupfile"; then
 		return 1
 	fi
-	eval $PACMANBIN --query | sort > "$YAOURTTMPDIR/backup/nowdb"
+	eval $PACMANBIN --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/nowdb"
 	msg $(eval_gettext 'New packages installed since backup:')
-	comm -1 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
+	LC_ALL=C comm -1 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
 	echo
 	msg $(eval_gettext 'Packages removed or ugpraded since backup:')
-	comm -2 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
+	LC_ALL=C comm -2 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
 	echo
 	title $(eval_gettext 'Warning! Do you want to restore this backup ?')
 	_pid=$$
@@ -71,7 +71,7 @@ restore_alpm_db(){
 	msg $(eval_gettext 'Copying backup')
 	launch_with_su "mv $backupdir/local/ $PACMANROOT/local"
 	msg $(eval_gettext 'Testing the new database')
-	eval $PACMANBIN --query | sort > "$YAOURTTMPDIR/backup/nowdb"
+	eval $PACMANBIN --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/nowdb"
 	if [ `diff "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" | wc -l` -gt 0 ]; then
 	       warning $(eval_gettext 'Your backup is not successfully restored')
 	else

@@ -148,3 +148,12 @@ yaourt 0.9.2.3
 yaourt 0.9.2.4
 - honnor $PKGEXT (new .pkg.tar.bz2)
 - moved "editing PKGBUILD" before "reading"
+
+yaourt 0.9.2.5
+- Compatibility fix for new coreutils
+- Italian language from Angelo and some other ArchLinux.it forum members
+- AUR search results sorting (patch from net147)
+- compatibility fix for comments with new AUR website
+- Fix install deps from AUR + git/SVN package
+- fixed su when root user is not named "root"
+- fixed ForceEnglish option (patch from Richard Adenling)

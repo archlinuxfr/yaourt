@@ -77,9 +77,9 @@ showrepostats(){
 		nbcol=$(($nbcol+1))
 		if [ $nbcol -gt $NBCOLMAX ] ; then echo;nbcol=1;fi
 	done
-	pacman -Sl | awk '{print $2"-"$3}' | sort | uniq > $tmp_files/abs
-        pacman -Q | awk '{print $1"-"$2}' | sort > $tmp_files/installed
-	echo -e " ${NO_COLOR}$(eval_gettext 'others')* ${COL_YELLOW}($(comm -2 -3 $tmp_files/installed $tmp_files/abs|wc -l))${NO_COLOR}"
+	pacman -Sl | awk '{print $2"-"$3}' | LC_ALL=C sort | uniq > $tmp_files/abs
+        pacman -Q | awk '{print $1"-"$2}' | LC_ALL=C sort > $tmp_files/installed
+	echo -e " ${NO_COLOR}$(eval_gettext 'others')* ${COL_YELLOW}($(LC_ALL=C comm -2 -3 $tmp_files/installed $tmp_files/abs|wc -l))${NO_COLOR}"
 	echo
 	echo -e "${NO_COLOR}"*$(eval_gettext 'others')" $(eval_gettext 'are packages not up to date or installed from local\nbuild or AUR Unsupported')${NO_COLOR}"
 	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	

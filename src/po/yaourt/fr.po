@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-02-23 19:31+0100\n"
-"PO-Revision-Date: 2009-02-23 20:43+0100\n"
+"POT-Creation-Date: 2009-02-25 20:43+0100\n"
+"PO-Revision-Date: 2009-02-25 20:44+0100\n"
 "Last-Translator: Julien MISCHKOWITZ <wain@archlinux.fr>\n"
 "Language-Team: FRANCAIS <wain@archlinux.fr>\n"
 "MIME-Version: 1.0\n"
@@ -1061,184 +1061,184 @@ msgstr ""
 "Vous n'êtes pas autorisé à lancer $command avec sudo\\n"
 "Veuillez rentrer le mot de passe root"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:671
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:674
 #, sh-format
 msgid "Packages that were installed as dependencies but are no longer required by any installed package:"
 msgstr "Paquetages installés en tant que dépendances, mais qui ne sont plus requis par d'autres paquetages:"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:680
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:683
 #, sh-format
 msgid "Searching for original config files to save"
 msgstr "Recherche de fichiers de configuration à sauver"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:690
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:693
 #, sh-format
 msgid "clean pacman database"
 msgstr "nettoyage de la base pacman"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:691
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:694
 #, sh-format
 msgid "Please wait..."
 msgstr "Veuillez patienter..."
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:724
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:727
 #, sh-format
 msgid "Some directories in /var/lib/pacman/sync are no more used and should be removed:"
 msgstr "Certains répertoires dans /var/lib/pacman/sync ne sont plus utilisés et devraient être supprimés:"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:726
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:729
 #, sh-format
 msgid "Do you want to delete these directories ? "
 msgstr "Voulez-vous supprimer ces répertoires ? "
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:731
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:734
 #, sh-format
 msgid "Your database is now optimized"
 msgstr "La base a été optimisée"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:733
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:736
 #, sh-format
 msgid "Problem when deleting directories"
 msgstr "Problème lors de la suppression des répertoires"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:740
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:743
 #, sh-format
 msgid "Some repositories in pacman.conf are no more used and can be removed:"
 msgstr "Certains dépôts dans pacman.conf ne sont plus utilisés et devraient être enlevés:"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:754
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:757
 #, sh-format
 msgid "Packages explicitly installed"
 msgstr "Paquets installés explicitement "
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:756
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:759
 #, sh-format
 msgid "Packages installed as a dependency for another package"
 msgstr "Paquetages installés en tant que dépendances pour un autre paquetage"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:788
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:791
 #, sh-format
 msgid "synchronizing package databases"
 msgstr "synchronisation de la base de paquetages"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:829
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:832
 #, sh-format
 msgid "remove packages"
 msgstr "supprime les paquets"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:862
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:865
 #, sh-format
 msgid "get PKGBUILD"
 msgstr "récupère le PKGBUILD"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:867
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:870
 #, sh-format
 msgid "PKGBUILD file already exist. Replace ? "
 msgstr "Le PKGBUILD existe déjà. Remplacer ? "
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:872
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:875
 #, sh-format
 msgid "only one package is allowed"
 msgstr "seul un paquetage est autorisé"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:874
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:877
 #, sh-format
 msgid "error: no targets specified (use -h for help)"
 msgstr "erreur: pas de cible spécifiée (utiliser -h pour l'aide)"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:880
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:883
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:260
 #, sh-format
 msgid "$PKG not found in AUR."
 msgstr "$PKG non trouvé dans AUR"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:898
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:907
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:901
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:910
 #, sh-format
 msgid "wrong argument"
 msgstr "mauvais argument"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:914
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:917
 #, sh-format
 msgid "show groups"
 msgstr "afficher les groupes"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:919
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:922
 #, sh-format
 msgid "query packages"
 msgstr "recherche les paquetages"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:926
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:929
 #, sh-format
 msgid "packages which depend on $arg:"
 msgstr "paquetages dépendant de $arg:"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:928
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:931
 #, sh-format
 msgid "packages which conflicts with $arg"
 msgstr "paquetages rentrant en conflit avec $arg"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:930
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:933
 #, sh-format
 msgid "packages which provides $arg"
 msgstr "paquetages fournissant $arg"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:936
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:939
 #, sh-format
 msgid "listing all packages in repos"
 msgstr "liste tous les paquetages du dépôt"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:937
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:940
 #, sh-format
 msgid "Listing all packages in repos"
 msgstr "liste tous les paquetages du dépôt"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:947
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:949
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:977
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:979
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1085
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1087
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:950
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:952
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:980
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:982
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1088
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1090
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:118
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:120
 #, sh-format
 msgid "installed"
 msgstr "installé"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:989
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1098
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:992
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1101
 #, sh-format
 msgid "unable to contact AUR"
 msgstr "impossible de contacter le site AUR"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:999
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1002
 #, sh-format
 msgid "Information for $arg"
 msgstr "Information pour $arg"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1008
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1011
 #, sh-format
 msgid "yaourt: no argument"
 msgstr "yaourt: pas d'argument"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1028
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1031
 #, sh-format
 msgid "Following packages have not been installed:"
 msgstr "Les paquetages suivant n'ont pas été installés"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1042
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1043
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1045
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1046
 #, sh-format
 msgid "Query backup database"
 msgstr "Recherche dans la base de sauvegarde"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1103
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1106
 #, sh-format
 msgid "Enter n° (separated by blanks, or a range) of packages to be installed"
 msgstr "Entrez les n° (séparés par un espace, ou une intervalle) des paquetages à installer "
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1123
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:345
+#: /home/wain/projets/archlinux.fr/yaourt/src/yaourt.sh:1126
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:343
 #, sh-format
 msgid "press a key to continue"
 msgstr "appuyer sur une touche pour continuer"
@@ -1471,7 +1471,7 @@ msgstr ""
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:120
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:689
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:450
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:448
 #, sh-format
 msgid "Unable to read PKGBUILD for $PKG"
 msgstr "Impossible de lire le PKGBUILD de $PKG"
@@ -1527,19 +1527,19 @@ msgstr "Aucun paquetage à rétrograder"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:244
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:254
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:423
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:421
 #, sh-format
 msgid "New version of $package detected"
 msgstr "Une nouvelle version de $package a été détectée"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:245
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:424
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:422
 #, sh-format
 msgid "Do you want to update $package first ? "
 msgstr "Voulez vous mettre à jour $package d'abord ? "
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:248
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:427
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:425
 #, sh-format
 msgid "Upgrading $package first"
 msgstr "Mise à jour de $package en premier"
@@ -1616,7 +1616,7 @@ msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "mise à jour SVN/CVS/HG/GIT"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:486
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:387
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:385
 #, sh-format
 msgid "list ignorepkg in pacman.conf"
 msgstr "liste des paquetages à ignorer depuis pacman.conf"
@@ -1632,7 +1632,7 @@ msgid "SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:"
 msgstr "paquetages SVN/CVS/HG/GIT/BZR pouvant être mis à jour depuis ABS ou AUR:"
 
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/abs.sh:501
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:437
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:435
 #, sh-format
 msgid "Do you want to update these packages ? "
 msgstr "Voulez vous mettre à jour ces paquetages ? "
@@ -1932,83 +1932,83 @@ msgstr "Continuer la compilation de $PKG? "
 msgid "Building missing dependencies from AUR:"
 msgstr "Compilation des dépendances manquantes depuis AUR:"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:343
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:341
 #, sh-format
 msgid "Dependencies have been installed before the failure"
 msgstr "Des dépendances ont été installées avant l'échec"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:376
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:374
 #, sh-format
 msgid "Unable to delete directory $wdir."
 msgstr "Impossible de supprimer le répertoire $wdir."
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:383
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:381
 #, sh-format
 msgid "upgrading AUR unsupported packages"
 msgstr "mise à jour des paquetages non supportés d'AUR"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:390
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:388
 #, sh-format
 msgid "Searching for new version on AUR"
 msgstr "Recherche de nouvelle version sur AUR"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:394
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:392
 #, sh-format
 msgid "not found on AUR"
 msgstr "non trouvé sur AUR"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:400
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:398
 #, sh-format
 msgid "(ignoring package upgrade)"
 msgstr "(ignore la mise à jour du paquetage)"
 
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:408
 #: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:410
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:412
 #, sh-format
 msgid "up to date "
 msgstr "à jour"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:410
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:408
 #, sh-format
 msgid "flagged as out of date"
 msgstr "marqué comme \"périmé\""
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:428
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:426
 #, sh-format
 msgid "unable to update $package"
 msgstr "impossible de mettre à jour $package"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:434
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:432
 #, sh-format
 msgid "Packages that can be updated from AUR:"
 msgstr "Paquetages pouvant être mis à jour depuis AUR:"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:442
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:440
 #, sh-format
 msgid "unable to update $PKG"
 msgstr "impossible de mettre à jour $PKG"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:462
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:460
 #, sh-format
 msgid "$PKG dependencies:"
 msgstr "Dépendances de $PKG"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:466
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:464
 #, sh-format
 msgid "(already installed)"
 msgstr "(déjà installé)"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:467
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:465
 #, sh-format
 msgid "(package that provides ${dep} already installed)"
 msgstr "(un paquetage fournissant ${dep} est déjà installé)"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:468
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:466
 #, sh-format
 msgid "(package found)"
 msgstr "(paquetage trouvé)"
 
-#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:469
+#: /home/wain/projets/archlinux.fr/yaourt/src/lib/aur.sh:467
 #, sh-format
 msgid "(building from AUR)"
 msgstr "(compilation du paquetage depuis AUR)"
