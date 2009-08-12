@@ -674,7 +674,7 @@ show_new_orphans(){
 	fi
 
 	# testdb
-	testdb
+	LC_ALL=C testdb | grep -v "Checking the integrity of the local database"
 
 	# save original of backup files (pacnew/pacsave)
 	if [ "$MAJOR" != "remove" ] && [ $AUTOSAVEBACKUPFILE -eq 1 ] && ! diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then

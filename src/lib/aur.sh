@@ -16,7 +16,7 @@
 # get info for aur package from json RPC interface and store it in jsoninfo variable for later use
 initjsoninfo(){
 unset jsoninfo
-jsoninfo=`wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$1"`
+jsoninfo=`wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$(urlencode $1)"`
 if  echo $jsoninfo | grep -q '"No result found"' || [ -z "$jsoninfo" ]; then
 	return 1
 else
@@ -101,7 +101,7 @@ search_on_aur(){
 	title $(eval_gettext 'searching for $_pkg on AUR')
 	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
 	# grab info from json rpc url and exclude community packages, then parse result
-	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$1" | sed 's/{"ID":/\n/g' | sed '1d'| grep -Fv '"URLPath":""' |
+	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$(urlencode $1)" | sed 's/{"ID":/\n/g' | sed '1d'| grep -Fv '"URLPath":""' |
 	presortjsoninfo Name | sort | postsortjsoninfo |
 	while read jsoninfo; do
 		# exclude first line
@@ -136,7 +136,7 @@ search_on_aur(){
 
 # scrap html page to show user's comments
 aurcomments(){
-	wget --quiet "${AUR_URL3}${1}" -O - \
+	wget --quiet "${AUR_URL3}$(urlencode $1)" -O - \
 	| tr '\r' '\n' | sed -e '/-- End of main content --/,//d' \
 	-e 's|<[^<]*>||g' \
 	-e 's|&quot;|"|g' \
@@ -186,7 +186,7 @@ aurcomments(){
 
 # find ID for given package 
 findaurid(){
-	wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$1"| sed -e 's/^.*{"ID":"//' -e 's/",".*$//'| sed '/^$/d'
+	wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$(urlencode $1)"| sed -e 's/^.*{"ID":"//' -e 's/",".*$//'| sed '/^$/d'
 }
 
 # Check if this package has been voted on AUR, and vote for it
