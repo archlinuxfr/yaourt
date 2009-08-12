@@ -617,10 +617,12 @@ isavailable(){
 	for groupavailable in ${allgroupavailable[@]};do
 		if [ "$1" = "$groupavailable" ]; then return 0; else continue; fi
 	done
+	isprovided "$1" "sync" && return 0
 	return 1
 }
 isprovided(){
-	local candidates=( `grep -srl --line-regexp --include="depends" "$1" "$PACMANROOT/local"` )
+	local rep=${2:-local}
+	local candidates=( `grep -srl --line-regexp --include="depends" "$1" "$PACMANROOT/$rep"` )
 	for file in ${candidates[@]};do
 		if echo $(cat $file) | grep -q "%PROVIDES%.*$1"; then return 0; else continue;fi
 	done
