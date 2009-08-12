@@ -234,8 +234,9 @@ sysupgrade()
 	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/.pkg.tar.*$//" -e "s/-i686$//" -e "s/-x86_64$//" \
 	-e "s/-any$//" -e "s/-ppc$//" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 
-	# Show various avertissements
-	eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
+	# Show various warnings
+	# pacman -Qu don't show warnings anymore
+	#eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
 
 	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 	for package in ${packages[@]}; do
