@@ -392,7 +392,11 @@ upgrade_from_aur(){
 		initjsoninfo $PKG || { echo -e "${COL_YELLOW}"$(eval_gettext 'not found on AUR')"${NO_COLOR}"; continue; }
 		local_version=`pkgversion $PKG`
 		aur_version=`parsejsoninfo Version`
-		if `is_x_gt_y $aur_version $local_version`; then
+		lrel=${local_version#*-}
+		rrel=${aur_version#*-}
+		lver=${local_version%-*}
+		rver=${aur_version%-*}
+		if  [ "$rver" = "$lver" ] &&  `is_x_gt_y $rrel $lrel` || `is_x_gt_y $rver $lver`; then
 			echo -en "${COL_GREEN}${local_version} => ${aur_version}${NO_COLOR}"
 			if grep "^${PKG}$" $tmp_files/ignorelist > /dev/null; then
 				echo -e "${COL_RED} "$(eval_gettext '(ignoring package upgrade)')"${NO_COLOR}"
