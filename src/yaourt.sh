@@ -883,14 +883,17 @@ case "$MAJOR" in
 	fi
 	PKG=${args[0]}
 	#msg "Get PKGBUILD for $PKG"
-	if ! `isavailable $PKG` && `is_unsupported $PKG`; then
+	case "$(sourcerepository $PKG)" in
+		core|extra|testing|community)
+		BUILD=1
+		install_from_abs $PKG
+		;;
+		*)
 		eval $INENGLISH wget "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error $(eval_gettext '$PKG not found in AUR.'); die 1; }
 		tar xzf $PKG.tar.gz --transform="s,$PKG,," 2>/dev/null
 		rm $PKG.tar.gz
-	else
-		BUILD=1
-		install_from_abs $PKG
-	fi
+		;;
+	esac
 	;;
 
 	backup)
