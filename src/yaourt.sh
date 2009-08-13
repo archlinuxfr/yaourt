@@ -351,7 +351,6 @@ parameters(){
 				die 1
 			fi
 			COLORMODE="--textonly"
-			initcolor
 			BACKUPFILE="$2"
 			shift
 			;;
@@ -464,9 +463,9 @@ parameters(){
 			--depends) QUERYTYPE="%DEPENDS%";;
 			--conflicts) QUERYTYPE="%CONFLICTS%";;
 			--provides) QUERYTYPE="%PROVIDES%";;
-			--lightbg) COLORMODE="--lightbg"; initcolor;;
-			--nocolor) COLORMODE="--nocolor"; initcolor;;
-			--textonly) COLORMODE="--textonly"; initcolor;;
+			--lightbg) COLORMODE="--lightbg";;
+			--nocolor) COLORMODE="--nocolor";;
+			--textonly) COLORMODE="--textonly";;
 			--unrequired) UNREQUIRED=1;;
 			--changelog) CHANGELOG=1;;
 			--holdver) HOLDVER=1;;
@@ -534,6 +533,11 @@ parameters(){
 		esac
 		shift
 	done
+
+	# set color theme
+	initcolor
+
+	# 
 	if [ "$MAJOR" != "query" ] && [ -f "$BACKUPFILE" ]; then
 		error $(eval_gettext '--backupfile can be used only with --query')
 		die 1

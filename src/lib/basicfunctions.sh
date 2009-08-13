@@ -309,5 +309,5 @@ fi
 
 loadlibrary color
 readconfigfile `grep "^[\ ]*[a-zA-Z]" $configfile`
-initcolor
+#initcolor
 initpath
