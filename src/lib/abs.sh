@@ -531,7 +531,7 @@ install_package(){
 			manage_error $? || { error $(eval_gettext 'Unable to write ${EXPORTDIR}/${pkgname}/ directory'); die 1; }
 			unset localsource
 			for src in ${source[@]}; do
-				if [ `echo $src | grep -v ^\\\\\\(ftp\\\\\\|http\\\\\\)` ]; then
+				if [ `echo $src | sed 's/.*:://'| grep -v ^\\\\\\(ftp\\\\\\|http\\\\\\)` ]; then
 					localsource[${#localsource[@]}]=$src
 				fi
 			done
