@@ -275,6 +275,7 @@ parameters(){
 	NEWROOT=""
 	NODEPS=0
 	ASDEPS=0
+	NEEDED=0
 	SEARCH=0
 	BUILD=0
 	REFRESH=0
@@ -406,6 +407,10 @@ parameters(){
 			;;
 			--asdeps)
 			ASDEPS=1
+			ARGSANS="$ARGSANS $1"
+			;;
+			--needed)
+			NEEDED=1
 			ARGSANS="$ARGSANS $1"
 			;;
 			--deps)
@@ -825,6 +830,10 @@ fi
 if [ $ASDEPS -eq 1 ]; then 
 	BUILDPROGRAM="${BUILDPROGRAM} --asdeps"
 	asdeps="--asdeps"
+fi
+if [ $NEEDED -eq 1 ]; then 
+	BUILDPROGRAM="${BUILDPROGRAM} --needed"
+	needed="--needed"
 fi
 
 if [ $EXPORT -eq 1 ]; then BUILDPROGRAM="$BUILDPROGRAM --export $EXPORTDIR"; fi

@@ -181,7 +181,7 @@ done
 # Install precompiled packages
 if [ ${#binariespackages[@]} -gt 0 ]; then
 	#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
-	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $nodeps $asdeps ${binariespackages[*]}"
+	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $nodeps $asdeps $needed ${binariespackages[*]}"
 fi
 
 # Vote for community packages
