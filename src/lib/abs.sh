@@ -24,7 +24,7 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
 USETESTING=0
-if { LC_ALL=C pacman --debug 2>/dev/null| grep -q "debug: opening database 'testing'"; }; then USETESTING=1;fi
+if { LC_ALL=C pacman --debug 2>/dev/null| grep -q "debug: registering sync database 'testing'"; }; then USETESTING=1;fi
 for package in $@; do
 	PKG=${package#*/}
 	local repository=`sourcerepository $PKG`
@@ -665,6 +665,20 @@ build_package(){
 		sed -i "/^build/iarch=('$CARCH')\n" ./PKGBUILD
 	fi
 
+	# install deps from abs (build or download) as depends
+	find_pkgbuild_deps || return 1
+	if [ ${#DEP_ABS[@]} -gt 0 -a $BUILD -eq 1 ]; then
+		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
+		$BUILDPROGRAM --asdeps "${DEP_ABS[*]}"
+		for installed_dep in ${DEP_ABS[@]}; do
+			if ! `isinstalled $installed_dep`; then
+				failed=1
+				return 1
+			fi
+		done
+	fi
+	
+
 	# Build 
 	mkpkg_opt="$confirmation"
 	[ $NODEPS -eq 1 ] && mkpkg_opt="$mkpkg_opt -d"
@@ -691,4 +705,32 @@ build_package(){
 		return 1
 	fi
 	return $failed
+}
+find_pkgbuild_deps (){
+	unset DEPS DEP_AUR DEP_ABS
+	readPKGBUILD
+	if [ -z "$pkgname" ]; then
+		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
+		return 1
+	fi
+	for dep in $(echo "${depends[@]} ${makedepends[@]}" | tr -d '\\')
+	do
+		DEPS[${#DEPS[@]}]=$(echo $dep | sed 's/=.*//' \
+		| sed 's/>.*//' \
+		| sed 's/<.*//')
+	done
+	[ ${#DEPS[@]} -eq 0 ] && return 0
+
+	echo
+	msg "$(eval_gettext '$PKG dependencies:')"
+	DEP_PACMAN=0
+
+	for dep in ${DEPS[@]}; do
+		if isinstalled $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(already installed)'); continue; fi
+		if isprovided $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(package that provides ${dep} already installed)'); continue; fi
+		if isavailable $dep; then echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(eval_gettext '(package found)'); DEP_PACMAN=1; DEP_ABS[${#DEP_ABS[@]}]=$dep; continue; fi
+		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(eval_gettext '(building from AUR)') 
+		DEP_AUR[${#DEP_AUR[@]}]=$dep 
+	done
+
 }

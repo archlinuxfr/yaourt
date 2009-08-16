@@ -350,8 +350,17 @@ install_from_aur(){
 	fi
 	echo
 
-	# if dep's building not failed; search for sourceforge mirror
-	[ $failed -ne 1 ] && sourceforge_mirror_hack
+	# install deps from abs (build or download) as depends
+	msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
+	if [ ${#DEP_ABS[@]} -gt 0 ]; then
+		$BUILDPROGRAM --asdeps "${DEP_ABS[*]}"
+		for installed_dep in ${DEP_ABS[@]}; do
+			if ! `isinstalled $installed_dep`; then
+				failed=1
+				break
+			fi
+		done
+	fi
 
 	# compil PKGBUILD if dep's building not failed
 	[ $failed -ne 1 ] && build_package
@@ -445,32 +454,5 @@ upgrade_from_aur(){
 	done
 	cleanoutput
 }
-find_pkgbuild_deps (){
-	unset DEPS DEP_AUR
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
-	for dep in $(echo "${depends[@]} ${makedepends[@]}" | tr -d '\\')
-	do
-		DEPS[${#DEPS[@]}]=$(echo $dep | sed 's/=.*//' \
-		| sed 's/>.*//' \
-		| sed 's/<.*//')
-	done
-	[ ${#DEPS[@]} -eq 0 ] && return 0
 
-	echo
-	msg "$(eval_gettext '$PKG dependencies:')"
-	DEP_PACMAN=0
-
-	for dep in ${DEPS[@]}; do
-		if isinstalled $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(already installed)'); continue; fi
-		if isprovided $dep; then echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(package that provides ${dep} already installed)'); continue; fi
-		if isavailable $dep; then echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(eval_gettext '(package found)'); DEP_PACMAN=1; continue; fi
-		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(eval_gettext '(building from AUR)') 
-		DEP_AUR[${#DEP_AUR[@]}]=$dep 
-	done
-
-}
 
