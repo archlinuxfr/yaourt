@@ -306,7 +306,7 @@ _yaourt ()
         ;;
       U)
         COMPREPLY=( $( compgen -d -- "$cur" ) \
-                    $( compgen -f -X '!*.pkg.tar.gz' -- "$cur" ) )
+                    $( compgen -f -X '!*.pkg.tar.*' -- "$cur" ) )
         return 0
         ;;
       h|V)
@@ -324,7 +324,7 @@ _yaourt ()
                       $( compgen -f -- "$cur" ) )
         elif _instring $mod p; then
           COMPREPLY=( $( compgen -d -- "$cur" ) \
-                      $( compgen -f -X '!*.pkg.tar.gz' -- "$cur" ) )
+                      $( compgen -f -X '!*.pkg.tar.*' -- "$cur" ) )
         elif _instring $mod u; then
           COMPREPLY=''
           return 0

@@ -157,3 +157,16 @@ yaourt 0.9.2.5
 - Fix install deps from AUR + git/SVN package
 - fixed su when root user is not named "root"
 - fixed ForceEnglish option (patch from Richard Adenling)
+
+yaourt 0.9.2.6
+- compatibility fix for pacman 3.3
+- yaourt -G doesn't work for package from unofficial repository
+- FS#131 - Build dependencies from sources
+- FS#139 - yaourt can't download packages with '+' in their name
+- FS#116 support for downloading dependencies with powerpill
+- FS#137 - Yaourt bypassing PacmanBin var setting when pulling dependencies for a package built from the AUR
+- FS#143 - problem with source=(filename::url)
+- FS#145 - yaourt does not handle --needed flag
+- FS#147 - yaourt doesn't recognize AUR packages newer version
+- FS#144 - failed to find which package provides x
+- FS#142 - fixed --textonly

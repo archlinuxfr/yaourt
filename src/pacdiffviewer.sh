@@ -470,6 +470,7 @@ savedir=/var/lib/yaourt/backupfiles
 
 # Basic init and libs in common with yaourt
 source /usr/lib/yaourt/basicfunctions.sh || exit 1 
+initcolor
 tmp_files="$YAOURTTMPDIR/pacdiffviewer.$$"
 
 
