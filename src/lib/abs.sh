@@ -220,13 +220,7 @@ sysdowngrade()
 sysupgrade()
 {
 	prepare_orphan_list
-	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | grep "\(pacman\ *$\|ALL\)" 1>/dev/null; then
-		sudo $PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
-	elif [ "$UID" -eq 0 ]; then
-		$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade
-	else
-		launch_with_su "$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1> $YAOURTTMPDIR/sysupgrade"
-	fi
+	$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
 	
 	if [ $? -ne 0 ]; then
 		cat $YAOURTTMPDIR/sysupgrade

@@ -270,6 +270,7 @@ die(){
 parameters(){
 	# Options
 	MAJOR=""
+	PRINTURIS=0
 	INFO=0
 	ROOT=0
 	NEWROOT=""
@@ -365,6 +366,9 @@ parameters(){
 			--info)
 			INFO=1
 			ARGSANS="$ARGSANS $1"
+			;;
+			--print-uris)
+			PRINTURIS=1
 			;;
 			--list)
 			LIST=1
@@ -480,7 +484,7 @@ parameters(){
 			if [ `echo $1 | grep r` ]; then
 				OPTIONAL=$2
 			fi
-			while getopts ":VABCRUFGQSbcdefghilmoqr:stuwy" opt $1 $OPTIONAL; do
+			while getopts ":VABCRUFGQSbcdefghilmopqr:stuwy" opt $1 $OPTIONAL; do
 				case $opt in
 					V) version ;;
 					B) MAJOR="backup";;
@@ -508,6 +512,7 @@ parameters(){
 					l) LIST=1 ;;
 					m) FOREIGN=1 ;;
 					o) OWNER=1 ;;
+					p) PRINTURIS=1 ;;
 					q) QUERYWHICH=1; QUIET=1 ;;
 					r)
 					ROOT=1
@@ -1013,6 +1018,8 @@ case "$MAJOR" in
 				info_from_aur "${arg#*/}"
 			fi
 		done
+	elif [ $PRINTURIS -eq 1 ]; then
+		$PACMANBIN -Sp "${args[@]}"
 	elif [ $SYSUPGRADE -eq 0 -a ${#args[@]} -eq 0 -a $REFRESH -eq 0 ]; then
 		prepare_orphan_list
 		msg $(eval_gettext 'yaourt: no argument'):wa
