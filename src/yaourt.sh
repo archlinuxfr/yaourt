@@ -177,7 +177,7 @@ usage(){
 	echo "$(eval_gettext 'Note: yaourt always shows new orphans after package update')"
 	echo
 	echo "$(eval_gettext 'Downgrade:')"
-	echo "$(eval_gettext ' -Su --downgrade                *  reinstall all packages which are marked as "newer than extra or core" in -Su output')"
+	echo "$(eval_gettext ' -Su --upgrades                previously "downgrades"  reinstall all packages which are marked as "newer than extra or core" in -Su output')"
 	echo "$(eval_gettext '           (this is specially for users who experience problems with [testing] and want to revert back to current)')"
 	echo
 	echo "$(eval_gettext 'Local search:')"
@@ -298,7 +298,7 @@ parameters(){
 	FOREIGN=0
 	OWNER=0
 	GROUP=0
-	DOWNGRADE=0
+	DOWNGRADE=""
 	QUERYTYPE=""
 	QUERYWHICH=0
 	QUIET=0
@@ -332,8 +332,8 @@ parameters(){
 			MAJOR="upgrade"
 			ARGSANS="$ARGSANS $1"
 			;;
-			--downgrade)
-			DOWNGRADE=1
+			--upgrades)
+			DOWNGRADE="--upgrades"
 			;;
 			--groups)
 			GROUP=1
@@ -520,7 +520,12 @@ parameters(){
 					;;
 					s) SEARCH=1 ;;
 					t) UNREQUIRED=1 ;;
-					u) SYSUPGRADE=1 ;;
+					u) 
+					if [ $SYSUPGRADE -eq 1 ]; then
+						DOWNGRADE="--upgrades"  
+					else
+						SYSUPGRADE=1
+					fi;;
 					w) DOWNLOAD=1 ;;
 					y) 
 					if [ $REFRESH -eq 1 ]; then
@@ -1035,7 +1040,6 @@ case "$MAJOR" in
 		#msg "System Upgrade"
 		loadlibrary abs
 		loadlibrary aur
-		sysdowngrade
 		sysupgrade
 		# Upgrade all AUR packages or all Devel packages
 		if [ $DEVEL -eq 1 ]; then upgrade_devel_package; fi

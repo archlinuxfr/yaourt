@@ -150,31 +150,11 @@ fi
 }
 
 
-#Downgrade all packages marked as "newer than extra/core/etc..."
-sysdowngrade()
-{
-	if [ $DOWNGRADE -eq 1 ]; then
-		msg $(eval_gettext 'Downgrading packages')
-		title $(eval_gettext 'Downgrading packages')
-		downgradelist=( `LC_ALL=C $PACMANBIN -Qu | grep "is newer than" | awk -F ":" '{print $2}'` )    
-		if [ ${#downgradelist[@]} -gt 0 ]; then
-			prepare_orphan_list
-			SYSUPGRADE=2
-			install_from_abs ${downgradelist[*]}
-			show_new_orphans
-		else
-			echo $(eval_gettext 'No package to downgrade')
-		fi
-		die
-	fi
-}
-
-
 # Searching for packages to update, buid from sources if necessary
 sysupgrade()
 {
 	prepare_orphan_list
-	$PACMANBIN --sync --sysupgrade --print-uris $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
+	$PACMANBIN --sync --sysupgrade --print-uris $DOWNGRADE $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
 	
 	if [ $? -ne 0 ]; then
 		cat $YAOURTTMPDIR/sysupgrade
@@ -217,7 +197,7 @@ sysupgrade()
 		done
 		if [ ${#packagesfromsource[@]} -gt 0 ]; then
 			msg $(eval_gettext 'Packages to build from sources:')
-			eval $PACMANBIN --query --sysupgrade $NEEDED $IGNOREPKG
+			eval $PACMANBIN --query --sysupgrade $DOWNGRADE $NEEDED $IGNOREPKG
 			# Show package list before building
 			if [ $NOCONFIRM -eq 0 ]; then
 				echo -n $(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)
