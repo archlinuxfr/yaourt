@@ -71,26 +71,7 @@ isnumeric(){
 }
 
 is_x_gt_y(){
-	local version=( $(echo $1 | tr "[:punct:]" "\ " | sed 's/[a-zA-Z]/ &/g') )
-	local lversion=( $(echo $2 | tr "[:punct:]" "\ " | sed 's/[a-zA-Z]/ &/g') )
-	if [ ${#version[@]} -gt ${#lversion[@]} ]; then 
-		versionlength=${#version[@]}
-	else
-		versionlength=${#lversion[@]}
-	fi
-	
-	for i_index in `seq 0 $((${versionlength}-1))`; do 
-		if `isnumeric ${version[$i_index]}` && `isnumeric ${lversion[$i_index]}`;  then
-			if [ ${version[$i_index]} -eq ${lversion[$i_index]} ]; then continue; fi
-			if [ ${version[$i_index]} -gt ${lversion[$i_index]} ]; then return 0; else return 1; fi
-			break
-		elif [ `isnumeric ${version[$i_index]}` -ne  `isnumeric ${lversion[$i_index]}` ]; then
-			if [ "${version[$i_index]}" = "${lversion[$i_index]}" ]; then continue;fi
-			if [ "${version[$i_index]}" \> "${lversion[$i_index]}" ]; then return 0; else return 1; fi
-			break
-		fi
-	done
-	return 1
+	[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]
 }
 
 readconfigfile(){
