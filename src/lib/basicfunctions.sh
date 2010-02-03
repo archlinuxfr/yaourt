@@ -16,8 +16,8 @@
 
 # set misc path
 initpath(){
-	LOCKFILE="/var/lib/pacman/db.lck"
 	PACMANROOT=`LC_ALL=C pacman --verbose | grep 'DB Path' | awk '{print $4}'| sed "s/\/$//"`
+	LOCKFILE="$PACMANROOT/db.lck"
 	mkdir -p "$YAOURTTMPDIR"
 }
 
