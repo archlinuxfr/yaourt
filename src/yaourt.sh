@@ -579,19 +579,27 @@ manage_error(){
 	return 0
 }
 
+# Check if sudo is allowed for given command
+is_sudo_allowed()
+{
+       [ $SUDOINSTALLED -eq 1 ] && (sudo -v && sudo -l "$@") &>/dev/null && return 0
+       return 1
+}
+
 launch_with_su(){
 	# try to launch $1 with sudo, else prompt for root password
 	#msg "try to launch '${@}' with sudo"
 	command=`echo $* | awk '{gsub(/LC_ALL=\"C\"/,""); print $1}'`
 
-	if [ $SUDOINSTALLED -eq 1 ] && sudo -l | sed 's/\,/\n/g' | grep "\(\ $command$\|ALL\)" 1>/dev/null; then
+	if is_sudo_allowed "$command"; then
 		#echo "Allowed to use sudo $command"
 		sudo $@ || return 1
 	else
 		UID_ROOT=0
 		if [ "$UID" -ne "$UID_ROOT" ]
 		then
-			echo -e $(eval_gettext 'You are not allowed to launch $command with sudo\nPlease enter root password')
+			# command output can be parsed
+			echo -e $(eval_gettext 'You are not allowed to launch $command with sudo\nPlease enter root password') 1>&2 
 		fi
 		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
 		errorfile="/tmp/yaourt_error.$RANDOM"
