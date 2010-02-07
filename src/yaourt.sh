@@ -644,7 +644,7 @@ isavailable(){
 }
 isprovided(){
 	local rep=${2:-local}
-	local candidates=( `grep -srl --include="depends" "^$1[<>=$]" "$PACMANROOT/$rep"` )
+	local candidates=( `grep -srl --include="depends" "^$1\([<>=]\|$\)" "$PACMANROOT/$rep"` )
 	for file in ${candidates[@]};do
 		if echo $(cat $file) | grep -q "%PROVIDES%.*$1"; then return 0; else continue;fi
 	done
