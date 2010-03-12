@@ -13,46 +13,6 @@
 #       VERSION:  1.0
 #===============================================================================
 
-# get info for aur package from json RPC interface and store it in jsoninfo variable for later use
-initjsoninfo(){
-unset jsoninfo
-jsoninfo=`wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$(urlencode $1)"`
-if  echo $jsoninfo | grep -q '"No result found"' || [ -z "$jsoninfo" ]; then
-	return 1
-else
-	return 0
-fi
-}
-
-#Get value from json (in memory):  ID, Name, Version, Description, URL, URLPath, License, NumVotes, OutOfDate
-parsejsoninfo(){
-	echo $jsoninfo | sed -e 's/^.*[{,]"'$1'":"//' -e 's/"[,}].*$//'
-}
-
-#Extracts value of json field and adds to start of line for use as sort key for each line
-presortjsoninfo(){
-	awk '{sortkey=$0; sub(/^.*[{,]"'$1'":"/, "", sortkey); sub(/"[,}].*$/, "", sortkey); print sortkey $0}'
-}
-
-#Removes sort key from each line
-postsortjsoninfo(){
-	awk '{sub(/"[^"]+"/, ""); print $0}'
-}
-
-# return 0 if package is on AUR Unsupported else 1
-is_unsupported(){
-	initjsoninfo $1 || return 1
-	[ ! -z "`parsejsoninfo URLPath`" ] && return 0
-	return 1
-}
-
-
-# return 0 if package is on AUR Community else 1
-is_in_community(){
-	initjsoninfo $1 || return 1
-	[ -z "`parsejsoninfo URLPath`" ] && return 0
-	return 1
-}
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
@@ -97,23 +57,10 @@ echo
 # search for keyword on AUR an list result
 search_on_aur(){
 	#msg "Search for $1 on AUR"
-	_pkg=`echo $1 | sed 's/ AND / /'`
-	title $(eval_gettext 'searching for $_pkg on AUR')
-	[ "$MAJOR" = "interactivesearch" ] && i=$(($(wc -l $searchfile | awk '{print $1}')+1))
-	# grab info from json rpc url and exclude community packages, then parse result
-	wget -q -O - "http://aur.archlinux.org/rpc.php?type=search&arg=$(urlencode $1)" | sed 's/{"ID":/\n/g' | sed '1d'| grep -Fv '"URLPath":""' |
-	presortjsoninfo Name | sort | postsortjsoninfo |
-	while read jsoninfo; do
-		# exclude first line
-		[ $(echo $jsoninfo | awk -F '"[:,]"' '{print NF}') -lt 10 ] && continue
-		package=$(parsejsoninfo Name)
-		version=$(parsejsoninfo Version)
-		description=$(parsejsoninfo Description)
-		numvotes=$(parsejsoninfo NumVotes)
-		outofdate=$(parsejsoninfo OutOfDate)
+	package-query -As $1 -f "%n %v %l %w %o %d" | while read package version lversion numvotes outofdate description
+	do
 		line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
-		if isinstalled $package; then
-			lversion=`pkgversion $package`
+		if [ "$lversion" != "-" ]; then
 			if [ "$lversion" = "$version" ];then
 				line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
 			else
@@ -186,7 +133,7 @@ aurcomments(){
 
 # find ID for given package 
 findaurid(){
-	wget -q -O - "http://aur.archlinux.org/rpc.php?type=info&arg=$(urlencode $1)"| sed -e 's/^.*{"ID":"//' -e 's/",".*$//'| sed '/^$/d'
+	package-query -Ai "$1" -f "%i" 
 }
 
 # Check if this package has been voted on AUR, and vote for it
@@ -246,18 +193,14 @@ install_from_aur(){
 	fi
 	cd "$wdir/"
 
-	# Initialize jsoninfo & exclude package moved into community repository	
-	initjsoninfo $PKG || { echo -e "${COL_YELLOW}"$(eval_gettext '$PKG not found on AUR')"${NO_COLOR}"; continue; }
+	aurid=""
+	eval $(package-query -Aei $PKG -f "aurid=%i;version=%v;numvotes=%w;outofdate=%o;pkgurl=%u;description=\"%d\"")
+	[ -z "$aurid" ] && return
 	
 	# grab comments and info from aur page
 	echo
-	aurid=$(parsejsoninfo ID)
-	version=$(parsejsoninfo Version)
-	description=$(parsejsoninfo Description)
-	numvotes=$(parsejsoninfo NumVotes)
-	outofdate=$(parsejsoninfo OutOfDate)
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	wget -q "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error $(eval_gettext '$PKG not found in AUR.'); return 1; }
+	wget -q "$pkgurl" || { error $(eval_gettext '$PKG not found in AUR.'); return 1; }
 	tar xfvz "$PKG.tar.gz" > /dev/null || return 1
 	cd "$PKG/"
 	aurcomments $aurid
@@ -395,12 +338,13 @@ upgrade_from_aur(){
 	# Search for new version on AUR
 	local iNum=0
 	msg $(eval_gettext 'Searching for new version on AUR')
-	for PKG in $(pacman -Qqm)
+	OLD_IFS="$IFS"
+	IFS='
+'
+	for _line in $(package-query -Ai `pacman -Qqm` -f "PKG=%n;local_version=%l;aur_version=%v;outofdate=%o")
 	do
+		eval $_line
 		echo -n "$PKG: "
-		initjsoninfo $PKG || { echo -e "${COL_YELLOW}"$(eval_gettext 'not found on AUR')"${NO_COLOR}"; continue; }
-		local_version=`pkgversion $PKG`
-		aur_version=`parsejsoninfo Version`
 		lrel=${local_version#*-}
 		rrel=${aur_version#*-}
 		lver=${local_version%-*}
@@ -417,13 +361,14 @@ upgrade_from_aur(){
 		elif [ $local_version != $aur_version ]; then
 			echo -e " (${COL_RED}local=$local_version ${NO_COLOR}aur=$aur_version)"
 		else
-			if [ `parsejsoninfo "OutOfDate"` -eq 1 ]; then
+			if [ $outofdate -eq 1 ]; then
 				echo -e $(eval_gettext "up to date ")"${COL_RED}($local_version "$(eval_gettext 'flagged as out of date')")${NO_COLOR}"
 			else
 				echo $(eval_gettext 'up to date ')
 			fi
 		fi
 	done
+	IFS="$OLD_IFS"
 	cleanoutput
 
 	[ $iNum -lt 1 ] && return 0

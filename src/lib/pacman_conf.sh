@@ -16,7 +16,7 @@
 
 # take the list of activated repositories from pacman.conf
 list_repositories(){
-		repositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: registering sync database '" | awk '{print $5}' |uniq| tr -d "'"| grep -v 'local'` )
+		repositories=( $(package-query -L) )
 }
 
 # list all ignorepkg from pacman.conf

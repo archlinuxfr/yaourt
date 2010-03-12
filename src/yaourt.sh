@@ -205,6 +205,7 @@ usage(){
 	echo "$(eval_gettext ' -Sq --depends    <pkg>       * list all packages which depends on <pkg>')"
 	echo "$(eval_gettext ' -Sq --conflicts  <pkg>       * list all packages which conflicts with <pkg>')"
 	echo "$(eval_gettext ' -Sq --provides   <pkg>       * list all packages which provides <pkg>')"
+	echo "$(eval_gettext ' -Sq --replaces   <pkg>       * list all packages which replaces <pkg>')"
 	echo
 	echo "$(eval_gettext 'Clean:')"
 	echo "$(eval_gettext ' (-C, --clean)                * manage, show diff .pacsave/.pacnew files')"
@@ -464,9 +465,10 @@ parameters(){
 			--devel) DEVEL=1;;
 			--database) CLEANDATABASE=1;;
 			--date) DATE=1;;
-			--depends) QUERYTYPE="%DEPENDS%";;
-			--conflicts) QUERYTYPE="%CONFLICTS%";;
-			--provides) QUERYTYPE="%PROVIDES%";;
+			--depends) QUERYTYPE="depends";;
+			--conflicts) QUERYTYPE="conflicts";;
+			--provides) QUERYTYPE="provides";;
+			--replaces) QUERYTYPE="replaces";;
 			--lightbg) COLORMODE="--lightbg";;
 			--nocolor) COLORMODE="--nocolor";;
 			--textonly) COLORMODE="--textonly";;
@@ -626,46 +628,22 @@ isinstalled(){
 	pacman -Qq $1 &>/dev/null
 }
 isavailable(){
-	# is the package available in repositories ?
-	if [ ${#allpkgavailable[@]} -eq 0 ]; then
-		allpkgavailable=( `pacman -Slq` )
-	fi
-	for pkgavailable in ${allpkgavailable[@]};do
-		if [ "$1" = "$pkgavailable" ]; then return 0; else continue; fi
-	done
-	if [ ${#allgroupavailable[@]} -eq 0 ]; then
-		allgroupavailable=( `pacman -Sg` )
-	fi
-	for groupavailable in ${allgroupavailable[@]};do
-		if [ "$1" = "$groupavailable" ]; then return 0; else continue; fi
-	done
-	isprovided "$1" "sync" && return 0
-	return 1
+	package-query -QSsq "^$1$"  
 }
 isprovided(){
-	local rep=${2:-local}
-	local candidates=( `grep -srl --include="depends" "^$1\([<>=]\|$\)" "$PACMANROOT/$rep"` )
-	for file in ${candidates[@]};do
-		if echo $(cat $file) | grep -q "%PROVIDES%.*$1"; then return 0; else continue;fi
-	done
-	return 1
+	package-query -QSq -t provides $1
 }
 pkgversion(){
 	# searching for version of the given package
 	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
-	pacman -Q $1 | awk '{print $2}' | head -n1 2>/dev/null
+	package-query -Qif "%v" $1
 }
 pkgdescription(){
-	LC_ALL=C pacman -Si $1 | grep -m1 "^Description" | awk -F 'Description    : ' '{print $2}'
+	package-query -Sif "%d" $1
 }
 sourcerepository(){
 	# find the repository where the given package came from
-	local lrepository=`pacman -Si $1 2>/dev/null| head -n1 | awk '{print $3}'`
-	if [ -z "$lrepository" ]; then
-		echo "local"
-	else
-		echo $lrepository
-	fi
+	package-query -SQif "%r" $1 
 }
 
 prepare_orphan_list(){

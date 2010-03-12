@@ -20,19 +20,18 @@ searchforpackageswhich(){
 	#action can be %DEPENDS% %REQUIREDBY %CONFLICTS% %PROVIDES%
 	local action=$1
 	local name=$2
-	for repository in ${repositories[@]}; do
-		local candidates=( ${candidates[*]} `grep -srl --include="depends" "^${name}" "$PACMANROOT/sync/$repository/"` )
-	done
-	for file in ${candidates[@]}; do
-		if `findindependsfile "$action" "$name" "$file"`; then
-			package=`echo $file| awk -F "/" '{print $(NF-1)}'`
-			if [ -d "$PACMANROOT/local/$package" ]; then
-				echo -e "$package $COL_RED[installed]$NO_COLOR"
-			else
-				echo $package
-			fi
+	OLD_IFS="$IFS"
+	IFS='
+'
+	for _line in $(package-query -S -t $action $name -f "package=%n;ver=%v;lver=%l"); do
+		eval $_line
+		if [ "$lver" != "-" ]; then
+			echo -e "$package $ver $COL_RED[installed]$NO_COLOR"
+		else
+			echo $package $ver
 		fi
 	done
+	IFS="$OLD_IFS"
 	return
 }
 
@@ -69,18 +68,16 @@ fi
 search_for_installed_package(){
 	_arg=${args[*]}
 	title $(eval_gettext 'Searching for "$_arg" in installed packages')
-	eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_DESCRIPTIONline_/' |
-	while read line; do
-		if echo "$line" | grep -q "^_DESCRIPTIONline_"; then
-			echo -e "$COL_ITALIQUE$line$NO_COLOR" | sed 's/_DESCRIPTIONline_/  /'
-			continue
-		fi
-		package=`echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///'`
-		version=`echo $line | grep -v "^_" | awk '{ print $2}' | sed 's/^.*\///'`
-		group=`echo $line | sed -e 's/^[^(]*//'`
-		repository=`sourcerepository $package`
+
+	OLD_IFS="$IFS"
+	IFS='
+'
+	for _line in $(package-query -Qe ${args[*]} -f "package=%n;version=%v;version=%v;group=%g;repository=%r;description=\"%d\""); do
+		eval $_line
 		echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version} ${COL_GROUP}$group${NO_COLOR}"` 
+		echo -e "  $COL_ITALIQUE$description$NO_COLOR" 
 	done
+	IFS="$OLD_IFS"
 }
 
 # list installed packages filtered by criteria
