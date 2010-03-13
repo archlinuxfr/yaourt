@@ -84,38 +84,13 @@ for package in $@; do
 	find_pkgbuild_deps
 	manage_error $? || continue
 
-	if [ $EDITPKGBUILD -eq 1 ]; then
-		prompt $(eval_gettext 'Edit the PKGBUILD ? ') $(yes_no 2) $(eval_gettext '("A" to abort)')
-		EDIT_PKGBUILD=$(userinput "YNA")
-		echo
-	fi
+	edit_file PKGBUILD 2 || { manage_error 1; continue; }
 	
-	if [ "$EDIT_PKGBUILD" = "Y" -a "$EDIT_PKGBUILD" != "A" ]; then
-		if [ -z "$EDITOR" ]; then
-			echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
-			echo -e ${NO_COLOR}$(eval_gettext 'for example:')
-			echo -e ${COL_BLUE}"export EDITOR=\"gvim\""${NO_COLOR}" $(eval_gettext '(in ~/.bashrc)')"
-			echo $(eval_gettext '(replace gvim with your favorite editor)')
-			echo
-			echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit PKGBUILD with: ')
-			read -e EDITOR
-			echo
-		fi
-		if [ "$EDITOR" = "gvim" ]; then edit_prog="gvim --nofork"; else edit_prog="$EDITOR";fi
-		( $edit_prog ./PKGBUILD )
-		wait
-		find_pkgbuild_deps
-		prompt $(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)
- 		if [ "`userinput`" = "N" ]; then
-			manage_error 1 || continue
-		fi
-	fi
-	
-	if [ "$EDIT_PKGBUILD" = "a" -o "$EDIT_PKGBUILD" = "A" ]; then
-		echo
-		echo $(eval_gettext 'Aborted...')
+	prompt $(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)
+ 	if [ "`userinput`" = "N" ]; then
 		manage_error 1 || continue
 	fi
+	
 	# TODO: dependecies from AUR should be downloaded here
 
 	# compil PKGBUILD if dep's building not failed
@@ -256,19 +231,7 @@ sysupgrade()
 					showupgradepackage full
 				elif [ "$CONTINUE_INSTALLING" = "M" ]; then
 					showupgradepackage manual
-					if [ -z "$EDITOR" ]; then
-						echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
-						echo -e ${NO_COLOR}$(eval_gettext 'for example:')
-						echo -e ${COL_BLUE}"export EDITOR=\"gvim\""${NO_COLOR}" $(eval_gettext '(in ~/.bashrc)')"
-						echo $(eval_gettext '(replace gvim with your favorite editor)')
-						echo
-						echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit PKGBUILD with: ')
-						read -e EDITOR
-						echo
-					fi
-					if [ "$EDITOR" = "gvim" ]; then edit_prog="gvim --nofork"; else edit_prog="$EDITOR";fi
-					( $edit_prog $YAOURTTMPDIR/sysuplist )
-					wait
+					run_editor "$YAOURTTMPDIR/sysuplist"
 					declare args="$YAOURTTMPDIR/sysuplist"
 					SYSUPGRADE=2
 					sync_packages

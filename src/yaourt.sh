@@ -52,21 +52,6 @@ setPARCH(){
 	fi
 }
 
-edit_file(){
-	local file=$1
-	if [ -z "$EDITOR" ]; then
-		echo -e ${COL_RED}$(eval_gettext 'Please add EDITOR to your environment variables')
-		echo -e ${NO_COLOR}$(eval_gettext 'for example:')
-		echo -ne ${COL_ARROW}"==> "${NO_COLOR} $(eval_gettext 'Edit PKGBUILD with: ')
-		echo $(eval_gettext '(replace gvim with your favorite editor)')
-		echo
-		echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit $file with: ')
-		read -e EDITOR
-	fi
-	if [ "$EDITOR" = "gvim" ]; then edit_prog="gvim --nofork"; else edit_prog="$EDITOR";fi
-	( $edit_prog "$file" )
-	wait
-}
 sourceforge_mirror_hack(){
 	readPKGBUILD
 	if ! echo ${source[*]} | grep -q "http://dl.sourceforge.net/"; then
@@ -391,7 +376,7 @@ parameters(){
 			;;
 			--sucre)
 			MAJOR="sync"
-			FORCE=1; SYSUPGRADE=1; REFRESH=1; AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITPKGBUILD=0
+			FORCE=1; SYSUPGRADE=1; REFRESH=1; AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
 			ARGSANS="-Su --noconfirm --force"
 			break
 			;;
@@ -447,7 +432,7 @@ parameters(){
 			;;
 			--noconfirm)
 			NOCONFIRM=1
-			EDITPKGBUILD=0
+			EDITFILES=0
 			ARGSANS="$ARGSANS $1"
 			;;
 			--needed)
@@ -631,7 +616,7 @@ isavailable(){
 	package-query -QSsq "^$1$"  
 }
 isprovided(){
-	package-query -QSq -t provides $1
+	package-query -1QSq -t provides $1 &> /dev/null
 }
 pkgversion(){
 	# searching for version of the given package
@@ -639,11 +624,11 @@ pkgversion(){
 	package-query -Qif "%v" $1
 }
 pkgdescription(){
-	package-query -Sif "%d" $1
+	package-query -1Sif "%d" $1
 }
 sourcerepository(){
 	# find the repository where the given package came from
-	package-query -SQif "%r" $1 
+	package-query -1SQif "%r" $1 
 }
 
 prepare_orphan_list(){

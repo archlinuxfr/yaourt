@@ -22,20 +22,7 @@ tmpdir="$YAOURTTMPDIR/$PKG"
 mkdir -p $tmpdir
 cd $tmpdir
 wget -O PKGBUILD -q http://aur.archlinux.org/packages/$PKG/$PKG/PKGBUILD || { echo "$PKG not found in repos nor in AUR"; return 1; }
-
-while true; do
-	prompt $(eval_gettext 'Edit the PKGBUILD (highly recommended for security reasons) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
-	EDIT_PKGBUILD=$(userinput "YNA")
-	echo
-	if [ "$EDIT_PKGBUILD" = "A" ]; then
-		echo $(eval_gettext 'Aborted...')
-		return 1
-	elif [ "$EDIT_PKGBUILD" != "N" ]; then
-		edit_file ./PKGBUILD
-	else
-		break
-	fi
-done
+edit_file PKGBUILD 1 1 || return 1
 readPKGBUILD
 if [ -z "$pkgname" ]; then
        echo "Unable to read $PKG's PKGBUILD"
@@ -211,52 +198,14 @@ install_from_aur(){
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
 	##### / Download tarball for unsupported
 
-	# Edit PKGBUILD, then read PKGBUILD to find deps
-	if [ $EDITPKGBUILD -eq 0 ]; then
-		find_pkgbuild_deps || return 1
-	fi
-	edit=1
-	loop=0
-	while [ $EDITPKGBUILD -eq 1 -a $edit -eq 1 ]; do
-		edit=0
-		prompt $(eval_gettext 'Edit the PKGBUILD (highly recommended for security reasons) ? ')$(yes_no 1)$(eval_gettext '("A" to abort)')
-		EDIT_PKGBUILD=$(userinput "YNA")
-		echo
-		if [ "$EDIT_PKGBUILD" = "A" ]; then
-			echo $(eval_gettext 'Aborted...')
-			return 1
-		elif [ "$EDIT_PKGBUILD" != "N" ]; then
-			edit=1
-			edit_file ./PKGBUILD
-		fi
-		if [ $loop -lt 1 -o $edit -eq 1 ]; then
-		       	find_pkgbuild_deps || return 1
-		fi
-		(( loop ++))
-	done
+	edit_file PKGBUILD 1 1 || return 1
+	find_pkgbuild_deps || return 1
 	
-	# if install variable is set in PKGBUILD, propose to edit file(s)
-	edit=1
-	while [ -f "${install[0]}" -a $EDITPKGBUILD -eq 1 -a $edit -eq 1 ]; do
-		echo 
-		warning $(eval_gettext 'This PKGBUILD contains install file that can be dangerous.')
-		for installfile in ${install[@]}; do
-			edit=0
-			list $installfile
-			prompt $(eval_gettext 'Edit $installfile (highly recommended for security reasons) ? ')$(yes_no 1) $(eval_gettext '("A" to abort)')
-			EDIT_INSTALLFILE=$(userinput "YNA")
-			echo
-			if [ "$EDIT_INSTALLFILE" = "A" ]; then
-				echo $(eval_gettext 'Aborted...')
-				return 1
-			elif [ "$EDIT_INSTALLFILE" != "N" ]; then
-				edit=1
-			fi
-			if [ $edit -eq 1 ]; then
-				edit_file $installfile
-			fi
+	if [ -n $install ]; then
+		for installfile in "${install[@]}"; do
+			edit_file "$installfile" 1 1 || return 1
 		done
-	done
+	fi
 
 	if [ $NOCONFIRM -eq 0 ]; then
 		prompt $(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)

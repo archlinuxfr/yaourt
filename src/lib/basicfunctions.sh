@@ -74,9 +74,61 @@ is_x_gt_y(){
 	[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]
 }
 
+
+run_editor ()
+{
+	local edit_cmd=
+	local file="$1"
+	if [ -z "$EDITOR" ]; then
+		echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
+		echo -e ${NO_COLOR}$(eval_gettext 'for example:')
+		echo -e ${COL_BLUE}"export EDITOR=\"vim\""${NO_COLOR}" $(eval_gettext '(in ~/.bashrc)')"
+		echo $(eval_gettext '(replace vim with your favorite editor)')
+		echo
+		echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit $file with: ')
+		read -e EDITOR
+		echo
+	fi
+	[ $(basename "$EDITOR") = "gvim" ] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
+	( $edit_cmd "$file" )
+	wait
+}
+
+edit_file ()
+{
+	[ $EDITFILES -ne 1 ] && return 0
+	local file="$1"
+	local default_answer=${2:-1}
+	local loop=${3:-0}
+	local iter=1
+
+	while [ $iter -eq 1 ]; do
+		prompt $(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')
+		local answer=$(userinput "YNA")
+		echo
+		if [ -z "$answer" ]; then
+			[ $default_answer -eq 1 ] && answer='Y' || answer='N'
+		fi
+		if [ "$answer" = "Y" ]; then
+			run_editor "$file"
+			[ "$file" = "PKGBUILD" ] && find_pkgbuild_deps
+			[ $loop -eq 0 ] && iter=0
+		else
+			iter=0
+		fi
+	done
+	
+	if [ "$answer" = "a" -o "$answer" = "A" ]; then
+		echo
+		echo $(eval_gettext 'Aborted...')
+		return 1
+	fi
+	return 0
+}
+
 readconfigfile(){
 # defautconfig
-EDITPKGBUILD=1
+EDITFILES=1
 DEVEL=0
 EXPORTDIR=""
 EXPORT=0
@@ -110,7 +162,7 @@ while [ "$#" -ne "0" ]; do
 		noconfirm)
 			if [ $value -gt -1 ]; then
 				NOCONFIRM=$value; shift
-				[ $NOCONFIRM -eq 1 ] && EDITPKGBUILD=0
+				[ $NOCONFIRM -eq 1 ] && EDITFILES=0
 			fi
 			;;
 		alwaysforce)
@@ -133,7 +185,7 @@ while [ "$#" -ne "0" ]; do
 	  		;;	
 		editpkgbuild)
 			if [ $value -gt -1 ]; then
-				EDITPKGBUILD=$value; shift
+				EDITFILES=$value; shift
 			fi
 	  		;;	
 		showaurcomment)
