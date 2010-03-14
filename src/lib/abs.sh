@@ -337,7 +337,7 @@ sync_packages()
 		if [ "${_line%/*}" != "aur" ]; then
 			repos_package[${#repos_package[@]}]="$_line"
 		else
-			install_from_aur "${arg#aur/}" || failed=1
+			install_from_aur "${_line#aur/}" || failed=1
 		fi
 	done
 	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
