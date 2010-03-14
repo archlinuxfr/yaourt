@@ -124,7 +124,7 @@ sysupgrade()
 	fi
 	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/.pkg.tar.*$//" -e "s/-i686$//" -e "s/-x86_64$//" \
 	-e "s/-any$//" -e "s/-ppc$//" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
-
+	[ -z "$packages" ] && return 0	
 	# Show various warnings
 	# pacman -Qu don't show warnings anymore
 	#eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
@@ -330,7 +330,7 @@ sync_packages()
 		AURVOTE=0
 		args=( `grep -o '^[^#[:space:]]*' "${args[0]}"` ) 
 	fi
-
+	[ -z "$args" ] && return 0
 	# Install from arguments
 	prepare_orphan_list
 	for _line in $(package-query -1ASif "%r/%n" "${args[@]}"); do
@@ -514,7 +514,7 @@ build_package(){
 	fi
 
 	# Check for arch variable
-	readPKGBUILD
+	readPKGBUILD || return 1
 	if [ -z "$arch" ]; then
 		source /etc/makepkg.conf
 		[ -z "$CARCH" ] && CARCH="i686"
@@ -535,6 +535,20 @@ build_package(){
 		done
 	fi
 	
+	# check if package will conflict with an installed one
+	pkg_conflicts=$(package-query -Qt conflicts -f "%n" "$pkgname")
+	[ -z "$pkg_conflicts" ] && pkg_conflicts=$(package-query -Qt provides -f "%n" "$pkgname")
+	if [ -n "$pkg_conflicts" ]; then
+		prompt $(eval_gettext '$pkg_conflicts conflicts or provides $pkgname. Do you want to remove it with "pacman -Rd" ? ') $(yes_no 2)
+		if [ "$(userinput)" = "Y" ]; then
+			pacman_queuing; launch_with_su "$PACMANBIN -Rd $pkg_conflicts" 
+			if [ $? -ne 0 ]; then
+				error $(eval_gettext 'Unable to remove $pkg_conflicts.')
+				return 1
+			fi
+		fi
+	fi
+		
 
 	# Build 
 	mkpkg_opt="$confirmation"
