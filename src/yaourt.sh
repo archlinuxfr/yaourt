@@ -763,6 +763,42 @@ search_packages_by_installreason(){
 
 }
 
+# Search for packages
+# usage: search ($interactive, $result_file)
+# return: none
+search ()
+{
+	local interactive=${1:-0}
+	local searchfile="$2"
+	[ $interactive -eq 1 -a -z "$searchfile" ] && return 1
+	i=1
+	local search_option=""
+	[ $AURSEARCH -eq 1 ] && search_option="$search_option -A"
+	[ "$MAJOR" = "query" ] && search_option="$search_option -Q" || search_option="$search_option -S"
+	[ "$LIST" -eq 1 ] && search_option="$search_option -l"
+	package-query $search_option -sef "%n %r %v %l %g %d" ${args[*]} |
+	while read package repository version lversion group description; do
+		[ $interactive -eq 1 ] && echo "${repository}/${package}" >> $searchfile
+		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
+		if [ "$lversion" != "-" ]; then
+			if [ "$lversion" = "$version" ];then
+				line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+			else
+				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+			fi
+		fi
+		[ "$group" = "-" ] && group="" 
+		[ -n "$group" ] && group="($group)"
+		[ $interactive -eq 1 ] && echo -ne "${COL_NUMBER}${i}${NO_COLOR} "
+		echo -e "$line$NO_COLOR $COL_GROUP$group$NO_COLOR"
+		echo -e "  $COL_ITALIQUE$description$NO_COLOR"
+		(( i ++ ))
+	done
+
+	cleanoutput
+}	
+
+
 ###################################
 ### MAIN PROGRAM                ###
 ###################################
@@ -917,22 +953,7 @@ case "$MAJOR" in
 		#Searching all packages in repos
 		title $(eval_gettext 'listing all packages in repos')
 		msg $(eval_gettext 'Listing all packages in repos')
-		eval $PACMANBIN $ARGSANS ${args[*]}| sed 's/^ /_/' |
-		while read line; do
-			package=$(echo $line | awk '{print $2}')
-			repos="${COL_GREEN}$(echo $line | awk '{print $1}')"
-			version=$(echo $line | awk '{print $3}')
-			echo -ne "${repos} ${COL_BOLD}${package} ${NO_COLOR}${version}"
-			if isinstalled $package; then
-				lversion=`pkgversion $package`
-				if [ "$lversion" = "$version" ];then
-					echo -ne " ${COL_INSTALLED}["$(eval_gettext 'installed')"]${NO_COLOR}"
-				else
-					echo -ne " ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} "$(eval_gettext 'installed')"]${NO_COLOR}"
-				fi
-			fi
-			echo
-		done
+		AURSEARCH=0 search 0
 	elif [ $SEARCH -eq 1 ]; then	
 		# Searching for/info/install packages
 		#msg "Recherche dans ABS"
@@ -940,37 +961,8 @@ case "$MAJOR" in
 			eval $PACMANBIN $ARGSANS --search ${args[*]}
 			die 0
 		fi
-
-		eval $PACMANBIN $ARGSANS --search ${args[*]} | sed 's/^ /_DESCRIPTIONline_/' |
-		while read line; do
-			if echo "$line" | grep -q "^_DESCRIPTIONline_"; then
-				echo -e "$COL_ITALIQUE$line$NO_COLOR" | sed 's/_DESCRIPTIONline_/  /'
-
-				continue
-			fi
-			package=`echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///'`
-			repository=`echo $line| sed 's/\/.*//'`
-			version=`echo $line | awk '{print $2}'`
-			group=`echo $line | sed -e 's/^[^(]*//'`
-			line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
-				if isinstalled $package; then
-					lversion=`pkgversion $package`
-					if [ "$lversion" = "$version" ];then
-						line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-					else
-						line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
-					fi
-				fi
-			echo -e "$line$NO_COLOR $COL_GROUP$group$NO_COLOR"
-		done
+		search
 		cleanoutput
-		if [ $AURSEARCH -eq 1 ]; then
-			loadlibrary aur
-			#msg "Search on AUR"
-			for arg in ${args[@]}; do
-				search_on_aur $arg || error $(eval_gettext 'unable to contact AUR')
-			done
-		fi
 	elif [ $CLEAN -eq 1 ]; then 
 		#msg "clean sources files"
 		launch_with_su "$PACMANBIN $ARGSANS ${args[*]}"
@@ -1034,7 +1026,7 @@ case "$MAJOR" in
 	elif	[ $DEPENDS -eq 1 -a $UNREQUIRED -eq 1 ]; then
 		search_forgotten_orphans
 	elif	[ $SEARCH -eq 1 ]; then
-		search_for_installed_package
+		AURSEARCH=0 search 0
 	elif [ $LIST -eq 1 -o $INFO -eq 1 -o $SYSUPGRADE -eq 1 -o $CHANGELOG -eq 1 ]; then
 		# just run pacman -Ql or pacman -Qi
 		eval $PACMANBIN $ARGSANS ${args[*]}
@@ -1044,42 +1036,10 @@ case "$MAJOR" in
 	;;
 	
 	interactivesearch)
-	#msg "Recherche dans ABS"
 	tmp_files="$YAOURTTMPDIR/search"
 	mkdir -p $tmp_files || die 1
 	searchfile=$tmp_files/interactivesearch.$$>$searchfile || die 1
-	i=1
-	#####
-	eval $PACMANBIN --sync --search ${args[*]} | sed 's/^ /_DESCRIPTIONline_/' |
-	while read line; do
-		if echo "$line" | grep -q "^_DESCRIPTIONline_"; then
-			echo -e "$COL_ITALIQUE$line$NO_COLOR" | sed 's/_DESCRIPTIONline_/  /'
-			continue
-		fi
-		package=`echo $line | grep -v "^_" | awk '{ print $1}' | sed 's/^.*\///'`
-		repository=`echo $line| sed 's/\/.*//'`
-		version=`echo $line | awk '{print $2}'`
-		group=`echo $line | sed -e 's/^[^(]*//'`
-		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
-		echo "${repository}/${package}" >> $searchfile
-		if isinstalled $package; then
-			lversion=`pkgversion $package`
-			if [ "$lversion" = "$version" ];then
-				line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-			else
-				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
-			fi
-		fi
-		echo -e "${COL_NUMBER}${i}${NO_COLOR} $line$NO_COLOR $COL_GROUP$group$NO_COLOR"
-		(( i ++ ))
-	done
-
-	cleanoutput
-	if [ $AURSEARCH -eq 1 ]; then
-		loadlibrary aur
-		#msg "Search on AUR"
-		search_on_aur "`echo ${args[*]} |tr "\*" "\%"`" || error $(eval_gettext 'unable to contact AUR')
-	fi
+	search 1 "$searchfile"
 	if [ ! -s "$searchfile" ]; then
 		die 0	
 	fi

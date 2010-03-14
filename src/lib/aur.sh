@@ -51,33 +51,6 @@ echo "Last update	: `ls -l --time-style="long-iso" PKGBUILD | awk '{print $6" "$
 echo
 }
 
-# search for keyword on AUR an list result
-search_on_aur(){
-	#msg "Search for $1 on AUR"
-	package-query -As $1 -f "%n %v %l %w %o %d" | while read package version lversion numvotes outofdate description
-	do
-		line="${COL_ITALIQUE}${COL_REPOS}aur/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}"
-		if [ "$lversion" != "-" ]; then
-			if [ "$lversion" = "$version" ];then
-				line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
-			else
-				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
-			fi
-		fi
-		if [ $outofdate -eq 1 ]; then
-			line="$line${NO_COLOR} ${COL_INSTALLED}($(eval_gettext 'Out of Date'))"
-		fi
-		if [ "$MAJOR" = "interactivesearch" ]; then
-			line="${COL_NUMBER}${i}${NO_COLOR} $line"
-			echo "aur/${package}" >> $searchfile 
-			(( i ++ ))
-		fi
-		echo -e "$line$NO_COLOR $COL_NUMBER($numvotes)${NO_COLOR}"
-		echo -e "    ${COL_ITALIQUE}$description${NO_COLOR}"
-	done
-	cleanoutput
-}
-
 # scrap html page to show user's comments
 aurcomments(){
 	wget --quiet "${AUR_URL3}$(urlencode $1)" -O - \
@@ -191,7 +164,8 @@ install_from_aur(){
 	# grab comments and info from aur page
 	echo
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	mkdir "$PKG" && cd "$PKG" && aur_get_pkgbuild "$PKG" "$PKGURL" || return 1
+	[ -d "$PKG" ] || mkdir "$PKG" || return 1
+	cd "$PKG" && aur_get_pkgbuild "$PKG" "$PKGURL" || return 1
 	aurcomments $aurid
 	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
 	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(eval_gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"
@@ -203,7 +177,7 @@ install_from_aur(){
 	edit_file PKGBUILD 1 1 || return 1
 	find_pkgbuild_deps || return 1
 	
-	if [ -n $install ]; then
+	if [ -n "$install" ]; then
 		for installfile in "${install[@]}"; do
 			edit_file "$installfile" 1 1 || return 1
 		done

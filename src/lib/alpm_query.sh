@@ -60,21 +60,6 @@ if [ "$remove" = "Y" ]; then
 fi
 }
 
-# searching for argument in installed packages
-search_for_installed_package(){
-	_arg=${args[*]}
-	title $(eval_gettext 'Searching for "$_arg" in installed packages')
-
-	OLD_IFS="$IFS"
-	IFS=$'\n'
-	for _line in $(package-query -Qe ${args[*]} -f "package=%n;version=%v;version=%v;group=%g;repository=%r;description=\"%d\""); do
-		eval $_line
-		echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version} ${COL_GROUP}$group${NO_COLOR}"` 
-		echo -e "  $COL_ITALIQUE$description$NO_COLOR" 
-	done
-	IFS="$OLD_IFS"
-}
-
 # list installed packages filtered by criteria
 list_installed_packages(){
 	if [ $DEPENDS -eq 1 ]; then
