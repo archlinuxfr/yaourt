@@ -13,6 +13,20 @@
 #       VERSION:  1.0
 #===============================================================================
 
+# Get sources in current dir
+aur_get_pkgbuild ()
+{
+	[ -z "$1" ] && return 1
+	local pkg=${1#*/}
+	local pkgurl=${2:-$(package-query -Aif "%u" "$pkg")} 
+	if [ -z "$pkgurl" ]; then
+		error $(eval_gettext '$pkg not found in AUR.');
+		return 1;
+	fi
+	wget "$pkgurl" -O "$pkg.tar.gz"
+	bsdtar -s "/$pkg//" -xvf "$pkg.tar.gz"
+	rm "$pkg.tar.gz"
+}
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
@@ -187,9 +201,7 @@ install_from_aur(){
 	# grab comments and info from aur page
 	echo
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	wget -q "$pkgurl" || { error $(eval_gettext '$PKG not found in AUR.'); return 1; }
-	tar xfvz "$PKG.tar.gz" > /dev/null || return 1
-	cd "$PKG/"
+	mkdir "$PKG" && cd "$PKG" && aur_get_pkgbuild "$PKG" "$PKGURL" || return 1
 	aurcomments $aurid
 	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
 	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(eval_gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"

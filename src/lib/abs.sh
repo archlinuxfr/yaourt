@@ -15,6 +15,23 @@
 
 ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unstable)
 
+# if package is from ABS_REPO, try to build it from abs, else pass it to aur
+build_or_get ()
+{
+	[ -z "$1" ] && return 1
+	local pkg=${1#*/}
+	[ "$1" != "${1///}" ] && local repo=${1%/*} || local repo="$(sourcerepository $pkg)"
+	BUILD=1
+	in_array "$repo" "${ABS_REPO[@]}" && install_from_abs "$1" 
+	if [ $? -ne 0 ]; then
+		if [ "$MAJOR" = "getpkgbuild" ]; then
+			aur_get_pkgbuild "$pkg"
+		else
+			install_from_aur "$pkg"
+		fi
+	fi
+}
+
 # download package from repos or grab PKGBUILD from repos.archlinux.org and run makepkg
 install_from_abs(){
 if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
@@ -382,18 +399,8 @@ upgrade_devel_package(){
 		[ "`userinput`" = "N" ] && return 0
 	fi
 	for PKG in ${devel_package[@]}; do
-		local repository=`sourcerepository $PKG`
-		case $repository in
-			core|extra|unstable|testing|community)	
-			BUILD=1
-			repos_package[${#repos_package[@]}]=${PKG}
-			;;
-			*)	       
-			install_from_aur "$PKG" 
-			;;
-		esac
+		build_or_get "$PKG"
 	done
-	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
 }
 
 install_package(){
