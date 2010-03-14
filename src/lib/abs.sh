@@ -13,6 +13,8 @@
 #       VERSION:  1.0
 #===============================================================================
 
+ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unstable)
+
 # download package from repos or grab PKGBUILD from repos.archlinux.org and run makepkg
 install_from_abs(){
 if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
@@ -189,30 +191,31 @@ sysupgrade()
 
 	# Classic sysupgrade
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
-	pkg_repository_name_ver=( `grep "://" $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/.pkg.tar.*$//" \
-       	-e "s/-i686$//" -e "s/-x86_64$//" -e "s/-any$//" -e "s/-ppc$//" -e "s/-[^-]*-[^-]*$/##&/" | sort`)
-	for pkg in ${pkg_repository_name_ver[@]}; do
-		pkgname=`echo $pkg| awk -F '##' '{print $1}'`
-		repository=`sourcerepository $pkgname`
-		rversion=`echo $pkg| awk -F '##' '{print $2}' | sed 's/^-//'`
-		if `isinstalled $pkgname`; then
-			lversion=`pkgversion $pkgname`
+	OLD_IFS="$IFS"
+	IFS='
+'	
+	for _line in $(package-query -1Sei \
+		-f "pkgname=%n;repository=%r;rversion=%v;lversion=%l;description=\"%d\"" \
+		"${packages[@]}"); do
+		eval $_line
+		if [ "$lversion" != "-" ]; then
 			lrel=${lversion#*-}
 			rrel=${rversion#*-}
 			lver=${lversion%-*}
 			rver=${rversion%-*}
 			if [ "$rver" = "$lver" ] && `is_x_gt_y $rrel $lrel`; then
 				# new release not a new version
-				newrelease[${#newrelease[@]}]="$repository##$pkgname##$rver##$lrel##$rrel"
+				newrelease[${#newrelease[@]}]="$_line;rver=$rver;lrel=$lrel;rrel=$rrel"
 			else
-			        # new version
-			        newversion[${#newversion[@]}]="$repository##$pkgname##$lversion##$rversion"
+		        # new version
+		        newversion[${#newversion[@]}]="$_line"
 			fi
 		else
 			# new package (not installed at this time)
-			newpkgs[${#newpkgs[@]}]="$repository##$pkgname##$rversion"
+			newpkgs[${#newpkgs[@]}]="$_line"
 		fi
 	done
+	IFS="$OLD_IFS"
 
 	# Show result
 	showupgradepackage lite
@@ -261,24 +264,19 @@ showupgradepackage()
 	# show new release
 	if [ ${#newrelease[@]} -gt 0 ]; then
 		echo
-		declare newrelease=`echo -e ${newrelease[*]} | tr ' ' '\n' | sort`
 		if [ "$1" = "manual" ]; then
 			echo -e "$separator\n# $(eval_gettext 'Package upgrade only (new release):')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'Package upgrade only (new release):')
 		fi
-		for line in ${newrelease[@]}; do
-			repository=`echo $line| awk -F '##' '{print $1}'`
-			pkgname=`echo $line| awk -F '##' '{print $2}'`
-			rver=`echo $line| awk -F '##' '{print $3}'`
-			lrel=`echo $line| awk -F '##' '{print $4}'`
-			rrel=`echo $line| awk -F '##' '{print $5}'`
+		for line in "${newrelease[@]}"; do
+			eval $line
 			if [ "$1" = "manual" ]; then
 				echo -e "\n$repository/$pkgname version $rver release $lrel -> $rrel"  >> $YAOURTTMPDIR/sysuplist
-				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
+				echo "#    $description" >> $YAOURTTMPDIR/sysuplist
 			else
 				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`"$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
-				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE$description$NO_COLOR"
 			fi
 		done
 	fi
@@ -286,43 +284,36 @@ showupgradepackage()
 	# show new version
 	if [ ${#newversion[@]} -gt 0 ]; then
 		echo
-		declare newversion=`echo -e ${newversion[*]} | tr ' ' '\n' | sort`
 		if [ "$1" = "manual" ]; then
 			echo -e "\n\n$separator\n# $(eval_gettext 'Software upgrade (new version) :')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'Software upgrade (new version) :')
 		fi
-		for line in ${newversion[@]}; do
-			repository=`echo $line| awk -F '##' '{print $1}'`
-			pkgname=`echo $line| awk -F '##' '{print $2}'`
-			lversion=`echo $line| awk -F '##' '{print $3}'`
-			rversion=`echo $line| awk -F '##' '{print $4}'`
+		for line in "${newversion[@]}"; do
+			eval $line
 			if [ "$1" = "manual" ]; then
                         	echo -e "\n$repository/$pkgname $lversion -> $rversion" >> $YAOURTTMPDIR/sysuplist
-				echo "#    `pkgdescription $pkgname`" >> $YAOURTTMPDIR/sysuplist
+				echo "#    $description" >> $YAOURTTMPDIR/sysuplist
 			else
                         	echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`$NO_COLOR" $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
-				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE$description$NO_COLOR"
 			fi
 		done
 	fi
 
-        # show new package
-        if [ ${#newpkgs[@]} -gt 0 ]; then
-        	echo
-		declare newpkgs=`echo -e ${newpkgs[*]} | tr ' ' '\n' | sort`
+	# show new package
+	if [ ${#newpkgs[@]} -gt 0 ]; then
+       	echo
 		if [ "$1" = "manual" ]; then
 			echo -e "\n$separator\n# $(eval_gettext 'New package :')\n$separator" >> $YAOURTTMPDIR/sysuplist
 		else
 			msg $(eval_gettext 'New package :')
 		fi
-		for line in ${newpkgs[@]}; do
-			repository=`echo $line| awk -F '##' '{print $1}'`
-			pkgname=`echo $line| awk -F '##' '{print $2}'`
-			rversion=`echo $line| awk -F '##' '{print $3}'`
+		for line in "${newpkgs[@]}"; do
+			eval $line
 			### Searching for package which depends on 'new package'
 			requiredbypkg=$(eval_gettext 'not found')
-			for pkg in ${pkg_repository_name_ver[@]%\#\#*}; do
+			for pkg in ${packages[@]}; do
 				if [ "$pkg" != "$pkgname" ] && `LC_ALL=C pacman -Si $pkg |grep -m1 -A15 "^Repository"| sed -e '1,/^Provides/d' -e '/^Optional\ Deps/,$d'\
 				       | grep -q "\ $pkgname[ >=<]"`; then
 					requiredbypkg=$pkg
@@ -332,10 +323,10 @@ showupgradepackage()
 
 			if [ "$1" = "manual" ]; then
 				echo -e "\n$repository/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
-				echo "#    `pkgdescription $pkgname` $(eval_gettext '(required by $requiredbypkg)')" >> $YAOURTTMPDIR/sysuplist
+				echo "#    $description $(eval_gettext '(required by $requiredbypkg)')" >> $YAOURTTMPDIR/sysuplist
 			else
 				echo -e `colorizeoutputline $repository/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion $COL_RED $(eval_gettext '(required by $requiredbypkg)')$NO_COLOR"
-				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE`pkgdescription $pkgname`$NO_COLOR"
+				[ "$1" = "full" ] && echo -e "    $COL_ITALIQUE$description$NO_COLOR"
 			fi
 		done
 	fi

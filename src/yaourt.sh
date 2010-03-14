@@ -864,17 +864,14 @@ case "$MAJOR" in
 	fi
 	PKG=${args[0]}
 	#msg "Get PKGBUILD for $PKG"
-	case "$(sourcerepository $PKG)" in
-		core|extra|testing|community)
+	if in_array "$(sourcerepository $PKG)" "${ABS_REPO[@]}"; then
 		BUILD=1
 		install_from_abs $PKG
-		;;
-		*)
+	else
 		eval $INENGLISH wget "http://aur.archlinux.org/packages/$PKG/$PKG.tar.gz" || { error $(eval_gettext '$PKG not found in AUR.'); die 1; }
 		tar xzf $PKG.tar.gz --transform="s,$PKG,," 2>/dev/null
 		rm $PKG.tar.gz
-		;;
-	esac
+	fi
 	;;
 
 	backup)
@@ -912,14 +909,7 @@ case "$MAJOR" in
 		list_repositories
 		loadlibrary alpm_query
 		for arg in ${args[@]}; do
-			case $QUERYTYPE in
-				"%DEPENDS%")
-				msg $(eval_gettext 'packages which depend on $arg:');;
-				"%CONFLICTS%")
-				msg $(eval_gettext 'packages which conflicts with $arg');;
-				"%PROVIDES%")
-				msg $(eval_gettext 'packages which provides $arg');;
-			esac
+			msg $(eval_gettext 'packages which '$QUERYTYPE' on $arg:')
 			searchforpackageswhich "$QUERYTYPE" "$arg"
 		done
 	elif [ $LIST -eq 1 ];then

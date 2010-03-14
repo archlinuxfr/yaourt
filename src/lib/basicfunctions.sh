@@ -75,6 +75,22 @@ is_x_gt_y(){
 }
 
 
+##
+# From makepkg.
+#  usage : in_array( $needle, $haystack )
+# return : 0 - found
+#          1 - not found
+##
+in_array() {
+	local needle=$1; shift
+	[ -z "$1" ] && return 1 # Not Found
+	local item
+	for item in "$@"; do
+		[ "$item" = "$needle" ] && return 0 # Found
+	done
+	return 1 # Not Found
+}
+
 run_editor ()
 {
 	local edit_cmd=
