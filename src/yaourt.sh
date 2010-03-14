@@ -43,6 +43,14 @@ readPKGBUILD(){
 	depends makedepends conflicts replaces _svntrunk _svnmod _cvsroot _cvsmod _hgroot \
 	_hgrepo	_gitroot _gitname _darcstrunk _darcsmod _bzrtrunk _bzrmod 
 	source ./PKGBUILD &> /dev/null
+	local failed=0
+	local PKG="$1"
+	[ -z "$pkgname" ] && failed=1
+	if [ $failed -eq 1 ]; then
+		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
+		return 1
+	fi
+	return 0
 }
 setPARCH(){
 	if [ "$arch" = "any" ]; then

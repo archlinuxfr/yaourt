@@ -142,6 +142,17 @@ edit_file ()
 	return 0
 }
 
+check_root ()
+{
+	if [ $UID -eq 0 ]; then
+		runasroot=1
+        warning $(eval_gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
+		sleep 2
+	else
+		runasroot=0
+	fi
+}	
+
 readconfigfile(){
 # defautconfig
 EDITFILES=1

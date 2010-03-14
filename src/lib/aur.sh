@@ -37,11 +37,7 @@ mkdir -p $tmpdir
 cd $tmpdir
 wget -O PKGBUILD -q http://aur.archlinux.org/packages/$PKG/$PKG/PKGBUILD || { echo "$PKG not found in repos nor in AUR"; return 1; }
 edit_file PKGBUILD 1 1 || return 1
-readPKGBUILD
-if [ -z "$pkgname" ]; then
-       echo "Unable to read $PKG's PKGBUILD"
-       return 1
-fi
+readPKGBUILD || return 1
 echo "Repository	: AUR Unsupported"
 echo "Name		: $pkgname"
 echo "Version		: $pkgver-$pkgrel"
@@ -177,13 +173,7 @@ install_from_aur(){
 	DEP_AUR=( )
 	local PKG="$1"
 	title $(eval_gettext 'Installing $PKG from AUR')
-	UID_ROOT=0
-	if [ "$UID" -eq "$UID_ROOT" ]
-	then
-		runasroot=1
-		warning $(eval_gettext 'Building unsupported package as root is dangerous.\n Please run yaourt as a non-privileged user.')
-		sleep 2
-	fi
+	check_root
 
 	wdir="$YAOURTTMPDIR/aur-$PKG"
 

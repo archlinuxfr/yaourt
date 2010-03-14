@@ -42,12 +42,9 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	PROCEED_UPGD=`userinput`
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
-for package in $@; do
+for package in $(package-query -Sif "%r/%n" "$@"); do
 	PKG=${package#*/}
-	local repository=`sourcerepository $PKG`
-	if [ "$repository" = "community" ]; then
-		communitypackages[${#communitypackages[@]}]=$PKG
-	fi
+	local repository=${package%/*}
 	if [ $BUILD -eq 0 -a ! -f "/etc/customizepkg.d/$PKG" ]; then
 		binariespackages[${#binariespackages[@]}]=$package
 		continue
@@ -55,13 +52,6 @@ for package in $@; do
 	[ "$MAJOR" != "getpkgbuild" ] && msg "Building $PKG from sources"
 	title $(eval_gettext 'Install $PKG from sources')
 	failed=0
-
-	# Build From AUR [Community] ?
-	if [ -z "$repository" ]; then echo $(eval_gettext '$PKG was not found on abs'); manage_error 1 || continue; fi
-	#if [ "$repository" = "testing" ]; then
-	#       	repository="all"
-	#fi
-	
 
 	echo
 	if [ "$MAJOR" != "getpkgbuild" ]; then
@@ -78,19 +68,9 @@ for package in $@; do
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
-	if [ $UID -eq 0 ]; then
-		runasroot=1
-        	warning $(eval_gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
-		sleep 2
-	else
-		runasroot=0
-	fi
+	check_root	# 
 	
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-       		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		manage_error 1 || continue
-	fi
+	readPKGBUILD || { manage_error 1; continue; }
 	
 	msg "$pkgname $pkgver-$pkgrel $([ "$branchtags" = "TESTING" ] && echo -e "$COL_BLINK[TESTING]")"
 	
@@ -128,15 +108,6 @@ done
 if [ ${#binariespackages[@]} -gt 0 ]; then
 	#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
 	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $NEEDED $nodeps $asdeps ${binariespackages[*]}"
-fi
-
-# Vote for community packages
-if [ ${#communitypackages[@]} -gt 0 -a $AURVOTE -eq 1 ]; then
-	for pkgname in ${communitypackages[@]}; do
-		aurid=`findaurid $pkgname`
-		vote_package "$pkgname" "$aurid"
-	done
-
 fi
 
 }
@@ -585,20 +556,12 @@ build_package(){
 		failed=1
 	fi
 
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
+	readPKGBUILD || return 1
 	return $failed
 }
 find_pkgbuild_deps (){
 	unset DEPS DEP_AUR DEP_ABS
-	readPKGBUILD
-	if [ -z "$pkgname" ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
+	readPKGBUILD || return 1
 	for dep in $(echo "${depends[@]} ${makedepends[@]}" | tr -d '\\')
 	do
 		DEPS[${#DEPS[@]}]=$(echo $dep | sed 's/=.*//' \
