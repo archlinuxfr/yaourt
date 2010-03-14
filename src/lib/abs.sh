@@ -25,8 +25,6 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	PROCEED_UPGD=`userinput`
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
-USETESTING=0
-if { LC_ALL=C pacman --debug 2>/dev/null| grep -q "debug: registering sync database 'testing'"; }; then USETESTING=1;fi
 for package in $@; do
 	PKG=${package#*/}
 	local repository=`sourcerepository $PKG`
@@ -192,8 +190,7 @@ sysupgrade()
 	# Classic sysupgrade
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
 	OLD_IFS="$IFS"
-	IFS='
-'	
+	IFS=$'\n'
 	for _line in $(package-query -1Sei \
 		-f "pkgname=%n;repository=%r;rversion=%v;lversion=%l;description=\"%d\"" \
 		"${packages[@]}"); do
@@ -343,14 +340,14 @@ sync_packages()
 		fi
 		_pkg_list=${args[0]}
 		AURVOTE=0
-		args=( `cat "${args[0]}" | grep -v "^#" | awk '{print $1}'` ) 
+		args=( `grep -o '^[^#[:space:]]*' "${args[0]}"` ) 
 	fi
 
 	# Install from arguments
 	prepare_orphan_list
-	for arg in ${args[@]}; do
-		if `isavailable ${arg#*/}` && [ $AUR -eq 0 -a ! "$(echo $arg | grep "^aur/")" ]; then
-			repos_package[${#repos_package[@]}]=${arg}
+	for _line in $(package-query -1ASif "%r/%n" "${args[@]}"); do
+		if [ "${_line%/*}" != "aur" ]; then
+			repos_package[${#repos_package[@]}]="$_line"
 		else
 			install_from_aur "${arg#aur/}" || failed=1
 		fi

@@ -20,9 +20,6 @@ searchforpackageswhich(){
 	#action can be %DEPENDS% %REQUIREDBY %CONFLICTS% %PROVIDES%
 	local action=$1
 	local name=$2
-	OLD_IFS="$IFS"
-	IFS='
-'
 	for _line in $(package-query -S -t $action $name -f "package=%n;ver=%v;lver=%l"); do
 		eval $_line
 		if [ "$lver" != "-" ]; then
@@ -31,7 +28,6 @@ searchforpackageswhich(){
 			echo $package $ver
 		fi
 	done
-	IFS="$OLD_IFS"
 	return
 }
 
@@ -70,8 +66,7 @@ search_for_installed_package(){
 	title $(eval_gettext 'Searching for "$_arg" in installed packages')
 
 	OLD_IFS="$IFS"
-	IFS='
-'
+	IFS=$'\n'
 	for _line in $(package-query -Qe ${args[*]} -f "package=%n;version=%v;version=%v;group=%g;repository=%r;description=\"%d\""); do
 		eval $_line
 		echo -e `colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version} ${COL_GROUP}$group${NO_COLOR}"` 

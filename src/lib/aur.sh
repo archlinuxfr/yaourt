@@ -287,9 +287,6 @@ upgrade_from_aur(){
 	# Search for new version on AUR
 	local iNum=0
 	msg $(eval_gettext 'Searching for new version on AUR')
-	OLD_IFS="$IFS"
-	IFS='
-'
 	for _line in $(package-query -Ai `pacman -Qqm` -f "PKG=%n;local_version=%l;aur_version=%v;outofdate=%o")
 	do
 		eval $_line
@@ -317,7 +314,6 @@ upgrade_from_aur(){
 			fi
 		fi
 	done
-	IFS="$OLD_IFS"
 	cleanoutput
 
 	[ $iNum -lt 1 ] && return 0

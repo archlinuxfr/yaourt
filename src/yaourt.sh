@@ -613,10 +613,10 @@ isinstalled(){
 	pacman -Qq $1 &>/dev/null
 }
 isavailable(){
-	package-query -QSsq "^$1$"  
+	package-query -1Siq $1 || package-query -1Sq -t provides $1
 }
 isprovided(){
-	package-query -1QSq -t provides $1 &> /dev/null
+	package-query -Qq -t provides $1 
 }
 pkgversion(){
 	# searching for version of the given package
