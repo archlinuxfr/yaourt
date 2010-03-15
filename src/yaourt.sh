@@ -787,7 +787,7 @@ search ()
 			else
 				line="$line${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')"
 			fi
-			line="]$line${NO_COLOR}"
+			line="${line}]${NO_COLOR}"
 		fi
 		[ "$group" != "-" ] && \
 			line="$line${NO_COLOR} $COL_GROUP($group)$NO_COLOR"
