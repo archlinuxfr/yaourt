@@ -776,21 +776,27 @@ search ()
 	[ $AURSEARCH -eq 1 ] && search_option="$search_option -A"
 	[ "$MAJOR" = "query" ] && search_option="$search_option -Q" || search_option="$search_option -S"
 	[ "$LIST" -eq 1 ] && search_option="$search_option -l"
-	package-query $search_option -sef "%n %r %v %l %g %d" ${args[*]} |
-	while read package repository version lversion group description; do
+	package-query $search_option -sef "%n %r %v %l %g %w %o %d" ${args[*]} |
+	while read package repository version lversion group votes outofdate description ; do
 		[ $interactive -eq 1 ] && echo "${repository}/${package}" >> $searchfile
 		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
 		if [ "$lversion" != "-" ]; then
+			line="$line ${COL_INSTALLED}["
 			if [ "$lversion" = "$version" ];then
-				line="$line ${COL_INSTALLED}[$(eval_gettext 'installed')]"
+				line="$line$(eval_gettext 'installed')"
 			else
-				line="$line ${COL_INSTALLED}[${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')]"
+				line="$line${COL_RED}$lversion${COL_INSTALLED} $(eval_gettext 'installed')"
 			fi
+			line="]$line${NO_COLOR}"
 		fi
-		[ "$group" = "-" ] && group="" 
-		[ -n "$group" ] && group="($group)"
+		[ "$group" != "-" ] && \
+			line="$line${NO_COLOR} $COL_GROUP($group)$NO_COLOR"
+		[ "$outofdate" != "-" ] && [ $outofdate -eq 1 ] && \
+			line="$line${NO_COLOR} ${COL_INSTALLED}($(eval_gettext 'Out of Date'))"
+		[ "$votes" != "-" ] && \
+			line="$line${NO_COLOR} $COL_NUMBER($votes)${NO_COLOR}"
 		[ $interactive -eq 1 ] && echo -ne "${COL_NUMBER}${i}${NO_COLOR} "
-		echo -e "$line$NO_COLOR $COL_GROUP$group$NO_COLOR"
+		echo -e "$line"
 		echo -e "  $COL_ITALIQUE$description$NO_COLOR"
 		(( i ++ ))
 	done
