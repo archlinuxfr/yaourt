@@ -779,7 +779,7 @@ search ()
 	package-query $search_option -sef "%n %r %v %l %g %w %o %d" ${args[*]} |
 	while read package repository version lversion group votes outofdate description ; do
 		[ $interactive -eq 1 ] && echo "${repository}/${package}" >> $searchfile
-		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}`
+		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}${NO_COLOR}`
 		if [ "$lversion" != "-" ]; then
 			line="$line ${COL_INSTALLED}["
 			if [ "$lversion" = "$version" ];then
