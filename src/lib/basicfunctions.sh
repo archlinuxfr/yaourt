@@ -105,7 +105,7 @@ run_editor ()
 		read -e EDITOR
 		echo
 	fi
-	[ $(basename "$EDITOR") = "gvim" ] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
+	[ "$(basename "$EDITOR")" = "gvim" ] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
 	( $edit_cmd "$file" )
 	wait
 }
