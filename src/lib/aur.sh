@@ -222,12 +222,10 @@ install_from_aur(){
 	msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
 	if [ ${#DEP_ABS[@]} -gt 0 ]; then
 		$BUILDPROGRAM --asdeps "${DEP_ABS[*]}"
-		for installed_dep in ${DEP_ABS[@]}; do
-			if ! `isinstalled $installed_dep`; then
-				failed=1
-				break
-			fi
-		done
+		if ! pacman -T "${DEP_ABS[@]}"; then
+			failed=1
+			break;
+		fi
 	fi
 
 	# compil PKGBUILD if dep's building not failed
@@ -261,11 +259,10 @@ upgrade_from_aur(){
 	loadlibrary pacman_conf
 	create_ignorepkg_list || error $(eval_gettext 'list ignorepkg in pacman.conf')
 	# Search for new version on AUR
-	local iNum=0
 	msg $(eval_gettext 'Searching for new version on AUR')
-	for _line in $(package-query -AQm -f "PKG=%n;local_version=%l;aur_version=%v;outofdate=%o")
+	inter_process="$(mktemp)"
+	package-query -AQm -f "%n %l %v %o" | while read PKG local_version aur_version outofdate
 	do
-		eval $_line
 		echo -n "$PKG: "
 		[ "$aur_version" = "-" ] && \
 			{ echo -e "${COL_YELLOW}"$(eval_gettext 'not found on AUR')"${NO_COLOR}"; continue; }
@@ -279,8 +276,7 @@ upgrade_from_aur(){
 				echo -e "${COL_RED} "$(eval_gettext '(ignoring package upgrade)')"${NO_COLOR}"
 			else
 				echo 
-				aur_package[$iNum]=$PKG
-				(( iNum ++ ))
+				echo $PKG >> "$inter_process"
 			fi
 		elif [ $local_version != $aur_version ]; then
 			echo -e " (${COL_RED}local=$local_version ${NO_COLOR}aur=$aur_version)"
@@ -294,10 +290,11 @@ upgrade_from_aur(){
 	done
 	cleanoutput
 
-	[ $iNum -lt 1 ] && return 0
-
+	aur_package=( $(cat "$inter_process" ) )
+	rm "$inter_process"
+	[ -n "$aur_package" ] || return 0
 	# upgrade yaourt first
-	for package in ${aur_package[@]}; do
+	for package in  ${aur_package[@]}; do
 		if [ "$package" = "yaourt" ]; then
 			warning $(eval_gettext 'New version of $package detected')
 			prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
