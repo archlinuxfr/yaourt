@@ -256,8 +256,6 @@ install_from_aur(){
 
 upgrade_from_aur(){
 	title $(eval_gettext 'upgrading AUR unsupported packages')
-	packages=( $(pacman -Qqm) )
-	[ -z "$packages" ] && return 0
 	tmp_files="$YAOURTTMPDIR/search/"
 	mkdir -p $tmp_files
 	loadlibrary pacman_conf
@@ -265,10 +263,12 @@ upgrade_from_aur(){
 	# Search for new version on AUR
 	local iNum=0
 	msg $(eval_gettext 'Searching for new version on AUR')
-	for _line in $(package-query -Ai "${packages[@]}" -f "PKG=%n;local_version=%l;aur_version=%v;outofdate=%o")
+	for _line in $(package-query -AQm -f "PKG=%n;local_version=%l;aur_version=%v;outofdate=%o")
 	do
 		eval $_line
 		echo -n "$PKG: "
+		[ "$aur_version" = "-" ] && \
+			{ echo -e "${COL_YELLOW}"$(eval_gettext 'not found on AUR')"${NO_COLOR}"; continue; }
 		lrel=${local_version#*-}
 		rrel=${aur_version#*-}
 		lver=${local_version%-*}
