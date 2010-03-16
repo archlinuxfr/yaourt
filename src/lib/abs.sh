@@ -340,7 +340,7 @@ sync_packages()
 			install_from_aur "${_line#aur/}" || failed=1
 		fi
 	done
-	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[*]}"
+	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[@]}"
 	show_new_orphans
 }
 
