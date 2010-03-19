@@ -42,11 +42,11 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	PROCEED_UPGD=`userinput`
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
-for package in $(package-query -Sif "%r/%n" "$@"); do
+for package in $(package-query -1Sif "%r/%n" "$@"); do
 	PKG=${package#*/}
 	local repository=${package%/*}
 	if [ $BUILD -eq 0 -a ! -f "/etc/customizepkg.d/$PKG" ]; then
-		binariespackages[${#binariespackages[@]}]=$package
+		binariespackages[${#binariespackages[@]}]=${package#-/}
 		continue
 	fi
 	[ "$MAJOR" != "getpkgbuild" ] && msg "Building $PKG from sources"
@@ -335,7 +335,7 @@ sync_packages()
 	prepare_orphan_list
 	for _line in $(package-query -1ASif "%r/%n" "${args[@]}"); do
 		if [ "${_line%/*}" != "aur" ]; then
-			repos_package[${#repos_package[@]}]="$_line"
+			repos_package[${#repos_package[@]}]="${_line#*/}"
 		else
 			install_from_aur "${_line#aur/}" || failed=1
 		fi
@@ -489,7 +489,7 @@ build_package(){
 				cd $wdirDEVEL
 			fi
 		else
-			mkdir -p $wdirDEVEL
+			mkdir -p $wdirDEVEL 2> /dev/null
 			if [ $? -eq 1 ]; then
 				warning $(eval_gettext 'Unable to write in ${wdirDEVEL} directory. Using /tmp directory')
 				wdirDEVEL="$wdir/$PKG"
