@@ -577,8 +577,11 @@ manage_error(){
 # Check if sudo is allowed for given command
 is_sudo_allowed()
 {
-       [ $SUDOINSTALLED -eq 1 ] && (sudo -v && sudo -l "$@") &>/dev/null && return 0
-       return 1
+	if [ $SUDOINSTALLED -eq 1 ]; then
+		sudo -nl "$@" &> /dev/null || \
+			(sudo -v && sudo -l "$@") &>/dev/null && return 0
+	fi
+	return 1
 }
 
 launch_with_su(){
