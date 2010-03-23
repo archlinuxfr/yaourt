@@ -53,7 +53,7 @@ echo
 
 # scrap html page to show user's comments
 aurcomments(){
-	wget --quiet "${AUR_URL3}$(urlencode $1)" -O - \
+	wget --quiet "${AUR_URL3}$1" -O - \
 	| tr '\r' '\n' | sed -e '/-- End of main content --/,//d' \
 	-e 's|<[^<]*>||g' \
 	-e 's|&quot;|"|g' \
@@ -117,7 +117,7 @@ vote_package(){
 			echo
 			if [ $NOCONFIRM -eq 0 ]; then
 				_pkg=$1
-				prompt $(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)
+				prompt "$(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)"
 				VOTE=`userinput`
 			fi
 			if [ "$VOTE" != "N" ]; then
@@ -163,7 +163,7 @@ install_from_aur(){
 	done
 
 	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)
+		prompt "$(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)"
 		if [ "`userinput`" = "N" ]; then
 			return 0
 		fi
@@ -231,7 +231,7 @@ upgrade_from_aur(){
 	for package in  ${aur_package[@]}; do
 		if [ "$package" = "yaourt" ]; then
 			warning $(eval_gettext 'New version of $package detected')
-			prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
+			prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
 			[ "`userinput`" = "N" ] && break
 			echo
 			msg $(eval_gettext 'Upgrading $package first')
@@ -244,7 +244,7 @@ upgrade_from_aur(){
 	plain $(eval_gettext 'Packages that can be updated from AUR:')
 	echo "${aur_package[*]}"
 	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Do you want to update these packages ? ')$(yes_no 1)
+		prompt "$(eval_gettext 'Do you want to update these packages ? ')$(yes_no 1)"
 		[ "`userinput`" = "N" ] && return 0
 		echo
 	fi

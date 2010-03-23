@@ -1,4 +1,4 @@
-.TH yaourtrc 5 "July 8, 2007"
+.TH yaourtrc 5 "March 23, 2010"
 .LO 1
 .SH NAME
 yaourtrc \- the configfile for yaourt
@@ -18,80 +18,64 @@ obtains configuration data from the following sources in the following order:
 
     3.   system-wide configuration file (/etc/yaourtrc)
 
+.SH OPTIONS
+.B AURUPGRADE=0
+  If set to 1, always search for new version of packages installed from AUR Unsupported when upgrading (yaourt -Su).
 
-.B AlwaysUpgradeAur
-  If set to "yes", always search for new version of packages installed from AUR Unsupported when upgrading (yaourt -Su).
+.B DEVEL=0 
+  If set to 1, always search for new version of developpement CVS/SVN packages when upgrading (yaourt -Su).
 
-.B AlwaysUpgradeDevel 
-  If set to "yes", always search for new version of developpement CVS/SVN packages when upgrading (yaourt -Su).
+.B FORCE=0
+  If set to 1, always bypass file conflict checks and overwrite conflicting files.
 
-.B AlwaysForce
-  If set to yes, always bypass file conflict checks and overwrite conflicting files.
+.B AURVOTE=1
+  If set to 0, yaourt don't check the vote status for inclusion/keeping in [community], and it is unable to vote.
 
-.B AurVoteSupport
-  If set to "no", yaourt don't check the vote status for inclusion/keeping in [community], and it is unable to vote.
-
-.B AutoSaveBackupFile
-  If set to "yes", after each install, yaourt search for config files to backup (.pacnew files). It store all files in /var/lib/yaourt/. These files will be used later with yaourt -C to automerge current config files with new config files (.pacnew).
+.B AUTOSAVEBACKUPFILE=0
+  If set to 1, after each install, yaourt search for config files to backup (.pacnew files). It store all files in /var/lib/yaourt/. These files will be used later with yaourt -C to automerge current config files with new config files (.pacnew).
 This option requires root password or sudo configured to allow runing /usr/bin/pacdiffviewer without password.
 
-.B ColorMod
-  Define the color style to use. ColorMod can be "normal", "lightbackground", "nocolor" or "textonly".
-    example: ColorMod lightbackground
+.B COLORMODE="normal"
+  Define the color style to use. COLORMODE can be "normal", "lightbg", "nocolor" or "textonly".
 
-Note: nocolor use Bold and Italic fonts. TextOnly remove all special caracters and acts like UpdateTerminalTitle=no
+Note: nocolor use Bold and Italic fonts. textonly remove all special caracters and acts like TERMINALTITLE=0
 
-.B DontNeedToPressEnter
-  If set to "no", user needs to press Enter for each "yes/no" question.
+.B NOENTER=1
+  If set to 0, user needs to press Enter for each "yes/no" question.
 
-.B EditPkgbuild
-  If set to "no", don't propose to edit PKGBUILD (from AUR or from ABS).
+.B EDITFILES=1
+  If set to 0, don't propose to edit files (from AUR or from ABS).
 
-.B ExportToLocalRepository
-</where/you/want>
+.B EXPORTDIR=""
   Specify the folder where yaourt export built packages for local repository
 This option export .pkg.tar.gz + PKGBUILD + local sources files.
 
-.B ForceEnglish
-  If set to "yes", yaourt use English for makepkg and pacman instead of system language.
+.B FORCEENGLISH=0
+  If set to 1, yaourt use English for makepkg and pacman instead of system language.
 
-.B LastCommentsNumber
+.B MAXCOMMENTS=X
   Show X last comments for packages built from AUR Unsupported.
-  default: LastCommentsNumber 5
+  default: MAXCOMMENTS=5
 
-.B LastCommentsOrder
-  If set to asc, comments from AUR are listed from older to newer.
-  Set LastCommentsOrder to desc to show newer comments on top of the screen.
+.B NOCONFIRM=0
+  If set to 1, always use the default choice without confirmation.
 
-.B NoConfirm
-  If set to yes, always use the default choice without confirmation.
+.B PACMANBIN="/usr/bin/pacman"
+  Specify the pacman binary to use with yaourt 
 
-.B PacmanBin
-<PATH>
-  Specify the pacman binary to use with yaourt (for pacman-color.sh)
-
-    example: PacmanBin /usr/bin/pacman-color
-
-.B PkgbuildEditor 
-<editorname>
+.B EDITOR="$EDITOR"
   Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing.
+  Editor should not fork, for gvim:
+  	EDITOR="gvim --nofork"
 
-    example: PkgbuildEditor gvim
+.B AURSEARCH=1
+  If set to 0, don't search for packages on AUR Unsupported
 
-.B SearchInAurUnsupported
-  If set to "no", don't search for packages on AUR Unsupported
-
-.B TmpDirectory
-</where/you/want>
+.B TMPDIR="/tmp"
   Specify the folder to save tempory files (default is /tmp).
 
-.B SourceforgeMirror
-  Define here your prefered Sourceforge mirror: (none surfnet ufpr heanet easynews umn switch belnet kent mesh optusnet jaist puzzle superb-east nchc superb-west)
-
-    example: SourceforgeMirror heanet
-
-.B UpdateTerminalTitle
-  If set to "no", don't show the current yaourt's action in terminal title.
+.B TERMINALTITLE=1
+  If set to 0, don't show the current yaourt's action in terminal title.
   By default, yaourt show messages like "Installing xxx from AUR".
   It's recommended to add something like this in your .bashrc
 
@@ -111,8 +95,10 @@ information on the distribution and the \fBpacman\fP family of tools.
 .SH AUTHORS
 
 wain <wain@archlinux.fr>
+tuxce <tuxce@archlinux.fr>
 
 .SH MANPAGE AUTHORS
 .nf
 wain  <wain@archlinux.fr>
+tuxce <tuxce@archlinux.fr>
 .if

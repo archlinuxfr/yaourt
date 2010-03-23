@@ -52,7 +52,7 @@ for orphan in ${orphans[@]}; do
       	echo -e "${COL_YELLOW}${orphan} ${NO_COLOR}$(eval_gettext 'was installed as dependencies but are no longer required by any installed package')"
 done
 echo
-prompt $(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)
+prompt "$(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
 remove=$(userinput)
 echo
 if [ "$remove" = "Y" ]; then

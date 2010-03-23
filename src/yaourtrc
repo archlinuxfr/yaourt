@@ -1,32 +1,24 @@
-#    ~/yaourtrc  - Configuration for yaourt
+#    yaourtrc  - Configuration for yaourt
 # 
-#   See yaourt(8) for more information
+#   See yaourtrc(5) for more information
 #   
 #
-#
-#   AlwaysUpgradeDevel no
-#   AlwaysUpgradeAur no
-#   AlwaysForce no
-#   AurVoteSupport yes
-#   AutoSaveBackupFile no
-#   ColorMod Normal
-#   ColorMod LightBackGround
-#   ColorMod NoColor
-#   ColorMod TextOnly
-#   DontNeedToPressEnter yes
-#   EditPkgbuild yes
-#   ExportToLocalRepository /where/you/want
-#   ForceEnglish no
-#   LastCommentsNumber 5
-#   LastCommentsOrder asc
-#   NoConfirm no
-#   PacmanBin /usr/bin/pacman-color
-#   PkgbuildEditor gvim
-#   SearchInAurUnsupported yes
-#   ShowAurComment yes
-#   TmpDirectory /where/you/want
-#   UpdateTerminalTitle yes
-#
-#   Define here your prefered Sourceforge mirror: (none surfnet ufpr heanet easynews umn switch belnet kent mesh optusnet jaist puzzle superb-east nchc superb-west)
-#  SourceforgeMirror heanet
-#
+#NOCONFIRM=0
+#FORCE=0
+#AUTOSAVEBACKUPFILE=0
+#FORCEENGLISH=0
+#EDITFILES=1
+#AURCOMMENT=1
+#DEVEL=0
+#NOENTER=1
+#AURUPGRADE=0
+#AURVOTE=1
+#AURSEARCH=1
+#TERMINALTITLE=1
+#EXPORTDIR=""
+#TMPDIR="/tmp"
+#MAXCOMMENTS=5
+#EDITOR="$EDITOR"
+#PACMANBIN="/usr/bin/pacman"
+#COLORMODE="normal"
+

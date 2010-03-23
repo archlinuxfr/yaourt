@@ -149,7 +149,7 @@ manage_conflicts ()
 		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
 	done
 	if (( ! NOCONFIRM )); then
-		prompt $(eval_gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)
+		prompt "$(eval_gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
 		if [ "$(userinput)" = "Y" ]; then
 			pacman_queuing; launch_with_su "$PACMANBIN -Rd "${pkgs%[<=>]*}"" 
 			if (( $? )); then
@@ -194,7 +194,7 @@ build_package()
 		# Using previous build directory
 		if [ -d "$wdirDEVEL" ]; then
 			if (( ! NOCONFIRM )); then
-				prompt $(eval_gettext 'Yaourt has detected previous ${pkgname} build. Do you want to use it (faster) ? ') $(yes_no 1)
+				prompt "$(eval_gettext 'Yaourt has detected previous ${pkgname} build. Do you want to use it (faster) ? ') $(yes_no 1)"
 				USE_OLD_BUILD=$(userinput)
 				echo
 			fi
@@ -273,7 +273,7 @@ install_package()
 	if (( ! NOCONFIRM )); then
 		CONTINUE_INSTALLING="V"
 		while [ "$CONTINUE_INSTALLING" = "V" -o "$CONTINUE_INSTALLING" = "C" ]; do
-			echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}"$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)"${NO_COLOR}" >&2
+			echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)${NO_COLOR}" >&2
 			prompt $(eval_gettext '[v]iew package contents   [c]heck package with namcap')
 			CONTINUE_INSTALLING=$(userinput "YNVC")
 			echo

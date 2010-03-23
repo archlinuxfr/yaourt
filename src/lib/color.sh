@@ -12,10 +12,11 @@
 #        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
 #       VERSION:  1.0
 #===============================================================================
+COLORMODES=( textonly nocolor lightbg )
 
 initcolor(){
 # no special caracter for textonly mode
-if [ "$COLORMODE" = "--textonly" ]; then
+if [ "$COLORMODE" = "textonly" ]; then
 	TERMINALTITLE=0
 	return 0
 else
@@ -35,7 +36,7 @@ fi
 
 # Color list
 case $COLORMODE in
-	"--nocolor")
+	"nocolor")
 	COL_WHITE="\033[0m"
 	COL_YELLOW="\033[0m"
 	COL_RED="\033[0m"
@@ -46,7 +47,7 @@ case $COLORMODE in
 	COL_BLACK="\033[0m"
 	COL_MAGENTA="\033[0m"
 	;;
-	"--lightbg")
+	"lightbg")
 	COL_WHITE="\033[1;37m"
 	COL_RED="\033[1;31m"
 	COL_CYAN="\033[1;36m"
@@ -95,7 +96,7 @@ warning(){
 	echo -e "${COL_YELLOW}==> WARNING: ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 }
 prompt(){
-        echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
+	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD} ----------------------------------------------${NO_COLOR}" >&2
 	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
 }
@@ -107,7 +108,7 @@ error(){
 	return 1
 }
 colorizeoutputline(){		
-	if [ "$COLORMODE" = "--textonly" ]; then
+	if [ "$COLORMODE" = "textonly" ]; then
 		local line=`echo $* | sed -e 's#^core/#&#g' \
 		-e 's#^extra/#&#g' \
         	-e 's#^community/#&#g' \

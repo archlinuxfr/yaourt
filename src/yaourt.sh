@@ -67,6 +67,7 @@ usage(){
 	echo "$(eval_gettext '   yaourt -Sybu --aur     : upgrade by building PKGBUILD + packages from aur')"
 	echo "$(eval_gettext '   yaourt -Syu --devel    : upgrade all cvs/svn/mercurial packages (from aur)')"
 	echo
+	(( $1 )) && return 0
 	echo "$(eval_gettext 'OPTIONS:')"
 	echo "$(eval_gettext ' yaourt''s options are the same as pacman, so check the pacman man page for more info')"
 	echo "$(eval_gettext ' yaourt adds/enhances options marked with ''*''')"
@@ -203,313 +204,7 @@ die(){
 	fi
 	exit $1
 }
-parameters(){
-	# Options
-	MAJOR=""
-	PRINTURIS=0
-	INFO=0
-	ROOT=0
-	NEWROOT=""
-	NODEPS=0
-	ASDEPS=0
-	SEARCH=0
-	BUILD=0
-	REFRESH=0
-	SYSUPGRADE=0
-	DOWNLOAD=0
 
-
-	AUR=0
-	HOLDVER=0
-	IGNORE=0
-	IGNOREPKG=""
-	IGNOREARCH=0
-	NEEDED=""
-	CLEAN=0
-	LIST=0
-	CLEANDATABASE=0
-	DATE=0
-	UNREQUIRED=0
-	CHANGELOG=0
-	FOREIGN=0
-	OWNER=0
-	GROUP=0
-	DOWNGRADE=""
-	QUERYTYPE=""
-	QUERYWHICH=0
-	QUIET=0
-	develpkg=0
-	failed=0
-	SUDOINSTALLED=0
-	VERSIONPKGINSTALLED=0
-	AURVOTEINSTALLED=0
-	CUSTOMIZEPKGINSTALLED=0
-	EXPLICITE=0
-	DEPENDS=0
-
-	ARGLIST=$@
-	ARGSANS=""
-	while [ "$#" -ne "0" ]; do
-		case $1 in
-			--help)
-			usage
-			exit 0
-			;;
-			--version) version ;;
-			--clean)
-			MAJOR="clean"
-			ARGSANS="$ARGSANS $1"
-			;;
-			--remove)
-			MAJOR="remove"
-			ARGSANS="$ARGSANS $1"
-			;;
-			--upgrade)
-			MAJOR="upgrade"
-			ARGSANS="$ARGSANS $1"
-			;;
-			--upgrades)
-			DOWNGRADE="--upgrades"
-			;;
-			--groups)
-			GROUP=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--getpkgbuild)
-			MAJOR="getpkgbuild"
-			;;
-			--backup)
-			MAJOR="backup"
-			;;
-			--backupfile)
-			if [ ! -f "$2" -o ! -r "$2" ]; then
-				_file=$2
-				error $(eval_gettext 'Unable to read $_file file')
-				die 1
-			fi
-			COLORMODE="--textonly"
-			BACKUPFILE="$2"
-			shift
-			;;
-			--query)
-			MAJOR="query"
-			ARGSANS="$ARGSANS $1"
-			;;
-			--sync)
-			MAJOR="sync"
-			ARGSANS="$ARGSANS $1"
-			;;
-			--info)
-			INFO=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--print-uris)
-			PRINTURIS=1
-			;;
-			--list)
-			LIST=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--force)
-			FORCE=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--root)
-			ROOT=1
-			NEWROOT="$2"
-			ARGSANS="$ARGSANS $1 $2"
-			shift
-			;;
-			--stats)
-			MAJOR="stats"
-			break
-			;;
-			--sucre)
-			MAJOR="sync"
-			FORCE=1; SYSUPGRADE=1; REFRESH=1; AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
-			ARGSANS="-Su --noconfirm --force"
-			break
-			;;
-			--export)
-			[ -d "$2" ] || { error $(eval_gettext '$2 is not a directory'); die 1;}
-			[ -w "$2" ] || { error $(eval_gettext '$2 is not writable'); die 1;}
-			EXPORT=1
-			EXPORTDIR="$( readlink -f "$2")"
-			shift
-			;;
-			--tmp)
-			cd "$2"
-			YAOURTTMPDIR="`pwd`/yaourt-tmp-`id -un`"
-			cd - 1>/dev/null; shift
-			;;
-			--nodeps)
-			NODEPS=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--asdeps)
-			ASDEPS=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--deps)
-			DEPENDS=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--explicit)
-			EXPLICITE=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--build)
-			BUILD=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--refresh)
-			if [ $REFRESH -eq 1 ]; then
-				REFRESH=2
-			else
-				REFRESH=1
-			fi
-			ARGSANS="$ARGSANS $1"
-			;;
-			--sysupgrade)
-			SYSUPGRADE=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--downloadonly)
-			DOWNLOAD=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--foreign)
-			FOREIGN=1
-			ARGSANS="$ARGSANS $1"
-			;;
-			--noconfirm)
-			NOCONFIRM=1
-			EDITFILES=0
-			ARGSANS="$ARGSANS $1"
-			;;
-			--needed)
-			NEEDED="--needed"
-			ARGSANS="$ARGSANS $1"
-			;;
-			--ignore)
-			IGNORE=1
-			IGNOREPKG="$IGNOREPKG --ignore $2"
-			ARGSANS="$ARGSANS $1 $2"
-			;;
-			--aur) AUR=1; AURUPGRADE=1; AURSEARCH=1;;
-			--svn) DEVEL=1
-			warning $(eval_gettext '--svn is obsolete. Please use --devel instead');;
-			--devel) DEVEL=1;;
-			--database) CLEANDATABASE=1;;
-			--date) DATE=1;;
-			--depends) QUERYTYPE="depends";;
-			--conflicts) QUERYTYPE="conflicts";;
-			--provides) QUERYTYPE="provides";;
-			--replaces) QUERYTYPE="replaces";;
-			--lightbg) COLORMODE="--lightbg";;
-			--nocolor) COLORMODE="--nocolor";;
-			--textonly) COLORMODE="--textonly";;
-			--unrequired) UNREQUIRED=1;;
-			--changelog) CHANGELOG=1;;
-			--holdver) HOLDVER=1;;
-			--ignorearch) IGNOREARCH=1;;
-			--*)
-			#			usage
-			#			exit 1
-			ARGSANS="$ARGSANS $1"
-			;;
-			-*)
-			ARGSANS="$ARGSANS $1"
-			if [ `echo $1 | grep r` ]; then
-				OPTIONAL=$2
-			fi
-			while getopts ":VABCRUFGQSbcdefghilmopqr:stuwy" opt $1 $OPTIONAL; do
-				case $opt in
-					V) version ;;
-					B) MAJOR="backup";;
-					C) MAJOR="clean" ;;
-					G) MAJOR="getpkgbuild" ;;
-					R) MAJOR="remove" ;;
-					U) MAJOR="upgrade" ;;
-					F) MAJOR="freshen" ;;
-					Q) MAJOR="query" ;;
-					S) MAJOR="sync" ;;
-					b) BUILD=1 ;;
-					c) CLEAN=1
-					CHANGELOG=1;;
-					d) NODEPS=1 #OR
-					CLEANDATABASE=1
-					DEPENDS=1 ;;
-					e) EXPLICITE=1 ;;
-					f) FORCE=1 ;;
-					g) GROUP=1;;
-					h)
-					usage
-					exit 0
-					;;
-					i) INFO=1 ;;
-					l) LIST=1 ;;
-					m) FOREIGN=1 ;;
-					o) OWNER=1 ;;
-					p) PRINTURIS=1 ;;
-					q) QUERYWHICH=1; QUIET=1 ;;
-					r)
-					ROOT=1
-					NEWROOT="$OPTARG"
-					;;
-					s) SEARCH=1 ;;
-					t) UNREQUIRED=1 ;;
-					u) 
-					if [ $SYSUPGRADE -eq 1 ]; then
-						DOWNGRADE="--upgrades"  
-					else
-						SYSUPGRADE=1
-					fi;;
-					w) DOWNLOAD=1 ;;
-					y) 
-					if [ $REFRESH -eq 1 ]; then
-						REFRESH=2
-					else
-						REFRESH=1
-					fi
-					;;
-				esac
-			done
-			;;
-			*)
-			args[${#args[@]}]=$1
-			;;
-		esac
-		shift
-	done
-
-	# set color theme
-	initcolor
-
-	# 
-	if [ "$MAJOR" != "query" ] && [ -f "$BACKUPFILE" ]; then
-		error $(eval_gettext '--backupfile can be used only with --query')
-		die 1
-	elif [ "$MAJOR" = "" ]; then
-		if [ -z "$ARGLIST" -o -n "$ARGSANS" ]; then
-			usage
-			die 1
-		else
-			for file in `echo $ARGLIST`; do
-				if echo $file | grep -q ".pkg.tar.\(gz\|bz2\)"; then
-					filelist[${#filelist[@]}]=$file
-				fi
-			done
-			if [ ${#filelist[@]} -gt 0 ]; then
-				args=( "${filelist[*]}" )
-				ARGSANS="--upgrade $force $confirmation"
-			else
-				MAJOR="interactivesearch"
-			fi
-		fi
-	fi
-	return 0
-}
 manage_error(){
 	if [ $1 -ne 0 ]; then
 		error_package[${#error_package[@]}]="$PKG"
@@ -666,7 +361,7 @@ cleandatabase(){
 	if [ ${#old_repository[@]} -gt 0 ]; then
 		msg $(eval_gettext 'Some directories in /var/lib/pacman/sync are no more used and should be removed:')
 		echo ${old_repository[@]}
-		prompt $(eval_gettext 'Do you want to delete these directories ? ')$(yes_no 2)
+		prompt "$(eval_gettext 'Do you want to delete these directories ? ')$(yes_no 2)"
 		if [ "`userinput`" = "Y" ]; then
 			cd $PACMANROOT/sync
 			launch_with_su "rm -r ${old_repository[*]}"
@@ -757,9 +452,6 @@ search ()
 ###################################
 # Basic init and librairies
 source /usr/lib/yaourt/basicfunctions.sh || exit 1 
-declare -a args
-parameters $@
-
 
 # grab environement options
 if [ `type -p sudo` ]; then SUDOINSTALLED=1; fi
@@ -805,7 +497,9 @@ if [ $ASDEPS -eq 1 ]; then
 	asdeps="--asdeps"
 fi
 
-if [ $EXPORT -eq 1 ]; then BUILDPROGRAM="$BUILDPROGRAM --export $EXPORTDIR"; fi
+if (( EXPORT )); then 
+	BUILDPROGRAM="$BUILDPROGRAM --export $EXPORTDIR"
+fi
 
 # Action
 case "$MAJOR" in
@@ -849,7 +543,7 @@ case "$MAJOR" in
 	loadlibrary abs
 	# don't replace the file if exist
 	if [ -f "./PKGBUILD" ]; then
-		prompt $(eval_gettext 'PKGBUILD file already exist. Replace ? ')$(yes_no 1)
+		prompt "$(eval_gettext 'PKGBUILD file already exist. Replace ? ')$(yes_no 1)"
 		[ "`userinput`" = "N" ] && die 1
 	fi
 

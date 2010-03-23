@@ -60,9 +60,9 @@ restore_alpm_db(){
 	msg $(eval_gettext 'Packages removed or ugpraded since backup:')
 	LC_ALL=C comm -2 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
 	echo
-	title $(eval_gettext 'Warning! Do you want to restore this backup ?')
+	title "$(eval_gettext 'Warning! Do you want to restore this backup ?')"
 	_pid=$$
-	msg $(eval_gettext 'Warning! Do you want to restore this backup ?')$(eval_gettext '\n(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)')
+	msg "$(eval_gettext 'Warning! Do you want to restore this backup ?')$(eval_gettext '\n(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)')"
 	prompt $(eval_gettext 'If you want to restore this backup, type "yes"')
 	read -e 
 	[ "$REPLY" != "$(eval_gettext 'yes')" ] && return 0

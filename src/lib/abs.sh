@@ -82,7 +82,7 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 
 	edit_file PKGBUILD 2 1 || { manage_error 1; continue; }
 	
-	prompt $(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)
+	prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
  	if [ "`userinput`" = "N" ]; then
 		manage_error 1 || continue
 	fi
@@ -133,7 +133,7 @@ sysupgrade()
 		case $package in
 			pacman|yaourt)
 			warning $(eval_gettext 'New version of $package detected')
-			prompt $(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)
+			prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
 			[ "`userinput`" = "N" ] && continue
 			echo
 			msg $(eval_gettext 'Upgrading $package first')
@@ -162,14 +162,14 @@ sysupgrade()
 			eval $PACMANBIN --query --sysupgrade $DOWNGRADE $NEEDED $IGNOREPKG
 			# Show package list before building
 			if [ $NOCONFIRM -eq 0 ]; then
-				echo -n $(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)
+				echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
 				proceed=`userinput`
 			fi
 			# Build packages if needed
 			if [ "$proceed" != "N" ]; then
 				BUILD=1
 				install_from_abs "${packagesfromsource[*]}"
-		        	die 0
+				die 0
 			fi
 		fi
 	fi
@@ -210,7 +210,7 @@ sysupgrade()
 			CONTINUE_INSTALLING="V"
 			while [ "$CONTINUE_INSTALLING" = "V" -o "$CONTINUE_INSTALLING" = "C" ]; do
 				echo
-				echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}"$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)"${NO_COLOR}" >&2
+				echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)${NO_COLOR}" >&2
 				prompt $(eval_gettext '[V]iew package detail   [M]anualy select packages')
 				CONTINUE_INSTALLING=$(userinput "YNVM")
 				echo
@@ -365,7 +365,7 @@ upgrade_devel_package(){
 	plain $(eval_gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
 	echo "${devel_package[@]}"
 	if [ $NOCONFIRM -eq 0 ]; then
-		prompt $(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)
+		prompt "$(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)"
 		[ "`userinput`" = "N" ] && return 0
 	fi
 	for PKG in ${devel_package[@]}; do

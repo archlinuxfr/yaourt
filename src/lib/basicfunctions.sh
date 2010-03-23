@@ -126,7 +126,7 @@ edit_file ()
 	local iter=1
 
 	while (( iter )); do
-		prompt $(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')
+		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')"
 		local answer=$(userinput "YNA")
 		echo
 		if [ -z "$answer" ]; then
@@ -163,7 +163,100 @@ check_root ()
 	fi
 }	
 
-readconfigfile(){
+# From makepkg.
+# Modified: long options can take optional arguments (::)
+# getopt like parser
+# Usage: parse_options ($short_options, $long_options, ...)
+parse_options() {
+	local short_options=$1; shift;
+	local long_options=$1; shift;
+	local ret=0;
+	local unused_options=""
+
+	while [ -n "$1" ]; do
+		if [ ${1:0:2} = '--' ]; then
+			if [ -n "${1:2}" ]; then
+				local match=""
+				for i in ${long_options//,/ }; do
+					if [ ${1:2} = ${i//:} ]; then
+						match=$i
+						break
+					fi
+				done
+				if [ -n "$match" ]; then
+					if [ ${match%:} = $match ] || [ ${match%::} != $match -a -z "$2" ]; then
+						printf ' %s' "$1"
+					else
+						if [ -n "$2" ]; then
+							printf ' %s' "$1"
+							shift
+							printf " '%s'" "$1"
+						else
+							echo "$NAME: option '$1' $(gettext "requires an argument")" >&2
+							ret=1
+						fi
+					fi
+				else
+					echo "$NAME: $(gettext "unrecognized option") '$1'" >&2
+					ret=1
+				fi
+			else
+				shift
+				break
+			fi
+		elif [ ${1:0:1} = '-' ]; then
+			for ((i=1; i<${#1}; i++)); do
+				if [[ "$short_options" =~ "${1:i:1}" ]]; then
+					if [[ "$short_options" =~ "${1:i:1}:" ]]; then
+						if [ -n "${1:$i+1}" ]; then
+							printf ' -%s' "${1:i:1}"
+							printf " '%s'" "${1:$i+1}"
+						else
+							if [ -n "$2" ]; then
+								printf ' -%s' "${1:i:1}"
+								shift
+								printf " '%s'" "${1}"
+							else
+								echo "$NAME: option $(gettext "requires an argument") -- '${1:i:1}'" >&2
+								ret=1
+							fi
+						fi
+						break
+					else
+						printf ' -%s' "${1:i:1}"
+					fi
+				else
+					echo "$NAME: $(gettext "invalid option") -- '${1:i:1}'" >&2
+					ret=1
+				fi
+			done
+		else
+			unused_options="${unused_options} '$1'"
+		fi
+		shift
+	done
+
+	printf " --"
+	if [ -n "$unused_options" ]; then
+		for i in ${unused_options[@]}; do
+			printf ' %s' "$i"
+		done
+	fi
+	if [ -n "$1" ]; then
+		while [ -n "$1" ]; do
+			printf " '%s'" "${1}"
+			shift
+		done
+	fi
+	printf "\n"
+
+	return $ret
+}
+
+###################################
+### MAIN OF INIT PROGRAM        ###
+###################################
+loadlibrary color
 # defautconfig
 EDITFILES=1
 DEVEL=0
@@ -182,202 +275,185 @@ NOENTER=1
 ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
 INENGLISH=""
-sfmirror=""
+TMPDIR="/tmp"
+COLORMODE=""
 
-while [ "$#" -ne "0" ]; do
-	lowcasearg=`echo $2 | tr A-Z a-z`
-	case $lowcasearg in
-		yes) value=1
-		;;
-		no) value=0
-		;;
-		*)value=-1
-		;;
-	esac
+[ -r /etc/yaourtrc ] && source /etc/yaourtrc
+[ -r ~/.yaourtrc ] && source ~/.yaourtrc
+[ -n "$EXPORTDIR" ] && EXPORT=1
+(( FORCEENGLISH )) && INENGLISH="LC_ALL=C"
+(( NOCONFIRM )) && EDITFILES=0
+in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
+PACMANBIN="$INENGLISH $PACMANBIN"
 
-	case "`echo $1 | tr A-Z a-z`" in
-		noconfirm)
-			if [ $value -gt -1 ]; then
-				NOCONFIRM=$value; shift
-				[ $NOCONFIRM -eq 1 ] && EDITFILES=0
-			fi
-			;;
-		alwaysforce)
-			if [ $value -gt -1 ]; then
-				FORCE=$value; shift
-			fi
-	  		;;	
-		autosavebackupfile)
-			if [ $value -gt -1 ]; then
-				AUTOSAVEBACKUPFILE=$value; shift
-			fi
-	  		;;	
-		forceenglish)
-			if [ $value -gt -1 ]; then
-				shift
-				if [ $value -eq 1 ]; then
-					INENGLISH="LC_ALL=C"
-				fi
-			fi
-	  		;;	
-		editpkgbuild)
-			if [ $value -gt -1 ]; then
-				EDITFILES=$value; shift
-			fi
-	  		;;	
-		showaurcomment)
-			if [ $value -gt -1 ]; then
-				AURCOMMENT=$value; shift
-			fi
-	  		;;	
-		alwaysupgradedevel)
-			if [ $value -gt -1 ]; then
-				DEVEL=$value; shift
-			fi
-	  		;;	
-		dontneedtopressenter)
-			if [ $value -gt -1 ]; then
-				NOENTER=$value; shift
-			fi
-	  		;;	
-		alwaysupgradeaur)
-			if [ $value -gt -1 ]; then
-				AURUPGRADE=$value; shift
-			fi
-	  		;;	
-		aurvotesupport)
-			if [ $value -gt -1 ]; then
-				AURVOTE=$value; shift
-			fi
-	  		;;	
-		searchinaurunsupported)
-			if [ $value -gt -1 ]; then
-				AURSEARCH=$value; shift
-			fi
-	  		;;	
-		updateterminaltitle)
-			if [ $value -gt -1 ]; then
-				TERMINALTITLE=$value; shift
-			fi
-	  		;;	
-		exporttolocalrepository)
-			if [ -d "$2" ]; then
-				EXPORT=1; EXPORTDIR="$2"; shift
-			else
-				error "ExportToLocalRepository is not a directory"
-			fi
-	  		;;	
-		tmpdirectory)
-			if [ -d "$2" ]; then
-				cd "$2"
-				YAOURTTMPDIR="`pwd`/yaourt-tmp-`id -un`"
-				cd - 1>/dev/null; shift
-			else
-				error "TmpDirectory is not a directory"
-			fi
-	  		;;	
-		sourceforgemirror)
-				sfmirror="$2"; shift
-				;;
-		lastcommentsnumber)
-			if `isnumeric $2`; then
-			       MAXCOMMENTS=$2; shift
-		        else
-				error "Wrong value for LastCommentsNumber"
-		        fi
-			;;	       
-		lastcommentsorder)
-			if [ "$lowcasearg" = "asc" -o "$lowcasearg" = "desc" ]; then
-			       ORDERBY=$lowcasearg; shift
-			else
-				error "Wrong value for LastCommentsOrder"
-		        fi
-			;;	       
-		pkgbuildeditor)
-			if [ `type -p "$2"` ]; then
-				EDITOR="$2"; shift
-			else
-				error "PkgbuildEditor not found"
-			fi
-	  		;;	
-		pacmanbin)
-			if [ -f "$2" ]; then
-				PACMANBIN="$2"; shift
-			else
-				error "PACMANBIN: $2 is incorrect"
-			fi
-			;;
-		colormod)
-			case $lowcasearg in
-				lightbackground)
-					COLORMODE="--lightbg"; shift
-				;;
-				nocolor)
-					COLORMODE="--nocolor"; shift
-				;;
-				textonly)
-					COLORMODE="--textonly"; shift
-				;;
-				normal)	shift ;;
-			esac
-			;;
-		*)
-		echo "$1 "$(eval_gettext "no recognized in config file")
-		sleep 4
-		;;
+MAJOR=""
+PRINTURIS=0
+INFO=0
+ROOT=0
+NEWROOT=""
+NODEPS=0
+ASDEPS=0
+SEARCH=0
+BUILD=0
+REFRESH=0
+SYSUPGRADE=0
+DOWNLOAD=0
+
+
+AUR=0
+HOLDVER=0
+IGNORE=0
+IGNOREPKG=""
+IGNOREARCH=0
+NEEDED=""
+CLEAN=0
+LIST=0
+CLEANDATABASE=0
+DATE=0
+UNREQUIRED=0
+CHANGELOG=0
+FOREIGN=0
+OWNER=0
+GROUP=0
+DOWNGRADE=""
+QUERYTYPE=""
+QUERYWHICH=0
+QUIET=0
+develpkg=0
+failed=0
+SUDOINSTALLED=0
+VERSIONPKGINSTALLED=0
+AURVOTEINSTALLED=0
+CUSTOMIZEPKGINSTALLED=0
+EXPLICITE=0
+DEPENDS=0
+
+# Parse Command Line Options.
+OPT_SHORT_PACMAN="QRSUcdefgilmopqr:stuwy"
+OPT_SHORT_YAOURT="BCGVbh"
+OPT_SHORT="${OPT_SHORT_PACMAN}${OPT_SHORT_YAOURT}"
+OPT_PACMAN="asdeps,changelog,clean,deps,downloadonly,explicit,foreign,groups"
+OPT_PACMAN="$OPT_PACMAN,info,list,needed,noconfirm,nodeps,owner,print-uris,query,refresh"
+OPT_PACMAN="$OPT_PACMAN,remove,root:,search,sync,sysupgrade,unrequired,upgrade,upgrades"
+OPT_MAKEPKG="holdver,ignorearch"
+OPT_YAOURT="aur,backup::,backupfile:,build,conflicts,database,date,depends,devel"
+OPT_YAOURT="$OPT_YAOURT,export:,force,getpkgbuild,help,lightbg,nocolor,provides,replaces"
+OPT_YAOURT="$OPT_YAOURT,stats,sucre,textonly,tmp:,version"
+OPT_LONG="$OPT_PACMAN,$OPT_MAKEPKG,$OPT_YAOURT"
+OPT_TEMP="$(parse_options $OPT_SHORT $OPT_LONG "$@" || echo 'PARSE_OPTIONS FAILED')"
+if echo "$OPT_TEMP" | grep -q 'PARSE_OPTIONS FAILED'; then
+	# This is a small hack to stop the script bailing with 'set -e'
+	echo; usage 1; exit 1 # E_INVALID_OPTION;
+fi
+eval set -- "$OPT_TEMP"
+unset OPT_SHORT OPT_LONG OPT_TEMP OPT_YAOURT OPT_MAKEPKG OPT_SHORT_YAOURT
+ARGSANS=""
+while true; do
+	in_array "$1" ${OPT_PACMAN//,/ } && ARGSANS="$ARGSANS $1"
+	[ ${OPT_SHORT_PACMAN/${1:1:1}/} != ${OPT_SHORT_PACMAN} ] && ARGSANS="$ARGSANS $1"
+	case "$1" in
+		--asdeps) 			ASDEPS=1;;
+		--changelog)		CHANGELOG=1;;
+		--clean)			CLEAN=1;;
+		--deps)				DEPENDS=1;;
+		-w|--downloadonly)	DOWNLOAD=1;;
+		-e|--explicit)		EXPLICITE=1;;
+		-m|--foreign)		FOREIGN=1;;
+		-g|--groups)		GROUP=1;;
+		-i|--info)			INFO=1;;
+		-l|--list)			LIST=1;;
+		--needed)			NEEDED=1;;
+		--noconfirm)		NOCONFIRM=1;;
+		-d|--nodeps)		NODEPS=1;;
+		-p|print-uris)		PRINTURIS=1;;
+		-Q|--query)			MAJOR="query";;
+		-y|--refresh)		(( REFRESH ++ ));;
+		-R|--remove)		MAJOR="remove";;
+		-r|--root:)			ROOT=1; shift; NEWROOT="$1"; ARGSANS="$ARGSANS '$1'";;
+		-S|--sync)			MAJOR="sync";;
+		--sysupgrade)		SYSUPGRADE=1;;
+		-t|	--unrequired)	UNREQUIRED=1;;
+		-U|--upgrade)		MAJOR="upgrade";;
+		-u|--upgrades)		(( UPGRADES ++ ));;
+		--holdver)			HOLDVER=1;;
+		--ignorearch)		IGNOREARCH=1;;
+		--aur)				AUR=1; AURUPGRADE=1; AURSEARCH=1;;
+		-B|--backup)		MAJOR="backup"; 
+							savedir=$(pwd)
+							if [ ${2:0:1} != "-" ]; then
+								[ -d "$2" ] && savedir="$( readlink -f "$2")"
+								[ -f "$2" ] && backupfile="$( readlink -f "$2")"
+								shift
+							fi
+							;;
+		--backupfile)		COLORMODE="textonly"; shift; BACKUPFILE="$1" ;;
+		-b|--build)			BUILD=1;;
+		--conflicts)		QUERYTYPE="conflicts";;
+		--database)			CLEANDATABASE=1;;
+		--date)				DATE=1;;
+		--depends)			QUERYTYPE="depends";;
+		--devel)			DEVEL=1;;
+		--export)			EXPORT=1; shift; EXPORTDIR="$1";;
+		-f|--force)			FORCE=1;;
+		-G|--getpkgbuild)	MAJOR="getpkgbuild";;
+		-h|--help)			usage; exit 0;;
+		--lightbg)			COLORMODE="lightbg";;
+		--nocolor)			COLORMODE="nocolor";;
+		-o|--owner)			OWNER=1;;
+		--provides)			QUERYTYPE="provides";;
+		--replaces)			QUERYTYPE="replaces";;
+		-s|--search)		SEARCH=1;;
+		--stats)			MAJOR="stats";;
+		--sucre)			MAJOR="sync"
+							FORCE=1; SYSUPGRADE=1; REFRESH=1; 
+							AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
+							ARGSANS="-Su --noconfirm --force";;
+		--textonly)			COLORMODE="textonly";;
+		--tmp)				shift; TMPDIR="$1";;
+		-V|version)			version; exit 0;;
+		-q)					QUERYWHICH=1; QUIET=1;;
+
+		--)					OPT_IND=0; shift; break;;
+		*)					usage; exit 1 ;; 
 	esac
 	shift
 done
-
-PACMANBIN="$INENGLISH $PACMANBIN"
-	
-}
-
-
-urlencode(){
-echo $@ | LANG=C awk '
-    BEGIN {
-        split ("1 2 3 4 5 6 7 8 9 A B C D E F", hextab, " ")
-        hextab [0] = 0
-        for ( i=1; i<=255; ++i ) ord [ sprintf ("%c", i) "" ] = i + 0
-    }
-    {
-        encoded = ""
-        for ( i=1; i<=length ($0); ++i ) {
-            c = substr ($0, i, 1)
-            if ( c ~ /[a-zA-Z0-9.-]/ ) {
-                encoded = encoded c             # safe character
-            } else if ( c == " " ) {
-                encoded = encoded "+"   # special handling
-            } else {
-                # unsafe character, encode it as a two-digit hex-number
-                lo = ord [c] % 16
-                hi = int (ord [c] / 16);
-                encoded = encoded "%" hextab [hi] hextab [lo]
-            }
-        }
-            print encoded
-    }
-    END {
-    }
-'
-}
-
-
-
-
-###################################
-### MAIN OF INIT PROGRAM        ###
-###################################
-
-YAOURTTMPDIR="/tmp/yaourt-tmp-$(id -un)"
-if [ -f ~/.yaourtrc ]; then
-	configfile="$HOME/.yaourtrc"
-else
-	configfile="/etc/yaourtrc"
+unset OPT_PACMAN OPT_SHORT_PACMAN
+args=( "$@" )
+if [ -z "$MAJOR" ]; then
+	[ -z "$args" ] && { usage; die 1; }
+	declare -a filelist
+	for file in "$args{[@]}"; do
+		[ "${file%.pkg.tar.*}" != "$file" -a -r "$file" ] && \
+			filelist[${#filelist[@]}]="$file"
+	done
+	if (( ${#filelist[@]} )); then
+		args=( "${filelist[@]}" )
+		MAJOR="upgrade"
+	else
+		MAJOR="interactivesearch"
+	fi
 fi
 
-loadlibrary color
-readconfigfile `grep "^\s*[a-zA-Z]" $configfile`
-#initcolor
+
+if [ "$MAJOR" != "query" -a -n "$BACKUPFILE" ]; then
+	error $(eval_gettext '--backupfile can be used only with --query')
+	die 1
+fi
+
+[ -z "$BACKUPFILE" ] || [ -r "$BACKUPFILE" ] || { error $(eval_gettext 'Unable to read $_file file'); die 1; }
+
+(( ! SYSUPGRADE )) && (( UPGRADES )) && [ "$MAJOR" = "sync" ] && SYSUPGRADE=1
+if (( EXPORT )); then
+	[ -d "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not a directory'); die 1;}
+	[ -w "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not writable'); die 1;}
+fi
+
+
+[ -d "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not a directory'); die 1;}
+[ -w "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not writable'); die 1;}
+YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
+
 initpath
+initcolor
+
