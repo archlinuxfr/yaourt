@@ -63,7 +63,7 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 		cd $wdir
 	fi
 
-	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/$PKG/ .
+	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/$PKG/ || return 1
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
@@ -103,11 +103,6 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 	manage_error $? || continue
 done
 
-# Install precompiled packages
-if [ ${#binariespackages[@]} -gt 0 ]; then
-	#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
-	pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $NEEDED $nodeps $asdeps ${binariespackages[*]}"
-fi
 
 }
 
@@ -332,14 +327,26 @@ sync_packages()
 	[ -z "$args" ] && return 0
 	# Install from arguments
 	prepare_orphan_list
-	for _line in $(package-query -1ASif "%r/%n" "${args[@]}"); do
+	declare -a pkgs
+	for _line in $(package-query -1ASif "%t/%r/%n" "${args[@]}"); do
+		local target="${_line%%/*}"
+		_line=${_line#*/}
 		if [ "${_line%/*}" != "aur" ]; then
 			repos_package[${#repos_package[@]}]="${_line#*/}"
 		else
 			install_from_aur "${_line#aur/}" || failed=1
 		fi
+		pkgs[${#pkgs[@]}]="$target"
 	done
-	[ ${#repos_package[@]} -gt 0 ] && install_from_abs "${repos_package[@]}"
+	for _pkg in "${args[@]}"; do
+		in_array "$_pkg" "${pkgs[@]}" || binariespackages[${#binariespackages[@]}]="$_pkg"
+	done
+	(( ${#repos_package[@]} )) && install_from_abs "${repos_package[@]}"
+	# Install precompiled packages
+	if (( ${#binariespackages[@]} )); then
+		#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
+		pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $NEEDED $nodeps $asdeps ${binariespackages[*]}"
+	fi
 	show_new_orphans
 }
 
