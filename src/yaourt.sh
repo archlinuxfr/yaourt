@@ -35,64 +35,6 @@ ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
 ABS_REPOS_URL="http://repos.archlinux.org/viewvc.cgi"
 [ -z "$LC_ALL" ] && export LC_ALL=$LANG
 
-###################################
-### Build functions             ###
-###################################
-readPKGBUILD(){
-	unset pkgname pkgver pkgrel arch pkgdesc provides url source install md5sums \
-	depends makedepends conflicts replaces _svntrunk _svnmod _cvsroot _cvsmod _hgroot \
-	_hgrepo	_gitroot _gitname _darcstrunk _darcsmod _bzrtrunk _bzrmod 
-	source ./PKGBUILD &> /dev/null
-	local failed=0
-	local PKG="$1"
-	[ -z "$pkgname" ] && failed=1
-	if [ $failed -eq 1 ]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
-		return 1
-	fi
-	return 0
-}
-setPARCH(){
-	if [ "$arch" = "any" ]; then
-		PARCH='any'
-	else
-		PARCH="$CARCH"	
-	fi
-}
-
-sourceforge_mirror_hack(){
-	readPKGBUILD
-	if ! echo ${source[*]} | grep -q "http://dl.sourceforge.net/"; then
-		return 0
-	fi
-	warning $(eval_gettext 'Sourceforge Direct Downloads is reserved to Premium Subscribers')
-	if [ -z "$sfmirror" -a $NOCONFIRM -eq 0 ]; then
-		plain $(eval_gettext 'Please choose a specific mirror:')
-		plain $(eval_gettext '>  TIPS: You can define the mirror by adding this line in yaourtrc')
-		plain '>        SourceforgeMirror belnet'
-		plain $(eval_gettext '>  (replace belnet with the name of your favorite sourceforge mirror)')
-		echo
-		list "1.surfnet(NL) 2.ufpr(BR) 3.heanet(IE) 4.easynews(US) 5.umn(US) 6.switch(CH) 7.belnet(BE) 8.kent(UK)"
-		list "9.mesh(DE) 10.optusnet(AU) 11.jaist(JP) 12.puzzle(CH) 13.superb-east(US) 14.nchc(TW) 15.superb-west(US)"
-		prompt $(eval_gettext 'Enter the number corresponding to the mirror or the mirror''s name or press Enter to use automatic redirect (slower)')
-		read -e mirror_reply
-		mirror=( none surfnet ufpr heanet easynews umn switch belnet kent mesh optusnet jaist puzzle superb-east nchc superb-west )
-		if [ -z "${mirror_reply}" ]; then
-			return 0
-		elif [ ! -z "${mirror[${mirror_reply}]}" ]; then
-			sfmirror=${mirror[$mirror_reply]}
-		else
-			sfmirror=$mirror_reply
-		fi
-	fi
-	if [ "$sfmirror" = "none" ]; then
-		plain $(eval_gettext 'no mirror will be used')
-	else
-		plain $(eval_gettext '$sfmirror mirror will be used')
-		sed -i "s|http://dl.sourceforge.net/|http://${sfmirror}.dl.sourceforge.net/|g" ./PKGBUILD
-	fi
-	return
-}
 
 ###################################
 ### General functions           ###
@@ -389,8 +331,10 @@ parameters(){
 			break
 			;;
 			--export)
+			[ -d "$2" ] || { error $(eval_gettext '$2 is not a directory'); die 1;}
+			[ -w "$2" ] || { error $(eval_gettext '$2 is not writable'); die 1;}
 			EXPORT=1
-			EXPORTDIR="$2"
+			EXPORTDIR="$( readlink -f "$2")"
 			shift
 			;;
 			--tmp)

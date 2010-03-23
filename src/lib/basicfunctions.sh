@@ -110,31 +110,41 @@ run_editor ()
 	wait
 }
 
+# Edit file
+# Usage:	edit_file ($file, $default_answer, $loop, $check_dep)
+# 	$file: file to edit
+# 	$default_answer: 1 (default): Y 	2: N
+# 	$loop: 1: loop until answer 'no' 	0 (default) : no loop
+# 	$check_dep: 1 (default): if file = PKGBUILD, check deps 
 edit_file ()
 {
-	[ $EDITFILES -ne 1 ] && return 0
+	(( ! EDITFILES )) && return 0
 	local file="$1"
 	local default_answer=${2:-1}
 	local loop=${3:-0}
+	local check_dep=${4:-1}
 	local iter=1
 
-	while [ $iter -eq 1 ]; do
+	while (( iter )); do
 		prompt $(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')
 		local answer=$(userinput "YNA")
 		echo
 		if [ -z "$answer" ]; then
-			[ $default_answer -eq 1 ] && answer='Y' || answer='N'
+			(( default_answer )) && answer='Y' || answer='N'
 		fi
 		if [ "$answer" = "Y" ]; then
 			run_editor "$file"
-			[ "$file" = "PKGBUILD" ] && find_pkgbuild_deps
-			[ $loop -eq 0 ] && iter=0
+			(( ! loop )) && iter=0
 		else
 			iter=0
 		fi
+		if [ "$answer" != "A" -a "$file" = "PKGBUILD" ]; then
+			read_pkgbuild || return 1
+			(( check_dep )) && { check_deps; check_conflicts; }
+		fi
 	done
 	
-	if [ "$answer" = "a" -o "$answer" = "A" ]; then
+	if [ "$answer" = "A" ]; then
 		echo
 		echo $(eval_gettext 'Aborted...')
 		return 1
@@ -144,7 +154,7 @@ edit_file ()
 
 check_root ()
 {
-	if [ $UID -eq 0 ]; then
+	if (( ! UID )); then
 		runasroot=1
         warning $(eval_gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
 		sleep 2

@@ -12,7 +12,7 @@
 #        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
 #       VERSION:  1.0
 #===============================================================================
-
+loadlibrary pkgbuild
 # Get sources in current dir
 aur_get_pkgbuild ()
 {
@@ -36,8 +36,8 @@ tmpdir="$YAOURTTMPDIR/$PKG"
 mkdir -p $tmpdir
 cd $tmpdir
 wget -O PKGBUILD -q http://aur.archlinux.org/packages/$PKG/$PKG/PKGBUILD || { echo "$PKG not found in repos nor in AUR"; return 1; }
-edit_file PKGBUILD 1 1 || return 1
-readPKGBUILD || return 1
+edit_file PKGBUILD 1 1 0 || return 1
+read_pkgbuild || return 1
 echo "Repository	: AUR Unsupported"
 echo "Name		: $pkgname"
 echo "Version		: $pkgver-$pkgrel"
@@ -101,11 +101,6 @@ aurcomments(){
 	grep "First Submitted" ./aurpage | sed "s/First/\n      &/" |sort
 }
 
-# find ID for given package 
-findaurid(){
-	package-query -Ai "$1" -f "%i" 
-}
-
 # Check if this package has been voted on AUR, and vote for it
 vote_package(){
 	if [ $AURVOTEINSTALLED -eq 0 ]; then
@@ -137,29 +132,18 @@ vote_package(){
 
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur(){
-	pkgname=
-	pkgdesc=
-	pkgver=
-	pkgrel=
-	runasroot=0
-	failed=0
-	DEP_AUR=( )
 	local PKG="$1"
 	title $(eval_gettext 'Installing $PKG from AUR')
-	check_root
-
 	wdir="$YAOURTTMPDIR/aur-$PKG"
-
 	if [ -d "$wdir" ]; then
 		msg $(eval_gettext 'Resuming previous build')
 	else
 		mkdir -p "$wdir" || { error $(eval_gettext 'Unable to create directory $wdir.'); return 1; }
 	fi
 	cd "$wdir/"
-
 	aurid=""
 	eval $(package-query -Aei $PKG -f "aurid=%i;version=%v;numvotes=%w;outofdate=%o;pkgurl=%u;description=\"%d\"")
-	[ -z "$aurid" ] && return
+	[ -z "$aurid" ] && return 1
 	
 	# grab comments and info from aur page
 	echo
@@ -172,16 +156,11 @@ install_from_aur(){
 
 	# Customise PKGBUILD
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
-	##### / Download tarball for unsupported
 
 	edit_file PKGBUILD 1 1 || return 1
-	find_pkgbuild_deps || return 1
-	
-	if [ -n "$install" ]; then
-		for installfile in "${install[@]}"; do
-			edit_file "$installfile" 1 1 || return 1
-		done
-	fi
+	for installfile in "${install[@]}"; do
+		edit_file "$installfile" 1 1 || return 1
+	done
 
 	if [ $NOCONFIRM -eq 0 ]; then
 		prompt $(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)
@@ -191,65 +170,20 @@ install_from_aur(){
 	fi
 
 	echo
-	# install new dependencies from AUR
-	if [ ${#DEP_AUR[@]} -gt 0 ]; then
-		msg $(eval_gettext 'Building missing dependencies from AUR:')
-		local depindex=0
-		for newdep in ${DEP_AUR[@]}; do
-			$BUILDPROGRAM --asdeps "$newdep"
-			if `isinstalled $newdep`; then
-				failed=0
-			else
-				failed=1
-			fi
 
-			# remove dependencies if failed 
-			if [ $failed -eq 1 ]; then
-				if [ $depindex -gt 0 ]; then
-					warning $(eval_gettext 'Dependencies have been installed before the failure')
-					$YAOURTCOMMAND -Rcsn "${DEP_AUR[@]:0:$depindex}"
-					plain $(eval_gettext 'press a key to continue')
-					read
-				fi
-				break
-			fi
-			(( depindex ++ ))
-		done
-	fi
-	echo
-
-	# install deps from abs (build or download) as depends
-	msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
-	if [ ${#DEP_ABS[@]} -gt 0 ]; then
-		$BUILDPROGRAM --asdeps "${DEP_ABS[*]}"
-		if ! pacman -T "${DEP_ABS[@]}"; then
-			failed=1
-			break;
-		fi
-	fi
-
-	# compil PKGBUILD if dep's building not failed
-	[ $failed -ne 1 ] && build_package
-	retval=$?
-	if [ $retval -eq 1 ]; then
-		manage_error 1 || return 1
-	elif [ $retval -eq 90 ]; then
-		return 0
-	fi
-
-	# Install, export, copy package after build 
-	[ $failed -ne 1 ] && install_package
+	build_package 
+	manage_error $? || return 1
+	install_package 
+	manage_error $? || return 1
 
 	# Check if this package has been voted on AUR, and vote for it
-	if [ $AURVOTE -eq 1 ]; then
-		vote_package "$pkgname" "$aurid"
-	fi
+	[ $AURVOTE -eq 1 ] && vote_package "$pkgname" "$aurid"
 
 	#msg "Delete $wdir"
-	rm -rf "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
+	rm -r "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
 	cleanoutput
 	echo
-	return $failed
+	return 0
 }
 
 upgrade_from_aur(){
