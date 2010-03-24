@@ -36,7 +36,7 @@ tmpdir="$YAOURTTMPDIR/$PKG"
 mkdir -p $tmpdir
 cd $tmpdir
 wget -O PKGBUILD -q http://aur.archlinux.org/packages/$PKG/$PKG/PKGBUILD || { echo "$PKG not found in repos nor in AUR"; return 1; }
-edit_file PKGBUILD 1 1 0 || return 1
+edit_file PKGBUILD 1 0 0 || return 1
 read_pkgbuild || return 1
 echo "Repository	: AUR Unsupported"
 echo "Name		: $pkgname"

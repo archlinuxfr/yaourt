@@ -331,14 +331,14 @@ DEPENDS=0
 
 # Parse Command Line Options.
 OPT_SHORT_PACMAN="QRSUcdefgilmopqr:stuwy"
-OPT_SHORT_YAOURT="BCGVbh"
+OPT_SHORT_YAOURT="BCG:Vbh"
 OPT_SHORT="${OPT_SHORT_PACMAN}${OPT_SHORT_YAOURT}"
 OPT_PACMAN="asdeps,changelog,clean,deps,downloadonly,explicit,foreign,groups"
 OPT_PACMAN="$OPT_PACMAN,info,list,needed,noconfirm,nodeps,owner,print-uris,query,refresh"
 OPT_PACMAN="$OPT_PACMAN,remove,root:,search,sync,sysupgrade,unrequired,upgrade,upgrades"
 OPT_MAKEPKG="holdver,ignorearch"
 OPT_YAOURT="aur,backup::,backupfile:,build,conflicts,database,date,depends,devel"
-OPT_YAOURT="$OPT_YAOURT,export:,force,getpkgbuild,help,lightbg,nocolor,provides,replaces"
+OPT_YAOURT="$OPT_YAOURT,export:,force,getpkgbuild:,help,lightbg,nocolor,provides,replaces"
 OPT_YAOURT="$OPT_YAOURT,stats,sucre,textonly,tmp:,version"
 OPT_LONG="$OPT_PACMAN,$OPT_MAKEPKG,$OPT_YAOURT"
 OPT_TEMP="$(parse_options $OPT_SHORT $OPT_LONG "$@" || echo 'PARSE_OPTIONS FAILED')"
@@ -360,7 +360,7 @@ while true; do
 	case "$1" in
 		--asdeps) 			ASDEPS=1;;
 		--changelog)		CHANGELOG=1;;
-		--clean)			CLEAN=1;;
+		-c|--clean)			(( CLEAN ++ ));;
 		--deps)				DEPENDS=1;;
 		-w|--downloadonly)	DOWNLOAD=1;;
 		-e|--explicit)		EXPLICITE=1;;
@@ -375,7 +375,7 @@ while true; do
 		-Q|--query)			MAJOR="query";;
 		-y|--refresh)		(( REFRESH ++ ));;
 		-R|--remove)		MAJOR="remove";;
-		-r|--root:)			ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
+		-r|--root)			ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
 		-S|--sync)			MAJOR="sync";;
 		--sysupgrade)		SYSUPGRADE=1;;
 		-t|	--unrequired)	UNREQUIRED=1;;
@@ -389,12 +389,14 @@ while true; do
 							if [ ${2:0:1} != "-" ]; then
 								[ -d "$2" ] && savedir="$( readlink -f "$2")"
 								[ -f "$2" ] && backupfile="$( readlink -f "$2")"
+								[ -z "$savedir" -a -z "$backupfile" ] && error $(eval_gettext 'wrong argument') && die 1
 								_opt="'$2'"
 								shift
 							fi
 							;;
 		--backupfile)		COLORMODE="textonly"; shift; BACKUPFILE="$1"; _opt="'$1'";;
 		-b|--build)			BUILD=1;;
+		-C)					MAJOR="clean";;
 		--conflicts)		QUERYTYPE="conflicts";;
 		--database)			CLEANDATABASE=1;;
 		--date)				DATE=1;;
@@ -402,7 +404,7 @@ while true; do
 		--devel)			DEVEL=1;;
 		--export)			EXPORT=1; shift; EXPORTDIR="$1"; _opt="'$1'";;
 		-f|--force)			FORCE=1;;
-		-G|--getpkgbuild)	MAJOR="getpkgbuild";;
+		-G|--getpkgbuild)	MAJOR="getpkgbuild"; shift; PKG="$1";;
 		-h|--help)			usage; exit 0;;
 		--lightbg)			COLORMODE="lightbg";;
 		--nocolor)			COLORMODE="nocolor";;
@@ -467,7 +469,8 @@ TMPDIR=$(readlink -f "$TMPDIR")
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 [ -n "$COLORMODE" ] && YAOURTCOMMAND="$YAOURTCOMMAND --$COLORMODE"
 BUILDPROGRAM="$YAOURTCOMMAND $BUILDPROGRAM"
-
+BUILDPROGRAM="${BUILDPROGRAM// -s /}"
+BUILDPROGRAM="${BUILDPROGRAM// --search /}"
 initpath
 initcolor
 
