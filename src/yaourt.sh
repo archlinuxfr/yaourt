@@ -419,7 +419,7 @@ case "$MAJOR" in
 				title $(eval_gettext 'Information for $arg')
 				_repo="${arg%/*}"
 				[ -z "$_repo" ] && _repo="$(package-query -1ASif "%r" "$arg")" 
-				if [ "$_repo" = "aur" ]; then info_from_aur "${arg#*/}" ; else $PACMANBIN -Si $arg; fi
+				if [ "$_repo" = "aur" ]; then info_from_aur "${arg#*/}" ; else $PACMANBIN $ARGSANS $arg; fi
 			done
 		elif (( PRINTURIS )); then
 			$PACMANBIN -Sp "${args[@]}"

@@ -316,7 +316,6 @@ CHANGELOG=0
 FOREIGN=0
 OWNER=0
 GROUP=0
-DOWNGRADE=""
 QUERYTYPE=""
 QUERYWHICH=0
 QUIET=0
@@ -362,22 +361,23 @@ while true; do
 		--changelog)		CHANGELOG=1;;
 		-c|--clean)			(( CLEAN ++ ));;
 		--deps)				DEPENDS=1;;
+		-d)					DEPENDS=1; NODEPS=1;;
 		-w|--downloadonly)	DOWNLOAD=1;;
 		-e|--explicit)		EXPLICITE=1;;
 		-m|--foreign)		FOREIGN=1;;
 		-g|--groups)		GROUP=1;;
-		-i|--info)			INFO=1;;
+		-i|--info)			(( INFO ++ ));;
 		-l|--list)			LIST=1;;
 		--needed)			NEEDED=1;;
 		--noconfirm)		NOCONFIRM=1;;
-		-d|--nodeps)		NODEPS=1;;
+		--nodeps)			NODEPS=1;;
 		-p|print-uris)		PRINTURIS=1;;
 		-Q|--query)			MAJOR="query";;
 		-y|--refresh)		(( REFRESH ++ ));;
 		-R|--remove)		MAJOR="remove";;
 		-r|--root)			ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
 		-S|--sync)			MAJOR="sync";;
-		--sysupgrade)		SYSUPGRADE=1;;
+		--sysupgrade)		SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|	--unrequired)	UNREQUIRED=1;;
 		-U|--upgrade)		MAJOR="upgrade";;
 		-u|--upgrades)		(( UPGRADES ++ ));;
@@ -387,8 +387,8 @@ while true; do
 		-B|--backup)		MAJOR="backup"; 
 							savedir=$(pwd)
 							if [ ${2:0:1} != "-" ]; then
-								[ -d "$2" ] && savedir="$( readlink -f "$2")"
-								[ -f "$2" ] && backupfile="$( readlink -f "$2")"
+								[ -d "$2" ] && savedir="$( readlink -e "$2")"
+								[ -f "$2" ] && backupfile="$( readlink -e "$2")"
 								[ -z "$savedir" -a -z "$backupfile" ] && error $(eval_gettext 'wrong argument') && die 1
 								_opt="'$2'"
 								shift
@@ -459,13 +459,13 @@ fi
 if (( EXPORT )); then
 	[ -d "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not a directory'); die 1;}
 	[ -w "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not writable'); die 1;}
-	EXPORTDIR=$(readlink -f "$EXPORTDIR")
+	EXPORTDIR=$(readlink -e "$EXPORTDIR")
 fi
 
 
 [ -d "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not a directory'); die 1;}
 [ -w "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not writable'); die 1;}
-TMPDIR=$(readlink -f "$TMPDIR")
+TMPDIR=$(readlink -e "$TMPDIR")
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 [ -n "$COLORMODE" ] && YAOURTCOMMAND="$YAOURTCOMMAND --$COLORMODE"
 BUILDPROGRAM="$YAOURTCOMMAND $BUILDPROGRAM"

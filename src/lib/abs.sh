@@ -111,7 +111,10 @@ done
 sysupgrade()
 {
 	prepare_orphan_list
-	$PACMANBIN --sync --sysupgrade --print-uris $DOWNGRADE $NEEDED $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
+	local _arg=""
+	(( UPGRADES > 1 )) && _arg="$_arg -u"
+	(( NEEDED )) && _arg="$_arg --needed"
+	$PACMANBIN --sync --sysupgrade --print-uris $_arg $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
 	
 	if [ $? -ne 0 ]; then
 		cat $YAOURTTMPDIR/sysupgrade
@@ -154,7 +157,7 @@ sysupgrade()
 		done
 		if [ ${#packagesfromsource[@]} -gt 0 ]; then
 			msg $(eval_gettext 'Packages to build from sources:')
-			eval $PACMANBIN --query --sysupgrade $DOWNGRADE $NEEDED $IGNOREPKG
+			eval $PACMANBIN --query --sysupgrade $_arg $IGNOREPKG
 			# Show package list before building
 			if [ $NOCONFIRM -eq 0 ]; then
 				echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
@@ -344,8 +347,7 @@ sync_packages()
 	(( ${#repos_package[@]} )) && install_from_abs "${repos_package[@]}"
 	# Install precompiled packages
 	if (( ${#binariespackages[@]} )); then
-		#pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${binariespackages[*]}"
-		pacman_queuing;	launch_with_su "$PACMANBIN --sync $force $confirmation $NEEDED $nodeps $asdeps ${binariespackages[*]}"
+		pacman_queuing;	launch_with_su $PACMANBIN $ARGSANS "${binariespackages[@]}"
 	fi
 	show_new_orphans
 }
