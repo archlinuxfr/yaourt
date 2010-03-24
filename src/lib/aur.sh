@@ -180,7 +180,7 @@ install_from_aur(){
 	[ $AURVOTE -eq 1 ] && vote_package "$pkgname" "$aurid"
 
 	#msg "Delete $wdir"
-	rm -r "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
+	rm -rf "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
 	cleanoutput
 	echo
 	return 0

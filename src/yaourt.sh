@@ -41,133 +41,20 @@ ABS_REPOS_URL="http://repos.archlinux.org/viewvc.cgi"
 ###################################
 
 usage(){
-	echo "$(eval_gettext '    ---  Yaourt version $VERSION  ---')"
-	echo
-	echo "$(eval_gettext 'yaourt is a pacman frontend with a lot of features like:')"
-	echo
-	echo "$(eval_gettext '. AUR support (search, easy install, vote etc..)')"
-	echo "$(eval_gettext '. interactiv search + install (with AUR Unsupported results integrated)')"
-	echo "$(eval_gettext '. building packages directly from ABS cvs sources')"
-	echo "$(eval_gettext '. search output colorised (skinable) + always show the repository where a package came from')"
-	echo "$(eval_gettext '. handling config files .pacnew/.pacsave')"
-	echo "$(eval_gettext '. managing alpm database backup (save, restore, query database directly on backup file)')"
-	echo "$(eval_gettext '. alert user when new orphans  are  detected  and  check  the  database integrity with testdb after each operation')"
-	echo "$(eval_gettext '. downloading PKGBUILD directly from ABS cvs or AUR Unsupported')"
-	echo "$(eval_gettext '. statistics on installed packages')"
-	echo "$(eval_gettext 'Yaourt can be run as a non-privileged user (safest for AUR unsupported packages).')"
-	echo "$(eval_gettext 'Root password will be required only when it is necessary.')"
-	echo
-	echo "$(eval_gettext 'USAGE: yaourt [OPTION...] <parameter>')"
-	echo "$(eval_gettext 'example:')"
-	echo "$(eval_gettext '   yaourt [regexp]        : search for matching strings (with *) and allows to install it')"
-	echo "$(eval_gettext '   yaourt -S [packagename]: download package from repository, and fallback on AUR')"
-	echo "$(eval_gettext '   yaourt -S [list file]  : download all packages stored in the first column of the given file')"
-	echo "$(eval_gettext '   yaourt -Ss [regexp]    : search remote repositories and AUR for matching strings')"
-	echo "$(eval_gettext '   yaourt -Syu --aur      : upgrade system + packages from aur')"
-	echo "$(eval_gettext '   yaourt -Sybu --aur     : upgrade by building PKGBUILD + packages from aur')"
-	echo "$(eval_gettext '   yaourt -Syu --devel    : upgrade all cvs/svn/mercurial packages (from aur)')"
-	echo
-	(( $1 )) && return 0
-	echo "$(eval_gettext 'OPTIONS:')"
-	echo "$(eval_gettext ' yaourt''s options are the same as pacman, so check the pacman man page for more info')"
-	echo "$(eval_gettext ' yaourt adds/enhances options marked with ''*''')"
-	echo
-	echo "$(eval_gettext 'General:')"
-	echo "$(eval_gettext ' (-h, --help)                      give this help list')"
-	echo "$(eval_gettext ' (-V, --version)                   give program version')"
-	echo "$(eval_gettext ' --noconfirm                       do not ask for any confirmation')"
-	echo "$(eval_gettext ' --tmp /where/you/want             use given directory for temporary files')"
-	echo "$(eval_gettext ' --lightbg                         change colors for terminal with light background')"
-	echo "$(eval_gettext ' --nocolor                         don''t use any color')"
-	echo "$(eval_gettext ' --textonly                        good for scripting yaourt''s output')"
-	echo "$(eval_gettext ' --stats                           display various statistics of installed packages')"
-	echo
-	echo "$(eval_gettext 'Install:')"
-	echo "$(eval_gettext ' (-S, --sync)     <package>      * download package from repository, and fallback on aur')"
-	echo "$(eval_gettext ' (-S, --sync)     <file>         * download all packages listed on the first column of the file')"
-	echo "$(eval_gettext ' (-S, --sync) -b                 * builds the targets from source')"
-	echo "$(eval_gettext ' (-S, --sync) -c, --clean          remove old packages from cache directory (use -cc for all)')"
-	echo "$(eval_gettext ' (-S, --sync) -d, --nodeps         skip dependency checks')"
-	echo "$(eval_gettext ' (-S, --sync) -f, --force          force install, overwrite conflicting files')"
-	echo "$(eval_gettext ' (-S, --sync) -g, --groups         view all members of a package group')"
-	echo "$(eval_gettext ' (-S, --sync) -i, --info         * view package (or PKGBUILD from AUR) information')"
-	echo "$(eval_gettext ' (-S, --sync) -l, --list         * list all packages belonging to the specified repository')"
-	echo "$(eval_gettext ' (-S, --sync) -p, --print-uris     print out download URIs for each package to be installed')"
-	echo "$(eval_gettext ' (-S, --sync) --export <destdir> * export packages for local repository')"
-	echo "$(eval_gettext ' (-S, --sync) --ignore <pkg>       skip some package')"
-	echo "$(eval_gettext ' (-U, --upgrade) <file.pkg.tar.gz> upgrade a package from <file.pkg.tar.gz>')"
-	echo "$(eval_gettext ' (<no option>) <file.pkg.tar.gz> * upgrade a package from <file.pkg.tar.gz>')"
-	echo "$(eval_gettext ' (-G, --getpkgbuild) <pkg>       * Retrieve PKGBUILD and local sources for package name')"
-	echo "$(eval_gettext '  --asdeps                         Install packages non-explicitly to be installed as a dependency')"
-	echo "$(eval_gettext ' --ignorearch                      ignore incomplete arch field PKGBUILD')"
-	echo
-	echo "$(eval_gettext 'Upgrade:')"
-	echo "$(eval_gettext ' -Su,  --sysupgrade                upgrade all packages that are out of date')"
-	echo "$(eval_gettext ' -Su --aur                       * upgrade all aur packages')"
-	echo "$(eval_gettext ' -Su --devel                     * upgrade all cvs/svn/mercurial/git/bazar packages')"
-	echo "$(eval_gettext ' -Sud, --nodeps                    skip dependency checks')"
-	echo "$(eval_gettext ' -Suf, --force                     force install, overwrite conflicting files')"
-	echo "$(eval_gettext ' -Su --ignore <pkg>                skip some package')"
-	echo "$(eval_gettext ' -Sy,  --refresh                   download fresh package databases from the server')"
-	echo "$(eval_gettext ' --holdver                         avoid building last developement version for git/cvs/svn package')"
-	echo "$(eval_gettext 'Note: yaourt always shows new orphans after package update')"
-	echo
-	echo "$(eval_gettext 'Downgrade:')"
-	echo "$(eval_gettext ' -Su --upgrades                previously "downgrades"  reinstall all packages which are marked as "newer than extra or core" in -Su output')"
-	echo "$(eval_gettext '           (this is specially for users who experience problems with [testing] and want to revert back to current)')"
-	echo
-	echo "$(eval_gettext 'Local search:')"
-	echo "$(eval_gettext ' (-Q, --query) -e,            * list all packages explicitly installed')"
-	echo "$(eval_gettext ' (-Q, --query) -d,            * list all packages installed as a dependency for another package')"
-	echo "$(eval_gettext ' (-Q, --query) -t             * list all packages unrequired by any other package')"
-	echo "$(eval_gettext '               -Qdt           * list missed packages installed as dependecies but not required')"
-	echo "$(eval_gettext '               -Qet           * list top level packages explicitly installed')"
-	echo "$(eval_gettext ' (-Q, --query) -g, --groups     view all members of a package group')"
-	echo "$(eval_gettext ' (-Q, --query) -i, --info       view package information (use -ii for more)')"
-	echo "$(eval_gettext ' (-Q, --query) -l, --list       list the contents of the queried package')"
-	echo "$(eval_gettext ' (-Q, --query) -o  <string>   * search for package that owns <file> or <command>')"
-	echo "$(eval_gettext ' (-Q, --query) -p, --file       will query the package file [package] instead of db')"
-	echo "$(eval_gettext ' (-Q, --query) -s, --search   * search locally-installed packages for matching strings')"
-	echo "$(eval_gettext ' (-Q) --backupfile  <file>    * query a database previously saved in a tar.bz2 file (with yaourt --backup)')"
-	echo "$(eval_gettext ' Example: you want to reinstall archlinux with the same packages as your backup pacman-2008-02-22_10h12.tar.bz2')"
-	echo "$(eval_gettext '  just run yaourt -Qet --backupfile pacman-2008-02-22_10h12.tar.bz2 > TopLevelPackages.txt')"
-	echo "$(eval_gettext '  To reinstall later, just run yaourt -S TopLevelPackages.txt')"
-	echo "$(eval_gettext ' (-Q) --date                  * list last installed packages, ordered by install date')"
-	echo
-	echo "$(eval_gettext 'Remote search:')"
-	echo "$(eval_gettext ' (-S, --sync)  -s [string]    * search remote repositories and AUR for matching strings')"
-	echo "$(eval_gettext ' <no option>      [string]    * search for matching strings + allows to install (interactiv)')"
-	echo 
-	echo "$(eval_gettext ' -Sq --depends    <pkg>       * list all packages which depends on <pkg>')"
-	echo "$(eval_gettext ' -Sq --conflicts  <pkg>       * list all packages which conflicts with <pkg>')"
-	echo "$(eval_gettext ' -Sq --provides   <pkg>       * list all packages which provides <pkg>')"
-	echo "$(eval_gettext ' -Sq --replaces   <pkg>       * list all packages which replaces <pkg>')"
-	echo
-	echo "$(eval_gettext 'Clean:')"
-	echo "$(eval_gettext ' (-C, --clean)                * manage, show diff .pacsave/.pacnew files')"
-	echo "$(eval_gettext ' (-C, --clean) -c             * delete all .pacsave/.pacnew files')"
-	echo "$(eval_gettext ' (-C, --clean) -d, --database * clean database (show obsolete repositories)')"
-	echo "$(eval_gettext ' (-S, --sync)  -c               remove old packages from cache')"
-	echo "$(eval_gettext ' (-S, --sync)  -c -c            remove all packages from cache')"
-	echo "$(eval_gettext ' (-R, --remove)  <package>      remove packages')"
-	echo "$(eval_gettext ' (-R, --remove) -c, --cascade   remove packages and all packages that depend on them')"
-	echo "$(eval_gettext ' (-R, --remove) -d, --nodeps    skip dependency checks')"
-	echo "$(eval_gettext ' (-R, --remove) -k, --dbonly    only remove database entry, do not remove files')"
-	echo "$(eval_gettext ' (-R, --remove) -n, --nosave    remove configuration files as well')"
-	echo "$(eval_gettext ' (-R, --remove) -s, --recursive remove dependencies also (that won''t break packages)')"
-	echo "$(eval_gettext 'Note: yaourt always shows new orphans after package removal')"
-	echo 
-	echo "$(eval_gettext 'Backup:')"
-	echo "$(eval_gettext ' (-B, --backup) [directory]     * backup pacman database in given directory')"
-	echo "$(eval_gettext ' (-B, --backup) <file.tar.bz2>  * restore a previous backup of the pacman database')"
-	echo
-	echo
-	echo "$(eval_gettext 'Runing yaourt as a non-privileged user requiers some entries in sudoers file:')"
-	echo "$(eval_gettext '  - pacman (remove package + refresh database + install package from AUR package)')"
-	echo "$(eval_gettext '  - pacdiffviewer (manage pacsave/pacnew files)')"
-	echo "______________________________________"
-	echo "$(eval_gettext 'written by Julien MISCHKOWITZ <wain@archlinux.fr>')"
-	echo "$(eval_gettext ' homepage: http://archlinux.fr/yaourt-en')"
+	echo "$(eval_gettext 'Usage: yaourt <operation> [...]')"
+	echo "$(eval_gettext 'operations:')"
+	echo -e "$(eval_gettext '\tyaourt (search pattern|package file)')"
+	echo -e "$(eval_gettext '\tyaourt {-h --help}')"
+	echo -e "$(eval_gettext '\tyaourt {-V --version}')"
+	echo -e "$(eval_gettext '\tyaourt {-Q --query}   [options] [package(s)]')"
+	echo -e "$(eval_gettext '\tyaourt {-R --remove}  [options] [package(s)]')"
+	echo -e "$(eval_gettext '\tyaourt {-S --sync}    [options] [package(s)]')"
+	echo -e "$(eval_gettext '\tyaourt {-U --upgrade} [options] [package(s)]')"
+	echo -e "$(eval_gettext '\tyaourt {-C --clean}   [options]')"
+	echo -e "$(eval_gettext '\tyaourt {-B --backup}  (save directory|restore file)')"
+	echo -e "$(eval_gettext '\tyaourt {-G --getpkgbuild} package')"
+	echo -e "$(eval_gettext '\tyaourt {--stats}')"
+	return 0
 }
 version(){
 	plain "$(eval_gettext 'yaourt $VERSION is a pacman frontend with AUR support and more')"
@@ -282,6 +169,7 @@ sourcerepository(){
 }
 
 prepare_orphan_list(){
+	(( ! SHOWORPHANS )) && return
 	# Prepare orphan list before upgrade and remove action
 	mkdir -p "$YAOURTTMPDIR/orphans"
 	ORPHANS_BEFORE="$YAOURTTMPDIR/orphans/orphans_before.$$"
@@ -295,6 +183,7 @@ prepare_orphan_list(){
 	cat "$INSTALLED_BEFORE.full" | awk '{print $1}' > $INSTALLED_BEFORE
 }
 show_new_orphans(){
+	(( ! SHOWORPHANS )) && return
 	# search for new orphans after upgrading or after removing (exclude new installed package)
 	pacman -Qqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
 	pacman -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
@@ -384,26 +273,6 @@ cleandatabase(){
 ###################################
 ### Search functions            ###
 ###################################
-search_packages_by_installreason(){
-	# reason=0: explicitly installed
-	# reason=1: installed as depends
-	local reason=$1
-	if [ $reason -eq 0 ]; then
-		msg "$(eval_gettext 'Packages explicitly installed')"
-	elif [ $reason -eq 1 ]; then
-		msg "$(eval_gettext 'Packages installed as a dependency for another package')"
-	fi
-
-	for pkg in `ls "$PACMANROOT/local/"`; do
-		if echo $(cat "$PACMANROOT/local/$pkg/desc" 2>/dev/null) | grep -q "%REASON% 1"; then
-			pkgreason=1
-		else
-			pkgreason=0
-		fi
-		if [ $pkgreason -eq $reason ]; then echo "$pkg"; fi
-	done
-
-}
 
 # Search for packages
 # usage: search ($interactive, $result_file)
@@ -461,45 +330,16 @@ if [ `type -p customizepkg` ]; then CUSTOMIZEPKGINSTALLED=1; fi
 
 # Refresh
 # todo: find a better way to remove "y"
-if [ $REFRESH -gt 0 -a "$MAJOR" = "sync" ]; then
+if [ "$MAJOR" = "sync" ] && (( REFRESH )); then
 	title $(eval_gettext 'synchronizing package databases')
-	ARGSANS=$(echo $ARGSANS | sed s/" --refresh"// | sed s/" -y"// \
-	| tr -d "y" | sed -e 's/--snc/--sync/' -e 's/--quer/--query/' \
-	-e 's/--ssupgrade/--sysupgrade/' -e 's/--downloadonl/--downloadonly/' )
-	if [ $REFRESH -eq 1 ]; then
-		pacman_queuing;	launch_with_su "$PACMANBIN -Sy"
-	elif [ $REFRESH -eq 2 ]; then
-		pacman_queuing; launch_with_su "$PACMANBIN -Syy"
-	fi
+	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
+	ARGSANS="${ARGSANS// -y / }"
+	ARGSANS="${ARGSANS// --refresh / }"
+	BUILDPROGRAM="${BUILDPROGRAM// -y / }"
+	BUILDPROGRAM="${BUILDPROGRAM// --refresh / }"
+	pacman_queuing;	launch_with_su $PACMANBIN $_arg
 fi
 
-# BUILD OPTION to use
-YAOURTCOMMAND="$0 $COLORMODE"
-if [ $BUILD -eq 1 ]; then
-	BUILDPROGRAM="$YAOURTCOMMAND -Sb"
-else
-	BUILDPROGRAM="$YAOURTCOMMAND -S"
-fi
-if [ $NOCONFIRM -gt 0 ]; then 
-	BUILDPROGRAM="${BUILDPROGRAM} --noconfirm"
-	confirmation="--noconfirm"
-fi
-if [ $FORCE -eq 1 ]; then force="--force"; fi
-if [ $NODEPS -eq 1 ]; then 
-	BUILDPROGRAM="${BUILDPROGRAM} --nodeps"
-	nodeps="--nodeps"
-fi
-if [ $IGNOREARCH -eq 1 ]; then 
-	BUILDPROGRAM="${BUILDPROGRAM} --ignorearch"
-fi
-if [ $ASDEPS -eq 1 ]; then 
-	BUILDPROGRAM="${BUILDPROGRAM} --asdeps"
-	asdeps="--asdeps"
-fi
-
-if (( EXPORT )); then 
-	BUILDPROGRAM="$BUILDPROGRAM --export $EXPORTDIR"
-fi
 
 # Action
 case "$MAJOR" in
@@ -628,7 +468,7 @@ case "$MAJOR" in
 		$PACMANBIN -Sp "${args[@]}"
 	elif [ $SYSUPGRADE -eq 0 -a ${#args[@]} -eq 0 -a $REFRESH -eq 0 ]; then
 		prepare_orphan_list
-		msg $(eval_gettext 'yaourt: no argument'):wa
+		msg $(eval_gettext 'yaourt: no argument')
 		
 		pacman_queuing;	eval $PACMANBIN $ARGSANS
 		show_new_orphans

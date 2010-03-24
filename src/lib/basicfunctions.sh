@@ -277,6 +277,7 @@ PACMANBIN="/usr/bin/pacman"
 INENGLISH=""
 TMPDIR="/tmp"
 COLORMODE=""
+SHOWORPHANS=0
 
 [ -r /etc/yaourtrc ] && source /etc/yaourtrc
 [ -r ~/.yaourtrc ] && source ~/.yaourtrc
@@ -343,14 +344,19 @@ OPT_LONG="$OPT_PACMAN,$OPT_MAKEPKG,$OPT_YAOURT"
 OPT_TEMP="$(parse_options $OPT_SHORT $OPT_LONG "$@" || echo 'PARSE_OPTIONS FAILED')"
 if echo "$OPT_TEMP" | grep -q 'PARSE_OPTIONS FAILED'; then
 	# This is a small hack to stop the script bailing with 'set -e'
-	echo; usage 1; exit 1 # E_INVALID_OPTION;
+	echo; usage ; exit 1 # E_INVALID_OPTION;
 fi
 eval set -- "$OPT_TEMP"
 unset OPT_SHORT OPT_LONG OPT_TEMP OPT_YAOURT OPT_MAKEPKG OPT_SHORT_YAOURT
 ARGSANS=""
+BUILDPROGRAM=""
+YAOURTCOMMAND="$0"
 while true; do
-	in_array "$1" ${OPT_PACMAN//,/ } && ARGSANS="$ARGSANS $1"
-	[ ${OPT_SHORT_PACMAN/${1:1:1}/} != ${OPT_SHORT_PACMAN} ] && ARGSANS="$ARGSANS $1"
+	[ "$1" = "--" ] && { OPT_IND=0; shift; break; }
+	[ "${1:0:2}" = "--" ] && in_array "${1#--}" ${OPT_PACMAN//,/ } && ARGSANS="$ARGSANS $1 "
+	[ ${OPT_SHORT_PACMAN/${1:1:1}/} != ${OPT_SHORT_PACMAN} ] && ARGSANS="$ARGSANS $1 "
+	BUILDPROGRAM="$BUILDPROGRAM $1 "
+	_opt=""
 	case "$1" in
 		--asdeps) 			ASDEPS=1;;
 		--changelog)		CHANGELOG=1;;
@@ -369,7 +375,7 @@ while true; do
 		-Q|--query)			MAJOR="query";;
 		-y|--refresh)		(( REFRESH ++ ));;
 		-R|--remove)		MAJOR="remove";;
-		-r|--root:)			ROOT=1; shift; NEWROOT="$1"; ARGSANS="$ARGSANS '$1'";;
+		-r|--root:)			ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
 		-S|--sync)			MAJOR="sync";;
 		--sysupgrade)		SYSUPGRADE=1;;
 		-t|	--unrequired)	UNREQUIRED=1;;
@@ -383,17 +389,18 @@ while true; do
 							if [ ${2:0:1} != "-" ]; then
 								[ -d "$2" ] && savedir="$( readlink -f "$2")"
 								[ -f "$2" ] && backupfile="$( readlink -f "$2")"
+								_opt="'$2'"
 								shift
 							fi
 							;;
-		--backupfile)		COLORMODE="textonly"; shift; BACKUPFILE="$1" ;;
+		--backupfile)		COLORMODE="textonly"; shift; BACKUPFILE="$1"; _opt="'$1'";;
 		-b|--build)			BUILD=1;;
 		--conflicts)		QUERYTYPE="conflicts";;
 		--database)			CLEANDATABASE=1;;
 		--date)				DATE=1;;
 		--depends)			QUERYTYPE="depends";;
 		--devel)			DEVEL=1;;
-		--export)			EXPORT=1; shift; EXPORTDIR="$1";;
+		--export)			EXPORT=1; shift; EXPORTDIR="$1"; _opt="'$1'";;
 		-f|--force)			FORCE=1;;
 		-G|--getpkgbuild)	MAJOR="getpkgbuild";;
 		-h|--help)			usage; exit 0;;
@@ -409,13 +416,16 @@ while true; do
 							AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
 							ARGSANS="-Su --noconfirm --force";;
 		--textonly)			COLORMODE="textonly";;
-		--tmp)				shift; TMPDIR="$1";;
+		--tmp)				shift; TMPDIR="$1"; _opt="'$1'";;
 		-V|version)			version; exit 0;;
 		-q)					QUERYWHICH=1; QUIET=1;;
 
-		--)					OPT_IND=0; shift; break;;
 		*)					usage; exit 1 ;; 
 	esac
+	[ -n "$_opt" ] && {
+		ARGSANS="$ARGSANS $_opt "
+		BUILDPROGRAM="$BUILDPROGRAM $_opt "
+	}
 	shift
 done
 unset OPT_PACMAN OPT_SHORT_PACMAN
@@ -447,12 +457,16 @@ fi
 if (( EXPORT )); then
 	[ -d "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not a directory'); die 1;}
 	[ -w "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not writable'); die 1;}
+	EXPORTDIR=$(readlink -f "$EXPORTDIR")
 fi
 
 
 [ -d "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not a directory'); die 1;}
 [ -w "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not writable'); die 1;}
+TMPDIR=$(readlink -f "$TMPDIR")
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
+[ -n "$COLORMODE" ] && YAOURTCOMMAND="$YAOURTCOMMAND --$COLORMODE"
+BUILDPROGRAM="$YAOURTCOMMAND $BUILDPROGRAM"
 
 initpath
 initcolor
