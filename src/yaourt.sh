@@ -672,7 +672,7 @@ case "$MAJOR" in
 		[ ! -s "$searchfile" ] && die 0
 		prompt $(eval_gettext 'Enter n° (separated by blanks, or a range) of packages to be installed')
 		read -ea packagesnum
-		(( ${#packagesnum[@]} )) && die 0
+		(( ${#packagesnum[@]} )) || die 0
 		for line in ${packagesnum[@]}; do
 			if echo $line | grep -q "[0-9]-[0-9]"; then
 				for multipackages in `seq ${line/-/ }`;do
@@ -684,7 +684,7 @@ case "$MAJOR" in
 				die 1
 			fi
 		done
-		$BUILDPROGRAM ${packages[@]}
+		$BUILDPROGRAM -S ${packages[@]}
 		;;
 	
 	*)
