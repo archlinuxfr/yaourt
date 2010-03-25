@@ -361,9 +361,10 @@ AURVOTEINSTALLED=0
 CUSTOMIZEPKGINSTALLED=0
 EXPLICITE=0
 DEPENDS=0
+NOSAVE=0
 
 # Parse Command Line Options.
-OPT_SHORT_PACMAN="QRSUcdefgilmopqr:stuwy"
+OPT_SHORT_PACMAN="QRSUcdefgilmnopqr:stuwy"
 OPT_SHORT_YAOURT="BCG:Vbh"
 OPT_SHORT="${OPT_SHORT_PACMAN}${OPT_SHORT_YAOURT}"
 OPT_PACMAN="asdeps,changelog,clean,deps,downloadonly,explicit,foreign,groups"
@@ -399,6 +400,7 @@ while true; do
 		-w|--downloadonly)	DOWNLOAD=1;;
 		-e|--explicit)		EXPLICITE=1;;
 		-m|--foreign)		FOREIGN=1;;
+		-n)					NOSAVE=1;;
 		-g|--groups)		GROUP=1;;
 		-i|--info)			(( INFO ++ ));;
 		-l|--list)			LIST=1;;
