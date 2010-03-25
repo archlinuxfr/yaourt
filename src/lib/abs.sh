@@ -64,7 +64,7 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 		cd $wdir
 	fi
 
-	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/$PKG/ || return 1
+	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/$PKG/ . || return 1
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
