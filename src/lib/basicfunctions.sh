@@ -91,10 +91,26 @@ in_array() {
 	return 1 # Not Found
 }
 
+# Run editor
+# Usage: run_editor ($file, $default_answer)
+# 	$file: file to edit 
+# 	$default_answer: 0: don't ask	1 (default): Y	2: N
 run_editor ()
 {
 	local edit_cmd=
 	local file="$1"
+	local default_answer=${2:-1}
+	local answer='Y'
+	if (( default_answer )); then
+		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')"
+		local answer=$(userinput "YNA")
+		echo
+		[ "$answer" = "A" ] && echo -e "\n$(eval_gettext 'Aborted...')" && return 2
+		if [ -z "$answer" ]; then
+			(( default_answer )) && answer='Y' || answer='N'
+		fi
+		[ "$answer" = "N" ] && return 1
+	fi
 	if [ -z "$EDITOR" ]; then
 		echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
 		echo -e ${NO_COLOR}$(eval_gettext 'for example:')
@@ -108,48 +124,6 @@ run_editor ()
 	[ "$(basename "$EDITOR")" = "gvim" ] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
 	( $edit_cmd "$file" )
 	wait
-}
-
-# Edit file
-# Usage:	edit_file ($file, $default_answer, $loop, $check_dep)
-# 	$file: file to edit
-# 	$default_answer: 1 (default): Y 	2: N
-# 	$loop: 1: loop until answer 'no' 	0 (default) : no loop
-# 	$check_dep: 1 (default): if file = PKGBUILD, check deps 
-edit_file ()
-{
-	(( ! EDITFILES )) && return 0
-	local file="$1"
-	local default_answer=${2:-1}
-	local loop=${3:-0}
-	local check_dep=${4:-1}
-	local iter=1
-
-	while (( iter )); do
-		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')"
-		local answer=$(userinput "YNA")
-		echo
-		if [ -z "$answer" ]; then
-			(( default_answer )) && answer='Y' || answer='N'
-		fi
-		if [ "$answer" = "Y" ]; then
-			run_editor "$file"
-			(( ! loop )) && iter=0
-		else
-			iter=0
-		fi
-		if [ "$answer" != "A" -a "$file" = "PKGBUILD" ]; then
-			read_pkgbuild || return 1
-			(( check_dep )) && { check_deps; check_conflicts; }
-		fi
-	done
-	
-	if [ "$answer" = "A" ]; then
-		echo
-		echo $(eval_gettext 'Aborted...')
-		return 1
-	fi
-	return 0
 }
 
 check_root ()
@@ -283,7 +257,6 @@ SHOWORPHANS=0
 [ -r ~/.yaourtrc ] && source ~/.yaourtrc
 [ -n "$EXPORTDIR" ] && EXPORT=1
 (( FORCEENGLISH )) && INENGLISH="LC_ALL=C"
-(( NOCONFIRM )) && EDITFILES=0
 in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
 PACMANBIN="$INENGLISH $PACMANBIN"
 
@@ -455,6 +428,7 @@ fi
 
 [ -z "$BACKUPFILE" ] || [ -r "$BACKUPFILE" ] || { error $(eval_gettext 'Unable to read $_file file'); die 1; }
 
+(( NOCONFIRM )) && EDITFILES=0
 (( ! SYSUPGRADE )) && (( UPGRADES )) && [ "$MAJOR" = "sync" ] && SYSUPGRADE=1
 if (( EXPORT )); then
 	[ -d "$EXPORTDIR" ] || { error $EXPORTDIR $(eval_gettext 'is not a directory'); die 1;}

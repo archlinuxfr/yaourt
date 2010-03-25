@@ -67,20 +67,12 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
-	check_root	# 
-	
 	msg "$pkgname $pkgver-$pkgrel $([ "$branchtags" = "TESTING" ] && echo -e "$COL_BLINK[TESTING]")"
 	
 	# Customise PKGBUILD
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
 
-	# show deps
-	read_pkgbuild || { manage_error 1; continue; }
-	check_deps 
-	check_conflicts
-	manage_error $? || continue
-
-	edit_file PKGBUILD 2 1 || { manage_error 1; continue; }
+	edit_pkgbuild 2 1 || { manage_error 1; continue; }
 	
 	prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
  	if [ "`userinput`" = "N" ]; then
@@ -216,7 +208,7 @@ sysupgrade()
 					showupgradepackage full
 				elif [ "$CONTINUE_INSTALLING" = "M" ]; then
 					showupgradepackage manual
-					run_editor "$YAOURTTMPDIR/sysuplist"
+					run_editor "$YAOURTTMPDIR/sysuplist" 0
 					declare args="$YAOURTTMPDIR/sysuplist"
 					SYSUPGRADE=2
 					sync_packages

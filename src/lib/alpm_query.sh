@@ -81,14 +81,12 @@ list_installed_packages(){
 	msg $(gettext "$_msg")
 	eval $PACMANBIN $ARGSANS -q ${args[*]} |
 	xargs package-query -1ASif "%1 %r %n %v" |
-		{
-			(( DATE )) && cat | sort | 
-				awk '{printf("%s %s %s %s\n", $2, $3, $4, strftime("%X %x",$1))}' ||
-				cat		
-		} |
-	while read repository name version _date; do
+	while read _date repository name version ; do
 		_msg=$(colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${name} ${COL_GREEN}${version}$NO_COLOR")
-		(( DATE )) && echo -e "$_date $_msg" || echo -e $_msg 
+		(( DATE )) && echo -e "$_date $_msg" >> $YAOURTTMPDIR/instdate || echo -e $_msg 
 	done
+	if (( DATE )); then
+		sort $YAOURTTMPDIR/instdate | awk '{printf("%s: %s %s %s\n", strftime("%X %x",$1), $2, $3, $4)}'
+	fi
 }
 

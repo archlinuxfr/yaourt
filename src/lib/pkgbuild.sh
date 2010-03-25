@@ -144,14 +144,15 @@ manage_conflicts ()
 {
 	[ -z "$*" ] && return 0
 	local pkgs=( $(package-query -Qif "%n" "${@%[<=>]*}") )
+	(( ! ${#pkgs[@]} )) && return 0
 	warning $(eval_gettext '$pkgname conflicts with those packages:')
-	for pkg in "${pkgs[@]%[<=>]*}"; do
+	for pkg in "${pkgs[@]}"; do
 		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
 	done
 	if (( ! NOCONFIRM )); then
 		prompt "$(eval_gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
 		if [ "$(userinput)" = "Y" ]; then
-			pacman_queuing; launch_with_su "$PACMANBIN -Rd "${pkgs%[<=>]*}"" 
+			pacman_queuing; launch_with_su $PACMANBIN -Rd "${pkgs[@]}" 
 			if (( $? )); then
 				error $(eval_gettext 'Unable to remove $pkg_conflicts.')
 				return 1
@@ -175,6 +176,41 @@ check_devel ()
 		return 0
 	fi
 	return 1
+}
+
+# Edit PKGBUILD and install files
+# Usage:	edit_pkgbuild ($default_answer, $loop, $check_dep)
+# 	$default_answer: 1 (default): Y 	2: N
+# 	$loop: for PKGBUILD, 1: loop until answer 'no' 	0 (default) : no loop
+# 	$check_dep: 1 (default): check for deps and conflicts
+edit_pkgbuild ()
+{
+	local default_answer=${1:-1}
+	local loop=${2:-0}
+	local check_dep=${3:-1}
+	(( ! EDITFILES )) && { 
+		read_pkgbuild || return 1
+		(( check_dep )) && { check_deps; check_conflicts; }
+		return 0
+	}
+	local iter=1
+
+	while (( iter )); do
+		run_editor PKGBUILD $default_answer
+		local ret=$?
+		(( ret == 2 )) && return 1
+		(( ret )) || (( ! loop )) && iter=0
+		read_pkgbuild || return 1
+		(( check_dep )) && { check_deps; check_conflicts; }
+	done
+	
+	eval $PKGBUILD_VARS
+	for installfile in "${install[@]}"; do
+		[ -z "$installfile" ] && continue
+		run_editor "$installfile" $default_answer 
+		(( $? == 2 )) && return 1
+	done
+	return 0
 }
 
 # Build package using makepkg
@@ -238,15 +274,9 @@ build_package()
 	(( NODEPS )) && mkpkg_opt="$mkpkg_opt -d"
 	(( IGNOREARCH )) && mkpkg_opt="$mkpkg_opt -A"
 	(( HOLDVER )) && mkpkg_opt="$mkpkg_opt --holdver"
-	if (( runasroot )); then 
-		pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --asroot --syncdeps --force -p ./PKGBUILD
-	else
-		if (( SUDOINSTALLED )); then
-			pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --syncdeps --force -p ./PKGBUILD
-		else
-			eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
-		fi
-	fi
+	(( runasroot )) && mkgpkg_opt="$mkpkg_opt --asroot"
+	(( SUDOINSTALLED )) || (( runasroot )) &&  mkgpkg_opt="$mkpkg_opt --syncdeps"
+	pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG package.')

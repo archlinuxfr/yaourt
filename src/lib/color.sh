@@ -98,10 +98,10 @@ warning(){
 prompt(){
 	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD} ----------------------------------------------${NO_COLOR}" >&2
-	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
+	echo -ne "${COL_ARROW}==>${NO_COLOR} " >&2
 }
 promptlight(){
-	echo -ne "${COL_ARROW}==>${NO_COLOR}" >&2
+	echo -ne "${COL_ARROW}==>${NO_COLOR} " >&2
 }
 error(){
 	echo -e "${COL_RED}""Error""${NO_COLOR}"": $*\n"
@@ -109,21 +109,15 @@ error(){
 }
 colorizeoutputline(){		
 	if [ "$COLORMODE" = "textonly" ]; then
-		local line=`echo $* | sed -e 's#^core/#&#g' \
-		-e 's#^extra/#&#g' \
-        	-e 's#^community/#&#g' \
-        	-e 's#^unstable/#&#g' \
-        	-e 's#^local/#&#g' \
-        	-e 's#^[a-z0-9-]*/#&#g'`
+		echo $*
 	else
-	local line=`echo $* | sed -e 's#^core/#\\'${COL_CORE}'&\\'${NO_COLOR}'#g' \
-	-e 's#^extra/#\\'${COL_EXTRA}'&\\'${NO_COLOR}'#g' \
-        -e 's#^community/#\\'${COL_COMMUNITY}'&\\'${NO_COLOR}'#g' \
-        -e 's#^unstable/#\\'${COL_UNSTABLE}'&\\'${NO_COLOR}'#g' \
-        -e 's#^local/#\\'${COL_LOCAL}'&\\'${NO_COLOR}'#g' \
-        -e 's#^[a-z0-9-]*/#\\'${COL_REPOS}'&\\'${NO_COLOR}'#g'`
+		echo $* | sed -e "s#^core/#\\${COL_CORE}&\\${NO_COLOR}#g" \
+			-e "s#^extra/#\\${COL_EXTRA}&\\${NO_COLOR}#g" \
+			-e "s#^community/#\\${COL_COMMUNITY}&\\${NO_COLOR}#g" \
+			-e "s#^aur/#\\${COL_UNSTABLE}&\\${NO_COLOR}#g" \
+			-e "s#^local/#\\${COL_LOCAL}&\\${NO_COLOR}#g" \
+			-e "s#^[a-z0-9-]*/#\\${COL_REPOS}&\\${NO_COLOR}#g"
 	fi
-	echo $line
 }
 cleanoutput(){
 if [ $TERMINALTITLE -eq 0 -o -z "$DISPLAY"  ]; then
