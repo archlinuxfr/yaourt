@@ -157,21 +157,8 @@ install_from_aur(){
 	# Customise PKGBUILD
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
 
-	edit_pkgbuild 1 1 || return 1
-
-	if [ $NOCONFIRM -eq 0 ]; then
-		prompt "$(eval_gettext 'Continue the building of $PKG ? ')$(yes_no 1)"
-		if [ "`userinput`" = "N" ]; then
-			return 0
-		fi
-	fi
-
-	echo
-
-	build_package 
-	manage_error $? || return 1
-	install_package 
-	manage_error $? || return 1
+	# Build, install/export
+	package_loop 0 || { manage_error 1; return 1; }
 
 	# Check if this package has been voted on AUR, and vote for it
 	[ $AURVOTE -eq 1 ] && vote_package "$pkgname" "$aurid"

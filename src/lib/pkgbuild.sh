@@ -337,6 +337,37 @@ install_package()
 	return $failed
 }
 
+# Call build_package until success or abort
+# on success, call install_package
+# Usage: package_loop ($trust)
+#	$trust: 1: default answer for editing: Y (for abs)
+package_loop ()
+{
+	local trust=${1:-0}
+	local default_answer=1
+	local ret=0
+	(( trust )) && default_answer=2
+	while true; do
+		edit_pkgbuild $default_answer 1 || return 1
+		if (( ! NOCONFIRM )); then
+			prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
+		 	[ "`userinput`" = "N" ] && return 1
+		fi
+		build_package
+		ret=$?
+		if (( ret )) && (( ! NOCONFIRM )); then
+			prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
+	 		[ "`userinput`" != "Y" ] && return 1
+		elif (( ret )); then
+			return 1
+		else
+			break;
+		fi
+	done
+	install_package || return 1
+}
+
+
 
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
 source_makepkg_conf 

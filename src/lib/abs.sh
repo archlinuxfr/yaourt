@@ -71,28 +71,8 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 	
 	# Customise PKGBUILD
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
-
-	edit_pkgbuild 2 1 || { manage_error 1; continue; }
-	
-	prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
- 	if [ "`userinput`" = "N" ]; then
-		manage_error 1 || continue
-	fi
-	
-	# TODO: dependecies from AUR should be downloaded here
-
-	# compil PKGBUILD if dep's building not failed
-	build_package	
-	retval=$?
-	if [ $retval -eq 1 ]; then
-		manage_error 1 || continue
-	elif [ $retval -eq 90 ]; then
-		continue
-	fi
-
-	# Install, export, copy package after build 
-	install_package
-	manage_error $? || continue
+	# Build, install/export
+	package_loop 1 || { manage_error 1; continue; }
 done
 
 
