@@ -330,12 +330,14 @@ sync_packages()
 	prepare_orphan_list
 	declare -a pkgs
 	for _line in $(package-query -1ASif "%t/%r/%n" "${args[@]}"); do
-		local target="${_line%%/*}"
-		_line=${_line#*/}
-		if [ "${_line%/*}" != "aur" ]; then
-			repos_package[${#repos_package[@]}]="${_line#*/}"
+		local repo="${_line%/*}"
+		repo="${repo##*/}"
+		local pkg="${_line##*/}"
+		local target="${_line%/$repo/$pkg}"
+		if [ "${repo}" != "aur" ]; then
+			repos_package[${#repos_package[@]}]="${repo}/${pkg}"
 		else
-			install_from_aur "${_line#aur/}" || failed=1
+			install_from_aur "${pkg}" || failed=1
 		fi
 		pkgs[${#pkgs[@]}]="$target"
 	done
