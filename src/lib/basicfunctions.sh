@@ -171,6 +171,7 @@ MAXCOMMENTS=5
 NOENTER=1
 ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
+DIFF_EDITOR="defined_in_yaourtrc_file"
 INENGLISH=""
 sfmirror=""
 
@@ -288,6 +289,13 @@ while [ "$#" -ne "0" ]; do
 				EDITOR="$2"; shift
 			else
 				error "PkgbuildEditor not found"
+			fi
+	  		;;	
+		diffeditor)
+			if [ `type -p "$2"` ]; then
+				DIFF_EDITOR="$2"; shift
+			else
+				error "DiffEditor ($DIFF_EDITOR) not found"
 			fi
 	  		;;	
 		pacmanbin)
