@@ -28,7 +28,7 @@ export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || eval_gettext () { echo "$1"; }
 
 NAME="yaourt"
-VERSION="0.9.2.6"
+VERSION="0.9.3.0"
 AUR_URL="http://aur.archlinux.org/packages.php?setlang=en&do_Search=SeB=nd&L=2&C=0&PP=100&K="
 AUR_URL3="http://aur.archlinux.org/packages.php?setlang=en&ID="
 ABS_URL="http://archlinux.org/packages/search/?category=all&limit=99000"
@@ -223,7 +223,8 @@ usage(){
 	echo "$(eval_gettext '  - pacman (remove package + refresh database + install package from AUR package)')"
 	echo "$(eval_gettext '  - pacdiffviewer (manage pacsave/pacnew files)')"
 	echo "______________________________________"
-	echo "$(eval_gettext 'written by Julien MISCHKOWITZ <wain@archlinux.fr>')"
+	echo "$(eval_gettext 'written by: Julien MISCHKOWITZ <wain@archlinux.fr>')"
+	echo "$(eval_gettext '            Tuxce <tuxce.net@gmail.com>')"
 	echo "$(eval_gettext ' homepage: http://archlinux.fr/yaourt-en')"
 }
 version(){

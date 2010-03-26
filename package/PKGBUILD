@@ -10,9 +10,10 @@ license="GPL"
 depends=('wget' 'diffutils' 'pacman>=3.2.0' 'package-query')
 makedepends=('git')
 optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
-	'customizepkg: automatically modify PKGUILD during install/upgrade'
-	'pacman-color: fully colorized output'
-	'colordiff: colorized output with yaourt -C')
+    'customizepkg: automatically modify PKGUILD during install/upgrade'
+    'rsync: retrieve PKGBUILD from official repositories'
+    'pacman-color: fully colorized output'
+    'colordiff: colorized output with yaourt -C')
 provides=('yaourt')
 install=yaourt.install
 backup=('etc/yaourtrc')
