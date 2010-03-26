@@ -308,8 +308,8 @@ install_package()
 			CONTINUE_INSTALLING=$(userinput "YNVC")
 			echo
 			if [ "$CONTINUE_INSTALLING" = "V" ]; then
-				eval $PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
-				eval $PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
+				$PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
+				$PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
 			elif [ "$CONTINUE_INSTALLING" = "C" ]; then
 				echo
 				if [ `type -p namcap` ]; then

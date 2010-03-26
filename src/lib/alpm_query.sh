@@ -79,7 +79,7 @@ list_installed_packages(){
 	fi
 	title $(gettext "$_msg")
 	msg $(gettext "$_msg")
-	eval $PACMANBIN $ARGSANS -q ${args[*]} |
+	$PACMANBIN $ARGSANS -q ${args[*]} |
 	xargs package-query -1ASif "%1 %r %n %v" |
 	while read _date repository name version ; do
 		_msg=$(colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${name} ${COL_GREEN}${version}$NO_COLOR")

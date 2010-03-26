@@ -617,7 +617,7 @@ case "$MAJOR" in
 		elif (( ! SYSUPGRADE )) && (( ! ${#args[@]} )) && (( ! REFRESH )); then
 			prepare_orphan_list
 			msg $(eval_gettext 'yaourt: no argument')
-			pacman_queuing;	eval $PACMANBIN $ARGSANS
+			pacman_queuing;	$PACMANBIN $ARGSANS
 			show_new_orphans
 		elif (( ! SYSUPGRADE )); then
 			#msg "Install ($ARGSANS)"
@@ -651,7 +651,7 @@ case "$MAJOR" in
 			title $(eval_gettext 'Query backup database')
 			msg $(eval_gettext 'Query backup database')
 			PACMANROOT="$backupdir/"
-			eval $PACMANBIN --dbpath "$backupdir/" $ARGSANS ${args[*]}
+			$PACMANBIN --dbpath "$backupdir/" $ARGSANS ${args[*]}
 		elif (( OWNER )); then
 			search_which_package_owns
 		elif (( DEPENDS )) && (( UNREQUIRED )); then
@@ -660,7 +660,7 @@ case "$MAJOR" in
 			AURSEARCH=0 search 0
 		elif (( LIST )) || (( INFO )) || (( UPGRADES )) || (( CHANGELOG )); then
 			# just run pacman -Ql or pacman -Qi
-			eval $PACMANBIN $ARGSANS ${args[*]}
+			$PACMANBIN $ARGSANS ${args[*]}
 		else
 			list_installed_packages
 		fi

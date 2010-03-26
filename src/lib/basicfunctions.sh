@@ -248,7 +248,6 @@ MAXCOMMENTS=5
 NOENTER=1
 ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
-INENGLISH=""
 TMPDIR="/tmp"
 COLORMODE=""
 SHOWORPHANS=0
@@ -257,9 +256,8 @@ DIFFEDITCMD="vimdiff"
 [ -r /etc/yaourtrc ] && source /etc/yaourtrc
 [ -r ~/.yaourtrc ] && source ~/.yaourtrc
 [ -n "$EXPORTDIR" ] && EXPORT=1
-(( FORCEENGLISH )) && INENGLISH="LC_ALL=C"
+(( FORCEENGLISH )) && export LC_ALL=C
 in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
-PACMANBIN="$INENGLISH $PACMANBIN"
 [ -d "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not a directory'); die 1;}
 [ -w "$TMPDIR" ] || { error $TMPDIR $(eval_gettext 'is not writable'); die 1;}
 TMPDIR=$(readlink -e "$TMPDIR")

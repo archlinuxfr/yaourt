@@ -94,9 +94,6 @@ sysupgrade()
 	packages=( `grep '://' $YAOURTTMPDIR/sysupgrade | sed -e "s/^.*\///" -e "s/.pkg.tar.*$//" -e "s/-i686$//" -e "s/-x86_64$//" \
 	-e "s/-any$//" -e "s/-ppc$//" -e "s/-[^-]*-[^-]*$//" | sort --reverse` )
 	[ -z "$packages" ] && return 0	
-	# Show various warnings
-	# pacman -Qu don't show warnings anymore
-	#eval $PACMANBIN -Qu | sed -n '1,/^$/p' | sed '/^$/d'
 
 	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
 	for package in ${packages[@]}; do
@@ -129,7 +126,7 @@ sysupgrade()
 		done
 		if [ ${#packagesfromsource[@]} -gt 0 ]; then
 			msg $(eval_gettext 'Packages to build from sources:')
-			eval $PACMANBIN --query --sysupgrade $_arg $IGNOREPKG
+			$PACMANBIN --query --sysupgrade $_arg $IGNOREPKG
 			# Show package list before building
 			if [ $NOCONFIRM -eq 0 ]; then
 				echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
