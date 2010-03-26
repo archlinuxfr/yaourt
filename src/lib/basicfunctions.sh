@@ -252,6 +252,7 @@ INENGLISH=""
 TMPDIR="/tmp"
 COLORMODE=""
 SHOWORPHANS=0
+DIFFEDITCMD="vimdiff"
 
 [ -r /etc/yaourtrc ] && source /etc/yaourtrc
 [ -r ~/.yaourtrc ] && source ~/.yaourtrc

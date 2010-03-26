@@ -71,6 +71,9 @@ This option export .pkg.tar.gz + PKGBUILD + local sources files.
 .B AURSEARCH=1
   If set to 0, don't search for packages on AUR Unsupported
 
+.B SHOWORPHANS=1
+  If set to 0, don't search for orphans
+
 .B TMPDIR="/tmp"
   Specify the folder to save tempory files (default is /tmp).
 
@@ -81,6 +84,10 @@ This option export .pkg.tar.gz + PKGBUILD + local sources files.
 
     example: PROMPT_COMMAND='echo -ne "\\033]0;${USER}@${HOSTNAME}: ${PWD}\\007"'
 
+.B DIFFEDITCMD=
+  Define the diff editor to use ($DIFFEDITCMD file1 file2).
+  Ex:
+  	DIFFEDITCMD="vimdiff"
 
 .SH SEE ALSO
 .BR yaourt (8)

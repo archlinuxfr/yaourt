@@ -1,17 +1,19 @@
 # Author: Julien MISCHKOWITZ <wain@archlinux.fr>
+# Author: tuxce <tuxce.net@gmail.com>
 pkgname=yaourt-git
 pkgver=$(date +%Y%m%d_%H%M)
 pkgrel=1
-pkgdesc="yaourt test release" 
-arch=(i686 x86_64 ppc)
-url="http://www.archlinux.fr/yaourt-en/" 
-license="GPL" 
-depends=('wget' 'diffutils' 'pacman>=3.1.0' 'package-query') 
-makedepends=('gettext')
+pkgdesc="A pacman wrapper with extended features and AUR support"
+arch=('any')
+url="http://www.archlinux.fr/yaourt-en/"
+license="GPL"
+depends=('wget' 'diffutils' 'pacman>=3.2.0' 'package-query')
+makedepends=('git')
 optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
 	'customizepkg: automatically modify PKGUILD during install/upgrade'
 	'pacman-color: fully colorized output'
-	'colordiff: colorized output with yaourt -C')
+	'colordiff: colorized output with yaourt -C'
+	'rsync: get PKGBUILD from ABS with yaourt -G')
 provides=('yaourt')
 conflicts=('yaourt')
 install=yaourt.install

@@ -21,4 +21,6 @@
 #EDITOR="$EDITOR"
 #PACMANBIN="/usr/bin/pacman"
 #COLORMODE="normal"
+#SHOWORPHANS=1
+#DIFFEDITCMD="vimdiff"
 

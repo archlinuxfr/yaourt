@@ -11,7 +11,7 @@ else
 fi
 DIFFOPTS="--text --ignore-space-change --ignore-blank-lines -u"
 
-program_version=0.3.6
+program_version=0.3.7
 DEBUG=1
 dbg(){
 	! [ $DEBUG ] && return
@@ -265,6 +265,7 @@ DIFFEDITOR()
 clear
 _file=${file[$numero]}
 msg  $(eval_gettext 'What do you want to do with $_file[.$extension] ?')
+plain $(eval_gettext '  0: Show diffs with $DIFFEDITCMD')
 plain $(eval_gettext '  1: Show diffs with gvim in expert mode')
 plain $(eval_gettext '  2: Show diffs with vimdiff (in console)')
 plain $(eval_gettext '  3: Show diffs with kompare')
@@ -298,6 +299,11 @@ case "$action" in
        		merge_files
 	fi
 	DIFFEDITOR;;
+	"0" )
+	# shows diffs with $DIFFEDITCMD (from yaourtrc)
+	eval $DIFFEDITCMD ${file[numero]} ${file[numero]}.$extension
+	DIFFEDITOR
+	;;
 	"1" )
 	# Voir les différences avec GVIM
 	gvim -d ${file[numero]} ${file[numero]}.$extension
