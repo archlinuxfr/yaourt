@@ -41,7 +41,7 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	echo -ne "\n$(eval_gettext 'Proceed with upgrade? ') $(yes_no 1) "
 	[ "`userinput`" = "N" ] && return 0
 fi
-for _line in $(package-query -1Sif "repository=%r;PKG=%n;_pkgver=%v" "$@"); do
+for _line in $(package-query -1Sif "repository=%r;PKG=%n;_pkgver=%v;_arch=%a" "$@"); do
 	eval $_line
 	package="$repository/$PKG"
 	if [ $BUILD -eq 0 -a ! -f "/etc/customizepkg.d/$PKG" ]; then
@@ -66,7 +66,7 @@ for _line in $(package-query -1Sif "repository=%r;PKG=%n;_pkgver=%v" "$@"); do
 	# With splitted package, abs folder may not correspond to package name
 	local pkgbase=( $(grep -A1 '%BASE%' "$PACMANROOT/sync/$repository/$PKG-$_pkgver/desc" ) )
 	(( ${#pkgbase[@]} )) || pkgbase=( '' "$PKG" )
-	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/${pkgbase[1]}/ . || return 1
+	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$_arch/$repository/${pkgbase[1]}/ . || return 1
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
 	# Customise PKGBUILD
@@ -301,6 +301,7 @@ sync_packages()
 	for _line in $(package-query -1ASif "%t/%r/%n" "${args[@]}"); do
 		local repo="${_line%/*}"
 		repo="${repo##*/}"
+		[ "$repo" = "-" ] && continue
 		local pkg="${_line##*/}"
 		local target="${_line%/$repo/$pkg}"
 		if [ "${repo}" != "aur" ]; then
