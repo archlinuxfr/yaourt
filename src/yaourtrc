@@ -22,7 +22,7 @@
 #   NoConfirm no
 #   PacmanBin /usr/bin/pacman-color
 #   PkgbuildEditor gvim
-#   DiffdEditor vimdiff
+#   DiffEditor vimdiff
 #   SearchInAurUnsupported yes
 #   ShowAurComment yes
 #   TmpDirectory /where/you/want
