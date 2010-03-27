@@ -15,11 +15,12 @@
 #===============================================================================
 
 # This file use global variables
+# SPLITPKG:	1 if current PKGBUILD describe multiple package
 # PKGBUILD_VARS : important vars in PKGBUILD like pkgbase, pkgname ...
 # PKGBUILD_DEPS : deps not installed or provided
 # PKGBUILD_DEPS_INSTALLED : deps installed or provided
 # PKGBUILD_CONFLICTS : package installed and conflicts
-# PARCH : CARCH in makepkg
+# PARCH : 'any' or CARCH in makepkg
 
 # source makepkg configuration
 source_makepkg_conf ()
@@ -71,6 +72,11 @@ read_pkgbuild ()
 		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
 	fi
+	(( ${#pkgname[@]} > 1 )) && SPLITPKG=1 || SPLITPKG=0
+	(( SPLITPKG )) && {
+		warning $(gettext 'This PKGBUILD describe a splitted packages.')
+		msg $(gettext 'Specific package options are unknowns')
+	}
 	if [ "$arch" = 'any' ]; then
 		PARCH=any
 	else
@@ -142,10 +148,12 @@ check_conflicts ()
 # Manage PKGBUILD conflicts
 manage_conflicts ()
 {
+	local _pkg=$1
+	shift
 	[ -z "$*" ] && return 0
 	local pkgs=( $(package-query -Qif "%n" "${@%[<=>]*}") )
 	(( ! ${#pkgs[@]} )) && return 0
-	warning $(eval_gettext '$pkgname conflicts with those packages:')
+	warning $(eval_gettext '$_pkg conflicts with those packages:')
 	for pkg in "${pkgs[@]}"; do
 		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
 	done
@@ -154,7 +162,7 @@ manage_conflicts ()
 		if [ "$(userinput)" = "Y" ]; then
 			pacman_queuing; launch_with_su $PACMANBIN -Rd "${pkgs[@]}" 
 			if (( $? )); then
-				error $(eval_gettext 'Unable to remove $pkg_conflicts.')
+				error $(eval_gettext 'Unable to remove: ${pkgs[@]}.')
 				return 1
 			fi
 		fi
@@ -220,10 +228,6 @@ build_package()
 	# Test PKGBUILD for last svn/cvs/... version
 	msg "$(eval_gettext 'Building and installing package')"
 
-	local pkg_conflicts=$(package-query -Qt conflicts -f "%n" "$pkgname=$pkgver")
-	[ -n "$pkg_conflicts" ] && PKGBUILD_CONFLICTS[${#PKGBUILD_CONFLICTS[@]}]="$pkg_conflicts"
-	manage_conflicts "${PKGBUILD_CONFLICTS[@]}" || return 1
-
 	if check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
 		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgname}"
@@ -270,19 +274,25 @@ build_package()
 	
 	# Build 
 	check_root
-	mkpkg_opt="$confirmation"
+	mkpkg_opt=""
+	(( NOCONFIRM )) && mkpkg_opt="$mkpkg_opt --noconfirm"
 	(( NODEPS )) && mkpkg_opt="$mkpkg_opt -d"
 	(( IGNOREARCH )) && mkpkg_opt="$mkpkg_opt -A"
 	(( HOLDVER )) && mkpkg_opt="$mkpkg_opt --holdver"
 	(( runasroot )) && mkgpkg_opt="$mkpkg_opt --asroot"
 	(( SUDOINSTALLED )) || (( runasroot )) &&  mkgpkg_opt="$mkpkg_opt --syncdeps"
-	pacman_queuing; eval $INENGLISH PKGDEST=`pwd` nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
+	PKGDEST="$YPKGDEST" nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG package.')
 		return 1
 	fi
-
+	if (( EXPORT )); then
+		YSRCPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" SRCPKGDEST.XXX)
+		PKGDEST="$YSRCPKGDEST" makepkg --allsource
+		bsdtar -vxf "$YSRCPKGDEST/"* -C "$EXPORTDIR"
+		rm -r "$YSRCPKGDEST"
+	fi
 	return 0
 }
 
@@ -290,15 +300,25 @@ build_package()
 # Usage: install_package ()
 install_package()
 {
+	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
 	if (( EXPORT )); then
-		rm $EXPORTDIR/$pkgname-*-*{-$PARCH,}${PKGEXT}
+		for _pkg in ${pkgname[@]}; do
+			cd "$EXPORTDIR"  || break
+			find . -maxdepth 1 -regex "./$pkgname-[^-]+-[^-]+-[^-]+$PKGEXT" -delete
+			cd - > /dev/null
+		done
 		msg $(eval_gettext 'Exporting ${pkgname} to ${EXPORTDIR} repository')
-		PKGDEST="$EXPORTDIR/" && makepkg --allsource
-		bsdtar -xf "$EXPORTDIR/${pkgbase}-${pkgver}-${pkgrel}${SRCEXT}"
-		rm "$EXPORTDIR/${pkgbase}-${pkgver}-${pkgrel}${SRCEXT}"
-		cp -fp "$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}" "$EXPORTDIR/" 
+		cp -vfp "$YPKGDEST/"* "$EXPORTDIR/" 
 	fi
+
+	for _file in "$YPKGDEST/"*; do
+		local pkg_conflicts=($(package-query -Qp -f "%c" "_file"))
+		(( ! ${#pkg_conflicts[@]} )) && continue;
+		local _pkg=$(basename "_file")
+		_pkg=${_pkg%-*-*-*.$PKGEXT}
+		manage_conflicts "$_pkg" "${pkg_conflicts[@]}" || return 1
+	done
 
 	if (( ! NOCONFIRM )); then
 		CONTINUE_INSTALLING="V"
@@ -308,12 +328,19 @@ install_package()
 			CONTINUE_INSTALLING=$(userinput "YNVC")
 			echo
 			if [ "$CONTINUE_INSTALLING" = "V" ]; then
-				$PACMANBIN --query --list --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
-				$PACMANBIN --query --info --file ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
+				local pkg_nb=${#pkgname[@]}
+				local i=0
+				for _file in "$YPKGDEST"/*; do
+					$PACMANBIN --query --list --file "$_file"
+					$PACMANBIN --query --info --file "$_file"
+					(( i++ )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
+				done
 			elif [ "$CONTINUE_INSTALLING" = "C" ]; then
 				echo
 				if [ `type -p namcap` ]; then
-					namcap ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}
+					for _file in "$YPKGDEST"/*; do
+						namcap "$_file"
+					done
 				else
 					warning $(eval_gettext 'namcap is not installed')
 				fi
@@ -326,12 +353,14 @@ install_package()
 		msg $(eval_gettext 'Package not installed')
 		failed=1
 	else
-		pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation ./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}"
-		failed=$?
+		for _file in "$YPKGDEST"/*; do
+			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation $_file"
+			(( $? )) && failed=$? && break
+		done
 	fi
 	if (( failed )); then 
-		warning $(eval_gettext 'Your package is saved in $YAOURTTMPDIR/$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}')
-		cp -i "./$pkgname-$pkgver-$pkgrel-$PARCH${PKGEXT}" $YAOURTTMPDIR/ || warning $(eval_gettext 'Unable to copy $pkgname-$pkgrel-$PARCH${PKGEXT} to $YAOURTTMPDIR/ directory')
+		warning $(eval_gettext 'Your packages are saved in $YAOURTTMPDIR/')
+		cp -i "$YPKGDEST"/* $YAOURTTMPDIR/ || warning $(eval_gettext 'Unable to copy packages to $YAOURTTMPDIR/ directory')
 	fi
 
 	return $failed
@@ -346,6 +375,7 @@ package_loop ()
 	local trust=${1:-0}
 	local default_answer=1
 	local ret=0
+	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
 		edit_pkgbuild $default_answer 1 || return 1
@@ -365,6 +395,7 @@ package_loop ()
 		fi
 	done
 	install_package || return 1
+	rm -r "$YPKGDEST"
 }
 
 

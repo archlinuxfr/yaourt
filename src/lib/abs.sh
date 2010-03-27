@@ -41,9 +41,9 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	echo -ne "\n$(eval_gettext 'Proceed with upgrade? ') $(yes_no 1) "
 	[ "`userinput`" = "N" ] && return 0
 fi
-for package in $(package-query -1Sif "%r/%n" "$@"); do
-	PKG=${package#*/}
-	local repository=${package%/*}
+for _line in $(package-query -1Sif "repository=%r;PKG=%n;_pkgver=%v" "$@"); do
+	eval $_line
+	package="$repository/$PKG"
 	if [ $BUILD -eq 0 -a ! -f "/etc/customizepkg.d/$PKG" ]; then
 		binariespackages[${#binariespackages[@]}]=${package#-/}
 		continue
@@ -63,12 +63,12 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 		cd $wdir
 	fi
 
-	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/$PKG/ . || return 1
-
+	# With splitted package, abs folder may not correspond to package name
+	local pkgbase=( $(grep -A1 '%BASE%' "$PACMANROOT/sync/$repository/$PKG-$_pkgver/desc" ) )
+	(( ${#pkgbase[@]} )) || pkgbase=( '' "$PKG" )
+	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/${pkgbase[1]}/ . || return 1
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
-	msg "$pkgname $pkgver-$pkgrel $([ "$branchtags" = "TESTING" ] && echo -e "$COL_BLINK[TESTING]")"
-	
 	# Customise PKGBUILD
 	[ $CUSTOMIZEPKGINSTALLED -eq 1 ] && customizepkg --modify
 	# Build, install/export
@@ -263,14 +263,12 @@ showupgradepackage()
 		for line in "${newpkgs[@]}"; do
 			eval $line
 			### Searching for package which depends on 'new package'
-			requiredbypkg=$(eval_gettext 'not found')
-			for pkg in ${packages[@]}; do
-				if [ "$pkg" != "$pkgname" ] && `LC_ALL=C pacman -Si $pkg |grep -m1 -A15 "^Repository"| sed -e '1,/^Provides/d' -e '/^Optional\ Deps/,$d'\
-				       | grep -q "\ $pkgname[ >=<]"`; then
-					requiredbypkg=$pkg
-					break
-				fi
+			local pkg_dep_on=( $(package-query -St depends -f "%n" "$pkgname") )
+			local requiredbypkg
+			for pkg in ${pkg_dep_on[@]}; do
+				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
 			done
+			[ -z "$requiredbypkg" ] && requiredbypkg=$(eval_gettext 'not found')
 
 			if [ "$1" = "manual" ]; then
 				echo -e "\n$repository/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
