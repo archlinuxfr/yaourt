@@ -313,10 +313,10 @@ install_package()
 	fi
 
 	for _file in "$YPKGDEST/"*; do
-		local pkg_conflicts=($(package-query -Qp -f "%c" "_file"))
+		local pkg_conflicts=($(package-query -Qp -f "%c" "$_file"))
+		eval $(package-query -Qp -f "_pkg=%n;_pkgver=%v" "$_file")
+		pkg_conflicts=( "${pkg_conflicts[@]}" $(package-query -Qt conflicts -f "%n" "$_pkg=$_pkgver"))
 		(( ! ${#pkg_conflicts[@]} )) && continue;
-		local _pkg=$(basename "_file")
-		_pkg=${_pkg%-*-*-*.$PKGEXT}
 		manage_conflicts "$_pkg" "${pkg_conflicts[@]}" || return 1
 	done
 
@@ -348,14 +348,13 @@ install_package()
 			fi
 		done
 	fi
-
 	if [ "$CONTINUE_INSTALLING" = "N" ]; then
 		msg $(eval_gettext 'Package not installed')
 		failed=1
 	else
 		for _file in "$YPKGDEST"/*; do
-			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation $_file"
-			(( $? )) && failed=$? && break
+			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation $_file" || failed=$?
+			(( failed )) && break
 		done
 	fi
 	if (( failed )); then 
@@ -394,8 +393,9 @@ package_loop ()
 			break;
 		fi
 	done
-	install_package || return 1
+	install_package || failed=1
 	rm -r "$YPKGDEST"
+	return $failed
 }
 
 
