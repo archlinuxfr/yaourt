@@ -79,10 +79,12 @@ list_installed_packages(){
 	fi
 	title $(gettext "$_msg")
 	msg $(gettext "$_msg")
-	$PACMANBIN $ARGSANS -q ${args[*]} |
-	xargs package-query -1ASif "%1 %r %n %v" |
-	while read _date repository name version ; do
-		_msg=$(colorizeoutputline "$repository/${NO_COLOR}${COL_BOLD}${name} ${COL_GREEN}${version}$NO_COLOR")
+	$PACMANBIN $ARGSANS -q ${args[*]} | cut -d' ' -f2 |
+	xargs package-query -1QSif "%1 %r %n %v %g" |
+	while read _date repository name version group; do
+		_msg=$(colorizeoutputline "$repository/")
+		_msg="$_msg${NO_COLOR}${COL_BOLD}${name} ${COL_GREEN}${version}$NO_COLOR"
+		[ "$group" != "-" ] && _msg="$_msg  ${COL_GROUP}(${group})$NO_COLOR"
 		(( DATE )) && echo -e "$_date $_msg" >> $YAOURTTMPDIR/instdate || echo -e $_msg 
 	done
 	if (( DATE )); then

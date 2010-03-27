@@ -286,8 +286,9 @@ search ()
 	(( GROUP )) && search_option="$search_option -g"
 	(( SEARCH )) && search_option="$search_option -s"
 	(( QUIET )) && package-query $search_option -f "%n" "${args[@]}" && return
-	package-query $search_option -f "%n %r %v %l %g %w %o %d" "${args[@]}" |
-	while read package repository version lversion group votes outofdate description ; do
+	package-query $search_option -f "package=%n;repository=%r;version=%v;lversion=%l;group=\"%g\";votes=%w;outofdate=%o;description=\"%d\"" "${args[@]}" |
+	while read _line; do 
+		eval $_line
 		(( interactive )) && echo "${repository}/${package}" >> $searchfile
 		line=`colorizeoutputline ${repository}/${NO_COLOR}${COL_BOLD}${package} ${COL_GREEN}${version}${NO_COLOR}`
 		if [ "$lversion" != "-" ]; then
