@@ -42,9 +42,9 @@ if [ $NOCONFIRM -eq 0 -a $SYSUPGRADE -eq 1 ]; then
 	PROCEED_UPGD=`userinput`
 fi
 if [ "$PROCEED_UPGD" = "N" ]; then return; fi
-for package in $(package-query -1Sif "%r/%n" "$@"); do
-	PKG=${package#*/}
-	local repository=${package%/*}
+for _line in $(package-query -1Sif "repository=%r;PKG=%n;_arch=%a" "$@"); do
+	eval $_line
+	package="$repository/$PKG"
 	if [ $BUILD -eq 0 -a ! -f "/etc/customizepkg.d/$PKG" ]; then
 		binariespackages[${#binariespackages[@]}]=${package#-/}
 		continue
@@ -64,7 +64,7 @@ for package in $(package-query -1Sif "%r/%n" "$@"); do
 		cd $wdir
 	fi
 
-	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$(arch)/$repository/$PKG/ . || return 1
+	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$_arch/$repository/$PKG/ . || return 1
 
 	[ "$MAJOR" = "getpkgbuild" ] && return 0
 
@@ -332,6 +332,7 @@ sync_packages()
 	for _line in $(package-query -1ASif "%t/%r/%n" "${args[@]}"); do
 		local repo="${_line%/*}"
 		repo="${repo##*/}"
+		[ "$repo" = "-" ] && continue
 		local pkg="${_line##*/}"
 		local target="${_line%/$repo/$pkg}"
 		if [ "${repo}" != "aur" ]; then
