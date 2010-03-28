@@ -104,7 +104,7 @@ sysupgrade()
 			[ "`userinput`" = "N" ] && continue
 			echo
 			msg $(eval_gettext 'Upgrading $package first')
-			pacman_queuing; launch_with_su "$PACMANBIN -S $package"
+			pacman_queuing; launch_with_su $PACMANBIN -S $package
 		        die 0
 			;;
 			grub|kernel26*)
@@ -199,7 +199,7 @@ sysupgrade()
 
 	# ok let's do real sysupgrade
 	if [ ${#packages[@]} -gt 0 ]; then
-		pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS"
+		pacman_queuing;	launch_with_su $PACMANBIN $ARGSANS
 	fi
 }
 

@@ -103,31 +103,26 @@ aurcomments(){
 
 # Check if this package has been voted on AUR, and vote for it
 vote_package(){
-	if [ $AURVOTEINSTALLED -eq 0 ]; then
+	if (( ! AURVOTEINSTALLED )); then
 		echo -e "${COL_ITALIQUE}"$(eval_gettext 'If you like this package, please install aurvote\nand vote for its inclusion/keeping in [community]')"${NO_COLOR}"
-	else
-		echo
-		_pkg=$1
-		msg $(eval_gettext 'Checking vote status for $_pkg')
-		pkgvote=`aurvote --id --check "$1/$2"`
-		if [ "${pkgvote}" = "already voted" ]; then
-			_pkg=$1
-			echo $(eval_gettext 'You have already voted for $_pkg inclusion/keeping in [community]')
-		elif [ "$pkgvote" = "not voted" ]; then
-			echo
-			if [ $NOCONFIRM -eq 0 ]; then
-				_pkg=$1
-				prompt "$(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)"
-				VOTE=`userinput`
-			fi
-			if [ "$VOTE" != "N" ]; then
-				aurvote --id --vote "$1/$2"
-			fi
-		else
-			echo $pkgvote
-		fi
+		return
 	fi
-
+	echo
+	local _pkg=$1
+	msg $(eval_gettext 'Checking vote status for $_pkg')
+	local pkgvote=`aurvote --id --check "$1/$2"`
+	if [ "${pkgvote}" = "already voted" ]; then
+		echo $(eval_gettext 'You have already voted for $_pkg inclusion/keeping in [community]')
+	elif [ "$pkgvote" = "not voted" ]; then
+		echo
+		if (( ! NOCONFIRM )); then
+			prompt "$(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)"
+			[ "`userinput`" = "N" ] && return
+		fi
+		aurvote --id --vote "$1/$2"
+	else
+		echo $pkgvote
+	fi
 }
 
 # give to user all info to build and install Unsupported package from AUR
@@ -161,7 +156,7 @@ install_from_aur(){
 	package_loop 0 || { manage_error 1; return 1; }
 
 	# Check if this package has been voted on AUR, and vote for it
-	[ $AURVOTE -eq 1 ] && vote_package "$pkgname" "$aurid"
+	(( AURVOTE )) && vote_package "$pkgbase" "$aurid"
 
 	#msg "Delete $wdir"
 	rm -rf "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')

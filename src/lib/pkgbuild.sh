@@ -14,6 +14,8 @@
 #       VERSION:  1.0
 #===============================================================================
 
+loadlibrary alpm_query
+
 # This file use global variables
 # SPLITPKG:	1 if current PKGBUILD describe multiple package
 # PKGBUILD_VARS : important vars in PKGBUILD like pkgbase, pkgname ...
@@ -55,6 +57,7 @@ read_pkgbuild ()
 	pkgbuild_tmp=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	echo "yaourt_$$() {" 				> $pkgbuild_tmp
 	cat PKGBUILD						>> $pkgbuild_tmp
+	echo								>> $pkgbuild_tmp
 	if (( update )); then
 		echo "devel_check"				>> $pkgbuild_tmp
 		echo "devel_update"				>> $pkgbuild_tmp
@@ -65,17 +68,19 @@ read_pkgbuild ()
 	echo "( yaourt_$$ ) || exit 1"		>> $pkgbuild_tmp		
 	echo "exit 0"						>> $pkgbuild_tmp
 	PKGBUILD_VARS="$(makepkg -p "$pkgbuild_tmp" 3>&1 1>/dev/null 2>&1 | tr '\n' ';')"
-	PKGBUILD_VARS=${PKGBUILD_VARS//declare -- /}
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
-	if [ -z "$pkgname" ]; then
+	[ -z "$pkgbase" ] && pkgbase="${pkgname[0]}"
+	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
+	PKGBUILD_VARS=${PKGBUILD_VARS//declare -- /}
+	if [ -z "$pkgbase" ]; then
 		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
 	fi
 	(( ${#pkgname[@]} > 1 )) && SPLITPKG=1 || SPLITPKG=0
 	(( SPLITPKG )) && {
 		warning $(gettext 'This PKGBUILD describe a splitted packages.')
-		msg $(gettext 'Specific package options are unknowns')
+		msg $(gettext 'Specific package options are unknown')
 	}
 	if [ "$arch" = 'any' ]; then
 		PARCH=any
@@ -223,18 +228,21 @@ edit_pkgbuild ()
 
 # Build package using makepkg
 # Usage: build_package ()
+# Return 0: on success
+#		 1: on error
+#		 2: if sysupgrade and no update available
 build_package()
 {
-	# Test PKGBUILD for last svn/cvs/... version
+	eval $PKGBUILD_VARS
 	msg "$(eval_gettext 'Building and installing package')"
 
 	if check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
-		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgname}"
+		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgbase}"
 		# Using previous build directory
 		if [ -d "$wdirDEVEL" ]; then
 			if (( ! NOCONFIRM )); then
-				prompt "$(eval_gettext 'Yaourt has detected previous ${pkgname} build. Do you want to use it (faster) ? ') $(yes_no 1)"
+				prompt "$(eval_gettext 'Yaourt has detected previous ${pkgbase} build. Do you want to use it (faster) ? ') $(yes_no 1)"
 				USE_OLD_BUILD=$(userinput)
 				echo
 			fi
@@ -252,9 +260,14 @@ build_package()
 				cd "$wdirDEVEL"
 			fi
 		fi
-		# re-read PKGBUILD to update version
-		read_pkgbuild 1 || return 1
-
+		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
+			# re-read PKGBUILD to update version
+			read_pkgbuild 1 || return 1
+			if ! is_x_gt_y $(pkgversion $pkgbase) "$pkgver-$pkgrel"; then
+				msg $(eval_gettext '$pkgbase is already up to date.')
+				return 2
+			fi
+		fi
 	fi
 
 	# install deps from abs (build or download) as depends
@@ -262,7 +275,7 @@ build_package()
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
 		$BUILDPROGRAM --asdeps "${PKGBUILD_DEPS[@]%[<=>]*}"
 		local _deps_left=( $(pacman -T "${PKGBUILD_DEPS[@]}") )
-		if [ -n ${_deps_left[@]} ]; then
+		if (( ${#_deps_left[@]} )); then
 			warning $(eval_gettext 'Dependencies have been installed before the failure')
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
 				in_array $_deps "${_deps_left[@]}" || \
@@ -308,7 +321,7 @@ install_package()
 			find . -maxdepth 1 -regex "./$pkgname-[^-]+-[^-]+-[^-]+$PKGEXT" -delete
 			cd - > /dev/null
 		done
-		msg $(eval_gettext 'Exporting ${pkgname} to ${EXPORTDIR} repository')
+		msg $(eval_gettext 'Exporting ${pkgbase} to ${EXPORTDIR} repository')
 		cp -vfp "$YPKGDEST/"* "$EXPORTDIR/" 
 	fi
 
@@ -352,8 +365,11 @@ install_package()
 		msg $(eval_gettext 'Package not installed')
 		failed=1
 	else
+		local _pacman_opt="-Uf"
+		(( NOCONFIRM )) && _pacman_opt="$_pacman_opt --noconfirm"
+		(( ASDEPS )) && _pacman_opt="$_pacman_opt --asdeps"
 		for _file in "$YPKGDEST"/*; do
-			pacman_queuing;	launch_with_su "$PACMANBIN --force --upgrade $asdeps $confirmation $_file" || failed=$?
+			pacman_queuing;	launch_with_su $PACMANBIN $_pacman_opt $_file || failed=$?
 			(( failed )) && break
 		done
 	fi
@@ -377,23 +393,23 @@ package_loop ()
 	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
-		edit_pkgbuild $default_answer 1 || return 1
+		edit_pkgbuild $default_answer 1 || { failed=1; break; }
 		if (( ! NOCONFIRM )); then
 			prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
-		 	[ "`userinput`" = "N" ] && return 1
+		 	[ "`userinput`" = "N" ] && ret=1 && break
 		fi
 		build_package
 		ret=$?
-		if (( ret )) && (( ! NOCONFIRM )); then
-			prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
-	 		[ "`userinput`" != "Y" ] && return 1
-		elif (( ret )); then
-			return 1
-		else
-			break;
-		fi
+		case "$ret" in
+			0|2) break ;;
+			1) (( NOCONFIRM )) && { failed=1; break; }
+				prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
+	 			[ "`userinput`" != "Y" ] && { failed=1; break; }
+				;;
+			*) return 99 ;; # should never execute
+		esac
 	done
-	install_package || failed=1
+	(( ! ret )) && (( ! failed )) && { install_package || failed=1; }
 	rm -r "$YPKGDEST"
 	return $failed
 }

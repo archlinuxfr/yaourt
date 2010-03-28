@@ -111,11 +111,9 @@ is_sudo_allowed()
 }
 
 launch_with_su(){
-	# try to launch $1 with sudo, else prompt for root password
 	#msg "try to launch '${@}' with sudo"
-	command=`echo $* | awk '{gsub(/LC_ALL=\"C\"/,""); print $1}'`
-
-	if is_sudo_allowed "$command"; then
+	command=$1
+	if is_sudo_allowed "$@"; then
 		#echo "Allowed to use sudo $command"
 		sudo $@ || return 1
 	else
@@ -129,11 +127,8 @@ launch_with_su(){
 		errorfile="/tmp/yaourt_error.$RANDOM"
 		for i in 1 2 3; do 
 			su --shell=/bin/bash --command "$* || touch $errorfile"
-			if [ $? -eq 1 ] && [ ! -f "$errorfile" ]; then
-				continue
-			else
-				[ -f "$errorfile" ] && return 1 || return 0
-			fi
+			(( $? )) && [ ! -f "$errorfile" ] && continue
+			[ -f "$errorfile" ] && return 1 || return 0
 		done
 		return 1
 	fi
@@ -142,22 +137,8 @@ launch_with_su(){
 ###################################
 ### Package database functions  ###
 ###################################
-isinstalled(){
-	pacman -Qq $1 &>/dev/null
-}
 isavailable(){
 	package-query -1Siq $1 || package-query -1Sq -t provides $1
-}
-isprovided(){
-	package-query -Qq -t provides $1 
-}
-pkgversion(){
-	# searching for version of the given package
-	#grep -srl --line-regexp --include="desc" "$1" "$PACMANROOT/local" | xargs grep -A 1 "^%VERSION%$" | tail -n 1
-	package-query -Qif "%v" $1
-}
-pkgdescription(){
-	package-query -1Sif "%d" $1
 }
 sourcerepository(){
 	# find the repository where the given package came from
@@ -201,7 +182,7 @@ show_new_orphans(){
 	# save original of backup files (pacnew/pacsave)
 	if [ "$MAJOR" != "remove" ] && [ $AUTOSAVEBACKUPFILE -eq 1 ] && ! diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
 		msg $(eval_gettext 'Searching for original config files to save')
-		launch_with_su "pacdiffviewer --backup"
+		launch_with_su pacdiffviewer --backup
 	fi
 
 }
@@ -249,7 +230,7 @@ cleandatabase(){
 		prompt "$(eval_gettext 'Do you want to delete these directories ? ')$(yes_no 2)"
 		if [ "`userinput`" = "Y" ]; then
 			cd $PACMANROOT/sync
-			launch_with_su "rm -r ${old_repository[*]}"
+			launch_with_su rm -r ${old_repository[*]}
 			if [ $? -eq 0 ]; then
 				msg "$(eval_gettext 'Your database is now optimized')"
 			else
@@ -520,7 +501,6 @@ if [ `type -p aurvote` ]; then AURVOTEINSTALLED=1; fi
 if [ `type -p customizepkg` ]; then CUSTOMIZEPKGINSTALLED=1; fi
 
 # Refresh
-# todo: find a better way to remove "y"
 if [ "$MAJOR" = "sync" ] && (( REFRESH )); then
 	title $(eval_gettext 'synchronizing package databases')
 	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
@@ -539,7 +519,7 @@ case "$MAJOR" in
 		title $(eval_gettext 'remove packages')
 		prepare_orphan_list
 		# remove with pacman
-		pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${args[*]}"
+		pacman_queuing;	launch_with_su $PACMANBIN $ARGSANS ${args[*]}
 		show_new_orphans
 		;;
 
@@ -603,7 +583,7 @@ case "$MAJOR" in
 			done
 		elif (( CLEAN )); then 
 			#msg "clean sources files"
-			launch_with_su "$PACMANBIN $ARGSANS ${args[*]}"
+			launch_with_su $PACMANBIN $ARGSANS ${args[*]}
 		elif (( INFO )); then
 			#msg "Information"
 			loadlibrary aur
@@ -693,7 +673,7 @@ case "$MAJOR" in
 	*)
 		#msg "Other action"
 		prepare_orphan_list
-		pacman_queuing;	launch_with_su "$PACMANBIN $ARGSANS ${args[*]}" || { plain $(eval_gettext 'press a key to continue'); read; }
+		pacman_queuing;	launch_with_su $PACMANBIN $ARGSANS ${args[*]} || { plain $(eval_gettext 'press a key to continue'); read; }
 		show_new_orphans
 		;;
 esac

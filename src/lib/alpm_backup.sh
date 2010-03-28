@@ -67,9 +67,9 @@ restore_alpm_db(){
 	read -e 
 	[ "$REPLY" != "$(eval_gettext 'yes')" ] && return 0
 	msg $(eval_gettext 'Deleting pacman DB')
-        launch_with_su "mv $PACMANROOT/local/ $YAOURTTMPDIR/alpmdb$$"
+        launch_with_su mv $PACMANROOT/local/ $YAOURTTMPDIR/alpmdb$$
 	msg $(eval_gettext 'Copying backup')
-	launch_with_su "mv $backupdir/local/ $PACMANROOT/local"
+	launch_with_su mv $backupdir/local/ $PACMANROOT/local
 	msg $(eval_gettext 'Testing the new database')
 	$PACMANBIN --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/nowdb"
 	if [ `diff "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" | wc -l` -gt 0 ]; then

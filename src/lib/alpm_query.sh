@@ -13,6 +13,11 @@
 #       VERSION:  1.0
 #===============================================================================
 
+# Query installed version
+pkgversion()
+{
+	package-query -Qif "%v" $1
+}
 
 # search in sync db for packages wich depends on/conflicts whith/provides argument
 searchforpackageswhich(){
