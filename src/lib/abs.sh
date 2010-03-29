@@ -145,7 +145,7 @@ sysupgrade()
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
 	OLD_IFS="$IFS"
 	IFS=$'\n'
-	for _line in $(package-query -1Sei \
+	for _line in $(package-query -1Sxi \
 		-f "pkgname=%n;repository=%r;rversion=%v;lversion=%l;description=\"%d\"" \
 		"${packages[@]}"); do
 		eval $_line
@@ -263,7 +263,7 @@ showupgradepackage()
 		for line in "${newpkgs[@]}"; do
 			eval $line
 			### Searching for package which depends on 'new package'
-			local pkg_dep_on=( $(package-query -St depends -f "%n" "$pkgname") )
+			local pkg_dep_on=( $(package-query -S --query-type depends -f "%n" "$pkgname") )
 			local requiredbypkg
 			for pkg in ${pkg_dep_on[@]}; do
 				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break

@@ -138,7 +138,7 @@ launch_with_su(){
 ### Package database functions  ###
 ###################################
 isavailable(){
-	package-query -1Siq $1 || package-query -1Sq -t provides $1
+	package-query -1Siq $1 || package-query -1Sq -query-type provides $1
 }
 sourcerepository(){
 	# find the repository where the given package came from
@@ -193,35 +193,14 @@ cleandatabase(){
 	# if repository is not used => remove it
 	title "$(eval_gettext 'clean pacman database')"
 	echo "$(eval_gettext 'Please wait...')"
-	repositories=( `LC_ALL="C"; pacman --debug 2>/dev/null| grep "debug: opening database '" | awk '{print $4}' |uniq| tr -d "'"| grep -v 'local'` )
+	repositories=( $(package-query -L) )
 	downloadedrepositories=( `ls --almost-all $PACMANROOT/sync | grep -v "\(lost+found\|.*.db.tar.gz\)"` )
+	usedrepositories=( $(package-query -SQf '%s' | sort |uniq) )
 	for repository in ${downloadedrepositories[@]}; do
-		used=0
-		for pkg in `ls "$PACMANROOT/sync/$repository"`;do
-			if [ -d "$PACMANROOT/local/$pkg" ];then
-				pkgname=$(grep -A 1 "%NAME%" -F "$PACMANROOT/local/$pkg/desc" | tail -n 1)
-				if [ "$(sourcerepository $pkgname)" = "$repository" ]; then
-					used=1
-					break
-				fi
-			fi
-		done
-
-		if [ $used -eq 0 ];then
-			for repoinconfig in ${repositories[@]}; do
-				if [ "$repository" = "$repoinconfig" ]; then
-					break
-				fi
-			done
-			if [ "$repository" = "$repoinconfig" ]; then
-				#echo $(eval_gettext '$repository peut être retiré du fichier pacman.conf')
-				unused_repository[${#unused_repository[@]}]=$repository
-			else
-				#echo $(eval_gettext '$repository peut être supprimé')
-				old_repository[${#old_repository[@]}]=$repository
-			fi
-			continue
-		fi
+		in_array "$repository" "${repositories[@]}" || \
+			{ old_repository[${#old_repository[@]}]=$repository; continue; }
+		in_array "$repository" "${usedrepositories[@]}" || \
+			unused_repository[${#unused_repository[@]}]=$repository
 	done
 
 	if [ ${#old_repository[@]} -gt 0 ]; then
@@ -230,7 +209,7 @@ cleandatabase(){
 		prompt "$(eval_gettext 'Do you want to delete these directories ? ')$(yes_no 2)"
 		if [ "`userinput`" = "Y" ]; then
 			cd $PACMANROOT/sync
-			launch_with_su rm -r ${old_repository[*]}
+			launch_with_su rm -r "${old_repository[@]}"
 			if [ $? -eq 0 ]; then
 				msg "$(eval_gettext 'Your database is now optimized')"
 			else

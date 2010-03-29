@@ -250,7 +250,7 @@ ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
 TMPDIR="/tmp"
 COLORMODE=""
-SHOWORPHANS=0
+SHOWORPHANS=1
 DIFFEDITCMD="vimdiff"
 
 [ -r /etc/yaourtrc ] && source /etc/yaourtrc

@@ -29,7 +29,7 @@ else
 	# No italic out of Xorg or under screen
 	if [ ! -z "$DISPLAY" ] && [ "${TERM:0:6}" != "screen" ]; then
 		COL_ITALIQUE="\033[3m"
-		local _colitalique="\033[3m\\"
+		local _colitalique="\033[3m"
 	fi
 fi
 
@@ -79,8 +79,9 @@ COL_CORE="$_colitalique$COL_RED"
 COL_EXTRA="$_colitalique$COL_GREEN"
 COL_LOCAL="$_colitalique$COL_YELLOW"
 COL_COMMUNITY="$_colitalique$COL_PINK"
-COL_UNSTABLE="$_colitalique$COL_RED"
-COL_REPOS="$COL_PINK"
+COL_TESTING="$_colitalique$COL_RED"
+COL_AUR="$_colitalique$COL_MAGENTA"
+COL_REPOS="$COL_MAGENTA"
 COL_GROUP="$COL_BLUE"
 }
 list(){
@@ -111,13 +112,23 @@ colorizeoutputline(){
 	if [ "$COLORMODE" = "textonly" ]; then
 		echo $*
 	else
-		echo $* | sed -e "s#^core/#\\${COL_CORE}&\\${NO_COLOR}#g" \
-			-e "s#^extra/#\\${COL_EXTRA}&\\${NO_COLOR}#g" \
-			-e "s#^community/#\\${COL_COMMUNITY}&\\${NO_COLOR}#g" \
-			-e "s#^aur/#\\${COL_UNSTABLE}&\\${NO_COLOR}#g" \
-			-e "s#^local/#\\${COL_LOCAL}&\\${NO_COLOR}#g" \
-			-e "s#^[a-z0-9-]*/#\\${COL_REPOS}&\\${NO_COLOR}#g"
+		local _line="$*"
+		local repo="${_line%%/*}"
+		[ "$repo" = "$_line" ] && echo $* && return
+		local _line="${_line#*/}"
+		case "$repo" in
+			core) echo -n "$COL_CORE";;
+			extra) echo -n "$COL_EXTRA";;
+			community) echo -n "$COL_COMMUNITY";;
+			testing) echo -n "$COL_TESTING";;
+			community-testing) echo -n "$COL_TESTING";;
+			aur) echo -n "$COL_AUR";;
+			local) echo -n "$COL_LOCAL";;
+			*) echo -n "$COL_REPOS";;
+		esac
+		echo "$repo/$NO_COLOR$_line"
 	fi
+	exit 0
 }
 cleanoutput(){
 if [ $TERMINALTITLE -eq 0 -o -z "$DISPLAY"  ]; then
@@ -125,4 +136,5 @@ if [ $TERMINALTITLE -eq 0 -o -z "$DISPLAY"  ]; then
 fi
 tput sgr0
 }
+
 

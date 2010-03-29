@@ -64,18 +64,24 @@ fi
 
 # list installed packages filtered by criteria
 list_installed_packages(){
-	_msg=""
+	local _msg="" _opt=""
+	(( ${#args[@]} )) && _opt="-i" || _opt="-S"
 	if (( DEPENDS )); then
+		_opt="$_opt -d"
 		_msg='List all packages installed as dependencies'
 	elif (( EXPLICITE )); then
-		(( UNREQUIRED )) && _msg="and not required by any package"
+		(( UNREQUIRED )) && _msg="and not required by any package" && _opt="$_opt -t"
 		_msg="List all packages explicitly installed $_msg"
+		_opt="$_opt -e"
 	elif (( UNREQUIRED )); then
 		_msg='List all packages installed (explicitly or as depends) and not required by any package'
+		_opt="$_opt -t"
 	elif (( FOREIGN )); then
 		_msg='List installed packages not found in sync db(s)'
+		_opt="$_opt -m"
 	elif (( GROUP )); then
 		_msg='List all installed packages members of a group'
+		_opt="$_opt -g"
 	elif (( DATE )); then
 		_msg='List last installed packages '
 		> $YAOURTTMPDIR/instdate
@@ -84,16 +90,18 @@ list_installed_packages(){
 	fi
 	title $(gettext "$_msg")
 	msg $(gettext "$_msg")
-	$PACMANBIN $ARGSANS -q ${args[*]} | cut -d' ' -f2 |
-	xargs package-query -1QSif "%1 %r %n %v %g" |
+	package-query -Qf "%1 %s %n %l %g" $_opt "${args[@]}"|
 	while read _date repository name version group; do
 		_msg=$(colorizeoutputline "$repository/")
 		_msg="$_msg${NO_COLOR}${COL_BOLD}${name} ${COL_GREEN}${version}$NO_COLOR"
 		[ "$group" != "-" ] && _msg="$_msg  ${COL_GROUP}(${group})$NO_COLOR"
 		(( DATE )) && echo -e "$_date $_msg" >> $YAOURTTMPDIR/instdate || echo -e $_msg 
-	done
+	done 
+
 	if (( DATE )); then
-		sort $YAOURTTMPDIR/instdate | awk '{printf("%s: %s %s %s\n", strftime("%X %x",$1), $2, $3, $4)}'
+		sort $YAOURTTMPDIR/instdate | awk '{
+			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
+			}'
 	fi
 }
 

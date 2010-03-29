@@ -328,7 +328,7 @@ install_package()
 	for _file in "$YPKGDEST/"*; do
 		local pkg_conflicts=($(package-query -Qp -f "%c" "$_file"))
 		eval $(package-query -Qp -f "_pkg=%n;_pkgver=%v" "$_file")
-		pkg_conflicts=( "${pkg_conflicts[@]}" $(package-query -Qt conflicts -f "%n" "$_pkg=$_pkgver"))
+		pkg_conflicts=( "${pkg_conflicts[@]}" $(package-query -Q --query-type conflicts -f "%n" "$_pkg=$_pkgver"))
 		(( ! ${#pkg_conflicts[@]} )) && continue;
 		manage_conflicts "$_pkg" "${pkg_conflicts[@]}" || return 1
 	done

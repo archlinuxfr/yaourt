@@ -18,7 +18,7 @@ aur_get_pkgbuild ()
 {
 	[ -z "$1" ] && return 1
 	local pkg=${1#*/}
-	local pkgurl=${2:-$(package-query -Aif "%u" "$pkg")} 
+	(( $# > 1 )) && local pkgurl=$2 || local pkgurl=$(package-query -Aif "%u" "$pkg")
 	if [ -z "$pkgurl" ]; then
 		error $(eval_gettext '$pkg not found in AUR.');
 		return 1;
@@ -137,14 +137,14 @@ install_from_aur(){
 	fi
 	cd "$wdir/"
 	aurid=""
-	eval $(package-query -Aei $PKG -f "aurid=%i;version=%v;numvotes=%w;outofdate=%o;pkgurl=%u;description=\"%d\"")
+	eval $(package-query -Axi $PKG -f "aurid=%i;version=%v;numvotes=%w;outofdate=%o;pkgurl=%u;description=\"%d\"")
 	[ -z "$aurid" ] && return 1
 	
 	# grab comments and info from aur page
 	echo
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
 	[ -d "$PKG" ] || mkdir "$PKG" || return 1
-	cd "$PKG" && aur_get_pkgbuild "$PKG" "$PKGURL" || return 1
+	cd "$PKG" && aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
 	aurcomments $aurid
 	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
 	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(eval_gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"
