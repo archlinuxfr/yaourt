@@ -86,6 +86,7 @@ sysupgrade()
 	local _arg=""
 	(( UPGRADES > 1 )) && _arg="$_arg -u"
 	(( NEEDED )) && _arg="$_arg --needed"
+	(( NOCONFIRM )) && _arg="$_arg --noconfirm"
 	$PACMANBIN --sync --sysupgrade --print-uris $_arg $IGNOREPKG 1>$YAOURTTMPDIR/sysupgrade
 	
 	if [ $? -ne 0 ]; then
@@ -101,7 +102,7 @@ sysupgrade()
 			pacman|yaourt)
 			warning $(eval_gettext 'New version of $package detected')
 			prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
-			[ "`userinput`" = "N" ] && continue
+			(( ! NOCONFIRM )) && [ "`userinput`" = "N" ] && continue
 			echo
 			msg $(eval_gettext 'Upgrading $package first')
 			pacman_queuing; launch_with_su $PACMANBIN -S $package
@@ -135,7 +136,7 @@ sysupgrade()
 			# Build packages if needed
 			if [ "$proceed" != "N" ]; then
 				BUILD=1
-				install_from_abs "${packagesfromsource[*]}"
+				install_from_abs "${packagesfromsource[@]}"
 				die 0
 			fi
 		fi
