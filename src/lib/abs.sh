@@ -164,7 +164,7 @@ sysupgrade()
 			# Build packages if needed
 			if [ "$proceed" != "N" ]; then
 				BUILD=1
-				install_from_abs "${packagesfromsource[*]}"
+				install_from_abs "${packagesfromsource[@]}"
 				die 0
 			fi
 		fi
