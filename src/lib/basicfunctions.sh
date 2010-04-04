@@ -42,10 +42,18 @@ echo_wrap ()
 
 # ask 
 userinput() 
-{ 
-	[[ ! $1 ]] && _key="YN" || _key=$1
-	read -en $NOENTER
-	echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'  | tr "$(gettext $_key)" "$_key"
+{
+	local _key=${1:-YN}
+	local default=${2:-Y}
+	local answer
+	if (( NOCONFIRM ));then 
+		answer=$default
+	else
+		read -en $NOENTER
+		[[ $REPLY ]] && answer=$(echo ${REPLY^^*} | tr "$(gettext $_key)" "$_key") || answer=$default
+	fi
+	echo $answer
+	[[ "$answer" = "$default" ]]
 }
 
 yes_no ()
@@ -56,10 +64,7 @@ yes_no ()
 	  *) echo $(gettext "[y/n]");;
 	esac
 }
-		  
-isnumeric(){
-	if let $1 2>/dev/null; then return 0; else return 1; fi
-}
+
 
 is_x_gt_y(){
 	[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]
@@ -91,16 +96,14 @@ run_editor ()
 	local edit_cmd
 	local file="$1"
 	local default_answer=${2:-1}
+	local answer_str=" YN"
 	local answer='Y'
 	if (( default_answer )); then
 		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(gettext '("A" to abort)')"
-		local answer=$(userinput "YNA")
+		local answer=$(userinput "YNA" ${answer_str:$default_answer:1})
 		echo
-		[ "$answer" = "A" ] && echo -e "\n$(gettext 'Aborted...')" && return 2
-		if [[ ! "$answer" ]]; then
-			(( default_answer )) && answer='Y' || answer='N'
-		fi
-		[ "$answer" = "N" ] && return 1
+		[[ "$answer" = "A" ]] && echo -e "\n$(gettext 'Aborted...')" && return 2
+		[[ "$answer" = "N" ]] && return 1
 	fi
 	if [[ ! "$EDITOR" ]]; then
 		echo -e ${COL_RED}$(gettext 'Please add \$EDITOR to your environment variables')

@@ -159,14 +159,12 @@ manage_conflicts ()
 	for pkg in "${pkgs[@]}"; do
 		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
 	done
-	if (( ! NOCONFIRM )); then
-		prompt "$(gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
-		if [[ "$(userinput)" = "Y" ]]; then
-			su_pacman -Rd "${pkgs[@]}" 
-			if (( $? )); then
-				error $(eval_gettext 'Unable to remove: ${pkgs[@]}.')
-				return 1
-			fi
+	prompt "$(gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
+	if ! userinput "YN" "N"; then
+		su_pacman -Rd "${pkgs[@]}" 
+		if (( $? )); then
+			error $(eval_gettext 'Unable to remove: ${pkgs[@]}.')
+			return 1
 		fi
 	fi
 	return 0
@@ -238,12 +236,8 @@ build_package()
 		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgbase}"
 		# Using previous build directory
 		if [[ -d "$wdirDEVEL" ]]; then
-			if (( ! NOCONFIRM )); then
-				prompt "$(eval_gettext 'Yaourt has detected previous ${pkgbase} build. Do you want to use it (faster) ? ') $(yes_no 1)"
-				USE_OLD_BUILD=$(userinput)
-				echo
-			fi
-			if [[ "$USE_OLD_BUILD" != "N" ]] || (( NOCONFIRM )); then
+			prompt "$(eval_gettext 'Yaourt has detected previous ${pkgbase} build. Do you want to use it (faster) ? ') $(yes_no 1)"
+			if userinput; then
 				cp ./* "$wdirDEVEL/"
 				cd $wdirDEVEL
 			fi
@@ -284,11 +278,7 @@ build_package()
 	
 	# Build 
 	check_root
-	mkpkg_opt=""
-	(( NOCONFIRM )) && mkpkg_opt="$mkpkg_opt --noconfirm"
-	(( NODEPS )) && mkpkg_opt="$mkpkg_opt -d"
-	(( IGNOREARCH )) && mkpkg_opt="$mkpkg_opt -A"
-	(( HOLDVER )) && mkpkg_opt="$mkpkg_opt --holdver"
+	mkpkg_opt=$MAKEPKG_ARG
 	(( runasroot )) && mkgpkg_opt="$mkpkg_opt --asroot"
 	(( SUDOINSTALLED )) || (( runasroot )) &&  mkgpkg_opt="$mkpkg_opt --syncdeps"
 	PKGDEST="$YPKGDEST" nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
@@ -330,35 +320,34 @@ install_package()
 		manage_conflicts "$_pkg" "${pkg_conflicts[@]}" || return 1
 	done
 
-	if (( ! NOCONFIRM )); then
-		while true; do
-			echo
-			msg "$(eval_gettext 'Continue installing ''$PKG'' ?') $(yes_no 1)"
-			prompt $(gettext '[v]iew package contents   [c]heck package with namcap')
-			local answer=$(userinput "YNVC")
-			case "$answer" in
-				V)	local pkg_nb=${#pkgname[@]}
-					local i=0
+	while true; do
+		echo
+		msg "$(eval_gettext 'Continue installing ''$PKG'' ?') $(yes_no 1)"
+		prompt $(gettext '[v]iew package contents   [c]heck package with namcap')
+		local answer=$(userinput "YNVC" "Y")
+		echo
+		case "$answer" in
+			V)	local pkg_nb=${#pkgname[@]}
+				local i=0
+				for _file in "$YPKGDEST"/*; do
+					$PACMANBIN --query --list --file "$_file"
+					$PACMANBIN --query --info --file "$_file"
+					(( i++ )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
+				done
+				;;
+			C)	if type -p namcap &>/dev/null ; then
 					for _file in "$YPKGDEST"/*; do
-						$PACMANBIN --query --list --file "$_file"
-						$PACMANBIN --query --info --file "$_file"
-						(( i++ )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
+						namcap "$_file"
 					done
-					;;
-				C)	if type -p namcap &>/dev/null ; then
-						for _file in "$YPKGDEST"/*; do
-							namcap "$_file"
-						done
-					else
-						warning $(gettext 'namcap is not installed')
-					fi
-					echo
-					;;
-				N)	failed=1; break;;
-				*)	break;;
-			esac
-		done
-	fi
+				else
+					warning $(gettext 'namcap is not installed')
+				fi
+				echo
+				;;
+			N)	failed=1; break;;
+			*)	break;;
+		esac
+	done
 	(( ! failed )) && for _file in "$YPKGDEST"/*; do
 		su_pacman -Uf $PACMAN_S_ARG $_file || failed=$?
 		(( failed )) && break
@@ -385,17 +374,14 @@ package_loop ()
 	while true; do
 		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
-		if (( ! NOCONFIRM )); then
-			prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
-		 	[ "`userinput`" = "N" ] && ret=1 && break
-		fi
+		prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
+		userinput || { ret=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
 			0|2) break ;;
-			1) (( NOCONFIRM )) && { failed=1; break; }
-				prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
-	 			[ "`userinput`" != "Y" ] && { failed=1; break; }
+			1)	prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
+				userinput || { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
 		esac

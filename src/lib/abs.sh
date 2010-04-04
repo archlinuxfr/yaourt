@@ -98,7 +98,7 @@ sysupgrade()
 			pacman|yaourt)
 				warning $(eval_gettext 'New version of $package detected')
 				prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
-				(( ! NOCONFIRM )) && [[ "$(userinput)" = "N" ]] && continue
+				userinput || continue
 				msg $(eval_gettext 'Upgrading $package first')
 				su_pacman -S $PACMAN_S_ARG --needed $package
 				die 0
@@ -116,12 +116,10 @@ sysupgrade()
 
 	# Specific upgrade: packages to build from sources
 	if (( BUILD )); then
-		if (( ! NOCONFIRM )); then
-			echo
-			echo "$(gettext 'Source Targets:') ${packages[@]}" 
-			echo -ne "\n$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
-			[ "$(userinput)" = "N" ] && return 0
-		fi
+		echo
+		echo "$(gettext 'Source Targets:') ${packages[@]}" 
+		echo -ne "\n$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
+		userinput || return 0
 		install_from_abs "${packages[@]}"; 
 		return $? 
 	fi
@@ -129,10 +127,8 @@ sysupgrade()
 		msg $(eval_gettext 'Packages to build from sources:')
 		echo ${packagesfromsource[*]}
 		# Show package list before building
-		if (( ! NOCONFIRM )); then
-			echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
-			[ "$(userinput)" = "N" ] && return 0
-		fi
+		echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
+		userinput || return 0
 		# Build packages if needed
 		BUILD=1	install_from_abs "${packagesfromsource[@]}"
 	fi
@@ -169,26 +165,24 @@ sysupgrade()
         
 	# Show detail on upgrades
 	if [[ $packages ]]; then                                                                                                           
-		if (( ! NOCONFIRM )); then
-			while true; do
-				echo
-				msg "$(gettext 'Continue upgrade ?') $(yes_no 1)"
-				prompt $(gettext '[V]iew package detail   [M]anualy select packages')
-				local answer=$(userinput "YNVM")
-				case "$answer" in
-					V)	showupgradepackage full;;
-					M)	showupgradepackage manual
-						run_editor "$YAOURTTMPDIR/sysuplist" 0
-						declare args="$YAOURTTMPDIR/sysuplist"
-						SYSUPGRADE=2
-						sync_packages
-						die 0
-						;;
-					N)	die 0;;
-					*)	break;;
-				esac
-			done
-		fi
+		while true; do
+			echo
+			msg "$(gettext 'Continue upgrade ?') $(yes_no 1)"
+			prompt $(gettext '[V]iew package detail   [M]anualy select packages')
+			local answer=$(userinput "YNVM" "Y")
+			case "$answer" in
+				V)	showupgradepackage full;;
+				M)	showupgradepackage manual
+					run_editor "$YAOURTTMPDIR/sysuplist" 0
+					declare args="$YAOURTTMPDIR/sysuplist"
+					SYSUPGRADE=2
+					sync_packages
+					die 0
+					;;
+				N)	die 0;;
+				*)	break;;
+			esac
+		done
 	fi  
 
 	# ok let's do real sysupgrade
@@ -328,10 +322,8 @@ upgrade_devel_package(){
 	echo
 	plain $(gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
 	echo "${devel_pkgs[@]}"
-	if (( ! NOCONFIRM )); then
-		prompt "$(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)"
-		[ "`userinput`" = "N" ] && return 0
-	fi
+	prompt "$(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)"
+	userinput || return 0
 	for PKG in ${devel_pkgs[@]}; do
 		build_or_get "$PKG"
 	done

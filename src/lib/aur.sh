@@ -125,10 +125,8 @@ vote_package(){
 		echo $(eval_gettext 'You have already voted for $_pkg inclusion/keeping in [community]')
 	elif [[ "$pkgvote" = "not voted" ]]; then
 		echo
-		if (( ! NOCONFIRM )); then
-			prompt "$(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)"
-			[ "`userinput`" = "N" ] && return
-		fi
+		prompt "$(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)"
+		userinput || return
 		aurvote --id --vote "$1/$2"
 	else
 		echo $pkgvote
@@ -213,7 +211,7 @@ upgrade_from_aur(){
 	if [[ " ${aur_package[@]} " =~ " yaourt " ]]; then
 		warning $(eval_gettext 'New version of $package detected')
 		prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
-		if (( NOCONFIRM )) || [[ "$(userinput)" != "N" ]]; then
+		if userinput; then
 			echo
 			msg $(eval_gettext 'Upgrading $package first')
 			install_from_aur "$package" || error $(eval_gettext 'unable to update $package')
@@ -224,11 +222,9 @@ upgrade_from_aur(){
 	plain "\n---------------------------------------------"
 	plain $(gettext 'Packages that can be updated from AUR:')
 	echo "${aur_package[*]}"
-	if (( ! NOCONFIRM )); then
-		prompt "$(gettext 'Do you want to update these packages ? ')$(yes_no 1)"
-		[ "`userinput`" = "N" ] && return 0
-		echo
-	fi
+	prompt "$(gettext 'Do you want to update these packages ? ')$(yes_no 1)"
+	userinput || return 0
+	echo
 	for PKG in ${aur_package[@]}; do
 		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
 	done

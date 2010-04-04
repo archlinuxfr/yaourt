@@ -499,9 +499,9 @@ case "$MAJOR" in
 		loadlibrary aur
 		loadlibrary abs
 		# don't replace the file if exist
-		if (( ! NOCONFIRM )) && [[ -f "./PKGBUILD" ]]; then
+		if [[ -f "./PKGBUILD" ]]; then
 			prompt "$(gettext 'PKGBUILD file already exist. Replace ? ')$(yes_no 1)"
-			[ "`userinput`" = "N" ] && die 1
+			userinput || die 1
 		fi
 		#msg "Get PKGBUILD for $PKG"
 		build_or_get "$PKG"
