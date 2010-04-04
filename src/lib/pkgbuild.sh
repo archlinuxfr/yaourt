@@ -48,32 +48,33 @@ read_pkgbuild ()
 {
 	local update=${1:-0}
 	local vars=(pkgbase pkgname pkgver pkgrel arch pkgdesc provides url \
-		source install md5sums depends makedepends conflicts replaces \
+		groups license source install md5sums depends makedepends conflicts \
+		replaces \
 		_svntrunk _svnmod _cvsroot_cvsmod _hgroot _hgrepo \
 		_darcsmod _darcstrunk _bzrtrunk _bzrmod _gitroot _gitname \
 		)
 
 	unset ${vars[*]}
-	pkgbuild_tmp=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	echo "yaourt_$$() {" 				> $pkgbuild_tmp
-	cat PKGBUILD						>> $pkgbuild_tmp
-	echo								>> $pkgbuild_tmp
+	local pkgbuild_tmp=$(mktemp --tmpdir="$YAOURTTMPDIR")
+	echo "yaourt_$$() {"                > $pkgbuild_tmp
+	cat PKGBUILD                        >> $pkgbuild_tmp
+	echo                                >> $pkgbuild_tmp
 	if (( update )); then
-		echo "devel_check"				>> $pkgbuild_tmp
-		echo "devel_update"				>> $pkgbuild_tmp
+		echo "devel_check"              >> $pkgbuild_tmp
+		echo "devel_update"             >> $pkgbuild_tmp
 	fi
-	echo "declare -p ${vars[*]} >&3"	>> $pkgbuild_tmp
-	echo "return 0"						>> $pkgbuild_tmp
-	echo "}"							>> $pkgbuild_tmp
-	echo "( yaourt_$$ ) || exit 1"		>> $pkgbuild_tmp		
-	echo "exit 0"						>> $pkgbuild_tmp
+	echo "declare -p ${vars[*]} >&3"    >> $pkgbuild_tmp
+	echo "return 0"                     >> $pkgbuild_tmp
+	echo "}"                            >> $pkgbuild_tmp
+	echo "( yaourt_$$ ) || exit 1"      >> $pkgbuild_tmp		
+	echo "exit 0"                       >> $pkgbuild_tmp
 	PKGBUILD_VARS="$(makepkg -p "$pkgbuild_tmp" 3>&1 1>/dev/null 2>&1 | tr '\n' ';')"
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
 	[ -z "$pkgbase" ] && pkgbase="${pkgname[0]}"
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
 	PKGBUILD_VARS=${PKGBUILD_VARS//declare -- /}
-	if [ -z "$pkgbase" ]; then
+	if [[ ! "$pkgbase" ]]; then
 		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
 	fi
@@ -82,11 +83,7 @@ read_pkgbuild ()
 		warning $(gettext 'This PKGBUILD describe a splitted packages.')
 		msg $(gettext 'Specific package options are unknown')
 	}
-	if [ "$arch" = 'any' ]; then
-		PARCH=any
-	else
-		PARCH=$CARCH
-	fi
+	[[ "$arch" = 'any' ]] && PARCH=any || PARCH=$CARCH
 	return 0
 }
 
@@ -103,17 +100,17 @@ check_deps ()
 	for dep in "${depends[@]}" "${makedepends[@]}"
 	do
 		if ! in_array "$dep" "${PKGBUILD_DEPS[@]}"; then
-			PKGBUILD_DEPS_INSTALLED[${#PKGBUILD_DEPS_INSTALLED[@]}]="$dep"
+			PKGBUILD_DEPS_INSTALLED+=("$dep")
 		fi
 	done
 	(( nodisplay )) && return 0
 	msg "$(eval_gettext '$PKG dependencies:')"
 	for dep in "${PKGBUILD_DEPS_INSTALLED[@]}"; do
-		echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(eval_gettext '(already installed)')
+		echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(gettext '(already installed)')
 	done
 	for dep in "${PKGBUILD_DEPS[@]}"; do
-		isavailable $dep && echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(eval_gettext '(package found)') && continue
-		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(eval_gettext '(building from AUR)') 
+		isavailable $dep && echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(gettext '(package found)') && continue
+		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(gettext '(building from AUR)') 
 	done
 	echo
 	return 0 
@@ -130,18 +127,18 @@ check_conflicts ()
 	eval $PKGBUILD_VARS
 	local cfs=( $(pacman -T "${conflicts[@]}") )
 	unset PKGBUILD_CONFLICTS
-	if [ ${#cf[@]} -ne ${#conflicts[@]} ]; then 
+	if (( ${#cf[@]} != ${#conflicts[@]} )); then 
 		for cf in "${conflicts[@]}"
 		do
 			if ! in_array "$cf" "${cfs[@]}"; then
-				PKGBUILD_CONFLICTS[${#PKGBUILD_CONFLICTS[@]}]="$cf"
+				PKGBUILD_CONFLICTS+=("$cf")
 			fi
 		done
 		(( nodisplay )) && return 1
 	fi
 	(( nodisplay )) && return 0
-	msg "$(eval_gettext '$PKG conflicts:')"
-	if [ ${#cf[@]} -ne ${#conflicts[@]} ]; then 
+	if [[ "$PKGBUILD_CONFLICTS" ]] &&  (( ${#cf[@]} != ${#conflicts[@]} )); then 
+		msg "$(eval_gettext '$PKG conflicts:')"
 		for cf in $(package-query -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
 			echo -e " - ${COL_BOLD}$cf${NO_COLOR}"
 		done
@@ -163,9 +160,9 @@ manage_conflicts ()
 		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
 	done
 	if (( ! NOCONFIRM )); then
-		prompt "$(eval_gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
-		if [ "$(userinput)" = "Y" ]; then
-			pacman_queuing; launch_with_su $PACMANBIN -Rd "${pkgs[@]}" 
+		prompt "$(gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
+		if [[ "$(userinput)" = "Y" ]]; then
+			su_pacman -Rd "${pkgs[@]}" 
 			if (( $? )); then
 				error $(eval_gettext 'Unable to remove: ${pkgs[@]}.')
 				return 1
@@ -180,12 +177,12 @@ manage_conflicts ()
 check_devel ()
 {
 	eval $PKGBUILD_VARS
-	if [ ! -z "${_svntrunk}" -a ! -z "${_svnmod}" ] \
-		|| [ ! -z "${_cvsroot}" -a ! -z "${_cvsmod}" ] \
-		|| [ ! -z "${_hgroot}" -a ! -z "${_hgrepo}" ] \
-		|| [ ! -z "${_darcsmod}" -a ! -z "${_darcstrunk}" ] \
-		|| [ ! -z "${_bzrtrunk}" -a ! -z "${_bzrmod}" ] \
-		|| [ ! -z "${_gitroot}" -a ! -z "${_gitname}" ]; then
+	if [[ -n "${_svntrunk}" && -n "${_svnmod}" ]] \
+		|| [[ -n "${_cvsroot}" && -n "${_cvsmod}" ]] \
+		|| [[ -n "${_hgroot}" && -n "${_hgrepo}" ]] \
+		|| [[ -n "${_darcsmod}" && -n "${_darcstrunk}" ]] \
+		|| [[ -n "${_bzrtrunk}" && -n "${_bzrmod}" ]] \
+		|| [[ -n "${_gitroot}" && -n "${_gitname}" ]]; then
 		return 0
 	fi
 	return 1
@@ -234,19 +231,19 @@ edit_pkgbuild ()
 build_package()
 {
 	eval $PKGBUILD_VARS
-	msg "$(eval_gettext 'Building and installing package')"
+	msg "$(gettext 'Building and installing package')"
 
 	if check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
 		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgbase}"
 		# Using previous build directory
-		if [ -d "$wdirDEVEL" ]; then
+		if [[ -d "$wdirDEVEL" ]]; then
 			if (( ! NOCONFIRM )); then
 				prompt "$(eval_gettext 'Yaourt has detected previous ${pkgbase} build. Do you want to use it (faster) ? ') $(yes_no 1)"
 				USE_OLD_BUILD=$(userinput)
 				echo
 			fi
-			if [ "$USE_OLD_BUILD" != "N" ] || (( NOCONFIRM )); then
+			if [[ "$USE_OLD_BUILD" != "N" ]] || (( NOCONFIRM )); then
 				cp ./* "$wdirDEVEL/"
 				cd $wdirDEVEL
 			fi
@@ -263,7 +260,7 @@ build_package()
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
 			# re-read PKGBUILD to update version
 			read_pkgbuild 1 || return 1
-			if ! is_x_gt_y $(pkgversion $pkgbase) "$pkgver-$pkgrel"; then
+			if ! is_x_gt_y "$pkgver-$pkgrel" $(pkgversion $pkgbase); then
 				msg $(eval_gettext '$pkgbase is already up to date.')
 				return 2
 			fi
@@ -271,15 +268,15 @@ build_package()
 	fi
 
 	# install deps from abs (build or download) as depends
-	if [ ${#PKGBUILD_DEPS[@]} -gt 0 ]; then
+	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
-		$BUILDPROGRAM --asdeps "${PKGBUILD_DEPS[@]%[<=>]*}"
+		$YAOURTBIN -S "${YAOURT_ARG[@]}" --asdeps "${PKGBUILD_DEPS[@]%[<=>]*}"
 		local _deps_left=( $(pacman -T "${PKGBUILD_DEPS[@]}") )
 		if (( ${#_deps_left[@]} )); then
-			warning $(eval_gettext 'Dependencies have been installed before the failure')
+			warning $(gettext 'Dependencies have been installed before the failure')
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
 				in_array $_deps "${_deps_left[@]}" || \
-					$YAOURTCOMMAND -Rcsn "${_deps%[<=>]*}"
+					$YAOURTBIN -Rcsn "${YAOURT_ARG[@]}" "${_deps%[<=>]*}"
 			done
 			return 1
 		fi
@@ -334,45 +331,38 @@ install_package()
 	done
 
 	if (( ! NOCONFIRM )); then
-		CONTINUE_INSTALLING="V"
-		while [ "$CONTINUE_INSTALLING" = "V" -o "$CONTINUE_INSTALLING" = "C" ]; do
-			echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$(eval_gettext 'Continue installing ''$PKG''? ') $(yes_no 1)${NO_COLOR}" >&2
-			prompt $(eval_gettext '[v]iew package contents   [c]heck package with namcap')
-			CONTINUE_INSTALLING=$(userinput "YNVC")
+		while true; do
 			echo
-			if [ "$CONTINUE_INSTALLING" = "V" ]; then
-				local pkg_nb=${#pkgname[@]}
-				local i=0
-				for _file in "$YPKGDEST"/*; do
-					$PACMANBIN --query --list --file "$_file"
-					$PACMANBIN --query --info --file "$_file"
-					(( i++ )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
-				done
-			elif [ "$CONTINUE_INSTALLING" = "C" ]; then
-				echo
-				if [ `type -p namcap` ]; then
+			msg "$(eval_gettext 'Continue installing ''$PKG'' ?') $(yes_no 1)"
+			prompt $(gettext '[v]iew package contents   [c]heck package with namcap')
+			local answer=$(userinput "YNVC")
+			case "$answer" in
+				V)	local pkg_nb=${#pkgname[@]}
+					local i=0
 					for _file in "$YPKGDEST"/*; do
-						namcap "$_file"
+						$PACMANBIN --query --list --file "$_file"
+						$PACMANBIN --query --info --file "$_file"
+						(( i++ )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
 					done
-				else
-					warning $(eval_gettext 'namcap is not installed')
-				fi
-				echo
-			fi
+					;;
+				C)	if type -p namcap &>/dev/null ; then
+						for _file in "$YPKGDEST"/*; do
+							namcap "$_file"
+						done
+					else
+						warning $(gettext 'namcap is not installed')
+					fi
+					echo
+					;;
+				N)	failed=1; break;;
+				*)	break;;
+			esac
 		done
 	fi
-	if [ "$CONTINUE_INSTALLING" = "N" ]; then
-		msg $(eval_gettext 'Package not installed')
-		failed=1
-	else
-		local _pacman_opt="-Uf"
-		(( NOCONFIRM )) && _pacman_opt="$_pacman_opt --noconfirm"
-		(( ASDEPS )) && _pacman_opt="$_pacman_opt --asdeps"
-		for _file in "$YPKGDEST"/*; do
-			pacman_queuing;	launch_with_su $PACMANBIN $_pacman_opt $_file || failed=$?
-			(( failed )) && break
-		done
-	fi
+	(( ! failed )) && for _file in "$YPKGDEST"/*; do
+		su_pacman -Uf $PACMAN_S_ARG $_file || failed=$?
+		(( failed )) && break
+	done
 	if (( failed )); then 
 		warning $(eval_gettext 'Your packages are saved in $YAOURTTMPDIR/')
 		cp -i "$YPKGDEST"/* $YAOURTTMPDIR/ || warning $(eval_gettext 'Unable to copy packages to $YAOURTTMPDIR/ directory')
@@ -393,6 +383,7 @@ package_loop ()
 	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
+		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
 		if (( ! NOCONFIRM )); then
 			prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"

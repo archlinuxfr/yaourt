@@ -14,9 +14,17 @@
 #===============================================================================
 COLORMODES=( textonly nocolor lightbg )
 
+title(){
+	(( ! TERMINALTITLE )) || [[ ! $DISPLAY ]] && return 0
+	case $TERM in
+		rxvt*|xterm*|aterm)
+		echo -n -e "\033]0;yaourt: $@\007"
+		;;
+	esac
+}
 initcolor(){
 # no special caracter for textonly mode
-if [ "$COLORMODE" = "textonly" ]; then
+if [[ "$COLORMODE" = "textonly" ]]; then
 	TERMINALTITLE=0
 	return 0
 else
@@ -27,7 +35,7 @@ else
 	NO_COLOR="\033[0m"
 
 	# No italic out of Xorg or under screen
-	if [ ! -z "$DISPLAY" ] && [ "${TERM:0:6}" != "screen" ]; then
+	if [[ "$DISPLAY"  && "${TERM:0:6}" != "screen" ]]; then
 		COL_ITALIQUE="\033[3m"
 		local _colitalique="\033[3m"
 	fi
@@ -96,20 +104,23 @@ msg(){
 warning(){
 	echo -e "${COL_YELLOW}==> WARNING: ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
 }
+prompt_info(){
+	echo -e "${COL_ARROW}==> ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
+}
 prompt(){
-	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD}$*${NO_COLOR}" >&2
-	echo -e "${COL_ARROW}==>  ${NO_COLOR}${COL_BOLD} ----------------------------------------------${NO_COLOR}" >&2
+	prompt_info "$*"
+	echo -e "${COL_ARROW}==> ${NO_COLOR}${COL_BOLD}----------------------------------------------${NO_COLOR}" >&2
 	echo -ne "${COL_ARROW}==>${NO_COLOR} " >&2
 }
 promptlight(){
 	echo -ne "${COL_ARROW}==>${NO_COLOR} " >&2
 }
 error(){
-	echo -e "${COL_RED}""Error""${NO_COLOR}"": $*\n"
+	echo -e "${COL_RED}Error${NO_COLOR}: $*\n"
 	return 1
 }
 colorizeoutputline(){		
-	if [ "$COLORMODE" = "textonly" ]; then
+	if [[ "$COLORMODE" = "textonly" ]]; then
 		echo $*
 	else
 		local _line="$*"
@@ -131,10 +142,8 @@ colorizeoutputline(){
 	exit 0
 }
 cleanoutput(){
-if [ $TERMINALTITLE -eq 0 -o -z "$DISPLAY"  ]; then
-	return 0
-fi
-tput sgr0
+	(( ! TERMINALTITLE )) || [[ ! $DISPLAY ]] && return 0
+	tput sgr0
 }
 
 

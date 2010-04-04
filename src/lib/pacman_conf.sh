@@ -13,6 +13,9 @@
 #       VERSION:  1.0
 #===============================================================================
 
+# This file use global variables
+# repositories:	Respoitories configured in pacman.conf
+# PKGS_IGNORED: IgnorePkg in pacman.conf
 
 # take the list of activated repositories from pacman.conf
 list_repositories(){
@@ -21,5 +24,9 @@ list_repositories(){
 
 # list all ignorepkg from pacman.conf
 create_ignorepkg_list(){
-	LC_ALL="C" pacman --debug 2>/dev/null | grep "^debug: config: IgnorePkg:" |awk '{print $4}' > $tmp_files/ignorelist
+	PKGS_IGNORED=($(LC_ALL="C" pacman --debug 2>/dev/null |
+		grep "^debug: config: IgnorePkg: " | awk '{print $NF}'))
+	local ignored_grp=($(LC_ALL="C" pacman --debug 2>/dev/null |
+		grep "^debug: config: IgnoreGroup: " | awk '{print $NF}'))
+	[[ $ignored_grp ]] && PKGS_IGNORED+=($(pacman -Sgq ${ignored_grp[@]}))
 }
