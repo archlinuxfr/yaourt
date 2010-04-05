@@ -42,17 +42,17 @@ VERSION="0.9.3.2"
 usage(){
 	echo "$(gettext 'Usage: yaourt <operation> [...]')"
 	echo "$(gettext 'operations:')"
-	echo -e "$(gettext '\tyaourt (search pattern|package file)')"
-	echo -e "$(gettext '\tyaourt {-h --help}')"
-	echo -e "$(gettext '\tyaourt {-V --version}')"
-	echo -e "$(gettext '\tyaourt {-Q --query}   [options] [package(s)]')"
-	echo -e "$(gettext '\tyaourt {-R --remove}  [options] [package(s)]')"
-	echo -e "$(gettext '\tyaourt {-S --sync}    [options] [package(s)]')"
-	echo -e "$(gettext '\tyaourt {-U --upgrade} [options] [package(s)]')"
-	echo -e "$(gettext '\tyaourt {-C --clean}   [options]')"
-	echo -e "$(gettext '\tyaourt {-B --backup}  (save directory|restore file)')"
-	echo -e "$(gettext '\tyaourt {-G --getpkgbuild} package')"
-	echo -e "$(gettext '\tyaourt {--stats}')"
+	echo -e "\t$(gettext 'yaourt (search pattern|package file)')"
+	echo -e "\t$(gettext 'yaourt {-h --help}')"
+	echo -e "\t$(gettext 'yaourt {-V --version}')"
+	echo -e "\t$(gettext 'yaourt {-Q --query}   [options] [package(s)]')"
+	echo -e "\t$(gettext 'yaourt {-R --remove}  [options] [package(s)]')"
+	echo -e "\t$(gettext 'yaourt {-S --sync}    [options] [package(s)]')"
+	echo -e "\t$(gettext 'yaourt {-U --upgrade} [options] [package(s)]')"
+	echo -e "\t$(gettext 'yaourt {-C --clean}   [options]')"
+	echo -e "\t$(gettext 'yaourt {-B --backup}  (save directory|restore file)')"
+	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} package')"
+	echo -e "\t$(gettext 'yaourt {--stats}')"
 	return 0
 }
 version(){
@@ -234,7 +234,7 @@ search ()
 	while read _line; do 
 		eval $_line
 		if (( interactive )); then
-			echo "${repository}/${package}" >> $searchfile
+			echo "${repo}/${pkgname}" >> $searchfile
 			echo -ne "${COL_NUMBER}${i}${NO_COLOR} "
 		fi
 		echo -e $(display_pkg)
@@ -531,6 +531,7 @@ case "$MAJOR" in
 				packages+=(${PKGSFOUND[$((line - 1))]})
 			fi
 		done
+		echo 
 		exec $YAOURTBIN -S "${YAOURT_ARG[@]}" "${packages[@]}"
 		;;
 	

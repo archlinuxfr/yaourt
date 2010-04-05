@@ -125,7 +125,7 @@ colorizeoutputline(){
 	else
 		local _line="$*"
 		local repo="${_line%%/*}"
-		[ "$repo" = "$_line" ] && echo $* && return
+		[[ "$repo" = "$_line" ]] && echo $* && return
 		local _line="${_line#*/}"
 		case "$repo" in
 			core) echo -n "$COL_CORE";;

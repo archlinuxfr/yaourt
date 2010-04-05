@@ -146,12 +146,12 @@ install_from_aur(){
 	cd "$wdir/"
 	aurid=""
 	eval $(package-query -Axi $PKG -f "aurid=%i;version=%v;numvotes=%w;outofdate=%o;pkgurl=%u;description=\"%d\"")
-	[ -z "$aurid" ] && return 1
+	[[ "$aurid" ]] || return 1
 	
 	# grab comments and info from aur page
 	echo
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	[ -d "$PKG" ] || mkdir "$PKG" || return 1
+	[[ -d "$PKG" ]] || mkdir "$PKG" || return 1
 	cd "$PKG" && aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
 	aurcomments $aurid
 	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
@@ -185,7 +185,7 @@ upgrade_from_aur(){
 	package-query -AQm -f "%n %l %v %o" | while read PKG lver pkgver outofdate
 	do
 		echo -n "$PKG: "
-		[ "$pkgver" = "-" ] && \
+		[[ "$pkgver" = "-" ]] && \
 			{ echo -e "${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"; continue; }
 		if  is_x_gt_y "$pkgver" "$lver"; then
 			echo -en " ${COL_GREEN}${lver} => ${pkgver}${NO_COLOR}"

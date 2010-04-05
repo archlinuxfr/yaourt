@@ -64,7 +64,7 @@ install_from_abs(){
 		local pkgbase=( $(grep -A1 '%BASE%' "$PACMANROOT/sync/$repo/$PKG-$_pkgver/desc" ) )
 		[[ $pkgbase ]] || pkgbase=( '' "$PKG" )
 		abs_get_pkgbuild $_arch $repo ${pkgbase[1]} || return 1
-		[ "$MAJOR" = "getpkgbuild" ] && return 0
+		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
 
 		# Customise PKGBUILD
 		(( CUSTOMIZEPKGINSTALLED )) && customizepkg --modify
@@ -235,7 +235,7 @@ showupgradepackage()
 				echo "#    $pkgdesc" >> $YAOURTTMPDIR/sysuplist
 			else
 				echo -e $(colorizeoutputline $repo/)"$NO_COLOR$COL_BOLD$pkgname$NO_COLOR $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
-				[ "$1" = "full" ] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
+				[[ "$1" = "full" ]] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
 			fi
 		done
 	fi
@@ -263,7 +263,7 @@ showupgradepackage()
 				echo "#    $pkgdesc $(eval_gettext '(required by $requiredbypkg)')" >> $YAOURTTMPDIR/sysuplist
 			else
 				echo -e `colorizeoutputline $repo/$NO_COLOR$COL_BOLD$pkgname`" $COL_GREEN$rversion $COL_RED ($(gettext 'required by ')$requiredbypkg)$NO_COLOR"
-				[ "$1" = "full" ] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
+				[[ "$1" = "full" ]] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
 			fi
 		done
 	fi
@@ -288,7 +288,7 @@ sync_packages()
 	for _line in $(package-query -1ASif "%t/%r/%n" "${args[@]}"); do
 		local repo="${_line%/*}"
 		repo="${repo##*/}"
-		[ "$repo" = "-" ] && continue
+		[[ "$repo" = "-" ]] && continue
 		local pkg="${_line##*/}"
 		local target="${_line%/$repo/$pkg}"
 		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs=("$pkg")

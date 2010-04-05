@@ -31,8 +31,8 @@ source_makepkg_conf ()
 	# but suppose default confdir = /etc
 	local _PKGDEST=${PKGDEST}
 	local _SRCDEST=${SRCDEST}
-	[ -r /etc/makepkg.conf ] && source /etc/makepkg.conf || return 1
-	[ -r ~/.makepkg.conf ] && source ~/.makepkg.conf
+	[[ -r /etc/makepkg.conf ]] && source /etc/makepkg.conf || return 1
+	[[ -r ~/.makepkg.conf ]] && source ~/.makepkg.conf
 	# Preserve environnement variable
 	# else left empty (do not set to $PWD)
 	PKGDEST=${_PKGDEST:-$PKGDEST}
@@ -71,7 +71,7 @@ read_pkgbuild ()
 	PKGBUILD_VARS="$(makepkg -p "$pkgbuild_tmp" 3>&1 1>/dev/null 2>&1 | tr '\n' ';')"
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
-	[ -z "$pkgbase" ] && pkgbase="${pkgname[0]}"
+	[[ "$pkgbase" ]] || pkgbase="${pkgname[0]}"
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
 	PKGBUILD_VARS=${PKGBUILD_VARS//declare -- /}
 	if [[ ! "$pkgbase" ]]; then
@@ -152,7 +152,7 @@ manage_conflicts ()
 {
 	local _pkg=$1
 	shift
-	[ -z "$*" ] && return 0
+	[[ "$*" ]] || return 0
 	local pkgs=( $(package-query -Qif "%n" "${@%[<=>]*}") )
 	(( ! ${#pkgs[@]} )) && return 0
 	warning $(eval_gettext '$_pkg conflicts with those packages:')
@@ -163,7 +163,7 @@ manage_conflicts ()
 	if ! userinput "YN" "N"; then
 		su_pacman -Rd "${pkgs[@]}" 
 		if (( $? )); then
-			error $(eval_gettext 'Unable to remove: ${pkgs[@]}.')
+			error $(eval_gettext 'Unable to remove:') ${pkgs[@]}.
 			return 1
 		fi
 	fi
@@ -214,7 +214,7 @@ edit_pkgbuild ()
 	
 	eval $PKGBUILD_VARS
 	for installfile in "${install[@]}"; do
-		[ -z "$installfile" ] && continue
+		[[ "$installfile" ]] && continue
 		run_editor "$installfile" $default_answer 
 		(( $? == 2 )) && return 1
 	done

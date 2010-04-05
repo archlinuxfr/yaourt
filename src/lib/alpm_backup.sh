@@ -27,7 +27,7 @@ save_alpm_db(){
 	savefile="`pwd`/pacman-`date +%Y-%m-%d_%Hh%M`.tar.bz2"
 	cd "$PACMANROOT" 
 	tar -cjf "$savefile" "local/"
-	[ $? -eq 0 ] && msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
+	(( ! $? )) && msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
 	cd $curentdir 
 	return 0
 }
@@ -66,7 +66,7 @@ restore_alpm_db(){
 	msg "$(eval_gettext '\n(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)')"
 	prompt $(gettext 'If you want to restore this backup, type "yes"')
 	read -e 
-	[ "$REPLY" != "$(gettext 'yes')" ] && return 0
+	[[ "$REPLY" != "$(gettext 'yes')" ]] && return 0
 	msg $(gettext 'Deleting pacman DB')
 	launch_with_su mv $PACMANROOT/local/ $YAOURTTMPDIR/alpmdb$$
 	msg $(gettext 'Copying backup')

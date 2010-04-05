@@ -79,10 +79,10 @@ is_x_gt_y(){
 ##
 in_array() {
 	local needle=$1; shift
-	[ -z "$1" ] && return 1 # Not Found
+	[[ "$1" ]] || return 1 # Not Found
 	local item
 	for item in "$@"; do
-		[ "$item" = "$needle" ] && return 0 # Found
+		[[ "$item" = "$needle" ]] && return 0 # Found
 	done
 	return 1 # Not Found
 }
@@ -115,7 +115,7 @@ run_editor ()
 		read -e EDITOR
 		echo
 	fi
-	[ "$(basename "$EDITOR")" = "gvim" ] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
+	[[ "$(basename "$EDITOR")" = "gvim" ]] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
 	( $edit_cmd "$file" )
 	wait
 }
@@ -157,13 +157,13 @@ COLORMODE=""
 SHOWORPHANS=1
 DIFFEDITCMD="vimdiff"
 
-[ -r /etc/yaourtrc ] && source /etc/yaourtrc
-[ -r ~/.yaourtrc ] && source ~/.yaourtrc
-[ -n "$EXPORTDIR" ] && EXPORT=1
+[[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
+[[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
+[[ -n "$EXPORTDIR" ]] && EXPORT=1
 (( FORCEENGLISH )) && export LC_ALL=C
 in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
-[ -d "$TMPDIR" ] || { error $TMPDIR $(gettext 'is not a directory'); die 1;}
-[ -w "$TMPDIR" ] || { error $TMPDIR $(gettext 'is not writable'); die 1;}
+[[ -d "$TMPDIR" ]] || { error $TMPDIR $(gettext 'is not a directory'); die 1;}
+[[ -w "$TMPDIR" ]] || { error $TMPDIR $(gettext 'is not writable'); die 1;}
 TMPDIR=$(readlink -e "$TMPDIR")
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 
