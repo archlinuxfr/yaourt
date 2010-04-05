@@ -63,7 +63,7 @@ search_forgotten_orphans(){
 	done
 	[[ $orphans ]] || return
 	prompt "$(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
-	userinput "YN" "N" || $PACMANBIN -Rcs "${PACMAN_S_ARG[@]}" "${orphans[@]}"
+	useragrees "YN" "N" || su_pacman -Rcs "${PACMAN_S_ARG[@]}" "${orphans[@]}"
 }
 
 # list installed packages filtered by criteria

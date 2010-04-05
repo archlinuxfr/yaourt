@@ -160,7 +160,7 @@ manage_conflicts ()
 		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
 	done
 	prompt "$(gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
-	if ! userinput "YN" "N"; then
+	if ! useragrees "YN" "N"; then
 		su_pacman -Rd "${pkgs[@]}" 
 		if (( $? )); then
 			error $(eval_gettext 'Unable to remove:') ${pkgs[@]}.
@@ -214,7 +214,7 @@ edit_pkgbuild ()
 	
 	eval $PKGBUILD_VARS
 	for installfile in "${install[@]}"; do
-		[[ "$installfile" ]] && continue
+		[[ "$installfile" ]] || continue
 		run_editor "$installfile" $default_answer 
 		(( $? == 2 )) && return 1
 	done
@@ -237,7 +237,7 @@ build_package()
 		# Using previous build directory
 		if [[ -d "$wdirDEVEL" ]]; then
 			prompt "$(eval_gettext 'Yaourt has detected previous ${pkgbase} build. Do you want to use it (faster) ? ') $(yes_no 1)"
-			if userinput; then
+			if useragrees; then
 				cp ./* "$wdirDEVEL/"
 				cd $wdirDEVEL
 			fi
@@ -375,13 +375,13 @@ package_loop ()
 		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
 		prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
-		userinput || { ret=1; break; }
+		useragrees || { ret=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
 			0|2) break ;;
 			1)	prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
-				userinput || { failed=1; break; }
+				useragrees || { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
 		esac

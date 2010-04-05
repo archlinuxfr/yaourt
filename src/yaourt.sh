@@ -501,7 +501,7 @@ case "$MAJOR" in
 		# don't replace the file if exist
 		if [[ -f "./PKGBUILD" ]]; then
 			prompt "$(gettext 'PKGBUILD file already exist. Replace ? ')$(yes_no 1)"
-			userinput || die 1
+			useragrees || die 1
 		fi
 		#msg "Get PKGBUILD for $PKG"
 		build_or_get "$PKG"
@@ -534,7 +534,7 @@ case "$MAJOR" in
 		echo 
 		exec $YAOURTBIN -S "${YAOURT_ARG[@]}" "${packages[@]}"
 		;;
-	
+	remove)	pacman_cmd 1 ;;
 	*) pacman_cmd 0 ;;
 esac
 die $failed

@@ -56,6 +56,14 @@ userinput()
 	[[ "$answer" = "$default" ]]
 }
 
+useragrees()
+{
+	userinput "$@" &> /dev/null
+	local ret=$?
+	echo 
+	return $ret
+}
+
 yes_no ()
 {
 	case $1 in

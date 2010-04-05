@@ -98,7 +98,7 @@ sysupgrade()
 			pacman|yaourt)
 				warning $(eval_gettext 'New version of $package detected')
 				prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
-				userinput || continue
+				useragrees || continue
 				msg $(eval_gettext 'Upgrading $package first')
 				su_pacman -S $PACMAN_S_ARG --needed $package
 				die 0
@@ -119,7 +119,7 @@ sysupgrade()
 		echo
 		echo "$(gettext 'Source Targets:') ${packages[@]}" 
 		echo -ne "\n$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
-		userinput || return 0
+		useragrees || return 0
 		install_from_abs "${packages[@]}"; 
 		return $? 
 	fi
@@ -128,7 +128,7 @@ sysupgrade()
 		echo ${packagesfromsource[*]}
 		# Show package list before building
 		echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
-		userinput || return 0
+		useragrees || return 0
 		# Build packages if needed
 		BUILD=1	install_from_abs "${packagesfromsource[@]}"
 	fi
@@ -323,7 +323,7 @@ upgrade_devel_package(){
 	plain $(gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
 	echo "${devel_pkgs[@]}"
 	prompt "$(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)"
-	userinput || return 0
+	useragrees || return 0
 	for PKG in ${devel_pkgs[@]}; do
 		build_or_get "$PKG"
 	done
