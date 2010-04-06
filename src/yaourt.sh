@@ -230,7 +230,7 @@ search ()
 	(( SEARCH )) && search_option+=" -s"
 	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}"; return; }
 	free_pkg
-	package-query $search_option -xf "pkgname=%n;repo=%r;pkgver=%v;lver=%l;group=\"%g\";votes=%w;outofdate=%o;pkgdesc=\"%d\"" "${args[@]}" |
+	package-query $search_option -xf "pkgname=%n;repo=%s;pkgver=%v;lver=%l;group=\"%g\";votes=%w;outofdate=%o;pkgdesc=\"%d\"" "${args[@]}" |
 	while read _line; do 
 		eval $_line
 		if (( interactive )); then
@@ -317,8 +317,6 @@ yaourt_query ()
 		search_which_package_owns
 	elif (( DEPENDS && UNREQUIRED )); then
 		search_forgotten_orphans
-	elif (( SEARCH )); then
-		AURSEARCH=0 search 0
 	else
 		list_installed_packages
 	fi

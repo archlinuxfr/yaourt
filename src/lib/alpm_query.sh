@@ -68,24 +68,25 @@ search_forgotten_orphans(){
 
 # list installed packages filtered by criteria
 list_installed_packages(){
-	local _msg="" _opt=""
-	(( ${#args[@]} )) && _opt="-i" || _opt="-S"
+	local _msg="" _opt="" _format="_date=%1;repo=%s;pkgname=%n;pkgver=%l;group=\"%g\""
+	(( SEARCH )) && _opt+=" -s" && _format+=";pkgdesc=\"%d\""
+	(( ${#args[@]} && ! SEARCH )) && _opt="-i"
 	if (( DEPENDS )); then
-		_opt="$_opt -d"
+		_opt+=" -d"
 		_msg='List all packages installed as dependencies'
 	elif (( EXPLICITE )); then
-		(( UNREQUIRED )) && _msg="and not required by any package" && _opt="$_opt -t"
+		(( UNREQUIRED )) && _msg="and not required by any package" && _opt+=" -t"
 		_msg="List all packages explicitly installed $_msg"
-		_opt="$_opt -e"
+		_opt+=" -e"
 	elif (( UNREQUIRED )); then
 		_msg='List all packages installed (explicitly or as depends) and not required by any package'
-		_opt="$_opt -t"
+		_opt+=" -t"
 	elif (( FOREIGN )); then
 		_msg='List installed packages not found in sync db(s)'
-		_opt="$_opt -m"
+		_opt+=" -m"
 	elif (( GROUP )); then
 		_msg='List all installed packages members of a group'
-		_opt="$_opt -g"
+		_opt+=" -g"
 	elif (( DATE )); then
 		_msg='List last installed packages '
 		> $YAOURTTMPDIR/instdate
@@ -94,7 +95,7 @@ list_installed_packages(){
 	fi
 	title $(gettext "$_msg")
 	msg $(gettext "$_msg")
-	package-query -Qxf "_date=%1;repo=%s;pkgname=%n;pkgver=%l;group=\"%g\"" $_opt "${args[@]}"|
+	package-query -Qxf "$_format" $_opt "${args[@]}"|
 	while read _line; do
 		eval $_line
 		_msg=$(display_pkg)
