@@ -311,7 +311,7 @@ yaourt_query ()
 		$PACMANBIN --dbpath "$backupdir/" -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
 		return
 	fi
-	(( LIST || UPGRADES )) && pacman_cmd 0
+	(( LIST || UPGRADES || INFO )) && pacman_cmd 0
 	if (( OWNER )); then
 		# pacman will call "which" on futur version
 		search_which_package_owns
