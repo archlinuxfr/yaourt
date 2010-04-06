@@ -14,30 +14,34 @@
 #===============================================================================
 loadlibrary pacman_conf
 loadlibrary pkgbuild
-unset repos_packages pkgs_nb
+unset repos_packages orphans IgnorePkg IgnoreGroup HoldPkg
+pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
+
 buildpackagelist()
 {
 	list_repositories
 	#construct the list of packages	
-	
-	for pkg in $(pacman -Q | awk '{print $1"-"$2}'); do
+	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 f_upgrades=16 f_group=32 
+	IFS=$'\n'	
+	for line in $(package-query -SQf "%4 %s %n"); do
+		IFS=' '
+		local data=($line)
 		(( pkgs_nb++ ))
-		# recherche des infos sur les paquetages installés
-		# recherche du repository d'origine du paquet
+		(( ${data[0]} & f_deps )) && (( pkgs_nb_d++ )) && (( ${data[0]} & f_unrequired )) && {
+			(( pkgs_nb_dt++ ))
+			orphans+=(${data[2]})
+		}
+		(( ${data[0]} & f_explicit )) && (( pkgs_nb_e++ ))
+		(( ${data[0]} & f_upgrades )) && (( pkgs_nb_u++ ))
 		local reponumber=0
 		for repo in ${repositories[@]}; do
-			if [[ -d "$PACMANROOT/sync/$repo/$pkg" ]]; then
-		       		(( repos_packages[$reponumber]++ ))
-				found=1
-				break
-			fi
+			[[ "$repo" == "${data[1]}" ]] && (( repos_packages[$reponumber]++ )) && break
 			(( reponumber++ ))
 		done
 	done
+	unset IFS
 	# Construction de la liste des paquets ignorés/noupgrade/holdpkg
-	ignorepkg=(`LC_ALL="C" pacman --debug 2>/dev/null | grep "^debug: config: IgnorePkg:" |awk '{print $4}'|uniq`)
-	holdpkg=(`LC_ALL="C" pacman --debug 2>/dev/null | grep "^debug: config: HoldPkg:" |awk '{print $4}'|uniq`)
-	ignoregroup=(`LC_ALL="C" pacman --debug 2>/dev/null | grep "^debug: config: IgnoreGroup:" |awk '{print $4}'|uniq`)
+	eval $(LC_ALL=C pacman --debug | sed -n 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=(\2)/p')
 }
 
 showpackagestats(){
@@ -46,19 +50,16 @@ showpackagestats(){
 	echo -e "${COL_BLUE} -------------------------------------------${NO_COLOR}\n"	
 	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
 	echo -e "${COL_GREEN}$(gettext 'Total installed packages:')  ${COL_YELLOW}$pkgs_nb"	
-	echo -e "${COL_GREEN}$(gettext 'Explicitly installed packages:')  ${NO_COLOR}${COL_YELLOW}`pacman -Qe | wc -l`"	
-	echo -e "${COL_GREEN}$(gettext 'Packages installed as dependencies to run other packages:')  ${COL_YELLOW}`pacman -Qd | wc -l`"   
-	local orphans=(`pacman -Qdt | awk '{print $1}' | sort`)
-	if [[ $orphans ]]; then 
-		_orphans=${#orphans[@]}
-		echo -e "${COL_RED}$(eval_gettext 'Where $_orphans packages seems no more used by any package:')${NO_COLOR}"
-		echo -e "$NO_COLOR${orphans[*]}$NO_COLOR"
-	else
-		echo -e "${COL_GREEN}$(gettext 'Packages installed as dependencies but no more required:')  ${COL_YELLOW}0"  
+	echo -e "${COL_GREEN}$(gettext 'Explicitly installed packages:')  ${NO_COLOR}${COL_YELLOW}$pkgs_nb_e"	
+	echo -e "${COL_GREEN}$(gettext 'Packages installed as dependencies to run other packages:')  ${COL_YELLOW}$pkgs_nb_d"   
+	echo -e "${COL_GREEN}$(gettext 'Packages out of date:')  ${COL_YELLOW}$pkgs_nb_u"   
+	if (( pkgs_nb_dt )); then
+		echo -e "${COL_RED}$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')${NO_COLOR}"
+		echo -e "$NO_COLOR${orphans[*]}$NO_COLOR" | fold -s -w $(tput cols)
 	fi
-	echo -e "${COL_GREEN}$(gettext 'Number of HoldPkg:')  ${NO_COLOR}${COL_YELLOW}${#holdpkg[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Number of IgnorePkg:')  ${NO_COLOR}${COL_YELLOW}${#ignorepkg[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Group ignored:')  ${NO_COLOR}${COL_YELLOW}${ignoregroup[*]}"
+	echo -e "${COL_GREEN}$(gettext 'Hold package:') (${#HoldPkg[@]}) ${NO_COLOR}${COL_YELLOW}${HoldPkg[@]}"
+	echo -e "${COL_GREEN}$(gettext 'Package ignored:') (${#IgnorePkg[@]}) ${NO_COLOR}${COL_YELLOW}${IgnorePkg[@]}"
+	echo -e "${COL_GREEN}$(gettext 'Group ignored:') (${#IgnoreGroup[@]}) ${NO_COLOR}${COL_YELLOW}${IgnoreGroup[@]}"
 	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
 }
 
@@ -67,57 +68,43 @@ showrepostats(){
 	local nbcol=1
 	echo -e "${COL_GREEN}$(gettext 'Number of configured repsitories:')  ${NO_COLOR}${COL_YELLOW}${#repositories[@]}"
 	echo -e "${COL_GREEN}$(gettext 'Packages by repositories (ordered by pacman''s priority)')${NO_COLOR}:"
-	local reponumber=0
+	local reponumber=0 pkgs_l=0
 	for repo in ${repositories[@]}; do
 		[[ ${repos_packages[$reponumber]} ]] || repos_packages[$reponumber]=0
+		(( pkgs_l+=repos_packages[$reponumber] ))
 		echo -en "${NO_COLOR}${repo}${COL_YELLOW}(${repos_packages[$reponumber]})${NO_COLOR}, "
 		(( reponumber++ ))
 		(( nbcol++ ))
 		(( nbcol % NBCOLMAX )) || echo
 	done
-	pacman -Sl | awk '{print $2"-"$3}' | LC_ALL=C sort | uniq > $tmp_files/abs
-	pacman -Q | awk '{print $1"-"$2}' | LC_ALL=C sort > $tmp_files/installed
-	echo -e " ${NO_COLOR}$(gettext 'others')* ${COL_YELLOW}($(LC_ALL=C comm -2 -3 $tmp_files/installed $tmp_files/abs|wc -l))${NO_COLOR}"
+	echo -e " ${NO_COLOR}$(gettext 'others')*${COL_YELLOW}($((pkgs_nb-pkgs_l)))${NO_COLOR}"
 	echo
-	echo -e "${NO_COLOR}"*$(gettext 'others')" $(gettext 'are packages not up to date or installed from local\nbuild or AUR Unsupported')${NO_COLOR}"
+	echo -e "${NO_COLOR}"*$(gettext 'others')" $(gettext 'are packages from local build or AUR Unsupported')${NO_COLOR}"
 	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
 }
 
 showdiskusage()
 {
-	local cachedir size inode countfile i s _msg_label _msg_prog
-	# Get cachedir
-	cachedir=(`LC_ALL=C pacman --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
+	local cachedir size_t=0 size_r=0 i=1 _msg_label _msg_prog
 
 	# Get space used by installed package (from info in alpm db)
-	size=0
-	i=1
-	_msg_label=$(gettext 'Theorical space used by packages:')
+	_msg_label=$(gettext 'Theorical - Real space used by packages:')
 	_msg_prog=$(gettext 'progression:')
-	for s in $(package-query -Qf "%2"); do
-		(( size+=s ))
-		echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size/1048576))Mo $_msg_prog $i/$pkgs_nb" >&2
+	package-query -Qf "%2 %3" | while read s_t s_r; do
+		(( size_t+=s_t ))
+		(( size_r+=s_r ))
+		echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $i/$pkgs_nb" >&2
 		(( i++ ))
+		if (( i > $pkgs_nb )); then
+			echo -e "\r${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M                               "
+			echo -e "${COL_GREEN}$(gettext 'Real space used by packages:') ${COL_YELLOW}$(($size_r/1048576))M"
+		fi
 	done
-	echo -e "\r${COL_GREEN}$_msg_label ${COL_YELLOW}$(($size/1048576))Mo                               "
-	# Get real space used by package (after localpurge)
-	cd /
-	size=0
-	i=1
-	countfile=$(pacman -Qql | wc -l)
-	_msg_label=$(gettext 'Real space used by packages:')
-	inode=0
-	for s in $(pacman -Qql | xargs stat -c "%i/%s" 2> /dev/null | sort -n ); do
-		(( inode == ${s%/*} )) && s=0 || { inode=${s%/*};  s=${s#*/}; }
-		(( size+=s ))
-		echo -ne "\r${COL_GREEN}$_msg_label ${COL_YELLOW}$(($size/1048576))Mo $_msg_prog $i/$countfile" >&2
-		(( i++ ))
-	done
-	echo
-	echo -e "\r${COL_GREEN}$_msg_label ${COL_YELLOW}$(($size/1048576))Mo                               "
+	# Get cachedir
+	cachedir=(`LC_ALL=C pacman --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
 	# space used by download packages or sources in cache
-	echo -e "${COL_GREEN}$(gettext 'Space used by pkg downloaded in cache (cachedir):') ${COL_YELLOW} $(du -skh $cachedir 2>/dev/null|awk '{print $1}')"
-	[[ "$SRCDEST" ]] && srcdestsize=`du -skh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null
+	echo -e "${COL_GREEN}$(gettext 'Space used by pkg downloaded in cache (cachedir):') ${COL_YELLOW} $(du -sh $cachedir 2>/dev/null|awk '{print $1}')"
+	[[ "$SRCDEST" ]] && srcdestsize=`du -sh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null
 	echo -e "${COL_GREEN}$(gettext 'Space used by src downloaded in cache:') ${COL_YELLOW} $srcdestsize"
 }
 
