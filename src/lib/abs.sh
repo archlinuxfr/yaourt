@@ -291,7 +291,7 @@ sync_packages()
 		[[ "$repo" = "-" ]] && continue
 		local pkg="${_line##*/}"
 		local target="${_line%/$repo/$pkg}"
-		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs=("$pkg")
+		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
 		pkgs+=("$target")
 	done
 	for _pkg in "${args[@]}"; do

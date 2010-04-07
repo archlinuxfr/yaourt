@@ -127,7 +127,7 @@ check_conflicts ()
 	eval $PKGBUILD_VARS
 	local cfs=( $(pacman -T "${conflicts[@]}") )
 	unset PKGBUILD_CONFLICTS
-	if (( ${#cf[@]} != ${#conflicts[@]} )); then 
+	if (( ${#cfs[@]} != ${#conflicts[@]} )); then 
 		for cf in "${conflicts[@]}"
 		do
 			if ! in_array "$cf" "${cfs[@]}"; then
