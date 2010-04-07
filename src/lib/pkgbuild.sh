@@ -134,10 +134,18 @@ check_conflicts ()
 				PKGBUILD_CONFLICTS+=("$cf")
 			fi
 		done
-		(( nodisplay )) && return 1
+		# Workaround to disable self detection 
+		# If package is installed and provides that 
+		# which conflict with.
+		local i=0
+		for cf in "${PKGBUILD_CONFLICTS[@]}"; do
+			package-query -Qqi "${cf%[<=>]*}" || unset PKGBUILD_CONFLICTS[$i]
+			(( i++ ))
+		done
+		[[ "$PKGBUILD_CONFLICTS" ]] && (( nodisplay )) && return 1
 	fi
 	(( nodisplay )) && return 0
-	if [[ "$PKGBUILD_CONFLICTS" ]] &&  (( ${#cf[@]} != ${#conflicts[@]} )); then 
+	if [[ "$PKGBUILD_CONFLICTS" ]]; then 
 		msg "$(eval_gettext '$PKG conflicts:')"
 		for cf in $(package-query -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
 			echo -e " - ${COL_BOLD}$cf${NO_COLOR}"
