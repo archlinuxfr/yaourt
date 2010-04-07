@@ -361,7 +361,7 @@ while [[ $1 ]]; do
 		-e|--explicit)      EXPLICITE=1; program_arg 8 $1;;
 		-m|--foreign)       FOREIGN=1; program_arg 8 $1;;
 		-g|--groups)        GROUP=1; program_arg 8 $1;;
-		-i|--info)          INFO=1; program_arg 8 $1;;
+		-i|--info)          INFO=1; program_arg 9 $1;;
 		-c|--changelog)     pacman_cmd 0;;
 		-l|--list)          LIST=1; program_arg 8 $1;;
 		--noconfirm)        NOCONFIRM=1; EDITFILES=0; program_arg 7 $1;;

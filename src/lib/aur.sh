@@ -34,7 +34,7 @@ aur_get_pkgbuild ()
 
 aur_show_info()
 {
-	echo -n "$1"; shift; 
+	echo -n "$(gettext "$1")"; shift; 
 	[[ $* ]] && echo ": $*" || echo ": None"
 }
 
@@ -45,7 +45,10 @@ info_from_aur() {
 	local tmpdir=$(mktemp -d --tmpdir="$YAOURTTMPDIR")
 	cd $tmpdir
 	wget -O PKGBUILD -q "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" || { echo "$PKG not found in repos nor in AUR"; return 1; }
-	(( ! NOCONFIRM )) && { run_editor PKGBUILD 1 || return 1; }
+	if (( EDITFILES )); then
+		run_editor PKGBUILD 1 
+		(( $? == 2 )) && return 0
+	fi
 	read_pkgbuild || return 1
 	eval $PKGBUILD_VARS
 	aur_show_info "Repository     " "aur"
