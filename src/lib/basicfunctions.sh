@@ -143,6 +143,7 @@ check_root ()
 ###################################
 ### MAIN OF INIT PROGRAM        ###
 ###################################
+declare -A COL_REPOS	#TODO not its place
 loadlibrary color
 # defautconfig
 EDITFILES=1

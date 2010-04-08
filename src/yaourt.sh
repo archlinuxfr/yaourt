@@ -77,21 +77,21 @@ free_pkg ()
 }
 
 # Display package in common way
+# Compute a string to print with package details -> $pkgoutput
 display_pkg ()
 {
-	local line
-	[[ ${repo#-} ]] && line+=$(colorizeoutputline ${repo}/)
-	line+="${COL_BOLD}${pkgname} ${COL_GREEN}${pkgver}${NO_COLOR}"
+	unset pkgoutput
+	[[ ${repo#-} ]] && pkgoutput+="${COL_REPOS[$repo]:-$COL_O_REPOS}${repo}/$NO_COLOR"
+	pkgoutput+="${COL_BOLD}${pkgname} ${COL_GREEN}${pkgver}${NO_COLOR}"
 	if [[ ${lver#-} ]]; then
-		line+=" ${COL_INSTALLED}["
-		[[ "$lver" != "$pkgver" ]] && line+="${COL_RED}$lver${COL_INSTALLED}"
-		line+="$(gettext 'installed')]${NO_COLOR}"
+		pkgoutput+=" ${COL_INSTALLED}["
+		[[ "$lver" != "$pkgver" ]] && pkgoutput+="${COL_RED}$lver${COL_INSTALLED}"
+		pkgoutput+="$(gettext 'installed')]${NO_COLOR}"
 	fi
-	[[ ${group#-} ]] && line+=" $COL_GROUP($group)$NO_COLOR"
-	[[ "$outofdate" = "1" ]]  && line+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
-	[[ ${votes#-} ]] && line+=" $COL_NUMBER($votes)${NO_COLOR}"
-	[[ ${pkgdesc} ]] && line+="\n  $COL_ITALIQUE$pkgdesc$NO_COLOR"
-	echo -n $line
+	[[ ${group#-} ]] && pkgoutput+=" $COL_GROUP($group)$NO_COLOR"
+	[[ "$outofdate" = "1" ]]  && pkgoutput+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
+	[[ ${votes#-} ]] && pkgoutput+=" $COL_NUMBER($votes)${NO_COLOR}"
+	[[ ${pkgdesc} ]] && pkgoutput+="\n  $COL_ITALIQUE$pkgdesc$NO_COLOR"
 }
 
 manage_error(){
@@ -237,7 +237,8 @@ search ()
 			echo "${repo}/${pkgname}" >> $searchfile
 			echo -ne "${COL_NUMBER}${i}${NO_COLOR} "
 		fi
-		echo -e $(display_pkg)
+		display_pkg
+		echo -e $pkgoutput
 		(( i ++ ))
 	done
 	(( interactive )) && PKGSFOUND=($(cat $searchfile)) && rm $searchfile

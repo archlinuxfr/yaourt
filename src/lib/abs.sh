@@ -214,7 +214,7 @@ showupgradepackage()
 				echo -e "\n$repo/$pkgname version $rver release $lrel -> $rrel"  >> $YAOURTTMPDIR/sysuplist
 				echo "#    $pkgdesc" >> $YAOURTTMPDIR/sysuplist
 			else
-				echo -e $(colorizeoutputline $repo/)"$COL_BOLD$pkgname$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
+				echo -e "${COL_REPOS[$repo]:-$COL_O_REPOS}$repo/$COL_BOLD$pkgname$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
 				[[ "$1" = "full" ]] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
 			fi
 		done

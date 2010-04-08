@@ -40,7 +40,8 @@ searchforpackageswhich(){
 	package-query -S --query-type $action $name -f "pkgname=%n;pkgver=%v;lver=%l" |
 	while read _line; do
 		eval $_line
-		echo -e $(display_pkg)
+		display_pkg
+		echo -e $pkgoutput
 	done
 }
 
@@ -56,10 +57,11 @@ search_which_package_owns(){
 search_forgotten_orphans(){
 	local orphans
 	msg "$(gettext 'Packages installed as dependencies but are no longer required by any installed package')"
-	for _line in $(package-query -Qdtf "pkgname=%n;pkgver=%l;"); do
+	for _line in $(package-query -Qdtf "repo=%s;pkgname=%n;pkgver=%l;"); do
 		eval $_line
 		orphans+=($pkgname)
-		echo -e $(display_pkg)
+		display_pkg
+		echo -e $pkg_info
 	done
 	[[ $orphans ]] || return
 	prompt "$(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
@@ -98,8 +100,8 @@ list_installed_packages(){
 	package-query -Qxf "$_format" $_opt "${args[@]}"|
 	while read _line; do
 		eval $_line
-		_msg=$(display_pkg)
-		(( DATE )) && echo -e "$_date $_msg" >> $YAOURTTMPDIR/instdate || echo -e $_msg 
+		display_pkg
+		(( DATE )) && echo -e "$_date $pkgoutput" >> $YAOURTTMPDIR/instdate || echo -e $pkgoutput
 	done 
 
 	if (( DATE )); then
