@@ -43,17 +43,6 @@ initcolor(){
 
 	# Color list
 	case $COLORMODE in
-		"nocolor")
-		COL_WHITE="\033[0m"
-		COL_YELLOW="\033[0m"
-		COL_RED="\033[0m"
-		COL_CYAN="\033[0m"
-		COL_GREEN="\033[0m"
-		COL_PINK="\033[0m"
-		COL_BLUE="\033[0m"
-		COL_BLACK="\033[0m"
-		COL_MAGENTA="\033[0m"
-		;;
 		"lightbg")
 		COL_WHITE="\033[1;37m"
 		COL_RED="\033[1;31m"

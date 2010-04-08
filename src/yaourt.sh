@@ -215,34 +215,44 @@ show_new_orphans(){
 ###################################
 
 # Search for packages
-# usage: search ($interactive)
-# return: none
+# usage: search ($interactive, $lite)
+# interactive:1 -> line number
+# lite: 1 -> don't print description
+# return: global var PKGSFOUND
 search ()
 {
 	local interactive=${1:-0}
-	(( interactive )) && local searchfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
+	local lite=${2:-0}
 	local i=1
-	local search_option=""
+	local search_option="$PACMAN_Q_ARG"
+	local format
+	(( SEARCH )) && search_option+=" -s" && lite=0
+	(( lite )) && format="%1 %n %s %v - - - %g" || format="%1 %n %s %v %l %w %o %g  %d"
 	[[ "$MAJOR" = "query" ]] && search_option+=" -Q" || search_option+=" -S"
 	(( AURSEARCH )) && search_option+=" -A"
-	(( LIST )) && search_option+=" -l"
-	(( GROUP )) && search_option+=" -g"
-	(( SEARCH )) && search_option+=" -s"
+	(( ! SEARCH )) && [[ $args ]] && search_option+=" -i"
 	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}"; return; }
+	(( DATE && ! interactive )) && > "$YAOURTTMPDIR/instdate"
+	local cmd=(package-query $search_option -f "$format")
 	free_pkg
-	package-query $search_option -xf "pkgname=%n;repo=%s;pkgver=%v;lver=%l;group=\"%g\";votes=%w;outofdate=%o;pkgdesc=\"%d\"" "${args[@]}" |
-	while read _line; do 
-		eval $_line
+	unset PKGSFOUND
+	while read _date pkgname repo pkgver lver votes outofdate group_desc; do 
+		group=${group_desc%%  *}
+		(( lite )) || pkgdesc=${group_desc#*  }
+		PKGSFOUND+=("${repo}/${pkgname}")
 		if (( interactive )); then
-			echo "${repo}/${pkgname}" >> $searchfile
-			echo -ne "${COL_NUMBER}${i}${NO_COLOR} "
+			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
+			(( i ++ ))
 		fi
 		display_pkg
-		echo -e $pkgoutput
-		(( i ++ ))
-	done
-	(( interactive )) && PKGSFOUND=($(cat $searchfile)) && rm $searchfile
-	cleanoutput
+		(( DATE && ! interactive )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" || \
+			echo -e "$pkgoutput"
+	done < <("${cmd[@]}" "${args[@]}")
+	if (( DATE && ! interactive )); then
+		sort $YAOURTTMPDIR/instdate | awk '{
+			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
+			}'
+	fi
 }	
 
 # Handle sync
@@ -319,7 +329,10 @@ yaourt_query ()
 	elif (( DEPENDS && UNREQUIRED )); then
 		search_forgotten_orphans
 	else
-		list_installed_packages
+		title $(gettext "Query installed packages")
+		msg $(gettext "Query installed packages")
+		AURSEARCH=0 search 0 1
+		#list_installed_packages
 	fi
 }
 
