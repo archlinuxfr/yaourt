@@ -426,7 +426,7 @@ while [[ $1 ]]; do
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
-			pacman_arg 1 "-Su" "--noconfirm" "--force";;
+			program_arg 1 "-Su" "--noconfirm" "--force";;
 		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg 4 $1; shift; TMPDIR="$1"; program_arg 4 $1;;
 		-V|version)         version; exit 0;;
