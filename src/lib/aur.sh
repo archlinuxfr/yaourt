@@ -27,7 +27,7 @@ aur_get_pkgbuild ()
 		error $(eval_gettext '$pkg not found in AUR.');
 		return 1;
 	fi
-	wget "$pkgurl" -O "$pkg.tar.gz"
+	curl -s "$pkgurl" -o "$pkg.tar.gz"
 	bsdtar -s "/$pkg//" -xvf "$pkg.tar.gz"
 	rm "$pkg.tar.gz"
 }
@@ -44,7 +44,7 @@ info_from_aur() {
 	PKG=$1
 	local tmpdir=$(mktemp -d --tmpdir="$YAOURTTMPDIR")
 	cd $tmpdir
-	wget -O PKGBUILD -q "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" || { echo "$PKG not found in repos nor in AUR"; return 1; }
+	curl -s -o PKGBUILD "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" || { echo "$PKG not found in repos nor in AUR"; return 1; }
 	if (( EDITFILES )); then
 		run_editor PKGBUILD 1 
 		(( $? == 2 )) && return 0
@@ -71,7 +71,7 @@ info_from_aur() {
 # scrap html page to show user's comments
 aurcomments(){
 	(( ! AURCOMMENT )) && return
-	wget --quiet "${AUR_PKG_URL}$1" -O - | awk '
+	curl -s "${AUR_PKG_URL}$1" | awk '
 function striphtml (str)
 {
 	# strip tags and entities

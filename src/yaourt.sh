@@ -56,11 +56,8 @@ usage(){
 	return 0
 }
 version(){
-	plain "$(gettext 'yaourt $VERSION is a pacman frontend with AUR support and more')"
+	plain "$(gettext "yaourt $VERSION is a pacman frontend with AUR support and more")"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
-	echo "$(gettext '      Copyright (C) 2008 Julien MISCHKOWITZ <wain@archlinux.fr>')"
-	echo "$(gettext '      This program may be freely redistributed under')"
-	echo "$(gettext '      the terms of the GNU General Public License')"
 	exit
 }
 die(){
@@ -77,21 +74,21 @@ free_pkg ()
 }
 
 # Display package in common way
+# Compute a string to print with package details -> $pkgoutput
 display_pkg ()
 {
-	local line
-	[[ ${repo#-} ]] && line+=$(colorizeoutputline ${repo}/)
-	line+="${COL_BOLD}${pkgname} ${COL_GREEN}${pkgver}${NO_COLOR}"
+	unset pkgoutput
+	[[ ${repo#-} ]] && pkgoutput+="${COL_REPOS[$repo]:-$COL_O_REPOS}${repo}/$NO_COLOR"
+	pkgoutput+="${COL_BOLD}${pkgname} ${COL_GREEN}${pkgver}${NO_COLOR}"
 	if [[ ${lver#-} ]]; then
-		line+=" ${COL_INSTALLED}["
-		[[ "$lver" != "$pkgver" ]] && line+="${COL_RED}$lver${COL_INSTALLED}"
-		line+="$(gettext 'installed')]${NO_COLOR}"
+		pkgoutput+=" ${COL_INSTALLED}["
+		[[ "$lver" != "$pkgver" ]] && pkgoutput+="${COL_RED}$lver${COL_INSTALLED}"
+		pkgoutput+="$(gettext 'installed')]${NO_COLOR}"
 	fi
-	[[ ${group#-} ]] && line+=" $COL_GROUP($group)$NO_COLOR"
-	[[ "$outofdate" = "1" ]]  && line+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
-	[[ ${votes#-} ]] && line+=" $COL_NUMBER($votes)${NO_COLOR}"
-	[[ ${pkgdesc} ]] && line+="\n  $COL_ITALIQUE$pkgdesc$NO_COLOR"
-	echo -n $line
+	[[ ${group#-} ]] && pkgoutput+=" $COL_GROUP($group)$NO_COLOR"
+	[[ "$outofdate" = "1" ]]  && pkgoutput+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
+	[[ ${votes#-} ]] && pkgoutput+=" $COL_NUMBER($votes)${NO_COLOR}"
+	[[ ${pkgdesc} ]] && pkgoutput+="\n  $COL_ITALIQUE$pkgdesc$NO_COLOR"
 }
 
 manage_error(){
@@ -215,33 +212,44 @@ show_new_orphans(){
 ###################################
 
 # Search for packages
-# usage: search ($interactive)
-# return: none
+# usage: search ($interactive, $lite)
+# interactive:1 -> line number
+# lite: 1 -> don't print description
+# return: global var PKGSFOUND
 search ()
 {
 	local interactive=${1:-0}
-	(( interactive )) && local searchfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
+	local lite=${2:-0}
 	local i=1
-	local search_option=""
+	local search_option="$PACMAN_Q_ARG"
+	local format
+	(( SEARCH )) && search_option+=" -s" && lite=0
+	(( lite )) && format="%1 %n %s %v - - - %g" || format="%1 %n %s %v %l %w %o %g  %d"
 	[[ "$MAJOR" = "query" ]] && search_option+=" -Q" || search_option+=" -S"
 	(( AURSEARCH )) && search_option+=" -A"
-	(( LIST )) && search_option+=" -l"
-	(( GROUP )) && search_option+=" -g"
-	(( SEARCH )) && search_option+=" -s"
+	(( ! SEARCH )) && [[ $args ]] && search_option+=" -i"
 	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}"; return; }
+	(( DATE && ! interactive )) && > "$YAOURTTMPDIR/instdate"
+	local cmd=(package-query $search_option -f "$format")
 	free_pkg
-	package-query $search_option -xf "pkgname=%n;repo=%s;pkgver=%v;lver=%l;group=\"%g\";votes=%w;outofdate=%o;pkgdesc=\"%d\"" "${args[@]}" |
-	while read _line; do 
-		eval $_line
+	unset PKGSFOUND
+	while read _date pkgname repo pkgver lver votes outofdate group_desc; do 
+		group=${group_desc%%  *}
+		(( lite )) || pkgdesc=${group_desc#*  }
+		PKGSFOUND+=("${repo}/${pkgname}")
+		display_pkg
 		if (( interactive )); then
-			echo "${repo}/${pkgname}" >> $searchfile
-			echo -ne "${COL_NUMBER}${i}${NO_COLOR} "
+			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
+			(( i ++ ))
 		fi
-		echo -e $(display_pkg)
-		(( i ++ ))
-	done
-	(( interactive )) && PKGSFOUND=($(cat $searchfile)) && rm $searchfile
-	cleanoutput
+		(( DATE && ! interactive )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" || \
+			echo -e "$pkgoutput"
+	done < <("${cmd[@]}" "${args[@]}")
+	if (( DATE && ! interactive )); then
+		sort $YAOURTTMPDIR/instdate | awk '{
+			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
+			}'
+	fi
 }	
 
 # Handle sync
@@ -318,7 +326,10 @@ yaourt_query ()
 	elif (( DEPENDS && UNREQUIRED )); then
 		search_forgotten_orphans
 	else
-		list_installed_packages
+		title $(gettext "Query installed packages")
+		msg $(gettext "Query installed packages")
+		AURSEARCH=0 search 0 1
+		#list_installed_packages
 	fi
 }
 
@@ -334,6 +345,14 @@ unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE QUERYWHICH \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
+
+# Grab environement options
+{
+	type -p sudo && SUDOINSTALLED=1
+	type -p aurvote && AURVOTEINSTALLED=1
+	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
+} &> /dev/null
+
 
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")
@@ -353,11 +372,11 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
+		-R|--remove|-U|--upgrade|-w|--downloadonly)	pacman_cmd 1 ;;
 		--asdeps|--needed)  program_arg 1 $1;;
 		-c|--clean)         (( CLEAN ++ ));;
 		--deps)             DEPENDS=1; program_arg 8 $1;;
 		-d)                 DEPENDS=1; NODEPS=1; program_arg 15 $1;;
-		-w|--downloadonly)  pacman_cmd 1;;
 		-e|--explicit)      EXPLICITE=1; program_arg 8 $1;;
 		-m|--foreign)       FOREIGN=1; program_arg 8 $1;;
 		-g|--groups)        GROUP=1; program_arg 8 $1;;
@@ -369,12 +388,10 @@ while [[ $1 ]]; do
 		-o|--owner)         OWNER=1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
-		-R|--remove)        MAJOR="remove";;
 		-r|--root)          ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|--unrequired)    UNREQUIRED=1; program_arg 8 $1;;
-		-U|--upgrade)       MAJOR="upgrade";;
 		-u|--upgrades)      (( UPGRADES ++ ));;
 		--holdver)          HOLDVER=1; program_arg 6 $1;;
 		--ignorearch)       IGNOREARCH=1; program_arg 6 $1;;
@@ -453,14 +470,6 @@ YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 initpath
 initcolor
 
-
-# Grab environement options
-{
-	type -p sudo && SUDOINSTALLED=1
-	type -p aurvote && AURVOTEINSTALLED=1
-	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
-} &> /dev/null
-
 # Refresh
 if [[ "$MAJOR" = "sync" ]] && (( REFRESH )); then
 	title $(gettext 'synchronizing package databases')
@@ -532,7 +541,6 @@ case "$MAJOR" in
 		echo 
 		exec $YAOURTBIN -S "${YAOURT_ARG[@]}" "${packages[@]}"
 		;;
-	remove)	pacman_cmd 1 ;;
 	*) pacman_cmd 0 ;;
 esac
 die $failed

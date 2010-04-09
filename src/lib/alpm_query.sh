@@ -37,10 +37,10 @@ searchforpackageswhich(){
 	local name=$2
 	msg $(eval_gettext 'packages which '$action' on $name:')
 	free_pkg
-	package-query -S --query-type $action $name -f "pkgname=%n;pkgver=%v;lver=%l" |
-	while read _line; do
-		eval $_line
-		echo -e $(display_pkg)
+	package-query -SQ --query-type $action $name -f "%s %n %v %l" |
+	while read repo pkgname pkgver lver; do
+		display_pkg
+		echo -e $pkgoutput
 	done
 }
 
@@ -56,56 +56,9 @@ search_which_package_owns(){
 search_forgotten_orphans(){
 	local orphans
 	msg "$(gettext 'Packages installed as dependencies but are no longer required by any installed package')"
-	for _line in $(package-query -Qdtf "pkgname=%n;pkgver=%l;"); do
-		eval $_line
-		orphans+=($pkgname)
-		echo -e $(display_pkg)
-	done
-	[[ $orphans ]] || return
+	AUR_SEARCH=0 search 0 1
+	[[ $PKGSFOUND ]] || return
 	prompt "$(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
-	useragrees "YN" "N" || su_pacman -Rcs "${PACMAN_S_ARG[@]}" "${orphans[@]}"
-}
-
-# list installed packages filtered by criteria
-list_installed_packages(){
-	local _msg="" _opt="" _format="_date=%1;repo=%s;pkgname=%n;pkgver=%l;group=\"%g\""
-	(( SEARCH )) && _opt+=" -s" && _format+=";pkgdesc=\"%d\""
-	(( ${#args[@]} && ! SEARCH )) && _opt="-i"
-	if (( DEPENDS )); then
-		_opt+=" -d"
-		_msg='List all packages installed as dependencies'
-	elif (( EXPLICITE )); then
-		(( UNREQUIRED )) && _msg="and not required by any package" && _opt+=" -t"
-		_msg="List all packages explicitly installed $_msg"
-		_opt+=" -e"
-	elif (( UNREQUIRED )); then
-		_msg='List all packages installed (explicitly or as depends) and not required by any package'
-		_opt+=" -t"
-	elif (( FOREIGN )); then
-		_msg='List installed packages not found in sync db(s)'
-		_opt+=" -m"
-	elif (( GROUP )); then
-		_msg='List all installed packages members of a group'
-		_opt+=" -g"
-	elif (( DATE )); then
-		_msg='List last installed packages '
-		> $YAOURTTMPDIR/instdate
-	else
-		_msg='List all installed packages'
-	fi
-	title $(gettext "$_msg")
-	msg $(gettext "$_msg")
-	package-query -Qxf "$_format" $_opt "${args[@]}"|
-	while read _line; do
-		eval $_line
-		_msg=$(display_pkg)
-		(( DATE )) && echo -e "$_date $_msg" >> $YAOURTTMPDIR/instdate || echo -e $_msg 
-	done 
-
-	if (( DATE )); then
-		sort $YAOURTTMPDIR/instdate | awk '{
-			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
-			}'
-	fi
+	useragrees "YN" "N" || su_pacman -Rcs "${PKGSFOUND[@]#*/}"
 }
 

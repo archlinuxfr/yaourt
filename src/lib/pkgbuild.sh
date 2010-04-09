@@ -262,6 +262,7 @@ build_package()
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
 			# re-read PKGBUILD to update version
 			read_pkgbuild 1 || return 1
+			eval $PKGBUILD_VARS
 			if ! is_x_gt_y "$pkgver-$pkgrel" $(pkgversion $pkgbase); then
 				msg $(eval_gettext '$pkgbase is already up to date.')
 				return 2
