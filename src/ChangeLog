@@ -183,3 +183,15 @@ yaourt 0.9.3
 - switch from svn to rsync to fix getting community packages
 - FS#156 --print-uris does not need root privileges
 - New diffeditor option in yaourtrc for pacdiffviewer
+
+yaourt 0.9.4
+- Use bash syntax for configuration file, yaourtrc
+- Use curl instead of wget since package-query uses curl
+- Improve search/query/stats and packages display
+- Support splitted packages (retreive and build)
+- Support exotic PKGBUILD (which needs makepkg to be parsed)
+- Support IgnoreGroup
+- Fix conflict detection bugs
+- Fix -Sbu (sysupgrade with build)
+
+
