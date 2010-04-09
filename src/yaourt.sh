@@ -516,8 +516,11 @@ case "$MAJOR" in
 
 	backup)
 		loadlibrary alpm_backup
-		[[ $savedir ]] && { save_alpm_db || die 1; }
-		[[ $backupfile ]] && { restore_alpm_db || die 1; }
+		if [[ $backupfile ]]; then
+			restore_alpm_db || die 1
+		elif [[ $savedir ]]; then 
+			save_alpm_db || die 1
+		fi
 		;;
 	
 	sync) yaourt_sync ;;
