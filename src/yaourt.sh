@@ -56,11 +56,8 @@ usage(){
 	return 0
 }
 version(){
-	plain "$(gettext 'yaourt $VERSION is a pacman frontend with AUR support and more')"
+	plain "$(gettext "yaourt $VERSION is a pacman frontend with AUR support and more")"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
-	echo "$(gettext '      Copyright (C) 2008 Julien MISCHKOWITZ <wain@archlinux.fr>')"
-	echo "$(gettext '      This program may be freely redistributed under')"
-	echo "$(gettext '      the terms of the GNU General Public License')"
 	exit
 }
 die(){
@@ -240,11 +237,11 @@ search ()
 		group=${group_desc%%  *}
 		(( lite )) || pkgdesc=${group_desc#*  }
 		PKGSFOUND+=("${repo}/${pkgname}")
+		display_pkg
 		if (( interactive )); then
 			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
 			(( i ++ ))
 		fi
-		display_pkg
 		(( DATE && ! interactive )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" || \
 			echo -e "$pkgoutput"
 	done < <("${cmd[@]}" "${args[@]}")
@@ -349,6 +346,14 @@ unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
 
+# Grab environement options
+{
+	type -p sudo && SUDOINSTALLED=1
+	type -p aurvote && AURVOTEINSTALLED=1
+	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
+} &> /dev/null
+
+
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")
 unset OPTS
@@ -367,11 +372,11 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
+		-R|--remove|-U|--upgrade|-w|--downloadonly)	pacman_cmd 1 ;;
 		--asdeps|--needed)  program_arg 1 $1;;
 		-c|--clean)         (( CLEAN ++ ));;
 		--deps)             DEPENDS=1; program_arg 8 $1;;
 		-d)                 DEPENDS=1; NODEPS=1; program_arg 15 $1;;
-		-w|--downloadonly)  pacman_cmd 1;;
 		-e|--explicit)      EXPLICITE=1; program_arg 8 $1;;
 		-m|--foreign)       FOREIGN=1; program_arg 8 $1;;
 		-g|--groups)        GROUP=1; program_arg 8 $1;;
@@ -383,12 +388,10 @@ while [[ $1 ]]; do
 		-o|--owner)         OWNER=1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
-		-R|--remove)        MAJOR="remove";;
 		-r|--root)          ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|--unrequired)    UNREQUIRED=1; program_arg 8 $1;;
-		-U|--upgrade)       MAJOR="upgrade";;
 		-u|--upgrades)      (( UPGRADES ++ ));;
 		--holdver)          HOLDVER=1; program_arg 6 $1;;
 		--ignorearch)       IGNOREARCH=1; program_arg 6 $1;;
@@ -467,14 +470,6 @@ YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 initpath
 initcolor
 
-
-# Grab environement options
-{
-	type -p sudo && SUDOINSTALLED=1
-	type -p aurvote && AURVOTEINSTALLED=1
-	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
-} &> /dev/null
-
 # Refresh
 if [[ "$MAJOR" = "sync" ]] && (( REFRESH )); then
 	title $(gettext 'synchronizing package databases')
@@ -546,7 +541,6 @@ case "$MAJOR" in
 		echo 
 		exec $YAOURTBIN -S "${YAOURT_ARG[@]}" "${packages[@]}"
 		;;
-	remove)	pacman_cmd 1 ;;
 	*) pacman_cmd 0 ;;
 esac
 die $failed
