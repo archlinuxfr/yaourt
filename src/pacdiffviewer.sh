@@ -18,7 +18,12 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-
+export TEXTDOMAINDIR=/usr/share/locale
+export TEXTDOMAIN=yaourt
+type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
+	eval_gettext () { echo "$1"; }
+	gettext () { echo "$1"; }
+}
 
 myname=pacdiffviewer
 myversion=0.4
@@ -37,12 +42,12 @@ usage()
 {
 	echo "$myname $myversion"
 	[[ "$1" = "-v" ]] && exit 0
-	echo -e "\t-c Delete all *.pac* found"
-	echo -e "\t-b Save all packages backup files for a later merge"
-	echo -e "\t-q Use with backup to not output messages"
-	echo -e "\t-s Select files instead of listing them sequentially"
-	echo -e "\t-h This help"
-	echo -e "\t-v Show version"
+	echo -e "\t-c $(gettext 'Delete all *.pac* found')"
+	echo -e "\t-b $(gettext 'Save all packages backup files for a later merge')"
+	echo -e "\t-q $(gettext 'Use with backup to not output messages')"
+	echo -e "\t-s $(gettext 'Select files instead of listing them sequentially')"
+	echo -e "\t-h $(gettext 'This help')"
+	echo -e "\t-v $(gettext 'Show version')"
 	exit 0
 }
 
@@ -61,7 +66,7 @@ backup_files()
 		currentfile="$_file.pacnew"
 		[[ -f "$ROOTDIR/$currentfile" ]] || currentfile="$_file"
 		if echo "$_md5sum  $ROOTDIR/$currentfile" | md5sum --status -c - &>/dev/null; then
-			(( ! QUIET )) && echo "  -> saving $ROOTDIR/$currentfile"
+			(( ! QUIET )) && echo "  -> $(gettext 'saving') $ROOTDIR/$currentfile"
 			mkdir -p "$(dirname "$backupdir/$_file")" || return 1
 			cp -a "$ROOTDIR/$currentfile" "$backupdir/$_file" || return 1
 		fi
@@ -93,10 +98,10 @@ create_db()
 		[[ "$ext" = ".pacsave" ]] && PACSAVE+=("${_file}")
 		[[ "$ext" = ".pacorig" ]] && PACORIG+=("${_file}")
 	done
-	echo "${#PACORIG[@]} .pacorig found"
-	echo "${#PACNEW[@]} .pacnew found"
-	echo "${#PACSAVE[@]} .pacsave found"
-	echo "${#PACOLD[@]} files are orphans"
+	echo "${#PACORIG[@]} .pacorig $(gettext 'found')"
+	echo "${#PACNEW[@]} .pacnew $(gettext 'found')"
+	echo "${#PACSAVE[@]} .pacsave $(gettext 'found')"
+	echo "${#PACOLD[@]} $(gettext 'files are orphans')"
 	echo
 }
 
@@ -150,7 +155,7 @@ supress()
 	(( ! ${#pacfiles[@]} )) && return
 	echo "${pacfiles[@]}" | fold -s -w $(tput cols)
 	echo
-	prompt "Do you want to delete these files ?" $(yes_no 2) "(A for All)"
+	prompt "$(gettext 'Do you want to delete these files ?')" $(yes_no 2) "$(gettext '(A for All)')"
 	local answer=$(userinput "YNA" "N")
 	[[ "$answer" = "N" ]] && return
 	local _opt=""
@@ -176,7 +181,11 @@ manage_file ()
 			_msg+=" **automerge**"
 		fi
 		msg $_msg
-		prompt "$_prompt [C]ontinue (default), [A]bort ?"
+		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
+		# gettext "ERSCA"
+		# gettext "ERSMCA"
+		prompt "$(gettext "$_prompt [C]ontinue (default), [A]bort ?")"
 		local answer=$(userinput "$_prompt_action" "C")
 		case "$answer" in
 			A) break 2;;	# break manage() loop
@@ -185,7 +194,7 @@ manage_file ()
 			R) mv "$_file" "${_file%$ext}"; break;;
 			S) rm "$_file"; break ;;
 			M)	patch -sp0 "${_file%$ext}" -i "$tmp_file"
-				(( $? )) && error 'patch returned an error!'
+				(( $? )) && error "$(gettext 'patch returned an error!')"
 				break;;
 		esac
 	done
@@ -236,7 +245,7 @@ case "$action" in
 		manage .pacsave "${PACSAVE[@]}"
 		manage .pacnew "${PACNEW[@]}"
 		manage .pacorig "${PACORIG[@]}"
-		msg "The following files have no original version."
+		msg "$(gettext 'The following files have no original version.')"
 		supress
 		;;
 esac
