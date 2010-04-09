@@ -257,8 +257,8 @@ yaourt_sync ()
 {
 	if (( GROUP || LIST || SEARCH)); then
 		(( LIST )) && {
-			title $(eval_gettext 'listing all packages in repos')
-			msg $(eval_gettext 'Listing all packages in repos')
+			title $(eval_gettext 'listing all packages in repo(s)')
+			msg $(eval_gettext 'Listing all packages in repo(s)')
 		}
 		(( GROUP )) && title $(eval_gettext 'show groups')
 		search 0
@@ -276,7 +276,7 @@ yaourt_sync ()
 		return
 	fi
 	[[ ! $args ]] && { (( ! REFRESH )) && pacman_cmd 1; }
-	if (( QUERYWHICH )) && [[ $QUERYTYPE ]]; then
+	if [[ $QUERYTYPE ]]; then
 		title $(eval_gettext 'query packages')
 		loadlibrary alpm_query
 		for arg in ${args[@]}; do
@@ -286,7 +286,7 @@ yaourt_sync ()
 	elif (( INFO )); then
 		loadlibrary aur
 		for arg in ${args[@]}; do
-			title $(eval_gettext 'Information for $arg')
+			title $(eval_gettext 'Informations for $arg')
 			_repo="${arg%/*}"
 			[[ $_repo = $arg ]] && _repo="$(package-query -1ASif "%r" "$arg")" 
 			[[ "$_repo" = "aur" ]] && info_from_aur "${arg#*/}" || abs_pkg+=("$arg") 
@@ -342,7 +342,7 @@ source /usr/lib/yaourt/basicfunctions.sh || exit 1
 
 unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNORE IGNOREPKG IGNOREARCH CLEAN LIST INFO \
-	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE QUERYWHICH \
+	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
 
@@ -430,7 +430,7 @@ while [[ $1 ]]; do
 		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg 4 $1; shift; TMPDIR="$1"; program_arg 4 $1;;
 		-V|version)         version; exit 0;;
-		-q)                 QUERYWHICH=1; QUIET=1; program_arg 5 $1;;
+		-q)                 QUIET=1; program_arg 5 $1;;
 
 		*)                  args+=("$1") ;; 
 	esac

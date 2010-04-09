@@ -80,7 +80,7 @@ read_pkgbuild ()
 	fi
 	(( ${#pkgname[@]} > 1 )) && SPLITPKG=1 || SPLITPKG=0
 	(( SPLITPKG )) && {
-		warning $(gettext 'This PKGBUILD describe a splitted packages.')
+		warning $(gettext 'This PKGBUILD describes a splitted package.')
 		msg $(gettext 'Specific package options are unknown')
 	}
 	[[ "$arch" = 'any' ]] && PARCH=any || PARCH=$CARCH
@@ -244,7 +244,7 @@ build_package()
 		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgbase}"
 		# Using previous build directory
 		if [[ -d "$wdirDEVEL" ]]; then
-			prompt "$(eval_gettext 'Yaourt has detected previous ${pkgbase} build. Do you want to use it (faster) ? ') $(yes_no 1)"
+			prompt "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them (faster) ? ') $(yes_no 1)"
 			if useragrees; then
 				cp ./* "$wdirDEVEL/"
 				cd $wdirDEVEL
@@ -293,7 +293,7 @@ build_package()
 	PKGDEST="$YPKGDEST" nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
 
 	if (( $? )); then
-		error $(eval_gettext 'Makepkg was unable to build $PKG package.')
+		error $(eval_gettext 'Makepkg was unable to build $PKG.')
 		return 1
 	fi
 	if (( EXPORT )); then
@@ -383,13 +383,13 @@ package_loop ()
 	while true; do
 		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
-		prompt "$(eval_gettext 'Continue the building of ''$PKG''? ')$(yes_no 1)"
+		prompt "$(eval_gettext 'Continue the building of ''$PKG'' ? ')$(yes_no 1)"
 		useragrees || { ret=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
 			0|2) break ;;
-			1)	prompt "$(eval_gettext 'Restart building ''$PKG''? ')$(yes_no 2)"
+			1)	prompt "$(eval_gettext 'Restart building ''$PKG'' ? ')$(yes_no 2)"
 				useragrees || { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute

@@ -13,6 +13,7 @@
 #       VERSION:  1.0
 #===============================================================================
 
+COLUMNS=$(tput cols)
 
 # set misc path
 initpath(){
@@ -33,10 +34,16 @@ loadlibrary(){
 	eval $1=1
 }
 
+# Fill line
+echo_fill ()
+{
+	printf -v_fill "%${COLUMNS}s" ""
+	echo -e "$1${_fill// /$2}$3"
+}
+
 # Wrap output
 echo_wrap ()
 {
-	(( COLUMNS )) || COLUMNS=$(tput cols)
 	echo -e "$*" | fold -s -w $COLUMNS
 }
 

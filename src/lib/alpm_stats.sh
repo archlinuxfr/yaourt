@@ -45,28 +45,29 @@ buildpackagelist()
 }
 
 showpackagestats(){
-	echo -e "${COL_BLUE} -------------------------------------------${NO_COLOR}"	
-	echo -e "${COL_BLUE}|$NO_COLOR    $(gettext 'Archlinux Core Dump')    $COL_GREEN($NAME $VERSION)$COL_BLUE  |${NO_COLOR}"	
-	echo -e "${COL_BLUE} -------------------------------------------${NO_COLOR}\n"	
-	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
+	echo_fill "$COL_BLUE" - "$NO_COLOR"
+	printf "${COL_BLUE}%${COLUMNS}s\r|${NO_COLOR}${COL_BOLD}%*s ${COL_GREEN}%s${NO_COLOR}\n" \
+	  "|" $((COLUMNS/2)) "Archlinux " "($NAME $VERSION)"
+	echo_fill "$COL_BLUE" - "$NO_COLOR"
+	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
 	echo -e "${COL_GREEN}$(gettext 'Total installed packages:')  ${COL_YELLOW}$pkgs_nb"	
 	echo -e "${COL_GREEN}$(gettext 'Explicitly installed packages:')  ${NO_COLOR}${COL_YELLOW}$pkgs_nb_e"	
 	echo -e "${COL_GREEN}$(gettext 'Packages installed as dependencies to run other packages:')  ${COL_YELLOW}$pkgs_nb_d"   
 	echo -e "${COL_GREEN}$(gettext 'Packages out of date:')  ${COL_YELLOW}$pkgs_nb_u"   
 	if (( pkgs_nb_dt )); then
 		echo -e "${COL_RED}$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')${NO_COLOR}"
-		echo -e "$NO_COLOR${orphans[*]}$NO_COLOR" | fold -s -w $(tput cols)
+		echo_wrap "${orphans[*]}"
 	fi
-	echo -e "${COL_GREEN}$(gettext 'Hold package:') (${#HoldPkg[@]}) ${NO_COLOR}${COL_YELLOW}${HoldPkg[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Package ignored:') (${#IgnorePkg[@]}) ${NO_COLOR}${COL_YELLOW}${IgnorePkg[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Group ignored:') (${#IgnoreGroup[@]}) ${NO_COLOR}${COL_YELLOW}${IgnoreGroup[@]}"
-	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
+	echo -e "${COL_GREEN}$(gettext 'Hold packages:') (${#HoldPkg[@]}) ${NO_COLOR}${COL_YELLOW}${HoldPkg[@]}"
+	echo -e "${COL_GREEN}$(gettext 'Ignored packages:') (${#IgnorePkg[@]}) ${NO_COLOR}${COL_YELLOW}${IgnorePkg[@]}"
+	echo -e "${COL_GREEN}$(gettext 'Ignored groups:') (${#IgnoreGroup[@]}) ${NO_COLOR}${COL_YELLOW}${IgnoreGroup[@]}"
+	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
 }
 
 showrepostats(){
 	local NBCOLMAX=4
 	local nbcol=1
-	echo -e "${COL_GREEN}$(gettext 'Number of configured repsitories:')  ${NO_COLOR}${COL_YELLOW}${#repositories[@]}"
+	echo -e "${COL_GREEN}$(gettext 'Number of configured repositories:')  ${NO_COLOR}${COL_YELLOW}${#repositories[@]}"
 	echo -e "${COL_GREEN}$(gettext 'Packages by repositories (ordered by pacman''s priority)')${NO_COLOR}:"
 	local reponumber=0 pkgs_l=0
 	for repo in ${repositories[@]}; do
@@ -80,7 +81,7 @@ showrepostats(){
 	echo -e " ${NO_COLOR}$(gettext 'others')*${COL_YELLOW}($((pkgs_nb-pkgs_l)))${NO_COLOR}"
 	echo
 	echo -e "${NO_COLOR}"*$(gettext 'others')" $(gettext 'are packages from local build or AUR Unsupported')${NO_COLOR}"
-	echo -e "\n${COL_BLUE}-----------------------------------------------${NO_COLOR}"	
+	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
 }
 
 showdiskusage()

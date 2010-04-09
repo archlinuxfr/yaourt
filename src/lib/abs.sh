@@ -276,8 +276,8 @@ sync_packages()
 	# Install from a list of packages
 	if [[ -f "${args[0]}" ]] && file -b "${args[0]}" | grep -qi text ; then
 		if (( ! SYSUPGRADE )); then 
-			title $(gettext 'Installing from a list of a packages')
-			msg $(gettext 'Installing from a list of a packages')"($_pkg_list)"
+			title $(gettext 'Installing from a package list')
+			msg $(gettext 'Installing from a package list')"($_pkg_list)"
 		fi
 		AURVOTE=0
 		args=( `grep -o '^[^#[:space:]]*' "${args[0]}"` ) 

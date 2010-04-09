@@ -155,8 +155,8 @@ supress()
 	(( ! ${#pacfiles[@]} )) && return
 	echo "${pacfiles[@]}" | fold -s -w $(tput cols)
 	echo
-	prompt "$(gettext 'Do you want to delete these files ?')" $(yes_no 2) "$(gettext '(A for All)')"
-	local answer=$(userinput "YNA" "N")
+	prompt "$(gettext 'Do you want to delete these files ?')" $(yes_no 2) "$(gettext '(S: no confirm)')"
+	local answer=$(userinput "YNS" "N")
 	[[ "$answer" = "N" ]] && return
 	local _opt=""
 	[[ "$answer" = "Y" ]] && _opt="-i"
@@ -174,17 +174,17 @@ manage_file ()
 		local _msg="$ext: ${_file%$ext}"
 		local _prompt="Action: [E]dit, [R]eplace, [S]uppress,"
 		local _prompt_action="ERSCA"
-		diff -abBu "${_file%$ext}" "$_file" &> /dev/null && _msg+=" **same file**"
+		diff -abBu "${_file%$ext}" "$_file" &> /dev/null && _msg+=" $(gettext '**same file**')"
 		if is_mergeable "${_file%$ext}" "$ext"; then
 			_prompt+=" [M]erge,"
 			_prompt_action+="M"
-			_msg+=" **automerge**"
+			_msg+=" $(gettext '**automerge**')"
 		fi
 		msg $_msg
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
 		# gettext "ERSCA"
-		# gettext "ERSMCA"
+		# gettext "ERSCAM"
 		prompt "$(gettext "$_prompt [C]ontinue (default), [A]bort ?")"
 		local answer=$(userinput "$_prompt_action" "C")
 		case "$answer" in

@@ -62,7 +62,7 @@ info_from_aur() {
 	aur_show_info "Optional Deps  " ${optdepends[@]}
 	aur_show_info "Conflicts With " ${conflicts[@]}
 	aur_show_info "Replaces       " ${replaces[@]}
-	aur_show_info "Architecture   " ${arch}
+	aur_show_info "Architecture   " ${arch[@]}
 	aur_show_info "Last update    " $(ls -l --time-style="long-iso" PKGBUILD | awk '{print $6" "$7}')
 	aur_show_info "Description    " $pkgdesc
 	echo
@@ -222,7 +222,7 @@ upgrade_from_aur(){
 		fi
 	fi
 
-	plain "\n---------------------------------------------"
+	echo; echo_fill "" - ""
 	plain $(gettext 'Packages that can be updated from AUR:')
 	echo "${aur_package[*]}"
 	prompt "$(gettext 'Do you want to update these packages ? ')$(yes_no 1)"
