@@ -383,7 +383,7 @@ package_loop ()
 	while true; do
 		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
-		prompt "$(eval_gettext 'Continue the building of ''$PKG'' ? ')$(yes_no 1)"
+		prompt "$(eval_gettext 'Continue building ''$PKG'' ? ')$(yes_no 1)"
 		useragrees || { ret=1; break; }
 		build_package
 		ret=$?
