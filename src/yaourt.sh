@@ -88,7 +88,10 @@ display_pkg ()
 	[[ ${group#-} ]] && pkgoutput+=" $COL_GROUP($group)$NO_COLOR"
 	[[ "$outofdate" = "1" ]]  && pkgoutput+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
 	[[ ${votes#-} ]] && pkgoutput+=" $COL_NUMBER($votes)${NO_COLOR}"
-	[[ ${pkgdesc} ]] && pkgoutput+="\n  $COL_ITALIQUE$pkgdesc$NO_COLOR"
+	if [[ ${pkgdesc} ]]; then
+		str_wrap 4 "$pkgdesc"
+		pkgoutput+="\n$COL_ITALIQUE$strwrap$NO_COLOR"
+	fi
 }
 
 manage_error(){

@@ -42,9 +42,26 @@ echo_fill ()
 }
 
 # Wrap output
-echo_wrap ()
+# usage: str_wrap ($indent, $str)
+# return: set $strwrap with wrapped content
+str_wrap ()
 {
-	echo -e "$*" | fold -s -w $COLUMNS
+	unset strwrap
+	local indent=${1:-0} ; shift
+	local str=($*) i=0 j=0 strout=""
+	for s in "${str[@]}"; do
+		strout+="$s "
+		(( i+=${#s}+1 ))
+		(( j++ ))
+		if (( (i%COLUMNS)+indent+${#str[$j]}>COLUMNS-1 )); then
+			printf -vout "%*s%s\n" $indent "" "$strout"
+			strwrap+="$out"
+			strout=""
+			i=0
+		fi
+	done
+	[[ $strout ]] && printf -vout "%*s%s" $indent "" "$strout"
+	strwrap+="$out"
 }
 
 # ask 

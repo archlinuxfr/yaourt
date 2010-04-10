@@ -56,7 +56,8 @@ showpackagestats(){
 	echo -e "${COL_GREEN}$(gettext 'Packages out of date:')  ${COL_YELLOW}$pkgs_nb_u"   
 	if (( pkgs_nb_dt )); then
 		echo -e "${COL_RED}$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')${NO_COLOR}"
-		echo_wrap "${orphans[*]}"
+		str_wrap 4 "${orphans[*]}"
+		echo -e "$strwrap"; echo
 	fi
 	echo -e "${COL_GREEN}$(gettext 'Hold packages:') (${#HoldPkg[@]}) ${NO_COLOR}${COL_YELLOW}${HoldPkg[@]}"
 	echo -e "${COL_GREEN}$(gettext 'Ignored packages:') (${#IgnorePkg[@]}) ${NO_COLOR}${COL_YELLOW}${IgnorePkg[@]}"
@@ -97,7 +98,8 @@ showdiskusage()
 		echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $i/$pkgs_nb" >&2
 		(( i++ ))
 		if (( i > $pkgs_nb )); then
-			echo -e "\r${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M                               "
+			echo -en "\r"; echo_fill "" " " ""
+			echo -e "${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M"
 			echo -e "${COL_GREEN}$(gettext 'Real space used by packages:') ${COL_YELLOW}$(($size_r/1048576))M"
 		fi
 	done
