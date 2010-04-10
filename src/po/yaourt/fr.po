@@ -529,11 +529,11 @@ msgstr "autres"
 
 #: ../../lib/alpm_stats.sh:82
 msgid "are packages from local build or AUR Unsupported"
-msgstr "sont des paquets compilés locallement ou provenant d'AUR"
+msgstr "sont des paquets compilés localement ou provenant d'AUR"
 
 #: ../../lib/alpm_stats.sh:91
 msgid "Theorical - Real space used by packages:"
-msgstr "Espace théorique - réel utilisé par les paquets :"
+msgstr "Taille théorique - réelle des paquets :"
 
 #: ../../lib/alpm_stats.sh:92
 msgid "progression:"

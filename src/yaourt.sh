@@ -224,7 +224,7 @@ search ()
 	local interactive=${1:-0}
 	local lite=${2:-0}
 	local i=1
-	local search_option="$PACMAN_Q_ARG"
+	local search_option="${PACMAN_Q_ARG[@]}"
 	local format
 	(( SEARCH )) && search_option+=" -s" && lite=0
 	(( lite )) && format="%1 %n %s %v - - - %g" || format="%1 %n %s %v %l %w %o %g  %d"
@@ -429,7 +429,7 @@ while [[ $1 ]]; do
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
-			program_arg 1 "-Su" "--noconfirm" "--force";;
+			program_arg 1 "--noconfirm" "--force";;
 		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg 4 $1; shift; TMPDIR="$1"; program_arg 4 $1;;
 		-V|version)         version; exit 0;;

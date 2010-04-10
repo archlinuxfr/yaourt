@@ -390,7 +390,7 @@ package_loop ()
 		case "$ret" in
 			0|2) break ;;
 			1)	prompt "$(eval_gettext 'Restart building ''$PKG'' ? ')$(yes_no 2)"
-				useragrees || { failed=1; break; }
+				useragrees "YN" "N" && { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
 		esac

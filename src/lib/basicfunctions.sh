@@ -53,15 +53,14 @@ str_wrap ()
 		strout+="$s "
 		(( i+=${#s}+1 ))
 		(( j++ ))
-		if (( (i%COLUMNS)+indent+${#str[$j]}>COLUMNS-1 )); then
+		if (( ${#str[$j]} )) && (( (i%COLUMNS)+indent+${#str[$j]}>COLUMNS-1 )); then
 			printf -vout "%*s%s\n" $indent "" "$strout"
 			strwrap+="$out"
 			strout=""
 			i=0
 		fi
 	done
-	[[ $strout ]] && printf -vout "%*s%s" $indent "" "$strout"
-	strwrap+="$out"
+	[[ $strout ]] && printf -vout "%*s%s" $indent "" "$strout" && strwrap+="$out"
 }
 
 # ask 
