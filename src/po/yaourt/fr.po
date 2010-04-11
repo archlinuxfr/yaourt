@@ -462,6 +462,26 @@ msgstr "Votre sauvegarde a été restaurée avec succès"
 msgid "(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)"
 msgstr "(l'ancienne base est sauvée dans $YAOURTTMPDIR/alpmdb$_pid)"
 
+#: ../../lib/alpm_query.sh:39
+#, sh-format
+msgid "Packages which depend on $name:"
+msgstr "Paquets dépendants de $name:"
+
+#: ../../lib/alpm_query.sh:40
+#, sh-format
+msgid "Packages which conflicts with $name:"
+msgstr "Paquets en conflit avec $name:"
+
+#: ../../lib/alpm_query.sh:41
+#, sh-format
+msgid "Packages which replace $name:"
+msgstr "Paquets remplaçant $name:"
+
+#: ../../lib/alpm_query.sh:40
+#, sh-format
+msgid "Packages which provide on $name:"
+msgstr "Paquets fournissant $name:"
+
 #: ../../lib/alpm_query.sh:49
 #, sh-format
 msgid "Searching wich package owns \"$arg\""

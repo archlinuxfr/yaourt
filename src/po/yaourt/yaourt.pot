@@ -457,6 +457,26 @@ msgstr ""
 msgid "(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)"
 msgstr ""
 
+#: ../../lib/alpm_query.sh:39
+#, sh-format
+msgid "Packages which depend on $name:"
+msgstr ""
+
+#: ../../lib/alpm_query.sh:40
+#, sh-format
+msgid "Packages which conflicts with $name:"
+msgstr ""
+
+#: ../../lib/alpm_query.sh:41
+#, sh-format
+msgid "Packages which replace $name:"
+msgstr ""
+
+#: ../../lib/alpm_query.sh:40
+#, sh-format
+msgid "Packages which provide on $name:"
+msgstr ""
+
 #: ../../lib/alpm_query.sh:49
 #, sh-format
 msgid "Searching wich package owns \"$arg\""
