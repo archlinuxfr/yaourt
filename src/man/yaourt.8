@@ -1,314 +1,286 @@
-.TH yaourt 8 "July 20, 2007"
-.LO 1
-.SH NAME
+'\" t
+.\"     Title: yaourt
+.\"    Author: [see the "Authors" section]
+.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
+.\"      Date: 2010-04-11
+.\"    Manual: Yaourt Manual
+.\"    Source: Yaourt 0.9.4
+.\"  Language: English
+.\"
+.TH "YAOURT" "8" "2010\-04\-11" "Yaourt 0\&.9\&.4" "Yaourt Manual"
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
 yaourt \- more than a frontend to pacman
-
-.SH SYNOPSIS
-.B yaourt
-<\fIoperation\fR> [\fIoptions\fR] [\fIpackages\fR]
-
-.SH EXAMPLES
-.TP
-.B yaourt \fIregexp\fP
-search for matching strings (with *) and allows to install it
-.TP
-.B yaourt -S \fIpackagename\fP
-download package from repository, and fallback on \fIAUR\fP
-.TP
-.B yaourt -Ss \fIregexp\fP
-search remote repositories and \fIAUR\fP for matching \fIregexp\fP
-.TP
-.B yaourt -Syu --aur
-upgrade system + packages from \fIAUR\fP
-.TP
-.B yaourt -Sybu --aur
-upgrade by building PKGBUILD + packages from \fIAUR\fP
-.TP
-.B yaourt -Syu --devel
-upgrade all cvs/svn/mercurial packages
-
-
-.SH DESCRIPTION
-.B yaourt 
-is a \fIpacman\fP frontend that adds a lot of features like:
-.TP
-- \fIAUR\fP support (search, easy install, vote etc..)
-.PP
-- interactiv search + install (with AUR Unsupported results integrated)
-.PP
-- building packages directly from ABS cvs sources
-.PP
-- search output colorised (skinable) + always show the repository where a package came from 
-.PP
-- handling config files .pacnew/.pacsave
-.PP
-- managing alpm database backup (save, restore, query database directly on backup file)
-.PP
-- alert user when new orphans are detected and check the database integrity with testdb after each operation
-.PP
-- downloading PKGBUILD directly from ABS cvs or AUR Unsupported
-.PP
-- statistics on installed packages
-.PP
-- etc...
-.TP
-
-.B yaourt 
-can be run as a non-privileged user (safest for 
-.IR AUR
-unsupported packages).
-.PP
-root password will be asked only when required.
-
-.SH OPERATIONS
-yaourt's options are the same as pacman's, so check the pacman man page for more info
-.PP
-options unique to \fByaourt\fP are marked by a \fI*\fP
-.TP 
-.B \-B, --backup \fI[/where/you/want]\fP
-Save pacman database in specified directory. If no directory is specified, yaourt use the current directory.
-.TP
-.B \-B, --backup \fI[file.tar.bz2]\fP
-Restore a previous backup of the pacman database. Yaourt analyse the backup first and shows the differences with the current alpm db. You have to type "yes" to replace the database by the old one. Actual database is automatically saved in /tmp/ folder.
-.TP
-.B \-C, --clean
-Perform cleaning operations on the package cache, databases and  configuration files
-.TP
-.B \-G, --getpkgbuild
-Retrieve PKGBUILD and local sources for the specified package name. Works with packages from official repositories and AUR Unsupported. PKGBUILD is saved in current directory.
-.TP
-.B \-Q, --query
-Query the package database. This operation allows you to view installed
-packages and their files, as well as meta-information about individual packages
-(dependencies, conflicts, install date, build date, size). This can be run
-against the local package database or can be used on individual .tar.gz
-packages. See \fBQUERY OPTIONS\fP below.
-.TP
-.B \-R, --remove
-Remove a package from the system. Files belonging to the specified package
-will be deleted, and the database will be updated. Most configuration files
-will be saved with a \fI.pacsave\fP extension unless the \fB--nosave\fP option
-is used. See \fBREMOVE OPTIONS\fP below.
-.TP
-.B \-S, --sync
-Synchronize packages. Packages are installed directly from the ftp servers,
-including all dependencies required to run the packages. For example,
-\fByaourt -S qt\fP will download and install \fBqt\fP and all the packages it
-depends on. You can also use \fByaourt -Su\fP to upgrade all packages that are
-out of date. See \fBSYNC OPTIONS\fP below.
-.TP
-.B \-U, --upgrade
-Upgrade or add a package to the system. Either a URL or file path can be
-specified. This is a "remove-then-add" process. See \fBHANDLING CONFIG
-FILES\fP for an explanation on how pacman takes care of config files.
-.TP
-.B \-h, --help 
-print this help
-.TP
-.B \-V, --version
-output program version
-
-.SH OPTIONS
-.TP
-.B \-\-noconfirm
-do not ask for any confirmation
-.TP
-.B \-\-tmp \fI/where/you/want\fP
-use given directory for temporary files
-.TP
-.B \-\-lightbg
-change colors for terminal with light background
-.TP
-.B \-\-nocolor
-don't use colors
-
-.SH INSTALL OPTIONS
-.TP
-.B \-S, --sync \fIpackage *\fP  
-download package from repository, and fallback on aur
-.TP
-.B \-b \fI*\fP
-builds the targets from source
-.TP 
-.B \-c, --clean
-remove old packages from cache directory (use -cc for all)
-.TP
-.B \-d, --nodeps
-skip dependency checks
-.TP
-.B \ --asdeps
-Install packages non-explicitly; in other works, fake their install reason to be installed as a dependency.
-.TP
-.B \ --ignorearch
-Ignore incomplete arch field in PKGBUILD.
-.TP
-.B \-f, --force
-force install, overwrite conflicting files
-.TP
-.B \-g, --groups
-view all members of a package group
-.TP
-.B \-i, --info \fI*\fP
-view package (or PKGBUILD from AUR Unsupported) information
-.TP
-.B \-l, --list \fI*\fP
-list all packages belonging to the specified repository 
-.TP
-.B \-p, --print-uris     
-print out download URIs for each package to be installed
-.TP
-.B \-\-export \fIdestdir *\fP 
-export packages and PKGBUILD for local repository 
-.TP
-.B \-\-ignore \fIpackage\fP       
-skip some package
-.TP
-.B \-U \fIfile\fP
-upgrade a package from <file>
-
-
-.SH UPGRADE OPTIONS
-.TP
-.B \-\-sysupgrade
-upgrade all packages that are out of date
-.TP
-.B \-\-aur \fI*\fP
-upgrade all aur packages
-.TP
-.B \-\-devel \fI*\fP
-upgrade all cvs/svn/mercurial/git packages
-.TP
-.B \-d, --nodeps
-skip dependency checks
-.TP
-.B \-f, --force
-force install, overwrite conflicting files 
-.TP
-.B \-\-ignore \fIpackage\fP
-skip some package
-.TP
-.B \-y, --refresh
-download fresh package databases from the server
-.PP
-Note: \fByaourt\fP always shows new orphans after package update
-
-
-.SH DOWNGRADE OPTIONS
-.TP
-.B \-u \-\-upgrades
-reinstall all packages which are marked as "newer than extra or core" in -Su output
-(this is specially for users who experience problems with [testing] and want to revert back to current)
-
-
-.SH QUERY OPTIONS
-.TP
-.B \-c, --changelog 
-View the ChangeLog of a package. (not every package will provide one)
-.TP
-.B  \-d, --deps
-list all packages installed as dependencies. This option can be combined with
-\fI\-t\fR
-for listing real orphans packages that were installed as dependencies but are no longer required by any installed package.
-(-Qdt is equivalent to the yaourt 0.8.1X -Qt option)
-.TP
-.B \-e, --explicit
-list all packages explicitly installed. This option can be combined with \fI\-t\fR
-to list \-top level packages\- those packages that were explicitly installed but are not requierd by any other package.
-.TP
-.B \-g, --groups
-view all members of a package group
-.TP
-.B \-i, --info
-view package information (use -ii for more)
-.TP
-.B \-l, --list
-list the contents of the queried package
-.TP
-.B \-o \fIstring *\fP   
-search for package that owns <file> or <command>
-.TP
-.B \-p, --file
-query the package file [package] instead of looking in the database
-.TP
-.B \-s, --search \fI*\fP
-search locally-installed packages for matching strings
-.TP
-.B \ --backupfile \fI*\fP
-Query a database previously saved in a tar.bz2 file (with yaourt --backup). 
-.PP
-Example: you want to reinstall archlinux with the same packages as your backup "pacman-2008-02-22_10h12.tar.bz2"
-.PP
-just run yaourt -Qet --backupfile pacman-2008-02-22_10h12.tar.bz2 > TopLevelPackages.txt
-.PP
-To reinstall later, just run yaourt -S TopLevelPackages.txt
-.TP
-.B \ --date
-list last installed packages, ordered by install date
-.TP
-
-.SH REMOTE QUERY OPTIONS
-.TP
-.B \-s \fIstring *\fP
-search remote repositories and AUR Unsupported for matching strings
-.TP
-.B \-\-depends \fIpackage *\fP
-list all packages which depends on specified \fIpackage\fP 
-.TP
-.B \-\-conflicts \fIpackage *\fP
-list all packages which conflicts with specified \fIpackage\fP
-.TP
-.B \-\-provides \fIpackage *\fP
-list all packages which provides specified \fIpackage\fP
-
-.SH CLEANING OPTIONS
-.TP
-.B \-c \fI*\fP
-delete all .pacsave/.pacnew files
-.TP
-.B\-d, --database \fI*\fP
-clean database (show obsolete repositories)
-
-.SH REMOVE OPTIONS 
-.TP
-.B \-c, --cascade
-remove packages and all packages that depend on them
-.TP 
-.B \-d, --nodeps
-skip dependency checks
-.TP
-.B \-k, --dbonly
-only remove database entry, do not remove files
-.TP
-.B \-n, --nosave
-remove configuration files as well
-.TP
-.B -s, --recursive 
-remove dependencies also (that won't break packages)
-.PP
-Note: \fByaourt\fP always shows new orphans after package removal
-
-.SH CONFIGURATION
-Runing yaourt as a non-privileged user requires some entries in sudoers file:
-  - \fIpacman\fP (remove package + refresh database + install AUR's package)
-  - \fIpacdiffviewer\fP (manage pacsave/pacnew files)
-
-.SH SEE ALSO
-.BR yaourtrc (5),
-.BR pacman (8),
-.BR makepkg (8)
-
-See the archlinux.fr website at <http://www.archlinux.fr> for more current information about yaourt.
-
-See the Arch Linux website at <http://www.archlinux.org> for more current
-information on the distribution and the \fBpacman\fP family of tools.
-
-
-.SH AUTHORS
-
-Julien MISCHKOWITZ <wain@archlinux.fr>
-
-.SH MANPAGE AUTHORS
+.SH "SYNOPSIS"
+.sp
+\fIyaourt\fR <operation> [options] [packages]
+.sp
+\fIyaourt\fR (search pattern|package file)
+.SH "DESCRIPTION"
+.sp
+Yaourt is a pacman frontend with a lot of features\&.
+.sp
+.if n \{\
+.RS 4
+.\}
 .nf
-wain  <wain@archlinux.fr>
-Leif- <leif.thande@archlinux.fr>
-.if
+AUR support (search, install, vote \&.\&.\&.)
+Interactive search + install
+Building packages directly from ABS sources
+Search output colorised
+Handling config files \&.pacnew/\&.pacsave
+Managing alpm database (save/restore/query database directly on backup file)
+Alert user when new orphans are detected
+Check the database integrity after each operation
+Yaourt can be run as a non\-privileged user (safest for AUR)
+root password will be required only when it is necessary\&.
+.fi
+.if n \{\
+.RE
+.\}
+.SH "OPERATIONS"
+.sp
+Since the majority of those options are same as pacman\(cqs ones (\fBpacman\fR(8)), this manual page will focus on the specific ones\&.
+.PP
+\fB\-B, \-\-backup\fR
+.RS 4
+Backup or restore alpm local database\&. See
+Backup Options\&.
+.RE
+.PP
+\fB\-C\fR
+.RS 4
+Manage \&.pac* files\&. See
+Clean Options\&.
+.RE
+.PP
+\fB\-G, \-\-getpkgbuild <package>\fR
+.RS 4
+Get PKGBUILD for ABS or AUR\&.
+.RE
+.PP
+\fB\-Q, \-\-query\fR
+.RS 4
+Query local database + Can sort packages by installation date, possibility to delete orphans\&. See
+Query Options\&.
+.RE
+.PP
+\fB\-R, \-\-remove\fR
+.RS 4
+Remove package(s) from the system\&.
+.RE
+.PP
+\fB\-U, \-\-upgrade\fR
+.RS 4
+Upgrade or add package(s) to the system\&.
+.RE
+.PP
+\fB\-S, \-\-sync\fR
+.RS 4
+Synchronize packages + AUR support, building from sources\&. See
+Sync Options\&.
+.RE
+.PP
+\fB\-\-stats\fR
+.RS 4
+Show some statistics about your packages\&.
+.RE
+.PP
+\fB\-V, \-\-version\fR
+.RS 4
+Display version and exit\&.
+.RE
+.PP
+\fB\-h, \-\-help\fR
+.RS 4
+Display a short help\&.
+.RE
+.SH "OPTIONS"
+.PP
+\fB\-\-export <dir>\fR
+.RS 4
+Export builded packages and their sources (\fBmakepkg\fR(8)) to <dir>\&.
+.RE
+.PP
+\fB\-f, \-\-force\fR
+.RS 4
+Force installation or updates\&.
+.RE
+.PP
+\fB\-\-lightbg\fR
+.RS 4
+Use light colors\&.
+.RE
+.PP
+\fB\-\-nocolor\fR
+.RS 4
+Don\(cqt colorize output\&.
+.RE
+.PP
+\fB\-\-noconfirm\fR
+.RS 4
+Don\(cqt ask for confirmation\&.
+.RE
+.PP
+\fB\-\-sucre\fR
+.RS 4
+Equivalent to
+\fI\-Sfyu \-\-aur \-\-devel\fR
+.RE
+.PP
+\fB\-\-textonly\fR
+.RS 4
+No escape characters, can be used with scripts\&.
+.RE
+.PP
+\fB\-\-tmp <dir>\fR
+.RS 4
+Use <dir> as temporary folder\&. default to
+\fI/tmp\fR
+.RE
+.SH "BACKUP OPTIONS"
+.PP
+\fIyaourt \-B\fR
+.RS 4
+Backup alpm local database in current dir\&.
+.RE
+.PP
+\fIyaourt \-B <dir>\fR
+.RS 4
+Backup alpm local database in <dir>/pacman\-date\&.tar\&.bz2
+.RE
+.PP
+\fIyaourt \-B <file>\fR
+.RS 4
+Restore alpm local database from <file>\&.
+.RE
+.SH "CLEAN OPTIONS"
+.sp
+Manage \&.pacnew, \&.pacsave and \&.pacorig files\&.
+.PP
+\fB\-c, \-\-clean\fR
+.RS 4
+Clean all these files\&.
+.RE
+.SH "QUERY OPTIONS"
+.PP
+\fB\-\-backupfile <file>\fR
+.RS 4
+Query <file> instead of alpm/aur\&.
+.RE
+.PP
+\fB\-\-date\fR
+.RS 4
+List queries result sorted by installation date\&.
+.RE
+.PP
+\fB\-d, \-\-deps\fR
+.RS 4
+Filter output to packages installed as dependencies\&.
+.RE
+.PP
+\fB\-t, \-\-unrequired\fR
+.RS 4
+Filter output to packages not required by any currently installed package\&. With
+\fI\-d\fR, yaourt list all real orphans and ask for deletion\&.
+.RE
+.SH "SYNC OPTIONS"
+.PP
+\fB\-\-aur\fR
+.RS 4
+Also search in AUR database\&. With
+\fI\-u\fR
+or
+\fI\-\-sysupgrade\fR, upgrade aur packages that are out of date\&.
+.RE
+.PP
+\fB\-\-conflicts\fR
+.RS 4
+Show packages that conflicts with one of the targets
+.RE
+.PP
+\fB\-b, \-\-build\fR
+.RS 4
+Build from sources, ABS for official packages, or AUR if packages is not found\&.
+.RE
+.PP
+\fB\-\-depends\fR
+.RS 4
+Show packages that depends on one of the targets
+.RE
+.PP
+\fB\-\-devel\fR
+.RS 4
+With
+\fI\-u\fR
+or
+\fI\-\-sysupgrade\fR, search an update for all devel packages\&.
+.RE
+.PP
+\fB\-i, \-\-info\fR
+.RS 4
+Display dependency and other information for a given package\&. This will search through all repositories and AUR database for a matching package\&.
+.RE
+.PP
+\fB\-\-provides\fR
+.RS 4
+Show packages that provides one of the targets\&.
+.RE
+.PP
+\fB\-\-replaces\fR
+.RS 4
+Show packages that replaces one of the targets\&.
+.RE
+.PP
+\fB\-u, \-\-sysupgrade\fR
+.RS 4
+Upgrade all packages that are out of date\&.
+.RE
+.SH "HANDLING CONFIG FILES"
+.sp
+With AUTOSAVEBACKUPFILE (\fByaourtrc\fR(5)), yaourt will search and save all files marked as backup\&. These files can be used later with \fIyaourt \-C\fR to automerge current configuration files with new ones\&.
+.SH "CONFIGURATION"
+.sp
+See \fByaourtrc\fR(5) for more details on configuring yaourt using the \fIyaourtrc\fR file\&.
+.SH "SEE ALSO"
+.sp
+\fByaourtrc\fR(5), \fBmakepkg\fR(8), \fBpacman\fR(8)
+.sp
+See the yaourt website at http://archlinux\&.fr/yaourt\-en/ for more info\&.
+.SH "BUGS"
+.sp
+http://bugs\&.archlinux\&.fr
+.SH "AUTHORS"
+.sp
+Current maintainers:
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Julien MISCHKOWITZ <wain@archlinux\&.fr>
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+Tuxce <tuxce\&.net@gmail\&.com>
+.RE
