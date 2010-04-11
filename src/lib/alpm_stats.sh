@@ -23,11 +23,11 @@ buildpackagelist()
 	#construct the list of packages	
 	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 f_upgrades=16 f_group=32 
 	IFS=$'\n'	
-	for line in $(package-query -SQf "%4 %s %n"); do
+	for line in $(package-query -Qf "%4 %s %n"); do
 		IFS=' '
 		local data=($line)
 		(( pkgs_nb++ ))
-		(( ${data[0]} & f_deps )) && (( pkgs_nb_d++ )) && (( ${data[0]} & f_unrequired )) && {
+		(( ${data[0]} & f_deps )) && (( ++pkgs_nb_d )) && (( ${data[0]} & f_unrequired )) && {
 			(( pkgs_nb_dt++ ))
 			orphans+=(${data[2]})
 		}
@@ -35,7 +35,7 @@ buildpackagelist()
 		(( ${data[0]} & f_upgrades )) && (( pkgs_nb_u++ ))
 		local reponumber=0
 		for repo in ${repositories[@]}; do
-			[[ "$repo" == "${data[1]}" ]] && (( repos_packages[$reponumber]++ )) && break
+			[[ "$repo" == "${data[1]}" ]] && (( ++repos_packages[$reponumber] )) && break
 			(( reponumber++ ))
 		done
 	done

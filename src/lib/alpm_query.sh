@@ -16,31 +16,42 @@
 # Query installed version
 pkgversion()
 {
-	package-query -Qif "%v" $1
+	package-query -Qif "%v" "$1"
 }
 
 # Test if $1 is installed or provided by an installed package
 isavailable()
 {
-	package-query -1Siq $1 || package-query -1Sq -query-type provides $1
+	package-query -1Siq "$1" || package-query -1Sq -query-type provides "$1"
 }
 
 # Return package repository
 sourcerepository()
 {
-	package-query -1SQif "%r" $1 
+	package-query -1SQif "%r" "$1" 
 }
 
 # search in sync db for packages wich depends on/conflicts whith/provides argument
 searchforpackageswhich(){
-	local action=$1
-	local name=$2
-	msg $(eval_gettext 'packages which '$action' on $name:')
+	local action="$1"
+	local name="$2"
+	case "$action" in
+		depends) _msg='Packages which depend on $name:';;
+		conflicts) _msg='Packages which conflict with $name:';;
+		replaces) _msg='Packages which replace $name:';;
+		provides) _msg='Packages which provide $name:';;
+	esac
+	msg $(eval_gettext "$_msg")
 	free_pkg
-	package-query -SQ --query-type $action $name -f "%s %n %v %l" |
+	if [[ "$MAJOR" = "query" ]]; then
+		_opt=(-Qf '%s %n %v -') 
+	else
+		_opt=(-Sf '%r %n %v %l')
+	fi
+	package-query "${_opt[@]}" --query-type $action "$name" |
 	while read repo pkgname pkgver lver; do
 		display_pkg
-		echo -e $pkgoutput
+		echo -e "$pkgoutput"
 	done
 }
 

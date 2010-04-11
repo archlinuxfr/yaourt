@@ -341,7 +341,7 @@ install_package()
 				for _file in "$YPKGDEST"/*; do
 					$PACMANBIN --query --list --file "$_file"
 					$PACMANBIN --query --info --file "$_file"
-					(( i++ )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
+					(( ++i )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
 				done
 				;;
 			C)	if type -p namcap &>/dev/null ; then

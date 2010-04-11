@@ -146,7 +146,7 @@ su_pacman ()
 {
 	# from nesl247
 	if [[ -f "$LOCKFILE" ]]; then
-		msg $(eval_gettext 'Pacman is currently in use, please wait.')
+		msg $(gettext 'Pacman is currently in use, please wait.')
 		while [[ -f "$LOCKFILE" ]]; do
 			sleep 3
 		done
@@ -205,7 +205,7 @@ show_new_orphans(){
 
 	# save original of backup files (pacnew/pacsave)
 	if [[ "$MAJOR" != "remove" ]] && (( AUTOSAVEBACKUPFILE )) && ! diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
-		msg $(eval_gettext 'Searching for original config files to save')
+		msg $(gettext 'Searching for original config files to save')
 		launch_with_su pacdiffviewer --backup
 	fi
 
@@ -254,16 +254,25 @@ search ()
 			}'
 	fi
 }	
-
+# Handle special query
+yaourt_query_type ()
+{
+	title $(gettext 'query packages')
+	loadlibrary alpm_query
+	for arg in ${args[@]}; do
+		searchforpackageswhich "$QUERYTYPE" "$arg"
+	done
+}
+	
 # Handle sync
 yaourt_sync ()
 {
 	if (( GROUP || LIST || SEARCH)); then
 		(( LIST )) && {
-			title $(eval_gettext 'listing all packages in repo(s)')
-			msg $(eval_gettext 'Listing all packages in repo(s)')
+			title $(gettext 'listing all packages in repo(s)')
+			msg $(gettext 'Listing all packages in repo(s)')
 		}
-		(( GROUP )) && title $(eval_gettext 'show groups')
+		(( GROUP )) && title $(gettext 'show groups')
 		search 0
 		cleanoutput
 		return
@@ -280,11 +289,7 @@ yaourt_sync ()
 	fi
 	[[ ! $args ]] && { (( ! REFRESH )) && pacman_cmd 1; }
 	if [[ $QUERYTYPE ]]; then
-		title $(eval_gettext 'query packages')
-		loadlibrary alpm_query
-		for arg in ${args[@]}; do
-			searchforpackageswhich "$QUERYTYPE" "$arg"
-		done
+		yaourt_query_type
 		return
 	elif (( INFO )); then
 		loadlibrary aur
@@ -328,6 +333,8 @@ yaourt_query ()
 		search_which_package_owns
 	elif (( DEPENDS && UNREQUIRED )); then
 		search_forgotten_orphans
+	elif [[ $QUERYTYPE ]]; then
+		yaourt_query_type
 	else
 		title $(gettext "Query installed packages")
 		msg $(gettext "Query installed packages")
@@ -369,7 +376,7 @@ while [[ $arg ]]; do
 		OPTS+=("$arg"); shift; arg=$1
 	fi
 done
-eval set -- "${OPTS[@]}"
+set -- "${OPTS[@]}"
 unset arg
 unset OPTS
 
@@ -404,7 +411,7 @@ while [[ $1 ]]; do
 			if [[ ${2:0:1} != "-" ]]; then
 				[ -d "$2" ] && savedir="$( readlink -e "$2")"
 				[ -f "$2" ] && backupfile="$( readlink -e "$2")"
-				[[ -z "$savedir" && -z "$backupfile" ]] && error $(eval_gettext 'wrong argument') && die 1
+				[[ -z "$savedir" && -z "$backupfile" ]] && error $(gettext 'wrong argument') && die 1
 				shift
 			fi
 			;;
@@ -505,7 +512,7 @@ case "$MAJOR" in
 		;;
 
 	getpkgbuild)
-		title "$(eval_gettext 'get PKGBUILD')"
+		title "$(gettext 'get PKGBUILD')"
 		loadlibrary aur
 		loadlibrary abs
 		# don't replace the file if exist
