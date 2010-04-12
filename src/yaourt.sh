@@ -352,7 +352,7 @@ YAOURTBIN=$0
 source /usr/lib/yaourt/basicfunctions.sh || exit 1 
 
 unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
-	AUR HOLDVER IGNORE IGNOREPKG IGNOREARCH CLEAN LIST INFO \
+	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN LIST INFO \
 	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
@@ -406,6 +406,8 @@ while [[ $1 ]]; do
 		-u|--upgrades)      (( UPGRADES ++ ));;
 		--holdver)          HOLDVER=1; program_arg 6 $1;;
 		-A|--ignorearch)    IGNOREARCH=1; program_arg 6 $1;;
+		--ignore)           program_arg 1 $1; shift; IGNOREPKG+=("$1"); program_arg 1 $1;;
+		--ignoregroup)      program_arg 1 $1; shift; IGNOREGRP+=("$1"); program_arg 1 $1;;
 		--aur)              AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup"; 
 			savedir=$(pwd)

@@ -26,7 +26,9 @@ list_repositories(){
 create_ignorepkg_list(){
 	PKGS_IGNORED=($(LC_ALL="C" pacman --debug 2>/dev/null |
 		grep "^debug: config: IgnorePkg: " | awk '{print $NF}'))
+	PKGS_IGNORED+=("${IGNOREPKG[@]}")
 	local ignored_grp=($(LC_ALL="C" pacman --debug 2>/dev/null |
 		grep "^debug: config: IgnoreGroup: " | awk '{print $NF}'))
+	ignored_grp+=("${IGNOREGRP[@]}")
 	[[ $ignored_grp ]] && PKGS_IGNORED+=($(pacman -Sgq ${ignored_grp[@]}))
 }

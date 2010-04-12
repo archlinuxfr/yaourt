@@ -79,7 +79,7 @@ sysupgrade()
 {
 	local pacjages packagesfromsource
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
-	$PACMANBIN -Sp $_arg $PACMAN_S_ARG $IGNOREPKG 1> "$YAOURTTMPDIR/sysupgrade" || return 1
+	$PACMANBIN -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
 	
 	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
 	packages=("${packages[@]##*/}")
@@ -100,7 +100,7 @@ sysupgrade()
 				prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
 				useragrees || continue
 				msg $(eval_gettext 'Upgrading $package first')
-				su_pacman -S $PACMAN_S_ARG --needed $package
+				su_pacman -S "${PACMAN_S_ARG[@]}" "$package"
 				die 0
 				;;
 			grub*|kernel*)
@@ -197,7 +197,7 @@ sysupgrade()
 
 	# ok let's do real sysupgrade
 	if [[ $packages ]]; then
-		su_pacman -S $PACMAN_S_ARG ${packages[@]}
+		su_pacman -S "${PACMAN_S_ARG[@]}" "${packages[@]}"
 	fi
 }
 
@@ -285,7 +285,7 @@ sync_packages()
 	[[ $repo_pkgs ]] && install_from_abs "${repo_pkgs[@]}"
 	for _pkg in "${aur_pkgs[@]}"; do install_from_aur "$_pkg"; done
 	# Install precompiled packages
-	[[ $binariespackages ]] && su_pacman -S $PACMAN_S_ARG "${binariespackages[@]}"
+	[[ $binariespackages ]] && su_pacman -S "${PACMAN_S_ARG[@]}" "${binariespackages[@]}"
 }
 
 # Search to upgrade devel package 
