@@ -61,10 +61,11 @@ version(){
 	exit
 }
 die(){
+	local ret=${1:-0}
 	# reset term title
 	tput sgr0
-	(( TERMINALTITLE )) && ! [[ $DISPLAY ]] &&  echo -n -e "\033]0;$TERM\007"
-	exit $1
+	(( TERMINALTITLE )) && [[ $DISPLAY ]] &&  echo -n -e "\033]0;$TERM\007"
+	exit $ret
 }
 
 # Unset package information
