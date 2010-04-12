@@ -63,6 +63,12 @@ str_wrap ()
 	[[ $strout ]] && printf -vout "%*s%s" $indent "" "$strout" && strwrap+="$out"
 }
 
+echo_wrap ()
+{
+	str_wrap "$1" "$2"
+	echo -e "$strwrap"
+}
+
 # ask 
 userinput() 
 {

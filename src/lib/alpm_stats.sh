@@ -56,8 +56,7 @@ showpackagestats(){
 	echo -e "${COL_GREEN}$(gettext 'Packages out of date:')  ${COL_YELLOW}$pkgs_nb_u"   
 	if (( pkgs_nb_dt )); then
 		echo -e "${COL_RED}$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')${NO_COLOR}"
-		str_wrap 4 "${orphans[*]}"
-		echo -e "$strwrap"; echo
+		echo_wrap 4 "${orphans[*]}"
 	fi
 	echo -e "${COL_GREEN}$(gettext 'Hold packages:') (${#HoldPkg[@]}) ${NO_COLOR}${COL_YELLOW}${HoldPkg[@]}"
 	echo -e "${COL_GREEN}$(gettext 'Ignored packages:') (${#IgnorePkg[@]}) ${NO_COLOR}${COL_YELLOW}${IgnorePkg[@]}"

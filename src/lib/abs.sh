@@ -135,30 +135,40 @@ sysupgrade()
 
 	# Classic sysupgrade
 	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
-	OLD_IFS="$IFS"
-	IFS=$'\n'
-	for _line in $(package-query -1Sxi \
-		-f "pkgname=%n;repo=%r;rversion=%v;lversion=%l;pkgdesc=\"%d\"" \
-		"${packages[@]}"); do
-		eval $_line
+	unset newrelease newversion newpkgs 
+	longestpkg=(0 0)
+	while read pkgname repo rversion lversion pkgdesc; do
+		printf -v pkgdesc "%q" "$pkgdesc"
 		if [[ "$lversion" != "-" ]]; then
+			pkgver=$lversion
 			lrel=${lversion#*-}
 			rrel=${rversion#*-}
 			lver=${lversion%-*}
 			rver=${rversion%-*}
 			if [[ "$rver" = "$lver" ]]; then
 				# new release not a new version
-				newrelease+=("$_line;rver=$rver;lrel=$lrel;rrel=$rrel")
+				newrelease+=("1 $repo $pkgname $pkgver $lrel $rrel $pkgdesc")
 			else
 		        # new version
-		        newversion+=("$_line")
+				newversion+=("2 $repo $pkgname $pkgver $rversion - $pkgdesc")
 			fi
+			(( ${#lversion} > longestpkg[1] )) && longestpkg[1]=${#lversion}
 		else
 			# new package (not installed at this time)
-			newpkgs+=("$_line")
+			pkgver=$rversion
+			local requiredbypkg=$(printf "%q" "$(gettext 'not found')")
+			local pkg_dep_on=( $(package-query -S --query-type depends -f "%n" "$pkgname") )
+			for pkg in ${pkg_dep_on[@]}; do
+				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
+			done
+			newpkgs+=("3 $repo $pkgname $pkgver $requiredpkg - $pkgdesc")
 		fi
-	done
-	IFS="$OLD_IFS"
+		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
+		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
+	done < <(package-query -1Sxif '%n %r %v %l %d' "${packages[@]}")
+	(( longestpkg[1]+=longestpkg[0] ))
+	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
+	unset newrelease newversion newpkgs
 
 	# Show result
 	showupgradepackage lite
@@ -196,78 +206,53 @@ showupgradepackage()
 {
 	# $1=full or $1=lite or $1=manual
 	if [[ "$1" = "manual" ]]; then
-		> $YAOURTTMPDIR/sysuplist
-		local separator="################################################"
-	fi
-
-	# show new release
-	if [[ $newrelease ]]; then
-		echo
-		if [[ "$1" = "manual" ]]; then
-			echo -e "$separator\n# $(gettext 'Package upgrade only (new release):')\n$separator" >> $YAOURTTMPDIR/sysuplist
-		else
-			msg $(eval_gettext 'Package upgrade only (new release):')
-		fi
-		for line in "${newrelease[@]}"; do
-			eval $line
-			if [[ "$1" = "manual" ]]; then
-				echo -e "\n$repo/$pkgname version $rver release $lrel -> $rrel"  >> $YAOURTTMPDIR/sysuplist
-				echo "#    $pkgdesc" >> $YAOURTTMPDIR/sysuplist
-			else
-				echo -e "${COL_REPOS[$repo]:-$COL_O_REPOS}$repo/$NO_COLOR$COL_BOLD$pkgname$NO_COLOR version $COL_GREEN$rver$NO_COLOR release $COL_BOLD$lrel$NO_COLOR -> $COL_RED$rrel$NO_COLOR"
-				[[ "$1" = "full" ]] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
-			fi
-		done
+		> "$YAOURTTMPDIR/sysuplist"
+		printf -vseparator "%79s" ""
+		separator=${separator// /#}
 	fi
 	
-	# show new version
-	if [[ $newversion ]]; then
-		echo
-		if [[ "$1" = "manual" ]]; then
-			echo -e "\n\n$separator\n# $(gettext 'Software upgrade (new version) :')\n$separator" >> $YAOURTTMPDIR/sysuplist
-		else
-			msg $(eval_gettext 'Software upgrade (new version) :')
-		fi
-		for line in "${newversion[@]}"; do
-			eval $line
+	local ex_uptype=0
+	for line in "${upgrade_details[@]}"; do
+		eval line=($line)
+		if (( exuptype != ${line[0]} )); then
+			case "${line[0]}" in
+				1) _msg="$(gettext 'Package upgrade only (new release):')";;
+				2) _msg="$(gettext 'Software upgrade (new version) :')";;
+				3) _msg="$(gettext 'New package :')";;
+			esac
+			exuptype=${line[0]}
 			if [[ "$1" = "manual" ]]; then
-				echo -e "\n$repo/$pkgname $lversion -> $rversion" >> $YAOURTTMPDIR/sysuplist
-				echo "#    $pkgdesc" >> $YAOURTTMPDIR/sysuplist
+				echo -e "\n$separator\n# $_msg\n$separator" >> "$YAOURTTMPDIR/sysuplist"
 			else
-				echo -e "${COL_REPOS[$repo]:-$COL_O_REPOS}$repo/$NO_COLOR$COL_BOLD$pkgname$NO_COLOR $COL_GREEN$lversion$NO_COLOR -> $COL_RED$rversion$NO_COLOR"
-				[[ "$1" = "full" ]] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
+				echo
+				msg "$_msg"
 			fi
-		done
-	fi
-
-	# show new package
-	if [[ $newpkgs ]]; then
-       	echo
-		if [[ "$1" = "manual" ]]; then
-			echo -e "\n$separator\n# $(eval_gettext 'New package :')\n$separator" >> $YAOURTTMPDIR/sysuplist
-		else
-			msg $(eval_gettext 'New package :')
 		fi
-		for line in "${newpkgs[@]}"; do
-			eval $line
-			### Searching for package which depends on 'new package'
-			local pkg_dep_on=( $(package-query -S --query-type depends -f "%n" "$pkgname") )
-			local requiredbypkg
-			for pkg in ${pkg_dep_on[@]}; do
-				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
-			done
-			[[ "$requiredbypkg" ]] || requiredbypkg=$(gettext 'not found')
-
-			if [[ "$1" = "manual" ]]; then
-				echo -e "\n$repo/$pkgname $rversion" >> $YAOURTTMPDIR/sysuplist
-				echo "#    $pkgdesc $(eval_gettext '(required by $requiredbypkg)')" >> $YAOURTTMPDIR/sysuplist
-			else
-				echo -e "${COL_REPOS[$repo]:-$COL_O_REPOS}$repo/$NO_COLOR$COL_BOLD$pkgname $COL_GREEN$rversion $COL_RED ($(gettext 'required by ')$requiredbypkg)$NO_COLOR"
-				[[ "$1" = "full" ]] && echo -e "  $COL_ITALIQUE$pkgdesc$NO_COLOR"
+		if [[ "$1" = "manual" ]]; then
+			echo -n "${line[1]}/${line[2]} # " >> "$YAOURTTMPDIR/sysuplist"
+			case "${line[0]}" in
+				1) echo "${line[3]} ${line[4]} -> ${line[5]}";;
+				2) echo "${line[3]} -> ${line[4]}";;
+				3) requiredpkg=${line[4]}
+				   echo "${line[3]} $(eval_gettext '(required by $requiredbypkg)')";;
+			esac >> "$YAOURTTMPDIR/sysuplist"
+			echo "# ${line[6]}" >> "$YAOURTTMPDIR/sysuplist"
+		else
+			case "${line[0]}" in
+				1) printf "%*s   $COL_BOLD${line[4]}$NO_COLOR -> $COL_RED${line[5]}$NO_COLOR" ${longestpkg[1]} "";;
+				2) printf "%*s   -> $COL_RED${line[4]}$NO_COLOR" ${longestpkg[1]} "";;
+				3) requiredpkg=${line[4]}
+					printf "%*s   $COL_RED$(eval_gettext '(required by $requiredbypkg)')" ${longestpkg[1]} "";;
+			esac
+			printf "\r%-*s  ${COL_GREEN}${line[3]}${NO_COLOR}" ${longestpkg[0]} ""
+			pkg_output ${line[1]} ${line[2]}
+			echo -e "\r$pkgoutput"
+			if [[ "$1" = "full" ]]; then
+				echo_wrap 4 "${line[6]}"
 			fi
-		done
-	fi
-}
+		fi
+	done
+}		
 
 # Sync packages
 sync_packages()

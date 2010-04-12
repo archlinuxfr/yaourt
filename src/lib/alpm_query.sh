@@ -50,7 +50,7 @@ searchforpackageswhich(){
 	fi
 	package-query "${_opt[@]}" --query-type $action "$name" |
 	while read repo pkgname pkgver lver; do
-		display_pkg
+		pkg_output "$repo" "$pkgname" "$pkgver" "$lver"
 		echo -e "$pkgoutput"
 	done
 }

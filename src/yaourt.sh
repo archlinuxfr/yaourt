@@ -74,23 +74,22 @@ free_pkg ()
 	unset repo pkgname pkgver lver group outofdate votes pkgdesc
 }
 
-# Display package in common way
-# Compute a string to print with package details -> $pkgoutput
-display_pkg ()
+# usage: pkg_output repo pkgname pkgver lver group outofdate votes pkgdesc
+pkg_output()
 {
-	unset pkgoutput
-	[[ ${repo#-} ]] && pkgoutput+="${COL_REPOS[$repo]:-$COL_O_REPOS}${repo}/$NO_COLOR"
-	pkgoutput+="${COL_BOLD}${pkgname} ${COL_GREEN}${pkgver}${NO_COLOR}"
-	if [[ ${lver#-} ]]; then
+	pkgoutput=""
+	[[ ${1#-} ]] && pkgoutput+="${COL_REPOS[$1]:-$COL_O_REPOS}$1/$NO_COLOR"
+	[[ $2 ]] && pkgoutput+="${COL_BOLD}$2 ${COL_GREEN}$3${NO_COLOR}"
+	if [[ ${4#-} ]]; then
 		pkgoutput+=" ${COL_INSTALLED}["
-		[[ "$lver" != "$pkgver" ]] && pkgoutput+="${COL_RED}$lver${COL_INSTALLED}"
+		[[ "$4" != "$3" ]] && pkgoutput+="${COL_RED}$4${COL_INSTALLED}"
 		pkgoutput+="$(gettext 'installed')]${NO_COLOR}"
 	fi
-	[[ ${group#-} ]] && pkgoutput+=" $COL_GROUP($group)$NO_COLOR"
-	[[ "$outofdate" = "1" ]]  && pkgoutput+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
-	[[ ${votes#-} ]] && pkgoutput+=" $COL_NUMBER($votes)${NO_COLOR}"
-	if [[ ${pkgdesc} ]]; then
-		str_wrap 4 "$pkgdesc"
+	[[ ${5#-} ]] && pkgoutput+=" $COL_GROUP($5)$NO_COLOR"
+	[[ "$6" = "1" ]] && pkgoutput+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
+	[[ ${7#-} ]] && pkgoutput+=" $COL_NUMBER($7)${NO_COLOR}"
+	if [[ $8 ]]; then
+		str_wrap 4 "$8"
 		pkgoutput+="\n$COL_ITALIQUE$strwrap$NO_COLOR"
 	fi
 }
@@ -235,13 +234,14 @@ search ()
 	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}"; return; }
 	(( DATE && ! interactive )) && > "$YAOURTTMPDIR/instdate"
 	local cmd=(package-query $search_option -f "$format")
-	free_pkg
+	pkgdesc=""
 	unset PKGSFOUND
 	while read _date pkgname repo pkgver lver votes outofdate group_desc; do 
 		group=${group_desc%%  *}
 		(( lite )) || pkgdesc=${group_desc#*  }
 		PKGSFOUND+=("${repo}/${pkgname}")
-		display_pkg
+		pkg_output "$repo" "$pkgname" "$pkgver" "$lver" \
+			"$group" "$outofdate" "$votes" "$pkgdesc"
 		if (( interactive )); then
 			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
 			(( i ++ ))
@@ -310,8 +310,8 @@ yaourt_sync ()
 	show_new_orphans
 	#show package which have not been installed
 	if [[ $error_package ]]; then
-		echo -e "${COL_YELLOW}" $(gettext 'Following packages have not been installed:')"${NO_COLOR}"
-		echo "${error_package[*]}"
+		warning "$(gettext 'Following packages have not been installed:')"
+		echo_wrap 4 "${error_package[*]}"
 	fi
 }
 
@@ -405,7 +405,7 @@ while [[ $1 ]]; do
 		-t|--unrequired)    UNREQUIRED=1; program_arg 8 $1;;
 		-u|--upgrades)      (( UPGRADES ++ ));;
 		--holdver)          HOLDVER=1; program_arg 6 $1;;
-		--ignorearch)       IGNOREARCH=1; program_arg 6 $1;;
+		-A|--ignorearch)    IGNOREARCH=1; program_arg 6 $1;;
 		--aur)              AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup"; 
 			savedir=$(pwd)
