@@ -319,7 +319,7 @@ msgstr "Continuer la mise à jour ?"
 
 #: ../../lib/abs.sh:171
 msgid "[V]iew package detail   [M]anualy select packages"
-msgstr "[V]oir les détails   Sélectionner les paquets [M]anuellement"
+msgstr "[V]oir les détails.   Sélectionner les paquets [M]anuellement."
 
 #: ../../lib/abs.sh:172
 msgid "YNVM"
@@ -852,6 +852,14 @@ msgid "Restart building $PKG ? "
 msgstr "Relancer la compilation de $PKG ? "
 
 #: ../../pacdiffviewer.sh:45
+msgid "Patch: "
+msgstr "Patch: "
+
+#: ../../pacdiffviewer.sh:45
+msgid "Apply ?"
+msgstr "Appliquer ?"
+
+#: ../../pacdiffviewer.sh:45
 msgid "Delete all *.pac* found"
 msgstr "Supprime tous les fichiers *.pac* trouvés"
 
@@ -864,8 +872,8 @@ msgid "Use with backup to not output messages"
 msgstr "Utiliser avec backup pour ne pas afficher de messages."
 
 #: ../../pacdiffviewer.sh:48
-msgid "Select files instead of listing them sequentially"
-msgstr "Selectionner les fichiers plutôt que les lister un par un."
+msgid "Sequential listing"
+msgstr "Traiter les fichiers séquentiellement."
 
 #: ../../pacdiffviewer.sh:49
 msgid "This help"
@@ -932,6 +940,10 @@ msgstr "ERSCAF"
 #: ../../pacdiffviewer.sh:197
 msgid "patch returned an error!"
 msgstr "patch a échoué!"
+
+#: ../../pacdiffviewer.sh:197
+msgid "Enter n° : "
+msgstr "Entrer un n° : "
 
 #: ../../pacdiffviewer.sh:248
 msgid "The following files have no original version."

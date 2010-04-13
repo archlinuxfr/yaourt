@@ -161,7 +161,7 @@ sysupgrade()
 			for pkg in ${pkg_dep_on[@]}; do
 				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
 			done
-			newpkgs+=("3 $repo $pkgname $pkgver $requiredpkg - $pkgdesc")
+			newpkgs+=("3 $repo $pkgname $pkgver $requiredbypkg - $pkgdesc")
 		fi
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
@@ -178,7 +178,7 @@ sysupgrade()
 		while true; do
 			echo
 			msg "$(gettext 'Continue upgrade ?') $(yes_no 1)"
-			prompt $(gettext '[V]iew package detail   [M]anualy select packages')
+			prompt "$(gettext '[V]iew package detail   [M]anualy select packages')"
 			local answer=$(userinput "YNVM" "Y")
 			case "$answer" in
 				V)	showupgradepackage full;;
@@ -233,7 +233,7 @@ showupgradepackage()
 			case "${line[0]}" in
 				1) echo "${line[3]} ${line[4]} -> ${line[5]}";;
 				2) echo "${line[3]} -> ${line[4]}";;
-				3) requiredpkg=${line[4]}
+				3) requiredbypkg=${line[4]}
 				   echo "${line[3]} $(eval_gettext '(required by $requiredbypkg)')";;
 			esac >> "$YAOURTTMPDIR/sysuplist"
 			echo "# ${line[6]}" >> "$YAOURTTMPDIR/sysuplist"
@@ -241,7 +241,7 @@ showupgradepackage()
 			case "${line[0]}" in
 				1) printf "%*s   $COL_BOLD${line[4]}$NO_COLOR -> $COL_RED${line[5]}$NO_COLOR" ${longestpkg[1]} "";;
 				2) printf "%*s   -> $COL_RED${line[4]}$NO_COLOR" ${longestpkg[1]} "";;
-				3) requiredpkg=${line[4]}
+				3) requiredbypkg=${line[4]}
 					printf "%*s   $COL_RED$(eval_gettext '(required by $requiredbypkg)')" ${longestpkg[1]} "";;
 			esac
 			printf "\r%-*s  ${COL_GREEN}${line[3]}${NO_COLOR}" ${longestpkg[0]} ""

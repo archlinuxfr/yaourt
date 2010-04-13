@@ -842,6 +842,13 @@ msgstr ""
 msgid "Restart building $PKG ? "
 msgstr ""
 
+#: ../../pacdiffviewer.sh:45
+msgid "Patch: "
+msgstr "Patch: "
+
+#: ../../pacdiffviewer.sh:45
+msgid "Apply ?"
+msgstr "Appliquer ?"
 
 #: ../../pacdiffviewer.sh:45
 msgid "Delete all *.pac* found"
@@ -856,7 +863,7 @@ msgid "Use with backup to not output messages"
 msgstr ""
 
 #: ../../pacdiffviewer.sh:48
-msgid "Select files instead of listing them sequentially"
+msgid "Sequential listing"
 msgstr ""
 
 #: ../../pacdiffviewer.sh:49
@@ -920,6 +927,10 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh:197
 msgid "patch returned an error!"
+msgstr ""
+
+#: ../../pacdiffviewer.sh:197
+msgid "Enter n° : "
 msgstr ""
 
 #: ../../pacdiffviewer.sh:248

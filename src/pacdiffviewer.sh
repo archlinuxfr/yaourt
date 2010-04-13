@@ -15,6 +15,8 @@
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
 #
+
+
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
@@ -45,7 +47,7 @@ usage()
 	echo -e "\t-c $(gettext 'Delete all *.pac* found')"
 	echo -e "\t-b $(gettext 'Save all packages backup files for a later merge')"
 	echo -e "\t-q $(gettext 'Use with backup to not output messages')"
-	echo -e "\t-s $(gettext 'Select files instead of listing them sequentially')"
+	echo -e "\t-s $(gettext 'Sequential listing')"
 	echo -e "\t-h $(gettext 'This help')"
 	echo -e "\t-v $(gettext 'Show version')"
 	exit 0
@@ -119,9 +121,9 @@ previous_version ()
 	local pkgver_prev=""
 	for _rep in $(ls -Ad *-*); do
 		[[ "$_rep" = "$pkgname-$pkgver" || ! -f "${_rep}${file}" ||
-			$(vercmp $pkgver ${_rep#*-}) -lt 0 ]] && continue
-		if [[ -z "$pkgver_prev" || $(vercmp $pkgver_prev ${_rep#*-}) -lt 0 ]]; then
-			pkgver_prev="${_rep#*-}"
+			$(vercmp $pkgver ${_rep#$pkgname-}) -lt 0 ]] && continue
+		if [[ -z "$pkgver_prev" || $(vercmp $pkgver_prev ${_rep#$pkgname-}) -lt 0 ]]; then
+			pkgver_prev="${_rep#$pkgname-}"
 		fi
 	done
 	popd &> /dev/null
@@ -193,7 +195,14 @@ manage_file ()
 			E) $DIFFEDITCMD "${_file%$ext}" "$_file" ;;
 			R) mv "$_file" "${_file%$ext}"; break;;
 			S) rm "$_file"; break ;;
-			M)	patch -sp0 "${_file%$ext}" -i "$tmp_file"
+			M)	echo 
+				msg "$(gettext 'Patch: ')"
+				cat "$tmp_file"
+				echo
+				msg "$(gettext 'Apply ?') $(yes_no 1)"
+				promptlight
+				useragrees || break;
+				patch -sp0 "${_file%$ext}" -i "$tmp_file"
 				(( $? )) && error "$(gettext 'patch returned an error!')"
 				break;;
 		esac
@@ -209,10 +218,16 @@ manage()
 	readarray -t pacfiles < <(stat -c "%Y %n" "$@" |
 		sort |
 		awk '{printf ("%s %s\n", strftime("%x %X",$1), substr ($0, length($1)+1))}')
-	if (( SELECT )); then
-		select _line in "${pacfiles[@]}"; do
-			[[ $_line ]] || break
-			manage_file "$ext" "$_line"
+	if (( ! SEQUENTIAL )); then
+		while true; do
+			echo
+			list_select "${pacfiles[@]}"
+			msg "$(gettext 'Enter n° : ')"
+			promptlight
+			read -en $NOENTER i
+			(( ! i )) && break
+			(( --i>=0 && i < ${#pacfiles[@]} )) || continue
+			manage_file "$ext" "${pacfiles[$i]}"
 		done
 	else
 		local i=0
@@ -230,7 +245,7 @@ action=""
 while [[ $1 ]]; do
 	case "$1" in 
 		-q) QUIET=1;;
-		-s) SELECT=1;;
+		-s) SEQUENTIAL=1;;
 		--backup|-b) action=backup;;
 		-c)	action=clean;; 
 		-*) usage $1;;

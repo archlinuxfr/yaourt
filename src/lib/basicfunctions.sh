@@ -69,6 +69,16 @@ echo_wrap ()
 	echo -e "$strwrap"
 }
 
+list_select ()
+{
+	local i=0
+	for _line in "$@"; do
+		(( i++ ))
+		echo -e  "$COL_NUMBER$i$NO_COLOR $_line"
+	done
+	echo
+}
+
 # ask 
 userinput() 
 {
