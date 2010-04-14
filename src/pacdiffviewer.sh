@@ -193,8 +193,8 @@ manage_file ()
 			A) break 2;;	# break manage() loop
 			C) break;;
 			E) $DIFFEDITCMD "${_file%$ext}" "$_file" ;;
-			R) mv "$_file" "${_file%$ext}"; break;;
-			S) rm "$_file"; break ;;
+			R) mv "$_file" "${_file%$ext}"; return 1;;
+			S) rm "$_file"; return 1 ;;
 			M)	echo 
 				msg "$(gettext 'Patch: ')"
 				cat "$tmp_file"
@@ -228,6 +228,11 @@ manage()
 			(( ! i )) && break
 			(( --i>=0 && i < ${#pacfiles[@]} )) || continue
 			manage_file "$ext" "${pacfiles[$i]}"
+			if (( $? )); then
+				unset pacfiles[$i]
+				pacfiles=("${pacfiles[@]}")
+				(( ${#pacfiles[@]} )) || break;
+			fi
 		done
 	else
 		local i=0
