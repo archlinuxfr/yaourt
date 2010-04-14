@@ -1,0 +1,952 @@
+# Vincenzo Reale <smart2128@baslug.org>, 2009, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: yaourt\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-04-09 15:19+0200\n"
+"PO-Revision-Date: 2010-04-14 20:16+0200\n"
+"Last-Translator: Vincenzo Reale <smart2128@baslug.org>\n"
+"Language-Team: Italian <kde-i18n-it@kde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italiano\n"
+"X-Poedit-Country: ITALIA\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../../yaourt.sh:43
+msgid "Usage: yaourt <operation> [...]"
+msgstr "Utilizzo: yaourt <operazione> [...]"
+
+#: ../../yaourt.sh:44
+msgid "operations:"
+msgstr "operazioni:"
+
+#: ../../yaourt.sh:45
+msgid "yaourt (search pattern|package file)"
+msgstr "yaourt (modello di ricerca|pacchetto)"
+
+#: ../../yaourt.sh:46
+msgid "yaourt {-h --help}"
+msgstr "yaourt {-h --help}"
+
+#: ../../yaourt.sh:47
+msgid "yaourt {-V --version}"
+msgstr "yaourt {-V --version}"
+
+#: ../../yaourt.sh:48
+msgid "yaourt {-Q --query}   [options] [package(s)]"
+msgstr "yaourt {-Q --query}   [opzioni] [pacchetto(i)]"
+
+#: ../../yaourt.sh:49
+msgid "yaourt {-R --remove}  [options] [package(s)]"
+msgstr "yaourt {-R --remove}  [opzioni] [pacchetto(i)]"
+
+#: ../../yaourt.sh:50
+msgid "yaourt {-S --sync}    [options] [package(s)]"
+msgstr "yaourt {-S --sync}    [opzioni] [pacchetto(i)]"
+
+#: ../../yaourt.sh:51
+msgid "yaourt {-U --upgrade} [options] [package(s)]"
+msgstr "yaourt {-U --upgrade} [opzioni] [pacchetto(i)]"
+
+#: ../../yaourt.sh:52
+msgid "yaourt {-C --clean}   [options]"
+msgstr "yaourt {-C --clean}   [opzioni]"
+
+#: ../../yaourt.sh:53
+msgid "yaourt {-B --backup}  (save directory|restore file)"
+msgstr ""
+
+#: ../../yaourt.sh:54
+msgid "yaourt {-G --getpkgbuild} package"
+msgstr "yaourt {-G --getpkgbuild} pacchetto"
+
+#: ../../yaourt.sh:55
+msgid "yaourt {--stats}"
+msgstr "yaourt {--stats}"
+
+#: ../../yaourt.sh:59
+#, sh-format
+msgid "yaourt $VERSION is a pacman frontend with AUR support and more"
+msgstr "yaourt $VERSION è un'interfaccia per pacman con supporto ad AUR ed altro"
+
+#: ../../yaourt.sh:60
+msgid "homepage: http://archlinux.fr/yaourt-en"
+msgstr "homepage: http://archlinux.fr/yaourt"
+
+#: ../../yaourt.sh:86
+msgid "installed"
+msgstr "installato"
+
+#: ../../yaourt.sh:89
+msgid "Out of Date"
+msgstr "Non aggiornato"
+
+#: ../../yaourt.sh:117
+#, sh-format
+msgid ""
+"You are not allowed to launch $command with sudo\\n"
+"Please enter root password"
+msgstr ""
+"Non hai i permessi per lanciare $command con sudo\\n"
+"Inserisci la password di root"
+
+#: ../../yaourt.sh:146
+#, sh-format
+msgid "Pacman is currently in use, please wait."
+msgstr "Pacman è attualmente in uso, attendere."
+
+#: ../../yaourt.sh:196
+msgid "Packages that were installed as dependencies but are no longer required by any installed package:"
+msgstr "Pacchetti che sono stati installati come dipendenze, ma che non sono più richiesti da alcun pacchetto installato:"
+
+#: ../../yaourt.sh:205
+#, sh-format
+msgid "Searching for original config files to save"
+msgstr "Ricerca di file di configurazione originali da salvare"
+
+#: ../../yaourt.sh:260
+#, sh-format
+msgid "listing all packages in repo(s)"
+msgstr "elenco di tutti i pacchetti nei depositi"
+
+#: ../../yaourt.sh:261
+#, sh-format
+msgid "Listing all packages in repo(s)"
+msgstr "Elenco di tutti i pacchetti nei depositi"
+
+#: ../../yaourt.sh:263
+#, sh-format
+msgid "show groups"
+msgstr "mostra i gruppi"
+
+#: ../../yaourt.sh:280
+#, sh-format
+msgid "query packages"
+msgstr "interroga i pacchetti"
+
+#: ../../yaourt.sh:289
+#, sh-format
+msgid "Informations for $arg"
+msgstr "Informazioni per $arg"
+
+#: ../../yaourt.sh:304
+msgid "Following packages have not been installed:"
+msgstr "I seguenti pacchetti non sono stati installati:"
+
+#: ../../yaourt.sh:317
+#: ../../yaourt.sh:318
+msgid "Query backup database"
+msgstr "Interrogazione del backup del database"
+
+#: ../../yaourt.sh:329
+#: ../../yaourt.sh:330
+msgid "Query installed packages"
+msgstr "Interrogazione dei pacchetti installati"
+
+#: ../../yaourt.sh:404
+#, sh-format
+msgid "wrong argument"
+msgstr "argomento non valido"
+
+#: ../../yaourt.sh:455
+#, sh-format
+msgid "Unable to read $BACKUPFILE file"
+msgstr "Impossibile leggere il file $BACKUPFILE"
+
+#: ../../yaourt.sh:459
+#: ../../yaourt.sh:465
+#: ../../lib/basicfunctions.sh:175
+msgid "is not a directory"
+msgstr "non è una cartella"
+
+#: ../../yaourt.sh:460
+#: ../../yaourt.sh:466
+#: ../../lib/basicfunctions.sh:176
+msgid "is not writable"
+msgstr "non è scrivibile"
+
+#: ../../yaourt.sh:475
+msgid "synchronizing package databases"
+msgstr "sincronizzazione del database dei pacchetti"
+
+#: ../../yaourt.sh:505
+#, sh-format
+msgid "get PKGBUILD"
+msgstr "recupero PKGBUILD"
+
+#: ../../yaourt.sh:510
+msgid "PKGBUILD file already exist. Replace ? "
+msgstr "Il file PKGBUILD esiste già. Sostituirlo? "
+
+#: ../../yaourt.sh:529
+msgid "Enter n° (separated by blanks, or a range) of packages to be installed"
+msgstr "Inserisci il numero (separato da spazi, o un intervallo) dei pacchetti da installare"
+
+#: ../../lib/abs.sh:49
+#, sh-format
+msgid "Building $PKG from sources."
+msgstr "Compilazione di $PKG dai sorgenti."
+
+#: ../../lib/abs.sh:50
+#, sh-format
+msgid "Install $PKG from sources"
+msgstr "Installazione di $PKG dai sorgenti"
+
+#: ../../lib/abs.sh:54
+msgid "Retrieving PKGBUILD and local sources..."
+msgstr "Recupero PKGBUILD e sorgenti locali..."
+
+#: ../../lib/abs.sh:57
+#, sh-format
+msgid "Unable to delete directory $wdir. Please remove it using root privileges."
+msgstr "Impossibile eliminare la cartella $wdir. Rimuovila con privilegi di root."
+
+#: ../../lib/abs.sh:54
+msgid "Repository     "
+msgstr "Deposito     "
+
+#: ../../lib/abs.sh:55
+msgid "Name           "
+msgstr "Nome           "
+
+#: ../../lib/abs.sh:56
+msgid "Version        "
+msgstr "Versione        "
+
+#: ../../lib/abs.sh:57
+msgid "URL            "
+msgstr "URL            "
+
+#: ../../lib/abs.sh:58
+msgid "Licenses       "
+msgstr "Licenze       "
+
+#: ../../lib/abs.sh:59
+msgid "Groups         "
+msgstr "Gruppi         "
+
+#: ../../lib/abs.sh:60
+msgid "Provides       "
+msgstr "Fornisce       "
+
+#: ../../lib/abs.sh:61
+msgid "Depends On     "
+msgstr "Dipende da     "
+
+#: ../../lib/abs.sh:62
+msgid "Optional Deps  "
+msgstr "Dip. opzionali  "
+
+#: ../../lib/abs.sh:63
+msgid "Conflicts With "
+msgstr "In conflitto con "
+
+#: ../../lib/abs.sh:64
+msgid "Replaces       "
+msgstr "Sostituisce     "
+
+#: ../../lib/abs.sh:65
+msgid "Architecture   "
+msgstr "Architettura   "
+
+#: ../../lib/abs.sh:66
+msgid "Last update    "
+msgstr "Ultimo aggiorn.  "
+
+#: ../../lib/abs.sh:67
+msgid "Description    "
+msgstr "Descrizione    "
+
+#: ../../lib/abs.sh:59
+#: ../../lib/aur.sh:147
+#, sh-format
+msgid "Unable to create directory $wdir."
+msgstr "Impossibile creare la cartella $wdir."
+
+#: ../../lib/abs.sh:99
+#: ../../lib/abs.sh:108
+#: ../../lib/aur.sh:215
+#, sh-format
+msgid "New version of $package detected"
+msgstr "È stata rilevata una nuova versione di $package"
+
+#: ../../lib/abs.sh:100
+#: ../../lib/aur.sh:216
+#, fuzzy, sh-format
+msgid "Do you want to update $package first ? "
+msgstr "Vuoi prima aggiornare $package? "
+
+#: ../../lib/abs.sh:102
+#: ../../lib/aur.sh:219
+#, fuzzy, sh-format
+msgid "Upgrading $package first"
+msgstr "Aggiornamento per prima cosa di $package"
+
+#: ../../lib/abs.sh:109
+msgid "Please mount your boot partition first then press ENTER to continue"
+msgstr "Monta la tua partizione di boot poi premi INVIO per continuare"
+
+#: ../../lib/abs.sh:120
+#, fuzzy
+msgid "Source Targets:"
+msgstr "Sorgenti: $_pkgs"
+
+#: ../../lib/abs.sh:121
+msgid "Proceed with upgrade? "
+msgstr "Procedere con l'aggiornamento? "
+
+#: ../../lib/abs.sh:127
+#, sh-format
+msgid "Packages to build from sources:"
+msgstr "Pacchetti da compilare da sorgenti:"
+
+#: ../../lib/abs.sh:130
+#, sh-format
+msgid "Proceed with compilation and installation ? "
+msgstr "Procedere con la compilazione e l'installazione?"
+
+#: ../../lib/abs.sh:170
+msgid "Continue upgrade ?"
+msgstr "Continuare l'aggiornamento?"
+
+#: ../../lib/abs.sh:171
+msgid "[V]iew package detail   [M]anualy select packages"
+msgstr "[V]edi i dettagli dei pacchetti   Seleziona [M]anualmente i pacchetti"
+
+#: ../../lib/abs.sh:172
+msgid "YNVM"
+msgstr "SNVC"
+
+#: ../../lib/abs.sh:207
+#: ../../lib/abs.sh:209
+#, sh-format
+msgid "Package upgrade only (new release):"
+msgstr "Solo aggiornamenti dei pacchetti (nuova release):"
+
+#: ../../lib/abs.sh:227
+#: ../../lib/abs.sh:229
+#, sh-format
+msgid "Software upgrade (new version) :"
+msgstr "Aggiornamenti del software (nuova versione):"
+
+#: ../../lib/abs.sh:247
+#: ../../lib/abs.sh:249
+#, sh-format
+msgid "New package :"
+msgstr "Nuovo pacchetto:"
+
+#: ../../lib/abs.sh:259
+msgid "not found"
+msgstr "non trovato"
+
+#: ../../lib/abs.sh:263
+#, sh-format
+msgid "(required by $requiredbypkg)"
+msgstr "(richiesto da $requiredbypkg)"
+
+#: ../../lib/abs.sh:265
+msgid "required by "
+msgstr "richiesto da "
+
+#: ../../lib/abs.sh:279
+#: ../../lib/abs.sh:280
+msgid "Installing from a package list"
+msgstr "Installazione da un elenco di pacchetti"
+
+#: ../../lib/abs.sh:309
+#: ../../lib/abs.sh:310
+#, sh-format
+msgid "upgrading SVN/CVS/HG/GIT package"
+msgstr "aggiornamento di un pacchetto SVN/CVS/HG/GIT"
+
+#: ../../lib/abs.sh:316
+msgid "(ignored from pacman.conf)"
+msgstr "(ignorati come specificato in pacman.conf)"
+
+#: ../../lib/abs.sh:323
+msgid "SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:"
+msgstr "pacchetti SVN/CVS/HG/GIT/BZR che possono essere aggiornati tramite ABS o AUR:"
+
+#: ../../lib/abs.sh:325
+#: ../../lib/aur.sh:228
+#, sh-format
+msgid "Do you want to update these packages ? "
+msgstr "Vuoi aggiornare questi pacchetti? "
+
+#: ../../lib/alpm_backup.sh:19
+#: ../../lib/alpm_backup.sh:20
+#, sh-format
+msgid "Saving pacman database in $savedir"
+msgstr "Salvataggio del database di pacman in $savedir"
+
+#: ../../lib/alpm_backup.sh:23
+#, sh-format
+msgid "$savedir is not a writable directory"
+msgstr "$savedir non è una cartella scrivibile"
+
+#: ../../lib/alpm_backup.sh:30
+#, sh-format
+msgid "Pacman database successfully saved in \"$savefile\""
+msgstr "Il database di Pacman è stato salvato correttamente in \"$savefile\""
+
+#: ../../lib/alpm_backup.sh:37
+#: ../../lib/alpm_backup.sh:38
+msgid "Analysing backup file"
+msgstr "Analisi del file di backup"
+
+#: ../../lib/alpm_backup.sh:45
+#, sh-format
+msgid "$_file is not a valid alpm database backup"
+msgstr "$_file non è un backup del database alpm valido"
+
+#: ../../lib/alpm_backup.sh:57
+msgid "New packages installed since backup:"
+msgstr "Nuovi pacchetti installati dopo il backup:"
+
+#: ../../lib/alpm_backup.sh:60
+msgid "Packages removed or ugpraded since backup:"
+msgstr "Pacchetti rimossi o aggiornati dopo il backup:"
+
+#: ../../lib/alpm_backup.sh:63
+#: ../../lib/alpm_backup.sh:65
+msgid "Warning! Do you want to restore this backup ?"
+msgstr "Attenzione! Vuoi davvero ripristinare questo backup?"
+
+#: ../../lib/alpm_backup.sh:66
+#, sh-format
+msgid ""
+"\\n"
+"(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)"
+msgstr ""
+"\\n"
+"(il database locale sarà salvato in $YAOURTTMPDIR/alpmdb$_pid/)"
+
+#: ../../lib/alpm_backup.sh:67
+msgid "If you want to restore this backup, type \"yes\""
+msgstr "Se vuoi ripristinare questo backup, digita \"sì\""
+
+#: ../../lib/alpm_backup.sh:69
+msgid "yes"
+msgstr "sì"
+
+#: ../../lib/alpm_backup.sh:70
+msgid "Deleting pacman DB"
+msgstr "Eliminazione del database di pacman"
+
+#: ../../lib/alpm_backup.sh:72
+msgid "Copying backup"
+msgstr "Copia del backup in corso"
+
+#: ../../lib/alpm_backup.sh:74
+msgid "Testing the new database"
+msgstr "Prova del nuovo database"
+
+#: ../../lib/alpm_backup.sh:77
+msgid "Your backup is not successfully restored"
+msgstr "Il backup non è stato ripristinato "
+
+#: ../../lib/alpm_backup.sh:79
+msgid "Your backup has been successfully restored"
+msgstr "Il backup è stato ripristinato correttamente"
+
+#: ../../lib/alpm_backup.sh:82
+#, sh-format
+msgid "(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)"
+msgstr "(il vecchio database è stato salvato in $YAOURTTMPDIR/alpmdb$_pid)"
+
+#: ../../lib/alpm_query.sh:39
+#, sh-format
+msgid "Packages which depend on $name:"
+msgstr "Pacchetti che dipendono da $name:"
+
+#: ../../lib/alpm_query.sh:40
+#, sh-format
+msgid "Packages which conflicts with $name:"
+msgstr "Pacchetti che sono in conflitto con $name:"
+
+#: ../../lib/alpm_query.sh:41
+#, sh-format
+msgid "Packages which replace $name:"
+msgstr "Pacchetti che sostituiscono $name:"
+
+#: ../../lib/alpm_query.sh:40
+#, sh-format
+msgid "Packages which provide on $name:"
+msgstr "Pacchetti che forniscono $name:"
+
+#: ../../lib/alpm_query.sh:49
+#, sh-format
+msgid "Searching wich package owns \"$arg\""
+msgstr "Ricerca del pacchetto che contiene \"$arg\""
+
+#: ../../lib/alpm_query.sh:58
+msgid "Packages installed as dependencies but are no longer required by any installed package"
+msgstr "Pacchetti installati come dipendenza, ma non più richiesti da alcun pacchetto installato"
+
+#: ../../lib/alpm_query.sh:61
+#, sh-format
+msgid "Do you want to remove these packages (with -Rcs options) ? "
+msgstr "Vuoi rimuovere questi pacchetti (con l'opzione -Rcs)? "
+
+#: ../../lib/alpm_query.sh:62
+#: ../../lib/pkgbuild.sh:171
+msgid "YN"
+msgstr "SN"
+
+#: ../../lib/alpm_stats.sh:52
+msgid "Total installed packages:"
+msgstr "Totale dei pacchetti installati:"
+
+#: ../../lib/alpm_stats.sh:53
+msgid "Explicitly installed packages:"
+msgstr "Pacchetti installati esplicitamente:"
+
+#: ../../lib/alpm_stats.sh:54
+msgid "Packages installed as dependencies to run other packages:"
+msgstr "Pacchetti installati come dipendenze di altri pacchetti"
+
+#: ../../lib/alpm_stats.sh:55
+msgid "Packages out of date:"
+msgstr "Pacchetti non aggiornati:"
+
+#: ../../lib/alpm_stats.sh:57
+#, fuzzy, sh-format
+msgid "Where $pkgs_nb_dt packages seems no more used by any package:"
+msgstr "Dove $_orphans pacchetti sembrano non essere più usati da nessun altro pacchetto:"
+
+#: ../../lib/alpm_stats.sh:60
+msgid "Hold packages:"
+msgstr ""
+
+#: ../../lib/alpm_stats.sh:61
+msgid "Ignored packages:"
+msgstr "Pacchetti ignorati:"
+
+#: ../../lib/alpm_stats.sh:62
+msgid "Ignored groups:"
+msgstr "Gruppi ignorati:"
+
+#: ../../lib/alpm_stats.sh:69
+msgid "Number of configured repositories:"
+msgstr "Numero di depositi configurati:"
+
+#: ../../lib/alpm_stats.sh:70
+msgid "Packages by repositories (ordered by pacmans priority)"
+msgstr "Pacchetti per deposito (ordinati secondo la priorità di pacman)"
+
+#: ../../lib/alpm_stats.sh:80
+#: ../../lib/alpm_stats.sh:82
+msgid "others"
+msgstr "altri"
+
+#: ../../lib/alpm_stats.sh:82
+#, fuzzy
+msgid "are packages from local build or AUR Unsupported"
+msgstr ""
+"sono pacchetti non aggiornati o installati localmente \n"
+"o compilati da AUR"
+
+#: ../../lib/alpm_stats.sh:91
+msgid "Theorical - Real space used by packages:"
+msgstr "Spazio teorico - effettivo occupato dai pacchetti:"
+
+#: ../../lib/alpm_stats.sh:92
+msgid "progression:"
+msgstr "avanzamento:"
+
+#: ../../lib/alpm_stats.sh:99
+msgid "Theorical space used by packages:"
+msgstr "Spazio teorico occupato dai pacchetti:"
+
+#: ../../lib/alpm_stats.sh:100
+msgid "Real space used by packages:"
+msgstr "Spazio effettivo occupato dai pacchetti:"
+
+#: ../../lib/alpm_stats.sh:106
+msgid "Space used by pkg downloaded in cache (cachedir):"
+msgstr "Spazio occupato dai pacchetti scaricati nella cache (cachedir):"
+
+#: ../../lib/alpm_stats.sh:108
+msgid "Space used by src downloaded in cache:"
+msgstr "Spazio occupato dai sorgenti scaricati nella cache:"
+
+#: ../../lib/aur.sh:27
+#, sh-format
+msgid "$pkg not found in AUR."
+msgstr "$pkg non trovato in AUR."
+
+#: ../../lib/aur.sh:120
+msgid ""
+"If you like this package, please install aurvote\\n"
+"and vote for its inclusion/keeping in [community]"
+msgstr ""
+"Se ti piace questo pacchetto, installa aurvote\\n"
+"e vota la sua inclusione/mantenimento in [community]"
+
+#: ../../lib/aur.sh:125
+#, sh-format
+msgid "Checking vote status for $_pkg"
+msgstr "Verifica dei voti per $_pkg"
+
+#: ../../lib/aur.sh:128
+#, sh-format
+msgid "You have already voted for $_pkg inclusion/keeping in [community]"
+msgstr "Hai già votato l'inclusione/mantenimento di $_pkg in [community]"
+
+#: ../../lib/aur.sh:131
+#, sh-format
+msgid "Do you want to vote for $_pkg inclusion/keeping in [community] ? "
+msgstr "Vuoi votare l'inclusione/mantenimento di $_pkg in [community]?"
+
+#: ../../lib/aur.sh:142
+#, sh-format
+msgid "Installing $PKG from AUR"
+msgstr "Installazione di $PKG da AUR"
+
+#: ../../lib/aur.sh:145
+msgid "Resuming previous build"
+msgstr "Continuazione dalla compilazione precedente"
+
+#: ../../lib/aur.sh:156
+#, sh-format
+msgid "Downloading $PKG PKGBUILD from AUR..."
+msgstr "Scaricamento del PKGBUILD di $PKG da AUR..."
+
+#: ../../lib/aur.sh:161
+msgid "( Unsupported package: Potentally dangerous ! )"
+msgstr "( Pacchetto non supportato: Potenzialmente pericoloso! )"
+
+#: ../../lib/aur.sh:173
+#, sh-format
+msgid "Unable to delete directory $wdir."
+msgstr "Impossibile rimuovere la cartella $wdir."
+
+#: ../../lib/aur.sh:180
+msgid "upgrading AUR unsupported packages"
+msgstr "aggiornamento di pacchetti AUR non supportati"
+
+#: ../../lib/aur.sh:186
+msgid "Searching for new version on AUR"
+msgstr "Ricerca di una nuova versione su AUR"
+
+#: ../../lib/aur.sh:192
+msgid "not found on AUR"
+msgstr "non trovato su AUR"
+
+#: ../../lib/aur.sh:196
+msgid "(ignoring package upgrade)"
+msgstr "(aggiornamento del pacchetto ignorato)"
+
+#: ../../lib/aur.sh:203
+msgid "up to date "
+msgstr "aggiornato "
+
+#: ../../lib/aur.sh:204
+msgid "flagged as out of date"
+msgstr "marcato come non aggiornato"
+
+#: ../../lib/aur.sh:220
+#, sh-format
+msgid "unable to update $package"
+msgstr "impossibile aggiornare $package"
+
+#: ../../lib/aur.sh:226
+msgid "Packages that can be updated from AUR:"
+msgstr "Pacchetti che possono essere aggiornati da AUR:"
+
+#: ../../lib/aur.sh:232
+#, sh-format
+msgid "unable to update $PKG"
+msgstr "impossibile aggiornare $PKG"
+
+#: ../../lib/basicfunctions.sh:71
+msgid "[Y/n]"
+msgstr "[S/n]"
+
+#: ../../lib/basicfunctions.sh:72
+msgid "[y/N]"
+msgstr "[s/N]"
+
+#: ../../lib/basicfunctions.sh:73
+msgid "[y/n]"
+msgstr "[s/n]"
+
+#: ../../lib/basicfunctions.sh:111
+#, sh-format
+msgid "Edit $file ?"
+msgstr "Modificare $file? "
+
+#: ../../lib/basicfunctions.sh:111
+msgid "(\"A\" to abort)"
+msgstr "(\"A\" per annullare)"
+
+#: ../../lib/basicfunctions.sh:112
+msgid "YNA"
+msgstr "SNA"
+
+#: ../../lib/basicfunctions.sh:114
+msgid "Aborted..."
+msgstr "Interrotto..."
+
+#: ../../lib/basicfunctions.sh:118
+#, sh-format
+msgid "Please add \\$EDITOR to your environment variables"
+msgstr "Aggiungi \\$EDITOR alle tue variabili d'ambiente"
+
+#: ../../lib/basicfunctions.sh:119
+msgid "for example:"
+msgstr "per esempio:"
+
+#: ../../lib/basicfunctions.sh:120
+msgid "(in ~/.bashrc)"
+msgstr "(in ~/.bashrc)"
+
+#: ../../lib/basicfunctions.sh:121
+msgid "(replace vim with your favorite editor)"
+msgstr "(sostituisci vim con il tuo editor preferito)"
+
+#: ../../lib/basicfunctions.sh:123
+#, sh-format
+msgid "Edit $file with: "
+msgstr "Modifica $file con: "
+
+#: ../../lib/basicfunctions.sh:136
+msgid ""
+"Building package as root is dangerous.\\n"
+" Please run yaourt as a non-privileged user."
+msgstr ""
+"Compilare pacchetti con privilegi di root è pericoloso. \\n"
+"Esegui yaourt come utente non privilegiato."
+
+#: ../../lib/pkgbuild.sh:78
+#, sh-format
+msgid "Unable to read PKGBUILD for $PKG"
+msgstr "Impossibile leggere il PKGBUILD per $PKG"
+
+#: ../../lib/pkgbuild.sh:83
+msgid "This PKGBUILD describes a splitted package."
+msgstr "Questo PKGBUILD indica un pacchetto suddiviso."
+
+#: ../../lib/pkgbuild.sh:84
+#, fuzzy
+msgid "Specific package options are unknown"
+msgstr "Ricerca del pacchetto che contiene \"$arg\""
+
+#: ../../lib/pkgbuild.sh:107
+#, sh-format
+msgid "$PKG dependencies:"
+msgstr "Dipendenze di $PKG:"
+
+#: ../../lib/pkgbuild.sh:109
+msgid "(already installed)"
+msgstr "(già installato)"
+
+#: ../../lib/pkgbuild.sh:112
+msgid "(package found)"
+msgstr "(pacchetto trovato)"
+
+#: ../../lib/pkgbuild.sh:113
+msgid "(building from AUR)"
+msgstr "(compilazione da AUR)"
+
+#: ../../lib/pkgbuild.sh:149
+#, sh-format
+msgid "$PKG conflicts:"
+msgstr "Conflitti di $PKG:"
+
+#: ../../lib/pkgbuild.sh:166
+#, sh-format
+msgid "$_pkg conflicts with those packages:"
+msgstr "$_pkg è in conflitto con questi pacchetti:"
+
+#: ../../lib/pkgbuild.sh:170
+msgid "Do you want to remove them with \"pacman -Rd\" ? "
+msgstr "Vuoi rimuoverli con \"pacman -Rd\"? "
+
+#: ../../lib/pkgbuild.sh:174
+#, sh-format
+msgid "Unable to remove:"
+msgstr "Impossibile rimuovere:"
+
+#: ../../lib/pkgbuild.sh:240
+msgid "Building and installing package"
+msgstr "Compilazione e installazione del pacchetto"
+
+#: ../../lib/pkgbuild.sh:247
+#, sh-format
+msgid "The sources of ${pkgbase} were kept last time. Use them (faster) ? "
+msgstr ""
+
+#: ../../lib/pkgbuild.sh:255
+#, sh-format
+msgid "Unable to write in ${wdirDEVEL} directory. Using /tmp directory"
+msgstr "Impossibile scrivere nella cartella ${wdirDEVEL}. Utilizzo la cartella /tmp"
+
+#: ../../lib/pkgbuild.sh:267
+#, sh-format
+msgid "$pkgbase is already up to date."
+msgstr "$pkgbase è già aggiornato."
+
+#: ../../lib/pkgbuild.sh:275
+#, sh-format
+msgid "Install or build missing dependencies for $PKG:"
+msgstr "Installa o compila le dipendenze mancanti per $PKG:"
+
+#: ../../lib/pkgbuild.sh:279
+msgid "Dependencies have been installed before the failure"
+msgstr "Alcune dipendenze sono state installate prima del problema"
+
+#: ../../lib/pkgbuild.sh:296
+#, sh-format
+msgid "Makepkg was unable to build $PKG."
+msgstr "Makepkg non è riuscito a compilare $PKG."
+
+#: ../../lib/pkgbuild.sh:320
+#, sh-format
+msgid "Exporting ${pkgbase} to ${EXPORTDIR} repository"
+msgstr "Esportazione di ${pkgbase} nel deposito ${EXPORTDIR}"
+
+#: ../../lib/pkgbuild.sh:334
+#, sh-format
+msgid "Continue installing $PKG ?"
+msgstr "Continuare l'installazione di $PKG? "
+
+#: ../../lib/pkgbuild.sh:335
+msgid "[v]iew package contents   [c]heck package with namcap"
+msgstr "[v]edi il contenuto del pacchetto   [c]ontrolla il pacchetto con namcap"
+
+#: ../../lib/pkgbuild.sh:336
+msgid "YNVC"
+msgstr "SNVC"
+
+#: ../../lib/pkgbuild.sh:344
+msgid "Press any key to continue"
+msgstr "Premi un tasto per continuare"
+
+#: ../../lib/pkgbuild.sh:352
+msgid "namcap is not installed"
+msgstr "namcap non è installato"
+
+#: ../../lib/pkgbuild.sh:365
+#, sh-format
+msgid "Your packages are saved in $YAOURTTMPDIR/"
+msgstr "I pacchetti sono stati salvati in $YAOURTTMPDIR/"
+
+#: ../../lib/pkgbuild.sh:366
+#, sh-format
+msgid "Unable to copy packages to $YAOURTTMPDIR/ directory"
+msgstr "Impossibile copiare i pacchetti nella cartella $YAOURTTMPDIR/"
+
+#: ../../lib/pkgbuild.sh:386
+#, sh-format
+msgid "Continue building $PKG ? "
+msgstr "Continuare la compilazione di $PKG? "
+
+#: ../../lib/pkgbuild.sh:392
+#, sh-format
+msgid "Restart building $PKG ? "
+msgstr "Riavviare la compilazione di $PKG? "
+
+#: ../../pacdiffviewer.sh:45
+msgid "Patch: "
+msgstr "Patch: "
+
+#: ../../pacdiffviewer.sh:45
+msgid "Apply ?"
+msgstr "Applicare?"
+
+#: ../../pacdiffviewer.sh:45
+msgid "Delete all *.pac* found"
+msgstr "Elimina tutti i *.pac* trovati"
+
+#: ../../pacdiffviewer.sh:46
+msgid "Save all packages backup files for a later merge"
+msgstr ""
+
+#: ../../pacdiffviewer.sh:47
+msgid "Use with backup to not output messages"
+msgstr ""
+
+#: ../../pacdiffviewer.sh:48
+msgid "Sequential listing"
+msgstr "Elenco sequenziale"
+
+#: ../../pacdiffviewer.sh:49
+msgid "This help"
+msgstr "Questa guida"
+
+#: ../../pacdiffviewer.sh:50
+msgid "Show version"
+msgstr "Mostra versione"
+
+#: ../../pacdiffviewer.sh:69
+msgid "saving"
+msgstr "salvataggio"
+
+#: ../../pacdiffviewer.sh:101
+#: ../../pacdiffviewer.sh:102
+#: ../../pacdiffviewer.sh:103
+msgid "found"
+msgstr "trovato"
+
+#: ../../pacdiffviewer.sh:104
+msgid "files are orphans"
+msgstr "file risultano orfani"
+
+#: ../../pacdiffviewer.sh:158
+msgid "Do you want to delete these files ?"
+msgstr "Vuoi eliminare questi file? "
+
+#: ../../pacdiffviewer.sh:158
+#, fuzzy
+msgid "(S: no confirm)"
+msgstr "(S: nessuna conferma)"
+
+#: ../../pacdiffviewer.sh:159
+#, fuzzy
+msgid "YNS"
+msgstr "SN"
+
+#: ../../pacdiffviewer.sh:177
+msgid "**same file**"
+msgstr "**file identico**"
+
+#: ../../pacdiffviewer.sh:181
+msgid "**automerge**"
+msgstr "**fusione automatica**"
+
+#: ../../pacdiffviewer.sh:184
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr ""
+
+#: ../../pacdiffviewer.sh:185
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
+msgstr ""
+
+# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
+#: ../../pacdiffviewer.sh:186
+msgid "ERSCA"
+msgstr "ERSCA"
+
+# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?
+#: ../../pacdiffviewer.sh:187
+msgid "ERSCAM"
+msgstr "ERSCAM"
+
+#: ../../pacdiffviewer.sh:197
+msgid "patch returned an error!"
+msgstr "Il comando patch ha restituito un errore!"
+
+#: ../../pacdiffviewer.sh:197
+msgid "Enter n° : "
+msgstr "Inserisci num.: "
+
+#: ../../pacdiffviewer.sh:248
+msgid "The following files have no original version."
+msgstr "I seguenti file non hanno una versione originale."
+
