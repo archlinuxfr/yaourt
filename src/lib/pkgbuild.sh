@@ -397,6 +397,7 @@ package_loop ()
 	done
 	(( ! ret )) && (( ! failed )) && { install_package || failed=1; }
 	rm -r "$YPKGDEST"
+	cd "$YAOURTTMPDIR"
 	return $failed
 }
 
