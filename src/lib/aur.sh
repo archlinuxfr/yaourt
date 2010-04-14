@@ -148,8 +148,9 @@ install_from_aur(){
 	fi
 	cd "$wdir/"
 	aurid=""
-	eval $(package-query -Axi "$PKG" -f "aurid=%i;version=%v;numvotes=%w;outofdate=%o;pkgurl=%u;description=\"%d\"")
-	[[ "$aurid" ]] || return 1
+
+	read aurid version numvotes outofdate pkgurl description < <(package-query -Ai "$PKG" -f "%i %v %w %o %u %d")
+	[[ "${aurid#-}" ]] || return 1
 	
 	# grab comments and info from aur page
 	echo

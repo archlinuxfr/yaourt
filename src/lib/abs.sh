@@ -165,7 +165,7 @@ sysupgrade()
 		fi
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
-	done < <(package-query -1Sxif '%n %r %v %l %d' "${packages[@]}")
+	done < <(package-query -1Sif '%n %r %v %l %d' "${packages[@]}")
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 	unset newrelease newversion newpkgs
