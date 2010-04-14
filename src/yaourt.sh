@@ -239,6 +239,7 @@ search ()
 	while read _date pkgname repo pkgver lver votes outofdate group_desc; do 
 		group=${group_desc%%  *}
 		(( lite )) || pkgdesc=${group_desc#*  }
+		[[ "$MAJOR" = "query" ]] && lver=""
 		PKGSFOUND+=("${repo}/${pkgname}")
 		pkg_output "$repo" "$pkgname" "$pkgver" "$lver" \
 			"$group" "$outofdate" "$votes" "$pkgdesc"
