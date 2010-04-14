@@ -328,7 +328,7 @@ yaourt_query ()
 		$PACMANBIN --dbpath "$backupdir/" -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
 		return
 	fi
-	(( LIST || UPGRADES || INFO )) && pacman_cmd 0
+	(( CHANGELOG || LIST || UPGRADES || INFO )) && pacman_cmd 0
 	if (( OWNER )); then
 		# pacman will call "which" on futur version
 		search_which_package_owns
@@ -352,7 +352,7 @@ YAOURTBIN=$0
 source /usr/lib/yaourt/basicfunctions.sh || exit 1 
 
 unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
-	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN LIST INFO \
+	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
 	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
@@ -385,14 +385,14 @@ while [[ $1 ]]; do
 	case "$1" in
 		-R|--remove|-U|--upgrade|-w|--downloadonly)	pacman_cmd 1 ;;
 		--asdeps|--needed)  program_arg 1 $1;;
-		-c|--clean)         (( CLEAN ++ ));;
+		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
 		--deps)             DEPENDS=1; program_arg 8 $1;;
 		-d)                 DEPENDS=1; NODEPS=1; program_arg 15 $1;;
 		-e|--explicit)      EXPLICITE=1; program_arg 8 $1;;
 		-m|--foreign)       FOREIGN=1; program_arg 8 $1;;
 		-g|--groups)        GROUP=1; program_arg 8 $1;;
 		-i|--info)          INFO=1; program_arg 9 $1;;
-		-c|--changelog)     pacman_cmd 0;;
+		--changelog)     pacman_cmd 0;;
 		-l|--list)          LIST=1; program_arg 8 $1;;
 		--noconfirm)        NOCONFIRM=1; EDITFILES=0; program_arg 7 $1;;
 		--nodeps)           NODEPS=1; program_arg 7 $1;;
