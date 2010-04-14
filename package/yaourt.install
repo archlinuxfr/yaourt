@@ -4,7 +4,7 @@ post_install() {
            user ALL=NOPASSWD: /usr/bin/pacman
            user ALL=NOPASSWD: /usr/bin/pacdiffviewer
 	(Please, use sudo very carefully)
-	==> for a full colorized output, install pacman-color and set PacmanBin in /etc/yaourtrc
+	==> for a full colorized output, install pacman-color and set PACMANBIN /etc/yaourtrc
 	EndOfMessage
 	/bin/true
 }

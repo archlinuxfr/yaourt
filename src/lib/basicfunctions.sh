@@ -13,6 +13,7 @@
 #       VERSION:  1.0
 #===============================================================================
 
+COLUMNS=$(tput cols)
 
 # set misc path
 initpath(){
@@ -24,8 +25,8 @@ initpath(){
 # Load library but never reload twice the same lib
 loadlibrary(){
 	eval alreadyload=\$$1
-	[ ! -z "$alreadyload" ] && return 0
-	if [ ! -f "/usr/lib/yaourt/$1.sh" ]; then
+	[[ "$alreadyload" ]] && return 0
+	if [[ ! -f "/usr/lib/yaourt/$1.sh" ]]; then
 		error "$1.sh file is missing"
 		die 1
 	fi
@@ -33,42 +34,85 @@ loadlibrary(){
 	eval $1=1
 }
 
-# ask 
-userinput() 
-{ 
-	[ -z $1 ] && _key="YN" || _key=$1
-	read -en $NOENTER
-	echo $REPLY | tr '[[:lower:]]' '[[:upper:]]'  | tr "$(eval_gettext $_key)" "$_key"
+# Fill line
+echo_fill ()
+{
+	printf -v_fill "%${COLUMNS}s" ""
+	echo -e "$1${_fill// /$2}$3"
 }
 
-_translate_me()
+# Wrap output
+# usage: str_wrap ($indent, $str)
+# return: set $strwrap with wrapped content
+str_wrap ()
 {
-	# Used to detect string with poedit
-	eval_gettext "YN"  # Yes, No
-	eval_gettext "YAN" # Yes, All, No
-	eval_gettext "YNA" # Yes, No, Abort
-	eval_gettext "YNVC" # Yes, No, View package, Check package with namcap
-	eval_gettext "YNVM" # Yes, No, View more infos, Manualy select packages
+	unset strwrap
+	local indent=${1:-0} ; shift
+	local str=($*) i=0 j=0 strout=""
+	for s in "${str[@]}"; do
+		strout+="$s "
+		(( i+=${#s}+1 ))
+		(( j++ ))
+		if (( ${#str[$j]} )) && (( (i%COLUMNS)+indent+${#str[$j]}>COLUMNS-1 )); then
+			printf -vout "%*s%s\n" $indent "" "$strout"
+			strwrap+="$out"
+			strout=""
+			i=0
+		fi
+	done
+	[[ $strout ]] && printf -vout "%*s%s" $indent "" "$strout" && strwrap+="$out"
+}
+
+echo_wrap ()
+{
+	str_wrap "$1" "$2"
+	echo -e "$strwrap"
+}
+
+list_select ()
+{
+	local i=0
+	for _line in "$@"; do
+		(( i++ ))
+		echo -e  "$COL_NUMBER$i$NO_COLOR $_line"
+	done
+	echo
+}
+
+# ask 
+userinput() 
+{
+	local _key=${1:-YN}
+	local default=${2:-Y}
+	local answer
+	if (( NOCONFIRM ));then 
+		answer=$default
+	else
+		read -en $NOENTER
+		[[ $REPLY ]] && answer=$(echo ${REPLY^^*} | tr "$(gettext $_key)" "$_key") || answer=$default
+		[[ "${_key/$answer/}" = "$_key" ]] && answer=$default
+	fi
+	echo $answer
+	[[ "$answer" = "$default" ]]
+}
+
+useragrees()
+{
+	userinput "$@" &> /dev/null
+	local ret=$?
+	echo 
+	return $ret
 }
 
 yes_no ()
 {
 	case $1 in
-	  1) 
-		  echo $(eval_gettext "[Y/n]")
-			;;
-	  2)
-		  echo $(eval_gettext "[y/N]")
-			;;
-	  *)
-		  echo $(eval_gettext "[y/n]")
-			;;
+	  1) echo $(gettext "[Y/n]");;
+	  2) echo $(gettext "[y/N]");;
+	  *) echo $(gettext "[y/n]");;
 	esac
 }
-		  
-isnumeric(){
-	if let $1 2>/dev/null; then return 0; else return 1; fi
-}
+
 
 is_x_gt_y(){
 	[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]
@@ -83,77 +127,63 @@ is_x_gt_y(){
 ##
 in_array() {
 	local needle=$1; shift
-	[ -z "$1" ] && return 1 # Not Found
+	[[ "$1" ]] || return 1 # Not Found
 	local item
 	for item in "$@"; do
-		[ "$item" = "$needle" ] && return 0 # Found
+		[[ "$item" = "$needle" ]] && return 0 # Found
 	done
 	return 1 # Not Found
 }
 
+# Run editor
+# Usage: run_editor ($file, $default_answer)
+# 	$file: file to edit 
+# 	$default_answer: 0: don't ask	1 (default): Y	2: N
 run_editor ()
 {
-	local edit_cmd=
+	local edit_cmd
 	local file="$1"
-	if [ -z "$EDITOR" ]; then
-		echo -e ${COL_RED}$(eval_gettext 'Please add \$EDITOR to your environment variables')
-		echo -e ${NO_COLOR}$(eval_gettext 'for example:')
-		echo -e ${COL_BLUE}"export EDITOR=\"vim\""${NO_COLOR}" $(eval_gettext '(in ~/.bashrc)')"
-		echo $(eval_gettext '(replace vim with your favorite editor)')
+	local default_answer=${2:-1}
+	local answer_str=" YN"
+	local answer='Y'
+	if (( default_answer )); then
+		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(gettext '("A" to abort)')"
+		local answer=$(userinput "YNA" ${answer_str:$default_answer:1})
+		echo
+		[[ "$answer" = "A" ]] && echo -e "\n$(gettext 'Aborted...')" && return 2
+		[[ "$answer" = "N" ]] && return 1
+	fi
+	if [[ ! "$EDITOR" ]]; then
+		echo -e ${COL_RED}$(gettext 'Please add \$EDITOR to your environment variables')
+		echo -e ${NO_COLOR}$(gettext 'for example:')
+		echo -e ${COL_BLUE}"export EDITOR=\"vim\""${NO_COLOR}" $(gettext '(in ~/.bashrc)')"
+		echo $(gettext '(replace vim with your favorite editor)')
 		echo
 		echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit $file with: ')
 		read -e EDITOR
 		echo
 	fi
-	[ "$(basename "$EDITOR")" = "gvim" ] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
+	[[ "$(basename "$EDITOR")" = "gvim" ]] && edit_cmd="$EDITOR --nofork" || edit_cmd="$EDITOR"
 	( $edit_cmd "$file" )
 	wait
 }
 
-edit_file ()
-{
-	[ $EDITFILES -ne 1 ] && return 0
-	local file="$1"
-	local default_answer=${2:-1}
-	local loop=${3:-0}
-	local iter=1
-
-	while [ $iter -eq 1 ]; do
-		prompt $(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(eval_gettext '("A" to abort)')
-		local answer=$(userinput "YNA")
-		echo
-		if [ -z "$answer" ]; then
-			[ $default_answer -eq 1 ] && answer='Y' || answer='N'
-		fi
-		if [ "$answer" = "Y" ]; then
-			run_editor "$file"
-			[ "$file" = "PKGBUILD" ] && find_pkgbuild_deps
-			[ $loop -eq 0 ] && iter=0
-		else
-			iter=0
-		fi
-	done
-	
-	if [ "$answer" = "a" -o "$answer" = "A" ]; then
-		echo
-		echo $(eval_gettext 'Aborted...')
-		return 1
-	fi
-	return 0
-}
-
 check_root ()
 {
-	if [ $UID -eq 0 ]; then
+	if (( ! UID )); then
 		runasroot=1
-        warning $(eval_gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
+        warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
 		sleep 2
 	else
 		runasroot=0
 	fi
 }	
 
-readconfigfile(){
+###################################
+### MAIN OF INIT PROGRAM        ###
+###################################
+declare -A COL_REPOS	#TODO not its place
+loadlibrary color
 # defautconfig
 EDITFILES=1
 DEVEL=0
@@ -171,211 +201,18 @@ MAXCOMMENTS=5
 NOENTER=1
 ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
-DIFF_EDITOR="defined_in_yaourtrc_file"
-INENGLISH=""
-sfmirror=""
+TMPDIR="/tmp"
+COLORMODE=""
+SHOWORPHANS=1
+DIFFEDITCMD="vimdiff"
 
-while [ "$#" -ne "0" ]; do
-	lowcasearg=`echo $2 | tr A-Z a-z`
-	case $lowcasearg in
-		yes) value=1
-		;;
-		no) value=0
-		;;
-		*)value=-1
-		;;
-	esac
+[[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
+[[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
+[[ -n "$EXPORTDIR" ]] && EXPORT=1
+(( FORCEENGLISH )) && export LC_ALL=C
+in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
+[[ -d "$TMPDIR" ]] || { error $TMPDIR $(gettext 'is not a directory'); die 1;}
+[[ -w "$TMPDIR" ]] || { error $TMPDIR $(gettext 'is not writable'); die 1;}
+TMPDIR=$(readlink -e "$TMPDIR")
+YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 
-	case "`echo $1 | tr A-Z a-z`" in
-		noconfirm)
-			if [ $value -gt -1 ]; then
-				NOCONFIRM=$value; shift
-				[ $NOCONFIRM -eq 1 ] && EDITFILES=0
-			fi
-			;;
-		alwaysforce)
-			if [ $value -gt -1 ]; then
-				FORCE=$value; shift
-			fi
-	  		;;	
-		autosavebackupfile)
-			if [ $value -gt -1 ]; then
-				AUTOSAVEBACKUPFILE=$value; shift
-			fi
-	  		;;	
-		forceenglish)
-			if [ $value -gt -1 ]; then
-				shift
-				if [ $value -eq 1 ]; then
-					INENGLISH="LC_ALL=C"
-				fi
-			fi
-	  		;;	
-		editpkgbuild)
-			if [ $value -gt -1 ]; then
-				EDITFILES=$value; shift
-			fi
-	  		;;	
-		showaurcomment)
-			if [ $value -gt -1 ]; then
-				AURCOMMENT=$value; shift
-			fi
-	  		;;	
-		alwaysupgradedevel)
-			if [ $value -gt -1 ]; then
-				DEVEL=$value; shift
-			fi
-	  		;;	
-		dontneedtopressenter)
-			if [ $value -gt -1 ]; then
-				NOENTER=$value; shift
-			fi
-	  		;;	
-		alwaysupgradeaur)
-			if [ $value -gt -1 ]; then
-				AURUPGRADE=$value; shift
-			fi
-	  		;;	
-		aurvotesupport)
-			if [ $value -gt -1 ]; then
-				AURVOTE=$value; shift
-			fi
-	  		;;	
-		searchinaurunsupported)
-			if [ $value -gt -1 ]; then
-				AURSEARCH=$value; shift
-			fi
-	  		;;	
-		updateterminaltitle)
-			if [ $value -gt -1 ]; then
-				TERMINALTITLE=$value; shift
-			fi
-	  		;;	
-		exporttolocalrepository)
-			if [ -d "$2" ]; then
-				EXPORT=1; EXPORTDIR="$2"; shift
-			else
-				error "ExportToLocalRepository is not a directory"
-			fi
-	  		;;	
-		tmpdirectory)
-			if [ -d "$2" ]; then
-				cd "$2"
-				YAOURTTMPDIR="`pwd`/yaourt-tmp-`id -un`"
-				cd - 1>/dev/null; shift
-			else
-				error "TmpDirectory is not a directory"
-			fi
-	  		;;	
-		sourceforgemirror)
-				sfmirror="$2"; shift
-				;;
-		lastcommentsnumber)
-			if `isnumeric $2`; then
-			       MAXCOMMENTS=$2; shift
-		        else
-				error "Wrong value for LastCommentsNumber"
-		        fi
-			;;	       
-		lastcommentsorder)
-			if [ "$lowcasearg" = "asc" -o "$lowcasearg" = "desc" ]; then
-			       ORDERBY=$lowcasearg; shift
-			else
-				error "Wrong value for LastCommentsOrder"
-		        fi
-			;;	       
-		pkgbuildeditor)
-			if [ `type -p "$2"` ]; then
-				EDITOR="$2"; shift
-			else
-				error "PkgbuildEditor not found"
-			fi
-	  		;;	
-		diffeditor)
-			if [ `type -p "$2"` ]; then
-				DIFF_EDITOR="$2"; shift
-			else
-				error "DiffEditor ($DIFF_EDITOR) not found"
-			fi
-	  		;;	
-		pacmanbin)
-			if [ -f "$2" ]; then
-				PACMANBIN="$2"; shift
-			else
-				error "PACMANBIN: $2 is incorrect"
-			fi
-			;;
-		colormod)
-			case $lowcasearg in
-				lightbackground)
-					COLORMODE="--lightbg"; shift
-				;;
-				nocolor)
-					COLORMODE="--nocolor"; shift
-				;;
-				textonly)
-					COLORMODE="--textonly"; shift
-				;;
-				normal)	shift ;;
-			esac
-			;;
-		*)
-		echo "$1 "$(eval_gettext "no recognized in config file")
-		sleep 4
-		;;
-	esac
-	shift
-done
-
-PACMANBIN="$INENGLISH $PACMANBIN"
-	
-}
-
-
-urlencode(){
-echo $@ | LANG=C awk '
-    BEGIN {
-        split ("1 2 3 4 5 6 7 8 9 A B C D E F", hextab, " ")
-        hextab [0] = 0
-        for ( i=1; i<=255; ++i ) ord [ sprintf ("%c", i) "" ] = i + 0
-    }
-    {
-        encoded = ""
-        for ( i=1; i<=length ($0); ++i ) {
-            c = substr ($0, i, 1)
-            if ( c ~ /[a-zA-Z0-9.-]/ ) {
-                encoded = encoded c             # safe character
-            } else if ( c == " " ) {
-                encoded = encoded "+"   # special handling
-            } else {
-                # unsafe character, encode it as a two-digit hex-number
-                lo = ord [c] % 16
-                hi = int (ord [c] / 16);
-                encoded = encoded "%" hextab [hi] hextab [lo]
-            }
-        }
-            print encoded
-    }
-    END {
-    }
-'
-}
-
-
-
-
-###################################
-### MAIN OF INIT PROGRAM        ###
-###################################
-
-YAOURTTMPDIR="/tmp/yaourt-tmp-$(id -un)"
-if [ -f ~/.yaourtrc ]; then
-	configfile="$HOME/.yaourtrc"
-else
-	configfile="/etc/yaourtrc"
-fi
-
-loadlibrary color
-readconfigfile `grep "^\s*[a-zA-Z]" $configfile`
-#initcolor
-initpath

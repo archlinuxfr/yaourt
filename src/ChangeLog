@@ -171,7 +171,7 @@ yaourt 0.9.2.6
 - FS#144 - failed to find which package provides x
 - FS#142 - fixed --textonly
 
-yaourt 0.9.2.6
+yaourt 0.9.3
 - SPEED! Use a new external app to query alpm/aur
 - Italian translation (Vincenzo) + Turkish translation (Samed)
 - Propose to remove package if there is a conflict with ...
@@ -183,3 +183,15 @@ yaourt 0.9.2.6
 - switch from svn to rsync to fix getting community packages
 - FS#156 --print-uris does not need root privileges
 - New diffeditor option in yaourtrc for pacdiffviewer
+
+yaourt 0.9.4
+- Use bash syntax for configuration file, yaourtrc
+- Use curl instead of wget since package-query uses curl
+- Improve search/query/stats and packages display
+- Support splitted packages (retreive and build)
+- Support exotic PKGBUILD (which needs makepkg to be parsed)
+- Support IgnoreGroup
+- Fix conflict detection bugs
+- Fix -Sbu (sysupgrade with build)
+
+

@@ -7,14 +7,14 @@ pkgdesc="A pacman wrapper with extended features and AUR support"
 arch=('any')
 url="http://www.archlinux.fr/yaourt-en/"
 license="GPL"
-depends=('wget' 'diffutils' 'pacman>=3.2.0' 'package-query')
+depends=('diffutils' 'pacman>=3.2.0' 'package-query')
 makedepends=('git')
 optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
     'customizepkg: automatically modify PKGUILD during install/upgrade'
     'rsync: retrieve PKGBUILD from official repositories'
-    'pacman-color: fully colorized output'
-    'colordiff: colorized output with yaourt -C')
+    'pacman-color: fully colorized output')
 provides=('yaourt')
+conflicts=('yaourt')
 install=yaourt.install
 backup=('etc/yaourtrc')
 source=()
