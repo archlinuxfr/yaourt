@@ -22,7 +22,7 @@ pkgversion()
 # Test if $1 is installed or provided by an installed package
 isavailable()
 {
-	package-query -1Siq "$1" || package-query -1Sq -query-type provides "$1"
+	package-query -1Siq "$1" || package-query -1Sq --query-type provides "$1"
 }
 
 # Return package repository
