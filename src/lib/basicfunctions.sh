@@ -187,6 +187,7 @@ loadlibrary color
 # defautconfig
 EDITFILES=1
 DEVEL=0
+DEVELBUILDDIR="/var/abs/local/yaourtbuild"
 EXPORTDIR=""
 EXPORT=0
 TERMINALTITLE=1

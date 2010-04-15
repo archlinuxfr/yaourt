@@ -241,7 +241,7 @@ build_package()
 
 	if check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
-		wdirDEVEL="/var/abs/local/yaourtbuild/${pkgbase}"
+		wdirDEVEL="$DEVELBUILDDIR/${pkgbase}"
 		# Using previous build directory
 		if [[ -d "$wdirDEVEL" ]]; then
 			prompt "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them (faster) ? ') $(yes_no 1)"
