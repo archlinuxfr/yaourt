@@ -55,7 +55,7 @@ read_pkgbuild ()
 		)
 
 	unset ${vars[*]}
-	local pkgbuild_tmp=$(mktemp --tmpdir="$YAOURTTMPDIR")
+	local pkgbuild_tmp=$(mktemp --tmpdir=".")
 	echo "yaourt_$$() {"                > $pkgbuild_tmp
 	cat PKGBUILD                        >> $pkgbuild_tmp
 	echo                                >> $pkgbuild_tmp
