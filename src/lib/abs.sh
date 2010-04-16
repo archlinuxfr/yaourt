@@ -25,7 +25,7 @@ abs_get_pkgbuild ()
 	local abs_tar="$YAOURTTMPDIR/$2.abs.tar.gz"	# TODO: store abs archive somewhere else.
 	local abs_url 
 	local repo_date=$(stat -c "%Z" "$PACMANROOT/sync/$2/.lastupdate")
-	local abs_repo_date=$(stat -c "%Z" "$abs_tar")
+	local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
 	if (( $? )) || (( abs_repo_date < repo_date )); then
 		abs_url=$(package-query -1Sif "%u" "$2/$3")
 		abs_url="${abs_url%/*}/$2.abs.tar.gz"
