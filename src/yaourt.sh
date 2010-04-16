@@ -269,6 +269,8 @@ yaourt_query_type ()
 # Handle sync
 yaourt_sync ()
 {
+	(( PRINTURIS && REFRESH )) && pacman_cmd 1
+	(( PRINTURIS && ! REFRESH )) && pacman_cmd 0
 	if (( GROUP || LIST || SEARCH)); then
 		(( LIST )) && {
 			title $(gettext 'listing all packages in repo(s)')
@@ -356,7 +358,7 @@ unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
 	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
-	DEPENDS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
+	DEPENDS PRINTURIS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
 
 # Grab environement options
 {
@@ -393,7 +395,7 @@ while [[ $1 ]]; do
 		-m|--foreign)       FOREIGN=1; program_arg 8 $1;;
 		-g|--groups)        GROUP=1; program_arg 8 $1;;
 		-i|--info)          INFO=1; program_arg 9 $1;;
-		--changelog)     pacman_cmd 0;;
+		--changelog)        pacman_cmd 0;;
 		-l|--list)          LIST=1; program_arg 8 $1;;
 		--noconfirm)        NOCONFIRM=1; EDITFILES=0; program_arg 7 $1;;
 		--nodeps)           NODEPS=1; program_arg 7 $1;;
@@ -434,6 +436,7 @@ while [[ $1 ]]; do
 		--lightbg)          COLORMODE="lightbg";;
 		--nocolor)          COLORMODE="nocolor";;
 		--provides)         QUERYTYPE="provides";;
+		-p|--print-uris)    PRINTURIS=1;;
 		--replaces)         QUERYTYPE="replaces";;
 		-s|--search)        SEARCH=1; program_arg 8 $1;;
 		--stats)            MAJOR="stats";;
@@ -485,7 +488,7 @@ initpath
 initcolor
 
 # Refresh
-if [[ "$MAJOR" = "sync" ]] && (( REFRESH )); then
+if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINTURIS )); then
 	title $(gettext 'synchronizing package databases')
 	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
 	su_pacman $_arg
