@@ -3,6 +3,7 @@
 #   See yaourtrc(5) for more information
 #   
 #
+ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unstable)
 #NOCONFIRM=0
 #FORCE=0
 #AUTOSAVEBACKUPFILE=0

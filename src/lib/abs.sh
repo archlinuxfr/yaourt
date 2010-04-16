@@ -14,27 +14,42 @@
 #===============================================================================
 loadlibrary alpm_query
 loadlibrary pkgbuild
-ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unstable)
 
 # Get sources in current dir
 # Usage abs_get_pkgbuild ($arch,$repo,$pkg)
 abs_get_pkgbuild ()
 {
-	rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$1/$2/$3/ . || return 1	
+	if in_array "$repo" "${ABS_REPO[@]}"; then
+		rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$1/$2/$3/ . && return 0
+	fi
+	local abs_tar="$YAOURTTMPDIR/$2.abs.tar.gz"	# TODO: store abs archive somewhere else.
+	local abs_url 
+	local repo_date=$(stat -c "%Z" "$PACMANROOT/sync/$2/.lastupdate")
+	local abs_repo_date=$(stat -c "%Z" "$abs_tar")
+	if (( $? )) || (( abs_repo_date < repo_date )); then
+		abs_url=$(package-query -1Sif "%u" "$2/$3")
+		abs_url="${abs_url%/*}/$2.abs.tar.gz"
+		msg "$2: $(gettext 'retrieve abs archive')"
+		curl -# "$abs_url" -o "$abs_tar" || return 1
+	fi
+	bsdtar -s "/${2}.${3}//" -xvf "$abs_tar" "$2/$3"
 }
 
-# if package is from ABS_REPO, try to build it from abs, else pass it to aur
+# Build from abs or aur
 build_or_get ()
 {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
 	[[ "$1" != "${1///}" ]] && local repo=${1%/*} || local repo="$(sourcerepository $pkg)"
 	BUILD=1
-	in_array "$repo" "${ABS_REPO[@]}" && { install_from_abs "$1"; return 0; }
-	if [[ "$MAJOR" = "getpkgbuild" ]]; then
-		aur_get_pkgbuild "$pkg"
+	if [[ "$repo" != "aur" ]]; then
+		install_from_abs "$1"
 	else
-		install_from_aur "$pkg"
+		if [[ "$MAJOR" = "getpkgbuild" ]]; then
+			aur_get_pkgbuild "$pkg"
+		else
+			install_from_aur "$pkg"
+		fi
 	fi
 }
 
