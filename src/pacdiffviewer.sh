@@ -224,7 +224,7 @@ manage()
 			list_select "${pacfiles[@]}"
 			msg "$(gettext 'Enter n° : ')"
 			promptlight
-			read -en $NOENTER i
+			read -e i
 			(( ! i )) && break
 			(( --i>=0 && i < ${#pacfiles[@]} )) || continue
 			manage_file "$ext" "${pacfiles[$i]}"
