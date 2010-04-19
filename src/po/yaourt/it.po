@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2010-04-14 20:16+0200\n"
+"PO-Revision-Date: 2010-04-16 13:28+0200\n"
 "Last-Translator: Vincenzo Reale <smart2128@baslug.org>\n"
 "Language-Team: Italian <kde-i18n-it@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "yaourt {-C --clean}   [opzioni]"
 
 #: ../../yaourt.sh:53
 msgid "yaourt {-B --backup}  (save directory|restore file)"
-msgstr ""
+msgstr "yaourt {-B --backup}  (cartella di destinazione|file da ripristinare)"
 
 #: ../../yaourt.sh:54
 msgid "yaourt {-G --getpkgbuild} package"
@@ -277,24 +277,23 @@ msgstr "È stata rilevata una nuova versione di $package"
 
 #: ../../lib/abs.sh:100
 #: ../../lib/aur.sh:216
-#, fuzzy, sh-format
+#, sh-format
 msgid "Do you want to update $package first ? "
-msgstr "Vuoi prima aggiornare $package? "
+msgstr "Vuoi aggiornare prima $package? "
 
 #: ../../lib/abs.sh:102
 #: ../../lib/aur.sh:219
-#, fuzzy, sh-format
+#, sh-format
 msgid "Upgrading $package first"
-msgstr "Aggiornamento per prima cosa di $package"
+msgstr "Aggiorna prima $package"
 
 #: ../../lib/abs.sh:109
 msgid "Please mount your boot partition first then press ENTER to continue"
 msgstr "Monta la tua partizione di boot poi premi INVIO per continuare"
 
 #: ../../lib/abs.sh:120
-#, fuzzy
 msgid "Source Targets:"
-msgstr "Sorgenti: $_pkgs"
+msgstr "Oggetti da compilare:"
 
 #: ../../lib/abs.sh:121
 msgid "Proceed with upgrade? "
@@ -515,13 +514,13 @@ msgid "Packages out of date:"
 msgstr "Pacchetti non aggiornati:"
 
 #: ../../lib/alpm_stats.sh:57
-#, fuzzy, sh-format
+#, sh-format
 msgid "Where $pkgs_nb_dt packages seems no more used by any package:"
-msgstr "Dove $_orphans pacchetti sembrano non essere più usati da nessun altro pacchetto:"
+msgstr "Di cui $pkgs_nb_dt pacchetti sembrano non essere più utilizzati da alcun pacchetto:"
 
 #: ../../lib/alpm_stats.sh:60
 msgid "Hold packages:"
-msgstr ""
+msgstr "Pacchetti da conservare:"
 
 #: ../../lib/alpm_stats.sh:61
 msgid "Ignored packages:"
@@ -545,11 +544,8 @@ msgid "others"
 msgstr "altri"
 
 #: ../../lib/alpm_stats.sh:82
-#, fuzzy
 msgid "are packages from local build or AUR Unsupported"
-msgstr ""
-"sono pacchetti non aggiornati o installati localmente \n"
-"o compilati da AUR"
+msgstr "sono pacchetti compilati localmente o non supportati da AUR"
 
 #: ../../lib/alpm_stats.sh:91
 msgid "Theorical - Real space used by packages:"
@@ -733,9 +729,8 @@ msgid "This PKGBUILD describes a splitted package."
 msgstr "Questo PKGBUILD indica un pacchetto suddiviso."
 
 #: ../../lib/pkgbuild.sh:84
-#, fuzzy
 msgid "Specific package options are unknown"
-msgstr "Ricerca del pacchetto che contiene \"$arg\""
+msgstr "Le opzioni del pacchetto sono sconosciute"
 
 #: ../../lib/pkgbuild.sh:107
 #, sh-format
@@ -780,7 +775,7 @@ msgstr "Compilazione e installazione del pacchetto"
 #: ../../lib/pkgbuild.sh:247
 #, sh-format
 msgid "The sources of ${pkgbase} were kept last time. Use them (faster) ? "
-msgstr ""
+msgstr "I sorgenti di ${pkgbase} sono stati conservati in precedenza. Vuoi usarli (più veloce)? "
 
 #: ../../lib/pkgbuild.sh:255
 #, sh-format
@@ -866,11 +861,11 @@ msgstr "Elimina tutti i *.pac* trovati"
 
 #: ../../pacdiffviewer.sh:46
 msgid "Save all packages backup files for a later merge"
-msgstr ""
+msgstr "Salva le copie dei file dei pacchetti per una fusione successiva."
 
 #: ../../pacdiffviewer.sh:47
 msgid "Use with backup to not output messages"
-msgstr ""
+msgstr "Utilizzare con backup per non mostrare messaggi"
 
 #: ../../pacdiffviewer.sh:48
 msgid "Sequential listing"
@@ -903,14 +898,12 @@ msgid "Do you want to delete these files ?"
 msgstr "Vuoi eliminare questi file? "
 
 #: ../../pacdiffviewer.sh:158
-#, fuzzy
 msgid "(S: no confirm)"
-msgstr "(S: nessuna conferma)"
+msgstr "(C: nessuna conferma)"
 
 #: ../../pacdiffviewer.sh:159
-#, fuzzy
 msgid "YNS"
-msgstr "SN"
+msgstr "SNC"
 
 #: ../../pacdiffviewer.sh:177
 msgid "**same file**"
@@ -922,21 +915,21 @@ msgstr "**fusione automatica**"
 
 #: ../../pacdiffviewer.sh:184
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Azione: [M]odificare, [S]ostituire, [E]liminare, [C]ontinuare (predefinito), [A]nnullare?"
 
 #: ../../pacdiffviewer.sh:185
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Azione: [M]odificare, [S]ostituire, [E]liminare, [U]nire, [C]ontinuare (predefinito), [A]nnullare?"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
 #: ../../pacdiffviewer.sh:186
 msgid "ERSCA"
-msgstr "ERSCA"
+msgstr "MSECA"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?
 #: ../../pacdiffviewer.sh:187
 msgid "ERSCAM"
-msgstr "ERSCAM"
+msgstr "MSEUCA"
 
 #: ../../pacdiffviewer.sh:197
 msgid "patch returned an error!"
@@ -949,4 +942,5 @@ msgstr "Inserisci num.: "
 #: ../../pacdiffviewer.sh:248
 msgid "The following files have no original version."
 msgstr "I seguenti file non hanno una versione originale."
+
 
