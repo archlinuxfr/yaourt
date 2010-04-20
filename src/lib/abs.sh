@@ -42,7 +42,7 @@ build_or_get ()
 	local pkg=${1#*/}
 	[[ "$1" != "${1///}" ]] && local repo=${1%/*} || local repo="$(sourcerepository $pkg)"
 	BUILD=1
-	if [[ -n "$repo" && "$repo" != "aur" ]]; then
+	if [[ -n "$repo" && "$repo" != "aur" && "$repo" != "local" ]]; then
 		install_from_abs "$1"
 	else
 		if [[ "$MAJOR" = "getpkgbuild" ]]; then
