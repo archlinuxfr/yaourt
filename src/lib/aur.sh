@@ -34,38 +34,59 @@ aur_get_pkgbuild ()
 
 aur_show_info()
 {
-	echo -n "$(gettext "$1")"; shift; 
-	[[ $* ]] && echo ": $*" || echo ": None"
+	local t="$(gettext "$1"): "; shift
+	local len=${#t}
+	local strout=""
+	echo -en "${COL_BOLD}$t${NO_COLOR}" 
+	if [[ $* ]]; then
+		local i=0
+		for str in "$@"; do
+			str_wrap $len "$str"
+			(( i++ )) || strwrap=${strwrap##*( )}
+			strout+="$strwrap\n"
+		done
+		echo -en "$strout"
+	else
+		echo "None"
+	fi
 }
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
 	title "Searching info on AUR for $1"
 	PKG=$1
-	local tmpdir=$(mktemp -d --tmpdir="$YAOURTTMPDIR")
-	cd $tmpdir
-	curl -s -o PKGBUILD "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" || { echo "$PKG not found in repos nor in AUR"; return 1; }
-	if (( EDITFILES )); then
-		run_editor PKGBUILD 1 
-		(( $? == 2 )) && return 0
-	fi
-	read_pkgbuild || return 1
-	eval $PKGBUILD_VARS
-	aur_show_info "Repository     " "aur"
-	aur_show_info "Name           " $pkgname
-	aur_show_info "Version        " $pkgver-$pkgrel
-	aur_show_info "URL            " $url
-	aur_show_info "Licenses       " ${license[@]}
-	aur_show_info "Groups         " ${groups[@]}
-	aur_show_info "Provides       " ${provides[@]} 
-	aur_show_info "Depends On     " ${depends[@]}
-	aur_show_info "Optional Deps  " ${optdepends[@]}
-	aur_show_info "Conflicts With " ${conflicts[@]}
-	aur_show_info "Replaces       " ${replaces[@]}
-	aur_show_info "Architecture   " ${arch[@]}
-	aur_show_info "Last update    " $(ls -l --time-style="long-iso" PKGBUILD | awk '{print $6" "$7}')
-	aur_show_info "Description    " $pkgdesc
+	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
+	(
+	set -e
+	curl -is "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile"
+	sed -in -e '/\$(/d' -e '/`/d' -e '/[><](/d' -e '/[&|]/d' \
+		-e '/^ *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
+		-e '/^ *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
+		-e '/^ *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
+		-e '/^ *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
+		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/last_mod="\1"/p }' \
+		-e 'd' "$tmpfile" 
+	) || { echo "$PKG not found in repos nor in AUR"; return 1; }
+	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
+		conflicts replaces arch last_mod pkgdesc
+	source "$tmpfile"
+	shopt -s extglob
+	aur_show_info "Repository     " "${COL_REPOS[aur]}aur${NO_COLOR}"
+	aur_show_info "Name           " "${COL_BOLD}$pkgname${NO_COLOR}"
+	aur_show_info "Version        " "${COL_GREEN}$pkgver-$pkgrel${NO_COLOR}"
+	aur_show_info "URL            " "${COL_CYAN}$url${NO_COLOR}"
+	aur_show_info "Licenses       " "${license[*]}"
+	aur_show_info "Groups         " "${groups[*]}"
+	aur_show_info "Provides       " "${provides[*]}"
+	aur_show_info "Depends On     " "${depends[*]}"
+	aur_show_info "Optional Deps  " "${optdepends[@]}"
+	aur_show_info "Conflicts With " "${conflicts[*]}"
+	aur_show_info "Replaces       " "${replaces[*]}"
+	aur_show_info "Architecture   " "${arch[*]}"
+	aur_show_info "Last update    " "$(date +"%c" --date "$last_mod")"
+	aur_show_info "Description    " "$pkgdesc"
 	echo
+	rm "$tmpfile" 
 }
 
 # scrap html page to show user's comments

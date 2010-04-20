@@ -68,12 +68,12 @@ initcolor(){
 	esac
 
 	# Color functions
-	COL_REPOS[core]=$_colitalique$COL_RED
-	COL_REPOS[extra]=$_colitalique$COL_GREEN
-	COL_REPOS[local]=$_colitalique$COL_YELLOW
-	COL_REPOS[community]=$_colitalique$COL_PINK
-	COL_REPOS[testing]=$_colitalique$COL_RED
-	COL_REPOS[aur]=$_colitalique$COL_MAGENTA
+	COL_REPOS[core]=$COL_RED
+	COL_REPOS[extra]=$COL_GREEN
+	COL_REPOS[local]=$COL_YELLOW
+	COL_REPOS[community]=$COL_PINK
+	COL_REPOS[testing]=$COL_RED
+	COL_REPOS[aur]=$COL_MAGENTA
 	COL_O_REPOS="$COL_MAGENTA"
 	COL_INSTALLED="$COL_INVERT$COL_YELLOW" # show [installed] packages
 	COL_ARROW="$COL_YELLOW" # show ==>
