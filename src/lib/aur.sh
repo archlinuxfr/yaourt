@@ -35,20 +35,9 @@ aur_get_pkgbuild ()
 aur_show_info()
 {
 	local t="$(gettext "$1"): "; shift
-	local len=${#t}
-	local strout=""
-	echo -en "${COL_BOLD}$t${NO_COLOR}" 
-	if [[ $* ]]; then
-		local i=0
-		for str in "$@"; do
-			str_wrap $len "$str"
-			(( i++ )) || strwrap=${strwrap##*( )}
-			strout+="$strwrap\n"
-		done
-		echo -en "$strout"
-	else
-		echo "None"
-	fi
+	local len=${#t} str=""
+	[[ $* ]] && str=("$@") || str="None"
+	echo_wrap_next_line "${COL_BOLD}$t${NO_COLOR}" $len "${str[@]}"
 }
 
 # Grab info for package on AUR Unsupported

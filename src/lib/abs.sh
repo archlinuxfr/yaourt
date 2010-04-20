@@ -132,10 +132,12 @@ sysupgrade()
 	# Specific upgrade: packages to build from sources
 	if (( BUILD )); then
 		echo
-		echo "$(gettext 'Source Targets:') ${packages[@]}" 
-		echo -ne "\n$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
+		local t="$(gettext 'Source Targets:') "
+		echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "${packages[*]}" 
+		prompt_info "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
+		promptlight
 		useragrees || return 0
-		install_from_abs "${packages[@]}"; 
+		install_from_abs "${packages[@]}" 
 		return $? 
 	fi
 	if [[ $packagesfromsource ]]; then

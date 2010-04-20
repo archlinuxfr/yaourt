@@ -69,6 +69,20 @@ echo_wrap ()
 	echo -e "$strwrap"
 }
 
+echo_wrap_next_line () 
+{
+	echo -en "$1"; shift
+	local len=$1; shift
+	local strout=""
+	local i=0
+	for str in "$@"; do
+		str_wrap $len "$str"
+		(( i++ )) || strwrap=${strwrap##*( )}
+		strout+="$strwrap\n"
+	done
+	echo -en "$strout"
+}
+
 list_select ()
 {
 	local i=0
@@ -183,6 +197,7 @@ check_root ()
 ### MAIN OF INIT PROGRAM        ###
 ###################################
 declare -A COL_REPOS	#TODO not its place
+shopt -s extglob
 loadlibrary color
 # defautconfig
 EDITFILES=1
