@@ -53,13 +53,30 @@ build_or_get ()
 	fi
 }
 
+custom_pkg ()
+{
+	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "/etc/customizepkg.d/$1" ]] && return 0
+	return 1
+}
+
+sync_first ()
+{
+	[[ $* ]] || return 0
+	warning $(eval_gettext 'The following packages should be upgraded first :')
+	echo_wrap 4 "$*"
+	prompt_info "$(eval_gettext 'Do it now ?') $(yes_no 1)"; promptlight
+	useragrees || return 0
+	args=("$@")
+	sync_packages
+	die $?
+}
 
 # download package from repos or grab PKGBUILD from repos.archlinux.org and run makepkg
 install_from_abs(){
 	for _line in $(package-query -1Sif "repo=%r;PKG=%n;_pkgver=%v;_arch=%a" "$@"); do
 		eval $_line
 		local package="$repo/$PKG"
-		(( ! BUILD )) && [[ ! -f "/etc/customizepkg.d/$PKG" ]] && binariespackages+=(${package#-/}) && continue
+		(( ! BUILD )) && ! custom_pkg "$PKG" && binariespackages+=(${package#-/}) && continue
 		if [[ "$MAJOR" != "getpkgbuild" ]]; then
 			msg $(eval_gettext 'Building $PKG from sources.')
 			title $(eval_gettext 'Install $PKG from sources')
@@ -82,80 +99,46 @@ install_from_abs(){
 		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
 
 		# Customise PKGBUILD
-		(( CUSTOMIZEPKGINSTALLED )) && customizepkg --modify
+		custom_pkg "$PKG" && customizepkg --modify
 		# Build, install/export
 		package_loop 1 || { manage_error 1; continue; }
 	done
 }
 
-
-# Searching for packages to update, buid from sources if necessary
-sysupgrade()
+# Set vars:
+# upgrade_details=(new release, new version then new pkgs)
+# syncfirstpkgs=(pkgs in SyncFirst from pacman.conf)
+# srcpkgs=(pkgs with a custom pkgbuild)
+# pkgs=(others)
+# usage: classify_pkg < [one pkg / line ] 
+# read from stdin: pkgname repo rversion lversion outofdate pkgdesc
+classify_pkg ()
 {
-	local pacjages packagesfromsource
-	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
-	$PACMANBIN -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
-	
-	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
-	packages=("${packages[@]##*/}")
-	packages=("${packages[@]%-*-*-*.pkg*}")
-	rm "$YAOURTTMPDIR/sysupgrade"
-	[[ ! "$packages" ]] && return 0	
-
-	# Specific upgrade: pacman and yaourt first. Ask to mount /boot for kernel26 or grub
-	local i=0
-	for package in ${packages[@]}; do
-		if (( CUSTOMIZEPKGINSTALLED )) && [[ -f "/etc/customizepkg.d/$package" ]]; then
-			packagesfromsource+=($_pkg)
-			unset packages[$i]
-		fi
-		case "$package" in
-			pacman|yaourt)
-				warning $(eval_gettext 'New version of $package detected')
-				prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
-				useragrees || continue
-				msg $(eval_gettext 'Upgrading $package first')
-				su_pacman -S "${PACMAN_S_ARG[@]}" "$package"
-				die 0
-				;;
-			grub*|kernel*)
-				if [[ ! $(ls -A /boot/) ]]; then
-					warning $(eval_gettext 'New version of $package detected')
-					prompt $(gettext 'Please mount your boot partition first then press ENTER to continue')
-					(( NOCONFIRM )) || read
-				fi
-				;;
-		esac
-		(( i++ ))
-	done
-
-	# Specific upgrade: packages to build from sources
-	if (( BUILD )); then
-		echo
-		local t="$(gettext 'Source Targets:') "
-		echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "${packages[*]}" 
-		prompt_info "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
-		promptlight
-		useragrees || return 0
-		install_from_abs "${packages[@]}" 
-		return $? 
-	fi
-	if [[ $packagesfromsource ]]; then
-		msg $(eval_gettext 'Packages to build from sources:')
-		echo ${packagesfromsource[*]}
-		# Show package list before building
-		echo -n "$(eval_gettext 'Proceed with compilation and installation ? ')$(yes_no 1)"
-		useragrees || return 0
-		# Build packages if needed
-		BUILD=1	install_from_abs "${packagesfromsource[@]}"
-	fi
-
-	# Classic sysupgrade
-	### classify pkg to upgrade, filtered by category "new release", "new version", "new pkg"
-	unset newrelease newversion newpkgs 
+	unset newrelease newversion newpkgs syncfirstpkgs srcpkgs pkgs
 	longestpkg=(0 0)
-	while read pkgname repo rversion lversion pkgdesc; do
+	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
+		if [[ "$repo" = "aur" ]]; then
+			if [[ ! ${rversion#-} ]]; then
+				echo -e "$pkgname: ${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"
+				continue
+			fi
+			if is_x_gt_y "$lversion" "$rversion"; then
+				echo -e "$pkgname: (${COL_RED}local=$lversion ${NO_COLOR}aur=$rversion)"
+				continue
+			fi
+			if [[ "$lversion" = "$rversion" ]]; then
+				echo -en "$pkgname: $(gettext 'up to date ')"
+				(( outofdate )) && echo -en "${COL_RED}($lver "$(gettext 'flagged as out of date')")${NO_COLOR}" || echo
+				continue
+			fi
+			if [[ " ${PKGS_IGNORED[@]} " =~ " $pkgname " ]]; then
+				echo -e "$pkgname: ${COL_RED} "$(gettext '(ignoring package upgrade)')"${NO_COLOR}"
+				continue
+			fi
+		fi
+		[[ " ${SyncFirst[@]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
+		custom_pkg "$pkgname" && srcpkgs+=("$pkgname") || pkgs+=("$pkgname")
 		if [[ "$lversion" != "-" ]]; then
 			pkgver=$lversion
 			lrel=${lversion#*-}
@@ -182,40 +165,67 @@ sysupgrade()
 		fi
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
-	done < <(package-query -1Sif '%n %r %v %l %d' "${packages[@]}")
+	done 
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 	unset newrelease newversion newpkgs
+}
 
+display_update ()
+{
 	# Show result
 	showupgradepackage lite
         
 	# Show detail on upgrades
-	if [[ $packages ]]; then                                                                                                           
-		while true; do
-			echo
-			msg "$(gettext 'Continue upgrade ?') $(yes_no 1)"
-			prompt "$(gettext '[V]iew package detail   [M]anualy select packages')"
-			local answer=$(userinput "YNVM" "Y")
-			case "$answer" in
-				V)	showupgradepackage full;;
-				M)	showupgradepackage manual
-					run_editor "$YAOURTTMPDIR/sysuplist" 0
-					declare args="$YAOURTTMPDIR/sysuplist"
-					SYSUPGRADE=2
-					sync_packages
-					die 0
-					;;
-				N)	die 0;;
-				*)	break;;
-			esac
-		done
-	fi  
-
-	# ok let's do real sysupgrade
-	if [[ $packages ]]; then
-		su_pacman -S "${PACMAN_S_ARG[@]}" "${packages[@]}"
+	while true; do
+		echo
+		msg "$(gettext 'Continue upgrade ?') $(yes_no 1)"
+		prompt "$(gettext '[V]iew package detail   [M]anualy select packages')"
+		local answer=$(userinput "YNVM" "Y")
+		case "$answer" in
+			V)	showupgradepackage full;;
+			M)	showupgradepackage manual
+				run_editor "$YAOURTTMPDIR/sysuplist" 0
+				declare args="$YAOURTTMPDIR/sysuplist"
+				SYSUPGRADE=2
+				sync_packages
+				return 2
+				;;
+			N)	return 1;;
+			*)	break;;
+		esac
+	done
+}
+# Searching for packages to update, buid from sources if necessary
+sysupgrade()
+{
+	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
+	(( QUIET )) && { su_pacman -S "${PACMAN_S_ARG[@]}" $_arg; return $?; }
+	$PACMANBIN -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
+	
+	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
+	packages=("${packages[@]##*/}")
+	packages=("${packages[@]%-*-*-*.pkg*}")
+	rm "$YAOURTTMPDIR/sysupgrade"
+	[[ ! "$packages" ]] && return 0	
+	loadlibrary pacman_conf
+	parse_pacman_conf
+	classify_pkg < <(package-query -1Sif '%n %r %v %l - %d' "${packages[@]}")
+	sync_first "${syncfirstpkgs[@]}"
+	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
+	if [[ $srcpkgs ]]; then 
+		echo
+		local t="$(gettext 'Source Targets:') "
+		echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "${srcpkgs[*]}" 
+		prompt_info "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
+		promptlight
+		useragrees || return 0
+		BUILD=1 install_from_abs "${srcpkgs[@]}" 
+		local ret=$?
+		[[ $pkgs ]] || return $ret
 	fi
+	[[ $pkgs ]] || return 0
+	display_update && su_pacman -S "${PACMAN_S_ARG[@]}" "${pkgs[@]}"
 }
 
 # Show package to upgrade
@@ -228,7 +238,7 @@ showupgradepackage()
 		separator=${separator// /#}
 	fi
 	
-	local ex_uptype=0
+	local exuptype=0
 	for line in "${upgrade_details[@]}"; do
 		eval line=($line)
 		if (( exuptype != ${line[0]} )); then
@@ -279,7 +289,7 @@ sync_packages()
 	if [[ -f "${args[0]}" ]] && file -b "${args[0]}" | grep -qi text ; then
 		if (( ! SYSUPGRADE )); then 
 			title $(gettext 'Installing from a package list')
-			msg $(gettext 'Installing from a package list')"($_pkg_list)"
+			msg $(gettext 'Installing from a package list')
 		fi
 		AURVOTE=0
 		args=( `grep -o '^[^#[:space:]]*' "${args[0]}"` ) 
@@ -311,7 +321,7 @@ upgrade_devel_package(){
 	title $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
-	create_ignorepkg_list
+	parse_pacman_conf
 	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
 	do
 		if in_array "$PKG" "${PKGS_IGNORED[@]}"; then
@@ -323,7 +333,7 @@ upgrade_devel_package(){
 	[[ $devel_pkgs ]] || return 0
 	echo
 	plain $(gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
-	echo "${devel_pkgs[@]}"
+	echo_wrap 4 "${devel_pkgs[*]}"
 	prompt "$(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)"
 	useragrees || return 0
 	for PKG in ${devel_pkgs[@]}; do

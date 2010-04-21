@@ -14,7 +14,7 @@
 #===============================================================================
 loadlibrary pacman_conf
 loadlibrary pkgbuild
-unset repos_packages orphans IgnorePkg IgnoreGroup HoldPkg
+unset repos_packages orphans 
 pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
 
 buildpackagelist()
@@ -41,7 +41,7 @@ buildpackagelist()
 	done
 	unset IFS
 	# Construction de la liste des paquets ignorés/noupgrade/holdpkg
-	eval $(LC_ALL=C pacman --debug | sed -n 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=(\2)/p')
+	parse_pacman_conf
 }
 
 showpackagestats(){

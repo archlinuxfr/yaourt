@@ -15,20 +15,19 @@
 
 # This file use global variables
 # repositories:	Respoitories configured in pacman.conf
-# PKGS_IGNORED: IgnorePkg in pacman.conf
+# PKGS_IGNORED: IgnoredPkg + IgnoredGroup (exploded) in pacman.conf
+# HoldPkg, SyncFirst ... 
+
+
 
 # take the list of activated repositories from pacman.conf
 list_repositories(){
 		repositories=( $(package-query -L) )
 }
 
-# list all ignorepkg from pacman.conf
-create_ignorepkg_list(){
-	PKGS_IGNORED=($(LC_ALL="C" pacman --debug 2>/dev/null |
-		grep "^debug: config: IgnorePkg: " | awk '{print $NF}'))
-	PKGS_IGNORED+=("${IGNOREPKG[@]}")
-	local ignored_grp=($(LC_ALL="C" pacman --debug 2>/dev/null |
-		grep "^debug: config: IgnoreGroup: " | awk '{print $NF}'))
-	ignored_grp+=("${IGNOREGRP[@]}")
-	[[ $ignored_grp ]] && PKGS_IGNORED+=($(pacman -Sgq ${ignored_grp[@]}))
+parse_pacman_conf()
+{
+	unset PKGS_IGNORED IgnoredPkg IgnoredGroup HoldPkg SyncFirst
+	eval $(LC_ALL=C pacman --debug | sed -n 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=(\2)/p')
+	PKGS_IGNORED=("${IgnoredPkg[@]}" $(pacman -Qqg "${IgnoredGroup[@]}"))
 }

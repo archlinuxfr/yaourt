@@ -16,7 +16,7 @@
 AUR_URL="http://aur.archlinux.org/"
 AUR_PKG_URL="$AUR_URL/packages.php?setlang=en&ID="
 
-loadlibrary pkgbuild
+loadlibrary abs
 # Get sources in current dir
 aur_get_pkgbuild ()
 {
@@ -172,7 +172,7 @@ install_from_aur(){
 	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"
 
 	# Customise PKGBUILD
-	(( CUSTOMIZEPKGINSTALLED )) && customizepkg --modify
+	custom_pkg "$PKG" && customizepkg --modify
 
 	# Build, install/export
 	package_loop 0 || { manage_error 1; return 1; }
@@ -189,60 +189,17 @@ install_from_aur(){
 
 upgrade_from_aur(){
 	title $(gettext 'upgrading AUR unsupported packages')
-	tmp_files="$YAOURTTMPDIR/search/"
-	mkdir -p $tmp_files
-	loadlibrary pacman_conf
-	create_ignorepkg_list 
-	# Search for new version on AUR
 	msg $(gettext 'Searching for new version on AUR')
-	inter_process="$(mktemp)"
-	package-query -AQm -f "%n %l %v %o" | while read PKG lver pkgver outofdate
-	do
-		echo -n "$PKG: "
-		[[ "$pkgver" = "-" ]] && \
-			{ echo -e "${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"; continue; }
-		if  is_x_gt_y "$pkgver" "$lver"; then
-			echo -en " ${COL_GREEN}${lver} => ${pkgver}${NO_COLOR}"
-			if in_array "$PKG" "${PKGS_IGNORED[@]}"; then
-				echo -en " ${COL_RED} "$(gettext '(ignoring package upgrade)')"${NO_COLOR}"
-			else
-				echo $PKG >> "$inter_process"
-			fi
-		elif [[ $lver != $pkgver ]]; then
-			echo -en " (${COL_RED}local=$lver ${NO_COLOR}aur=$pkgver)"
-		else
-			echo -n $(gettext 'up to date ')
-			(( outofdate )) && echo -en "${COL_RED}($lver "$(gettext 'flagged as out of date')")${NO_COLOR}"
-		fi
-		echo
-	done
-	cleanoutput
-
-	aur_package=( $(cat "$inter_process" ) )
-	rm "$inter_process"
-	[[ $aur_package ]] || return 0
-	# upgrade yaourt first
-	if [[ " ${aur_package[@]} " =~ " yaourt " ]]; then
-		warning $(eval_gettext 'New version of $package detected')
-		prompt "$(eval_gettext 'Do you want to update $package first ? ')$(yes_no 1)"
-		if useragrees; then
-			echo
-			msg $(eval_gettext 'Upgrading $package first')
-			install_from_aur "$package" || error $(eval_gettext 'unable to update $package')
-			die 0
-		fi
-	fi
-
-	echo; echo_fill "" - ""
-	plain $(gettext 'Packages that can be updated from AUR:')
-	echo "${aur_package[*]}"
-	prompt "$(gettext 'Do you want to update these packages ? ')$(yes_no 1)"
-	useragrees || return 0
-	echo
-	for PKG in ${aur_package[@]}; do
+	loadlibrary pacman_conf
+	parse_pacman_conf
+	# Search for new version on AUR
+	classify_pkg < <(package-query -AQmf '%n %r %v %l %o %d')
+	sync_first "${syncfirstpkgs[@]}"
+	pkgs+=("${srcpkgs[@]}")
+	[[ $pkgs ]] || return 0
+	display_update && for PKG in ${pkgs[@]}; do
 		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
 	done
-	cleanoutput
 }
 
 

@@ -273,27 +273,14 @@ msgid "Unable to create directory $wdir."
 msgstr "Impossible de créer le dossier $wdir."
 
 #: ../../lib/abs.sh:99
-#: ../../lib/abs.sh:108
-#: ../../lib/aur.sh:215
 #, sh-format
-msgid "New version of $package detected"
-msgstr "Nouvelle version de $package détectée"
+msgid "The following packages should be upgraded first :"
+msgstr "Les paquets suivants devraient être mis à jour en premier :"
 
-#: ../../lib/abs.sh:100
-#: ../../lib/aur.sh:216
+#: ../../lib/abs.sh:101
 #, sh-format
-msgid "Do you want to update $package first ? "
-msgstr "Voulez-vous mettre à jour $package d'abord ? "
-
-#: ../../lib/abs.sh:102
-#: ../../lib/aur.sh:219
-#, sh-format
-msgid "Upgrading $package first"
-msgstr "Mise à jour de $package en premier"
-
-#: ../../lib/abs.sh:109
-msgid "Please mount your boot partition first then press ENTER to continue"
-msgstr "Veuillez monter votre partion de boot puis appuyer sur Entrée"
+msgid "Do it now ?"
+msgstr "Le faire maintenant ?"
 
 #: ../../lib/abs.sh:120
 msgid "Source Targets:"
