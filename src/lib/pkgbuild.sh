@@ -68,7 +68,7 @@ read_pkgbuild ()
 	echo "}"                            >> $pkgbuild_tmp
 	echo "( yaourt_$$ ) || exit 1"      >> $pkgbuild_tmp		
 	echo "exit 0"                       >> $pkgbuild_tmp
-	PKGBUILD_VARS="$(makepkg -p "$pkgbuild_tmp" 3>&1 1>/dev/null 2>&1 | tr '\n' ';')"
+	PKGBUILD_VARS="$(makepkg "${MAKEPKG_ARG[@]}" -p "$pkgbuild_tmp" 3>&1 1>/dev/null 2>&1 | tr '\n' ';')"
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
 	[[ "$pkgbase" ]] || pkgbase="${pkgname[0]}"
@@ -287,10 +287,9 @@ build_package()
 	
 	# Build 
 	check_root
-	mkpkg_opt=$MAKEPKG_ARG
-	(( runasroot )) && mkgpkg_opt="$mkpkg_opt --asroot"
-	(( SUDOINSTALLED )) || (( runasroot )) &&  mkgpkg_opt="$mkpkg_opt --syncdeps"
-	PKGDEST="$YPKGDEST" nice -n 15 makepkg $mkpkg_opt --force -p ./PKGBUILD
+	mkpkg_opt=("${MAKEPKG_ARG[@]}")
+	(( SUDOINSTALLED )) || (( runasroot )) &&  mkgpkg_opt+=("--syncdeps")
+	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${mkpkg_opt[@]}" --force -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')

@@ -367,6 +367,8 @@ unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
 } &> /dev/null
 
+# makepkg check root
+(( ! UID )) && program_arg 2 "--asroot"
 
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")
