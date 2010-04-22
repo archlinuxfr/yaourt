@@ -182,7 +182,6 @@ install_from_aur(){
 
 	#msg "Delete $wdir"
 	rm -rf "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
-	cleanoutput
 	echo
 	return 0
 }

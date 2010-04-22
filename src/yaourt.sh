@@ -63,7 +63,6 @@ version(){
 die(){
 	local ret=${1:-0}
 	# reset term title
-	tput sgr0
 	(( TERMINALTITLE )) && [[ $DISPLAY ]] &&  echo -n -e "\033]0;$TERM\007"
 	exit $ret
 }
@@ -278,7 +277,6 @@ yaourt_sync ()
 		}
 		(( GROUP )) && title $(gettext 'show groups')
 		search 0
-		cleanoutput
 		return
 	elif (( SYSUPGRADE )); then
 		loadlibrary abs
@@ -487,6 +485,7 @@ fi
 [ -w "$TMPDIR" ] || { error $TMPDIR $(gettext 'is not writable'); die 1;}
 TMPDIR=$(readlink -e "$TMPDIR")
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
+[[ -t 1 ]] || { COLORMODE="textonly" TERMINALTITLE=0; }
 [[ $COLORMODE ]] && program_arg 4  "--$COLORMODE"
 initpath
 initcolor
