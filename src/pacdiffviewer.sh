@@ -150,12 +150,13 @@ is_mergeable()
 
 
 # Remove .pac* files
-supress()
+suppress()
 {
 	local pacfiles=(${PACOLD[@]})
 	[[ "$1" = "all" ]] && pacfiles+=("${PACNEW[@]}" "${PACSAVE[@]}" "${PACORIG[@]}")
 	(( ! ${#pacfiles[@]} )) && return
-	echo "${pacfiles[@]}" | fold -s -w $(tput cols)
+	msg "$(gettext 'The following files have no original version.')"
+	echo_wrap 4 "${pacfiles[@]}" 
 	echo
 	prompt "$(gettext 'Do you want to delete these files ?')" $(yes_no 2) "$(gettext '(S: no confirm)')"
 	local answer=$(userinput "YNS" "N")
@@ -201,9 +202,10 @@ manage_file ()
 				echo
 				msg "$(gettext 'Apply ?') $(yes_no 1)"
 				promptlight
-				useragrees || break;
+				useragrees || continue;
 				patch -sp0 "${_file%$ext}" -i "$tmp_file"
 				(( $? )) && error "$(gettext 'patch returned an error!')"
+				rm "$_file"
 				break;;
 		esac
 	done
@@ -260,12 +262,11 @@ done
 
 case "$action" in
 	backup)	backup_files;;
-	clean)	create_db; supress all;;
+	clean)	create_db; suppress all;;
 	*)	create_db
 		manage .pacsave "${PACSAVE[@]}"
 		manage .pacnew "${PACNEW[@]}"
 		manage .pacorig "${PACORIG[@]}"
-		msg "$(gettext 'The following files have no original version.')"
-		supress
+		suppress
 		;;
 esac
