@@ -17,8 +17,16 @@ COLUMNS=$(tput cols)
 
 # set misc path
 initpath(){
-	PACMANROOT=`LC_ALL=C pacman --verbose | grep 'DB Path' | awk '{print $4}'| sed "s/\/$//"`
-	LOCKFILE="$PACMANROOT/db.lck"
+	readarray -t P_CONF < <(
+	LC_ALL=C pacman --verbose | sed -n \
+		-e 's|/ *$|/|' \
+		-e 's/^Conf File *: //p' \
+		-e 's/^DB Path *: //p' \
+		-e 's/^Cache Dirs *: //p' \
+		-e 's/^Lock File *: //p' \
+		-e 's/^Log File *: //p' )
+	PACMANROOT=${P_CONF[1]}
+	LOCKFILE=${P_CONF[3]}
 	mkdir -p "$YAOURTTMPDIR"
 }
 

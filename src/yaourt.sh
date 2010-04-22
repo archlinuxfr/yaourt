@@ -300,10 +300,12 @@ yaourt_sync ()
 		for arg in ${args[@]}; do
 			title $(eval_gettext 'Informations for $arg')
 			_repo="${arg%/*}"
-			[[ $_repo = $arg ]] && _repo="$(package-query -1ASif "%r" "$arg")" 
-			[[ "$_repo" = "aur" ]] && info_from_aur "${arg#*/}" || abs_pkg+=("$arg") 
+			if [[ "$_repo" = "$arg" || "$_repo" != "aur" ]]; then
+				$PACMANBIN -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null || info_from_aur "${arg#*/}"
+			else
+				info_from_aur "${arg#*/}"
+			fi
 		done
-		[[ $abs_pkg ]] && $PACMANBIN -S "${PACMAN_S_ARG[@]}" "${abs_pkg[@]}"
 		return
 	fi
 	loadlibrary abs
