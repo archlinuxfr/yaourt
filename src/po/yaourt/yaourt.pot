@@ -280,7 +280,7 @@ msgid "Do it now ?"
 msgstr ""
 
 #: ../../lib/abs.sh:120
-msgid "Source Targets:"
+msgid "Source Targets"
 msgstr ""
 
 #: ../../lib/abs.sh:121
@@ -620,6 +620,10 @@ msgstr ""
 
 #: ../../lib/aur.sh:196
 msgid "(ignoring package upgrade)"
+msgstr ""
+
+#: ../../lib/aur.sh:203
+msgid "AUR targets"
 msgstr ""
 
 #: ../../lib/aur.sh:203

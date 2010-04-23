@@ -331,7 +331,7 @@ yaourt_query ()
 		$PACMANBIN --dbpath "$backupdir/" -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
 		return
 	fi
-	(( CHANGELOG || LIST || UPGRADES || INFO )) && pacman_cmd 0
+	(( CHANGELOG || LIST || INFO )) && pacman_cmd 0
 	if (( OWNER )); then
 		# pacman will call "which" on futur version
 		search_which_package_owns
@@ -408,7 +408,7 @@ while [[ $1 ]]; do
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|--unrequired)    UNREQUIRED=1; program_arg 8 $1;;
-		-u|--upgrades)      (( UPGRADES ++ ));;
+		-u|--upgrades)      (( UPGRADES ++ )); program_arg 8 $1;;
 		--holdver)          HOLDVER=1; program_arg 6 $1;;
 		-A|--ignorearch)    IGNOREARCH=1; program_arg 6 $1;;
 		--ignore)           program_arg 1 $1; shift; IGNOREPKG+=("$1"); program_arg 1 $1;;
@@ -449,7 +449,7 @@ while [[ $1 ]]; do
 		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg 4 $1; shift; TMPDIR="$1"; program_arg 4 $1;;
 		-V|version)         version; exit 0;;
-		-q)                 QUIET=1; program_arg 5 $1;;
+		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg 5 $1;;
 
 		*)                  args+=("$1") ;; 
 	esac

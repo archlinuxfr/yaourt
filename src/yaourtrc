@@ -25,4 +25,5 @@ ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unst
 #COLORMODE="normal"
 #SHOWORPHANS=1
 #DIFFEDITCMD="vimdiff"
+#DETAILUPGRADE=1
 

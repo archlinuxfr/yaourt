@@ -292,8 +292,8 @@ msgid "Please mount your boot partition first then press ENTER to continue"
 msgstr "Monta la tua partizione di boot poi premi INVIO per continuare"
 
 #: ../../lib/abs.sh:120
-msgid "Source Targets:"
-msgstr "Oggetti da compilare:"
+msgid "Source targets"
+msgstr "Oggetti da compilare"
 
 #: ../../lib/abs.sh:121
 msgid "Proceed with upgrade? "

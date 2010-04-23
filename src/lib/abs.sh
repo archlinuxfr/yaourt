@@ -110,30 +110,34 @@ install_from_abs(){
 # syncfirstpkgs=(pkgs in SyncFirst from pacman.conf)
 # srcpkgs=(pkgs with a custom pkgbuild)
 # pkgs=(others)
-# usage: classify_pkg < [one pkg / line ] 
+# usage: classify_pkg $pkg_nb < [one pkg / line ] 
 # read from stdin: pkgname repo rversion lversion outofdate pkgdesc
 classify_pkg ()
 {
 	unset newrelease newversion newpkgs syncfirstpkgs srcpkgs pkgs
-	longestpkg=(0 0)
+	longestpkg=(0 0) 
+	local i=0 bar="|/-\\"
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
+		((! DETAILUPGRADE)) && (( ++i )) && echo -en "${bar:$((i%3)):1} $i / $1\r"
 		if [[ "$repo" = "aur" ]]; then
 			if [[ ! ${rversion#-} ]]; then
-				echo -e "$pkgname: ${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"
+				((DETAILUPGRADE)) && echo -e "$pkgname: ${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"
 				continue
 			fi
 			if is_x_gt_y "$lversion" "$rversion"; then
-				echo -e "$pkgname: (${COL_RED}local=$lversion ${NO_COLOR}aur=$rversion)"
+				((DETAILUPGRADE)) && echo -e "$pkgname: (${COL_RED}local=$lversion ${NO_COLOR}aur=$rversion)"
 				continue
 			fi
 			if [[ "$lversion" = "$rversion" ]]; then
-				echo -en "$pkgname: $(gettext 'up to date ')"
-				(( outofdate )) && echo -en "${COL_RED}($lver "$(gettext 'flagged as out of date')")${NO_COLOR}" || echo
+				((DETAILUPGRADE)) && {
+					echo -en "$pkgname: $(gettext 'up to date ')"
+					(( outofdate )) && echo -en "${COL_RED}($lver "$(gettext 'flagged as out of date')")${NO_COLOR}" || echo
+				}
 				continue
 			fi
 			if [[ " ${PKGS_IGNORED[@]} " =~ " $pkgname " ]]; then
-				echo -e "$pkgname: ${COL_RED} "$(gettext '(ignoring package upgrade)')"${NO_COLOR}"
+				((DETAILUPGRADE)) && echo -e "$pkgname: ${COL_RED} "$(gettext '(ignoring package upgrade)')"${NO_COLOR}"
 				continue
 			fi
 		fi
@@ -166,6 +170,7 @@ classify_pkg ()
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
 	done 
+	((! DETAILUPGRADE)) && echo -n "            "
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 	unset newrelease newversion newpkgs
@@ -196,11 +201,24 @@ display_update ()
 		esac
 	done
 }
+
+show_targets ()
+{
+	local t="$(gettext "$1") "; shift
+	t+="($#): "
+	echo
+	echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "$*" 
+	echo
+	prompt_info "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
+	promptlight
+	useragrees 
+}	
+
 # Searching for packages to update, buid from sources if necessary
 sysupgrade()
 {
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
-	(( QUIET )) && { su_pacman -S "${PACMAN_S_ARG[@]}" $_arg; return $?; }
+	(( ! DETAILUPGRADE )) && { su_pacman -S "${PACMAN_S_ARG[@]}" $_arg; return $?; }
 	$PACMANBIN -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
 	
 	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
@@ -214,12 +232,7 @@ sysupgrade()
 	sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
-		echo
-		local t="$(gettext 'Source Targets:') "
-		echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "${srcpkgs[*]}" 
-		prompt_info "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
-		promptlight
-		useragrees || return 0
+		show_targets 'Source targets' "${srcpkgs[@]}" || return 0
 		BUILD=1 install_from_abs "${srcpkgs[@]}" 
 		local ret=$?
 		[[ $pkgs ]] || return $ret
@@ -318,8 +331,8 @@ sync_packages()
 # Search to upgrade devel package 
 upgrade_devel_package(){
 	local devel_pkgs
-	title $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
-	msg $(eval_gettext 'upgrading SVN/CVS/HG/GIT package')
+	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
+	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
 	parse_pacman_conf
 	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
@@ -331,12 +344,7 @@ upgrade_devel_package(){
 		fi
 	done
 	[[ $devel_pkgs ]] || return 0
-	echo
-	plain $(gettext 'SVN/CVS/HG/GIT/BZR packages that can be updated from ABS or AUR:')
-	echo_wrap 4 "${devel_pkgs[*]}"
-	prompt "$(eval_gettext 'Do you want to update these packages ? ') $(yes_no 1)"
-	useragrees || return 0
-	for PKG in ${devel_pkgs[@]}; do
+	show_targets 'Targets' "${devel_pkgs[@]}" && for PKG in ${devel_pkgs[@]}; do
 		build_or_get "$PKG"
 	done
 }

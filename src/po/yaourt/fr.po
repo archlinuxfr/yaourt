@@ -283,8 +283,8 @@ msgid "Do it now ?"
 msgstr "Le faire maintenant ?"
 
 #: ../../lib/abs.sh:120
-msgid "Source Targets:"
-msgstr "Cibles à compiler :"
+msgid "Source targets"
+msgstr "Cibles à compiler"
 
 #: ../../lib/abs.sh:121
 msgid "Proceed with upgrade? "
@@ -628,6 +628,10 @@ msgstr "non trouvé sur AUR"
 #: ../../lib/aur.sh:196
 msgid "(ignoring package upgrade)"
 msgstr "(ignore la mise à jour du paquet)"
+
+#: ../../lib/aur.sh:203
+msgid "AUR targets"
+msgstr "Cibles AUR"
 
 #: ../../lib/aur.sh:203
 msgid "up to date "

@@ -229,6 +229,7 @@ TMPDIR="/tmp"
 COLORMODE=""
 SHOWORPHANS=1
 DIFFEDITCMD="vimdiff"
+DETAILUPGRADE=1
 
 [[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
 [[ -r ~/.yaourtrc ]] && source ~/.yaourtrc

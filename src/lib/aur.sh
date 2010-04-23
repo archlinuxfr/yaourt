@@ -192,11 +192,17 @@ upgrade_from_aur(){
 	loadlibrary pacman_conf
 	parse_pacman_conf
 	# Search for new version on AUR
-	classify_pkg < <(package-query -AQmf '%n %r %v %l %o %d')
+	(( ! DETAILUPGRADE )) && f_pkgs=($(pacman -Qqm)) 
+	classify_pkg ${#f_pkgs[@]} < <(package-query -AQmf '%n %r %v %l %o %d')
 	sync_first "${syncfirstpkgs[@]}"
 	pkgs+=("${srcpkgs[@]}")
 	[[ $pkgs ]] || return 0
-	display_update && for PKG in ${pkgs[@]}; do
+	if (( ! DETAILUPGRADE )); then
+		show_targets 'AUR targets' "${pkgs[@]}" || return 0
+	else
+		display_update || return 0
+	fi
+	for PKG in ${pkgs[@]}; do
 		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
 	done
 }
