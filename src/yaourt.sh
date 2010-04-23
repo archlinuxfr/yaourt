@@ -74,6 +74,8 @@ free_pkg ()
 }
 
 # usage: pkg_output repo pkgname pkgver lver group outofdate votes pkgdesc
+T_INSTALLED="$(gettext 'installed')"
+T_OUTOFDATE="$(gettext 'Out of Date')"
 pkg_output()
 {
 	pkgoutput=""
@@ -81,11 +83,11 @@ pkg_output()
 	[[ $2 ]] && pkgoutput+="${COL_BOLD}$2 ${COL_GREEN}$3${NO_COLOR}"
 	if [[ ${4#-} ]]; then
 		pkgoutput+=" ${COL_INSTALLED}["
-		[[ "$4" != "$3" ]] && pkgoutput+="${COL_RED}$4${COL_INSTALLED}"
-		pkgoutput+="$(gettext 'installed')]${NO_COLOR}"
+		[[ "$4" != "$3" ]] && pkgoutput+="${COL_RED}$4${COL_INSTALLED} "
+		pkgoutput+="$T_INSTALLED]${NO_COLOR}"
 	fi
 	[[ ${5#-} ]] && pkgoutput+=" $COL_GROUP($5)$NO_COLOR"
-	[[ "$6" = "1" ]] && pkgoutput+=" ${COL_INSTALLED}($(gettext 'Out of Date'))$NO_COLOR"
+	[[ "$6" = "1" ]] && pkgoutput+=" ${COL_INSTALLED}($T_OUTOFDATE)$NO_COLOR"
 	[[ ${7#-} ]] && pkgoutput+=" $COL_NUMBER($7)${NO_COLOR}"
 	if [[ $8 ]]; then
 		str_wrap 4 "$8"
@@ -225,13 +227,22 @@ search ()
 	local i=1
 	local search_option="${PACMAN_Q_ARG[@]}"
 	local format
+	if [[ "$MAJOR" = "query" ]]; then
+		(( interactive )) && DATE=0
+		search_option+=" -Q"
+		lver="-"
+	else
+		DATE=0
+		lver="%l"
+		search_option+=" -S"
+	fi
 	(( SEARCH )) && search_option+=" -s" && lite=0
-	(( lite )) && format="%1 %n %s %v - - - %g" || format="%1 %n %s %v %l %w %o %g  %d"
-	[[ "$MAJOR" = "query" ]] && search_option+=" -Q" || search_option+=" -S"
+	(( DATE )) && format="%1 " || format="- "
+	(( lite )) && format+="%n %s %v - - - %g" || format+="%n %s %v $lver %w %o %g  %d"
 	(( AURSEARCH )) && search_option+=" -A"
 	(( ! SEARCH )) && [[ $args ]] && search_option+=" -i"
 	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}"; return; }
-	(( DATE && ! interactive )) && > "$YAOURTTMPDIR/instdate"
+	(( DATE )) && > "$YAOURTTMPDIR/instdate"
 	local cmd=(package-query $search_option -f "$format")
 	pkgdesc=""
 	unset PKGSFOUND
@@ -246,10 +257,10 @@ search ()
 			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
 			(( i ++ ))
 		fi
-		(( DATE && ! interactive )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" || \
+		(( DATE )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" || \
 			echo -e "$pkgoutput"
 	done < <("${cmd[@]}" "${args[@]}")
-	if (( DATE && ! interactive )); then
+	if (( DATE )); then
 		sort $YAOURTTMPDIR/instdate | awk '{
 			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
 			}'
