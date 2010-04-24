@@ -45,17 +45,15 @@ info_from_aur() {
 	title "Searching info on AUR for $1"
 	PKG=$1
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	(
-	set -e
-	curl -is "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile"
-	sed -in -e '/\$(/d' -e '/`/d' -e '/[><](/d' -e '/[&|]/d' \
-		-e '/^ *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
-		-e '/^ *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
-		-e '/^ *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
-		-e '/^ *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
+	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
+		{ error "$PKG not found in repos nor in AUR"; return 1; }
+	sed -i -n -e '/\$\|`\|[><](\|[&|]\|;/d' -e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
+		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
+		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
+		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
+		-e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
 		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/last_mod="\1"/p }' \
 		-e 'd' "$tmpfile" 
-	) || { echo "$PKG not found in repos nor in AUR"; return 1; }
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
 	source "$tmpfile"
