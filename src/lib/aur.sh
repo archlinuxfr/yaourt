@@ -47,7 +47,7 @@ info_from_aur() {
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
 		{ error "$PKG not found in repos nor in AUR"; return 1; }
-	sed -i -n -e '/\$\|`\|[><](\|[&|]\|;/d' -e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
+	sed -i -n -e '/\$(\|`\|[><](\|[&|]\|;/d' -e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
 		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \

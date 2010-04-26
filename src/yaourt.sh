@@ -461,7 +461,7 @@ while [[ $1 ]]; do
 		--tmp)              program_arg 4 $1; shift; TMPDIR="$1"; program_arg 4 $1;;
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg 5 $1;;
-
+		-*)                 pacman_cmd 0;;
 		*)                  args+=("$1") ;; 
 	esac
 	shift
