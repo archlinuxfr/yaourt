@@ -30,7 +30,7 @@ abs_get_pkgbuild ()
 		abs_url=$(package-query -1Sif "%u" "$2/$3")
 		abs_url="${abs_url%/*}/$2.abs.tar.gz"
 		msg "$2: $(gettext 'retrieve abs archive')"
-		curl -# "$abs_url" -o "$abs_tar" || return 1
+		curl -f -# "$abs_url" -o "$abs_tar" || return 1
 	fi
 	bsdtar -s "/${2}.${3}//" -xvf "$abs_tar" "$2/$3"
 }

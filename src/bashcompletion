@@ -10,29 +10,29 @@
 
 _available_repos ()
 {
-  COMPREPLY=( $( compgen -W "$(package-query -L)" -- $cur ) )
+  COMPREPLY=( $( compgen -W "$(\package-query -L)" -- $cur ) )
 }
 
 _installed_pkgs ()
 {
   local installed_pkgs
-  installed_pkgs=($( ls /var/lib/pacman/local/ ))
+  installed_pkgs=( $( \ls /var/lib/pacman/local/ ) )
   COMPREPLY=( $( compgen -W "${installed_pkgs[*]%-*-*}" -- $cur ) )
 }
 
 _available_pkgs ()
 {
-  COMPREPLY=( $( compgen -W "$(pacman -Ssq "^$cur")" -- $cur ) )
+  COMPREPLY=( $( compgen -W "$(\pacman -Ssq "^$cur")" -- $cur ) )
 }
 
 _installed_groups ()
 {
-  COMPREPLY=( $( compgen -W "$(pacman -Qgq | awk "/^$cur/{print \$1}" | sort |uniq)" -- $cur ) )
+  COMPREPLY=( $( compgen -W "$(\pacman -Qgq | \awk "{print \$1}" | \sort -u)" -- $cur ) )
 }
 
 _available_groups ()
 {
-  COMPREPLY=( $( compgen -W "$(pacman -Sgq | awk "/^$cur/{print \$1}" | sort |uniq)" -- $cur ) )
+  COMPREPLY=( $( compgen -W "$(\pacman -Sgq | \sort -u)" -- $cur ) )
 }
 
 ## yaourt completion

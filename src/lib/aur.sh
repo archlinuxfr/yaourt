@@ -22,12 +22,12 @@ aur_get_pkgbuild ()
 {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
-	(( $# > 1 )) && local pkgurl=$2 || local pkgurl=$(package-query -Aif "%u" "$pkg")
-	if [[ ! "$pkgurl" ]]; then
+	#(( $# > 1 )) && local pkgurl=$2 || local pkgurl=$(package-query -Aif "%u" "$pkg")
+	local pkgurl="$AUR_URL/packages/$pkg/$pkg.tar.gz"
+	if [[ ! "$pkgurl" ]] || ! curl -fs "$pkgurl" -o "$pkg.tar.gz"; then
 		error $(eval_gettext '$pkg not found in AUR.');
 		return 1;
 	fi
-	curl -s "$pkgurl" -o "$pkg.tar.gz"
 	bsdtar -s "/$pkg//" -xvf "$pkg.tar.gz"
 	rm "$pkg.tar.gz"
 }
