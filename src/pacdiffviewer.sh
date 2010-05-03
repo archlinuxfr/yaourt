@@ -1,25 +1,24 @@
 #!/bin/bash
+#
+# pacdiffviewer : manage/backup/clean/merge pac* files
+#
+# Copyright (c) 2008-2010 Julien MISCHKOWITZ <wain@archlinux.fr>
+# Copyright (c) 2010 tuxce <tuxce.net@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Library General Public License as published
+# by the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 #set -x
-#   pacdiffviewer : manage/backup/clean/merge pac* files
-#
-#   Copyright (c) 2010 tuxce <tuxce.net@gmail.com>
-#   Copyright (c) 2008-2010 Julien MISCHKOWITZ <wain@archlinux.fr>
-#
-#   This program is free software; you can redistribute it and/or modify
-#   it under the terms of the GNU General Public License as published by
-#   the Free Software Foundation; either version 2 of the License, or
-#   (at your option) any later version.
-#
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-
-
-#   You should have received a copy of the GNU General Public License
-#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-#
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
@@ -56,19 +55,22 @@ usage()
 # Save files marked as backup in packages for a possible later merge
 backup_files()
 {
-	package-query -Qf "%n - %v"$'\n'"%b" --csep $'\n' | while read _file _md5sum _version
+	package-query -Qf "%n - %v"$'\n'"%b" --csep $'\n' |
+	while read _file _md5sum _version
 	do
 		# no backups
 		[[ "$_file" = "-" ]] && pkgname="" && continue
 		# _md5sum = "-" -> on name/version line
-		[[ "$_md5sum" = "-" ]] && pkgname="$_file" && pkgver="$_version" && continue
+		[[ "$_md5sum" = "-" ]] && pkgname="$_file" && pkgver="$_version" &&\
+			 continue
 		[[ ! -f "$ROOTDIR/$_file" ]] && continue
-		backupdir="$SAVEDIR/$pkgname/$pkgname-$pkgver"
+		local backupdir="$SAVEDIR/$pkgname/$pkgname-$pkgver"
 		[[ -f "$backupdir/$_file" ]] && continue
 		currentfile="$_file.pacnew"
 		[[ -f "$ROOTDIR/$currentfile" ]] || currentfile="$_file"
-		if echo "$_md5sum  $ROOTDIR/$currentfile" | md5sum --status -c - &>/dev/null; then
-			(( ! QUIET )) && echo "  -> $(gettext 'saving') $ROOTDIR/$currentfile"
+		if echo "$_md5sum  $ROOTDIR/$currentfile" | 
+			md5sum --status -c - &>/dev/null; then
+			(( ! QUIET )) && echo "-> $(gettext 'saving') $ROOTDIR/$currentfile"
 			mkdir -p "$(dirname "$backupdir/$_file")" || return 1
 			cp -a "$ROOTDIR/$currentfile" "$backupdir/$_file" || return 1
 		fi
@@ -88,7 +90,8 @@ create_db()
 	if (( LOCATE )); then
 		pacfiles=($(locate -eb "*.pacorig" "*.pacsave" "*.pacnew"))
 	else
-		pacfiles=($(find "${SEARCH_REP[@]}" \( -name "*.pacorig" -o -name "*.pacsave" -o -name "*.pacnew" \)))
+		pacfiles=($(find "${SEARCH_REP[@]}" \( -name "*.pacorig" \
+			-o -name "*.pacsave" -o -name "*.pacnew" \)))
 	fi
 	unset IFS
 	for _file in "${pacfiles[@]}"; do
@@ -114,7 +117,8 @@ previous_version ()
 {
 	[[ $1 ]] || return 
 	local file=$1
-	read pkgname pkgver < <(LC_ALL=C pacman -Qo "$file" | awk '{print $(NF-1)" "$NF}' 2>/dev/null)
+	read pkgname pkgver < <(LC_ALL=C pacman -Qo "$file" |
+		awk '{print $(NF-1)" "$NF}' 2>/dev/null)
 	[[ $pkgname ]] || return 
 	[[ -d "$SAVEDIR/$pkgname/" ]] || return 
 	pushd "$SAVEDIR/$pkgname/" &> /dev/null
@@ -122,7 +126,8 @@ previous_version ()
 	for _rep in $(ls -Ad *-*); do
 		[[ "$_rep" = "$pkgname-$pkgver" || ! -f "${_rep}${file}" ||
 			$(vercmp $pkgver ${_rep#$pkgname-}) -lt 0 ]] && continue
-		if [[ -z "$pkgver_prev" || $(vercmp $pkgver_prev ${_rep#$pkgname-}) -lt 0 ]]; then
+		if [[ -z "$pkgver_prev" || \
+			$(vercmp $pkgver_prev ${_rep#$pkgname-}) -lt 0 ]]; then
 			pkgver_prev="${_rep#$pkgname-}"
 		fi
 	done
@@ -153,12 +158,14 @@ is_mergeable()
 suppress()
 {
 	local pacfiles=(${PACOLD[@]})
-	[[ "$1" = "all" ]] && pacfiles+=("${PACNEW[@]}" "${PACSAVE[@]}" "${PACORIG[@]}")
+	[[ "$1" = "all" ]] && \
+		pacfiles+=("${PACNEW[@]}" "${PACSAVE[@]}" "${PACORIG[@]}")
 	(( ! ${#pacfiles[@]} )) && return
 	msg "$(gettext 'The following files have no original version.')"
 	echo_wrap 4 "${pacfiles[@]}" 
 	echo
-	prompt "$(gettext 'Do you want to delete these files ?')" $(yes_no 2) "$(gettext '(S: no confirm)')"
+	prompt "$(gettext 'Do you want to delete these files ?') $(\
+		yes_no 2) $(gettext '(S: no confirm)')"
 	local answer=$(userinput "YNS" "N")
 	[[ "$answer" = "N" ]] && return
 	local _opt=""
@@ -177,7 +184,8 @@ manage_file ()
 		local _msg="$ext: ${_file%$ext}"
 		local _prompt="Action: [E]dit, [R]eplace, [S]uppress,"
 		local _prompt_action="ERSCA"
-		diff -abBu "${_file%$ext}" "$_file" &> /dev/null && _msg+=" $(gettext '**same file**')"
+		diff -abBu "${_file%$ext}" "$_file" &> /dev/null && \
+			_msg+=" $(gettext '**same file**')"
 		if is_mergeable "${_file%$ext}" "$ext"; then
 			_prompt+=" [M]erge,"
 			_prompt_action+="M"
@@ -200,8 +208,7 @@ manage_file ()
 				msg "$(gettext 'Patch: ')"
 				cat "$tmp_file"
 				echo
-				msg "$(gettext 'Apply ?') $(yes_no 1)"
-				promptlight
+				prompt2 "$(gettext 'Apply ?') $(yes_no 1)"
 				useragrees || continue;
 				patch -sp0 "${_file%$ext}" -i "$tmp_file"
 				(( $? )) && error "$(gettext 'patch returned an error!')"
@@ -224,8 +231,7 @@ manage()
 		while true; do
 			echo
 			list_select "${pacfiles[@]}"
-			msg "$(gettext 'Enter n° : ')"
-			promptlight
+			prompt2 "$(gettext 'Enter n° : ')"
 			read -e i
 			(( ! i )) && break
 			(( --i>=0 && i < ${#pacfiles[@]} )) || continue
@@ -270,3 +276,4 @@ case "$action" in
 		suppress
 		;;
 esac
+# vim: set ts=4 sw=4 noet: 

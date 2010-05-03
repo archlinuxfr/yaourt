@@ -418,12 +418,8 @@ msgstr "Attenzione! Vuoi davvero ripristinare questo backup?"
 
 #: ../../lib/alpm_backup.sh:66
 #, sh-format
-msgid ""
-"\\n"
-"(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)"
-msgstr ""
-"\\n"
-"(il database locale sarà salvato in $YAOURTTMPDIR/alpmdb$_pid/)"
+msgid "(local db will be saved in $savedb)"
+msgstr "(il database locale sarà salvato in $savedb)"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "If you want to restore this backup, type \"yes\""
@@ -449,14 +445,18 @@ msgstr "Prova del nuovo database"
 msgid "Your backup is not successfully restored"
 msgstr "Il backup non è stato ripristinato "
 
+#: ../../lib/alpm_backup.sh:78
+msgid "packages found"
+msgstr "pacchetto trovato"
+
 #: ../../lib/alpm_backup.sh:79
 msgid "Your backup has been successfully restored"
 msgstr "Il backup è stato ripristinato correttamente"
 
 #: ../../lib/alpm_backup.sh:82
 #, sh-format
-msgid "(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)"
-msgstr "(il vecchio database è stato salvato in $YAOURTTMPDIR/alpmdb$_pid)"
+msgid "(old database is saved in $savedb)"
+msgstr "(il vecchio database è stato salvato in $savedb)"
 
 #: ../../lib/alpm_query.sh:39
 #, sh-format

@@ -1,17 +1,7 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE: alpm_query.sh
-# 
-#   DESCRIPTION: yaourt's library to query packages from alpm database
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
-#       VERSION:  1.0
-#===============================================================================
+# alpm_query.sh : Query alpm database
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 # Query installed version
 pkgversion()
@@ -42,7 +32,6 @@ searchforpackageswhich(){
 		provides) _msg='Packages which provide $name:';;
 	esac
 	msg $(eval_gettext "$_msg")
-	free_pkg
 	if [[ "$MAJOR" = "query" ]]; then
 		_opt=(-Qf '%s %n %v -') 
 	else
@@ -67,9 +56,9 @@ search_which_package_owns(){
 search_forgotten_orphans(){
 	local orphans
 	msg "$(gettext 'Packages installed as dependencies but are no longer required by any installed package')"
-	AUR_SEARCH=0 search 0 1
+	AUR_SEARCH=0 search 0
 	[[ $PKGSFOUND ]] || return
 	prompt "$(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
 	useragrees "YN" "N" || su_pacman -Rcs "${PKGSFOUND[@]#*/}"
 }
-
+# vim: set ts=4 sw=4 noet: 

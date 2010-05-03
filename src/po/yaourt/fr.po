@@ -409,12 +409,8 @@ msgstr "Attention ! Voulez-vous restaurer cette sauvegarde ?"
 
 #: ../../lib/alpm_backup.sh:66
 #, sh-format
-msgid ""
-"\\n"
-"(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)"
-msgstr ""
-"\\n"
-"(la base de données locale sera sauvée dans $YAOURTTMPDIR/alpmdb$_pid/)"
+msgid "(local db will be saved in $savedb)"
+msgstr "(la base de données locale sera sauvée dans $savedb)"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "If you want to restore this backup, type \"yes\""
@@ -440,14 +436,18 @@ msgstr "Test de la nouvelle base de données"
 msgid "Your backup is not successfully restored"
 msgstr "Votre sauvegarde n'a pas été restaurée correctement"
 
+#: ../../lib/alpm_backup.sh:78
+msgid "packages found"
+msgstr "paquets trouvés"
+
 #: ../../lib/alpm_backup.sh:79
 msgid "Your backup has been successfully restored"
 msgstr "Votre sauvegarde a été restaurée avec succès"
 
 #: ../../lib/alpm_backup.sh:82
 #, sh-format
-msgid "(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)"
-msgstr "(l'ancienne base est sauvée dans $YAOURTTMPDIR/alpmdb$_pid)"
+msgid "(old database is saved in $savedb)"
+msgstr "(l'ancienne base est sauvée dans $savedb)"
 
 #: ../../lib/alpm_query.sh:39
 #, sh-format

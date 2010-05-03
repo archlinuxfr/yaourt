@@ -406,9 +406,7 @@ msgstr ""
 
 #: ../../lib/alpm_backup.sh:66
 #, sh-format
-msgid ""
-"\\n"
-"(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)"
+msgid "(local db will be saved in $savedb)"
 msgstr ""
 
 #: ../../lib/alpm_backup.sh:67
@@ -435,13 +433,17 @@ msgstr ""
 msgid "Your backup is not successfully restored"
 msgstr ""
 
+#: ../../lib/alpm_backup.sh:78
+msgid "packages found"
+msgstr ""
+
 #: ../../lib/alpm_backup.sh:79
 msgid "Your backup has been successfully restored"
 msgstr ""
 
 #: ../../lib/alpm_backup.sh:82
 #, sh-format
-msgid "(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)"
+msgid "(old database is saved in $savedb)"
 msgstr ""
 
 #: ../../lib/alpm_query.sh:39

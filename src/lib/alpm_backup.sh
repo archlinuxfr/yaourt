@@ -1,47 +1,32 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE: alpm_backup.sh
-# 
-#   DESCRIPTION: yaourt's library to manage backup
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
-#       VERSION:  1.0
-#===============================================================================
-
+# alpm_backup.sh : Manage database backup/restore
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 # save alpm database (local directory only) in a tar.bz2 file
+# $1: directory
 save_alpm_db(){
+	local savedir="$1" savefile="$1/pacman-$(date +%Y-%m-%d_%Hh%M).tar.bz2"
 	msg $(eval_gettext 'Saving pacman database in $savedir')
 	title $(eval_gettext 'Saving pacman database in $savedir')
-	local curentdir=`pwd`
-	if ! [[ -d "$savedir" && -w "$savedir" ]]; then
-		error $(eval_gettext '$savedir is not a writable directory')
-		return 1
-	fi
-	cd $savedir 
-	savefile="`pwd`/pacman-`date +%Y-%m-%d_%Hh%M`.tar.bz2"
-	cd "$PACMANROOT" 
-	tar -cjf "$savefile" "local/"
-	(( ! $? )) && msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
-	cd $curentdir 
-	return 0
+	bsdtar -cjf "$savefile" -C "$PACMANROOT" "local/" && \
+		msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
 }
 
 # test if file is an alpm database backup
+# $1: file
 is_an_alpm_backup(){
 	title $(gettext 'Analysing backup file')
 	msg $(gettext 'Analysing backup file')
-	backupdir="$YAOURTTMPDIR/backup/$$"
-	mkdir -p "$backupdir"
-	tar xjf $1 -C "$backupdir/"
-	$PACMANBIN --dbpath "$backupdir/" --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/backupdb"
-	if [[ ! -s "$YAOURTTMPDIR/backup/backupdb" ]]; then
-		_file=$1
+	local backupdb="$YAOURTTMPDIR/backupdb"
+	backupdir="$YAOURTTMPDIR/backup/$(md5sum "$1" | awk '{print $1}')"
+	if [[ ! -d "$backupdir" ]]; then	# decompress backup only once
+		mkdir -p "$backupdir" || return 1
+		tar -xjf "$1" -C "$backupdir/"
+	fi
+	$PACMANBIN --dbpath "$backupdir/" --query | LC_ALL=C sort > "$backupdb"
+	if [[ ! -s "$backupdb" ]]; then
+		_file="$1"
 		error $(eval_gettext '$_file is not a valid alpm database backup')
 		return 1
 	fi
@@ -49,36 +34,53 @@ is_an_alpm_backup(){
 }
 
 # restore alpm database from tar.bz2 file
+# $1: file
 restore_alpm_db(){
-	if ! is_an_alpm_backup "$backupfile"; then
-		return 1
-	fi
-	$PACMANBIN --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/nowdb"
+	local backupdb="$YAOURTTMPDIR/backupdb"
+	local nowdb="$YAOURTTMPDIR/nowdb"
+	local savedb="$YAOURTTMPDIR/backup/alpmdb$$"
+	mkdir -p "$savedb" || return 1
+	is_an_alpm_backup "$1" || return 1
+	$PACMANBIN --query | LC_ALL=C sort > "$nowdb"
 	msg $(gettext 'New packages installed since backup:')
-	LC_ALL=C comm -1 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
+	LC_ALL=C comm -13 "$backupdb" "$nowdb" 
 	echo
 	msg $(gettext 'Packages removed or ugpraded since backup:')
-	LC_ALL=C comm -2 -3 "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" 
+	LC_ALL=C comm -23 "$backupdb" "$nowdb" 
 	echo
 	title "$(gettext 'Warning! Do you want to restore this backup ?')"
-	_pid=$$
 	msg "$(gettext 'Warning! Do you want to restore this backup ?')"
-	msg "$(eval_gettext '\n(local db will be saved in $YAOURTTMPDIR/alpmdb$_pid/)')"
+	msg "$(eval_gettext '(local db will be saved in $savedb)')"
 	prompt $(gettext 'If you want to restore this backup, type "yes"')
 	read -e 
 	[[ "$REPLY" != "$(gettext 'yes')" ]] && return 0
 	msg $(gettext 'Deleting pacman DB')
-	launch_with_su mv $PACMANROOT/local/ $YAOURTTMPDIR/alpmdb$$
+	launch_with_su mv "$PACMANROOT/local/" "$savedb"
 	msg $(gettext 'Copying backup')
-	launch_with_su mv $backupdir/local/ $PACMANROOT/local
+	launch_with_su mv "$backupdir/local/" "$PACMANROOT/local" && \
+		launch_with_su rm -rf  "$backupdir" 
 	msg $(gettext 'Testing the new database')
-	$PACMANBIN --query | LC_ALL=C sort > "$YAOURTTMPDIR/backup/nowdb"
-	if ! diff "$YAOURTTMPDIR/backup/backupdb" "$YAOURTTMPDIR/backup/nowdb" &> /dev/null; then
-	       warning $(gettext 'Your backup is not successfully restored')
+	$PACMANBIN --query | LC_ALL=C sort > "$nowdb"
+	if ! diff "$backupdb" "$nowdb" &> /dev/null; then
+		warning $(gettext 'Your backup is not successfully restored')
 	else
 		msg $(gettext 'Your backup has been successfully restored')
-		echo "`$PACMANBIN -Q | wc -l` packages found"
+		msg "$(cat "$nowdb" | wc -l) $(gettext 'packages found')"
 	fi
-	echo $(eval_gettext '(old database is saved in $YAOURTTMPDIR/alpmdb$_pid)')
+	msg $(eval_gettext '(old database is saved in $savedb)')
 }
 
+# save ($1 is a dir) or restore ($1 is a file) alpm database
+yaourt_backup()
+{
+	local dest="$1"
+	[[ $dest ]] || dest="$(pwd)"
+	if [[ -d "$dest" && -w "$dest" ]]; then
+		save_alpm_db "$dest"
+	elif [[ -f "$dest" && -r "$dest" ]]; then
+		restore_alpm_db "$dest"
+	else
+		error $(gettext 'wrong argument')
+	fi
+}
+# vim: set ts=4 sw=4 noet: 

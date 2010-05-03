@@ -1,62 +1,52 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE: abs.sh
-# 
-#   DESCRIPTION: yaourt's library to access Arch Building System Repository
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
-#       VERSION:  1.0
-#===============================================================================
+# abs.sh 
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
+
+RSYNCCMD=$(type -p rsync 2> /dev/null)
+RSYNCOPT="-mrtv --no-motd --no-p --no-o --no-g"
+RSYNCSRC="rsync.archlinux.org::abs"
+
 loadlibrary alpm_query
 loadlibrary pkgbuild
 
 # Get sources in current dir
-# Usage abs_get_pkgbuild ($arch,$repo,$pkg)
+# Usage abs_get_pkgbuild ($repo/$pkg[,$arch])
 abs_get_pkgbuild ()
 {
-	if in_array "$repo" "${ABS_REPO[@]}"; then
-		rsync -mrtv --no-motd --no-p --no-o --no-g rsync.archlinux.org::abs/$1/$2/$3/ . && return 0
+	local repo=${1%/*} pkg=${1#*/}
+	if [[ $RSYNCCMD ]] && in_array "$repo" "${ABS_REPO[@]}"; then
+		[[ $3 ]] && local arch=$3 || \
+			local arch=$(package-query -Sif "%a" "$repo/$pkg")
+		$RSYNCCMD $RSYNCOPT "$RSYNCSRC/$arch/$repo/$pkg/" . && return 0
 	fi
-	local abs_tar="$YAOURTTMPDIR/$2.abs.tar.gz"	# TODO: store abs archive somewhere else.
+	# TODO: store abs archive somewhere else.
+	local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
 	local abs_url 
-	local repo_date=$(stat -c "%Z" "$PACMANROOT/sync/$2/.lastupdate")
+	local repo_date=$(stat -c "%Z" "$PACMANROOT/sync/$repo/.lastupdate")
 	local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
 	if (( $? )) || (( abs_repo_date < repo_date )); then
-		abs_url=$(package-query -1Sif "%u" "$2/$3")
-		abs_url="${abs_url%/*}/$2.abs.tar.gz"
-		msg "$2: $(gettext 'retrieve abs archive')"
+		abs_url=$(package-query -1Sif "%u" "$repo/$pkg")
+		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
+		msg "$1: $(gettext 'retrieve abs archive')"
 		curl -f -# "$abs_url" -o "$abs_tar" || return 1
 	fi
-	bsdtar -s "/${2}.${3}//" -xvf "$abs_tar" "$2/$3"
+	bsdtar -s "/${repo}.${pkg}//" -xvf "$abs_tar" "$repo/$pkg"
 }
 
 # Build from abs or aur
 build_or_get ()
 {
 	[[ $1 ]] || return 1
-	local pkg=${1#*/}
-	[[ "$1" != "${1///}" ]] && local repo=${1%/*} || local repo="$(sourcerepository $pkg)"
-	BUILD=1
-	if [[ -n "$repo" && "$repo" != "aur" && "$repo" != "local" ]]; then
-		install_from_abs "$1"
+	local pkg=${1#*/} _func="aur"
+	[[ "$1" != "${1///}" ]] && local repo=${1%/*} || \
+		local repo="$(sourcerepository $pkg)"
+	[[ -n "$repo" && "$repo" != "aur" && "$repo" != "local" ]] && _func="abs"
+	if [[ "$MAJOR" = "getpkgbuild" ]]; then
+		${_func}_get_pkgbuild "$repo/$pkg"
 	else
-		if [[ "$MAJOR" = "getpkgbuild" ]]; then
-			aur_get_pkgbuild "$pkg"
-		else
-			install_from_aur "$pkg"
-		fi
+		BUILD=1 install_from_${_func} "$repo/$pkg"
 	fi
-}
-
-custom_pkg ()
-{
-	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "/etc/customizepkg.d/$1" ]] && return 0
-	return 1
 }
 
 sync_first ()
@@ -64,42 +54,31 @@ sync_first ()
 	[[ $* ]] || return 0
 	warning $(eval_gettext 'The following packages should be upgraded first :')
 	echo_wrap 4 "$*"
-	prompt_info "$(eval_gettext 'Do it now ?') $(yes_no 1)"; promptlight
+	prompt "$(eval_gettext 'Do it now ?') $(yes_no 1)"
 	useragrees || return 0
 	args=("$@")
 	sync_packages
 	die $?
 }
 
-# download package from repos or grab PKGBUILD from repos.archlinux.org and run makepkg
+# Build packages from repos
 install_from_abs(){
 	for _line in $(package-query -1Sif "repo=%r;PKG=%n;_pkgver=%v;_arch=%a" "$@"); do
 		eval $_line
 		local package="$repo/$PKG"
 		(( ! BUILD )) && ! custom_pkg "$PKG" && binariespackages+=(${package#-/}) && continue
-		if [[ "$MAJOR" != "getpkgbuild" ]]; then
-			msg $(eval_gettext 'Building $PKG from sources.')
-			title $(eval_gettext 'Install $PKG from sources')
-		fi
+		msg $(eval_gettext 'Building $PKG from sources.')
+		title $(eval_gettext 'Install $PKG from sources')
 		echo
-		if [[ "$MAJOR" != "getpkgbuild" ]]; then
-			msg $(gettext 'Retrieving PKGBUILD and local sources...')
-			wdir="$YAOURTTMPDIR/abs-$PKG"
-			if [[ -d "$wdir" ]]; then
-				rm -rf "$wdir" || { error $(eval_gettext 'Unable to delete directory $wdir. Please remove it using root privileges.'); return 1; }
-			fi
-			mkdir -p "$wdir" || { error $(eval_gettext 'Unable to create directory $wdir.'); return 1; }
-			cd $wdir
-		fi
+		msg $(gettext 'Retrieving PKGBUILD and local sources...')
+		init_build_dir "$YAOURTTMPDIR/abs-$PKG" || return 1
 
 		# With splitted package, abs folder may not correspond to package name
 		local pkgbase=( $(grep -A1 '%BASE%' "$PACMANROOT/sync/$repo/$PKG-$_pkgver/desc" ) )
 		[[ $pkgbase ]] || pkgbase=( '' "$PKG" )
-		abs_get_pkgbuild $_arch $repo ${pkgbase[1]} || return 1
+		abs_get_pkgbuild $repo/${pkgbase[1]} $_arch || return 1
 		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
 
-		# Customise PKGBUILD
-		custom_pkg "$PKG" && customizepkg --modify
 		# Build, install/export
 		package_loop 1 || { manage_error 1; continue; }
 	done
@@ -119,27 +98,10 @@ classify_pkg ()
 	local i=0 bar="|/-\\"
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
-		((! DETAILUPGRADE)) && (( ++i )) && echo -en "${bar:$((i%3)):1} $i / $1\r"
+		((! DETAILUPGRADE )) && echo -en "${bar:$((++i%4)):1} $i / $1\r"
 		if [[ "$repo" = "aur" ]]; then
-			if [[ ! ${rversion#-} ]]; then
-				((DETAILUPGRADE)) && echo -e "$pkgname: ${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"
-				continue
-			fi
-			if is_x_gt_y "$lversion" "$rversion"; then
-				((DETAILUPGRADE)) && echo -e "$pkgname: (${COL_RED}local=$lversion ${NO_COLOR}aur=$rversion)"
-				continue
-			fi
-			if [[ "$lversion" = "$rversion" ]]; then
-				((DETAILUPGRADE)) && {
-					echo -en "$pkgname: $(gettext 'up to date ')"
-					(( outofdate )) && echo -en "${COL_RED}($lver "$(gettext 'flagged as out of date')")${NO_COLOR}" || echo
-				}
-				continue
-			fi
-			if [[ " ${PKGS_IGNORED[@]} " =~ " $pkgname " ]]; then
-				((DETAILUPGRADE)) && echo -e "$pkgname: ${COL_RED} "$(gettext '(ignoring package upgrade)')"${NO_COLOR}"
-				continue
-			fi
+			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" \
+				|| continue
 		fi
 		[[ " ${SyncFirst[@]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
 		custom_pkg "$pkgname" && srcpkgs+=("$pkgname") || pkgs+=("$pkgname")
@@ -209,8 +171,7 @@ show_targets ()
 	echo
 	echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "$*" 
 	echo
-	prompt_info "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
-	promptlight
+	prompt "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
 	useragrees 
 }	
 
@@ -227,7 +188,6 @@ sysupgrade()
 	rm "$YAOURTTMPDIR/sysupgrade"
 	[[ ! "$packages" ]] && return 0	
 	loadlibrary pacman_conf
-	parse_pacman_conf
 	classify_pkg < <(package-query -1Sif '%n %r %v %l - %d' "${packages[@]}")
 	sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
@@ -247,8 +207,7 @@ showupgradepackage()
 	# $1=full or $1=lite or $1=manual
 	if [[ "$1" = "manual" ]]; then
 		> "$YAOURTTMPDIR/sysuplist"
-		printf -vseparator "%79s" ""
-		separator=${separator// /#}
+		local separator=$(echo_fill "" "#" "")
 	fi
 	
 	local exuptype=0
@@ -309,39 +268,30 @@ sync_packages()
 	fi
 	[[ "$args" ]] || return 0
 	# Install from arguments
-	declare -a pkgs
-	for _line in $(package-query -1ASif "%t/%r/%n" "${args[@]}"); do
-		local repo="${_line%/*}"
-		repo="${repo##*/}"
+	local pkgs=()
+	while read repo pkg target; do
 		[[ "$repo" = "-" ]] && continue
-		local pkg="${_line##*/}"
-		local target="${_line%/$repo/$pkg}"
 		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
 		pkgs+=("$target")
-	done
+	done < <(package-query -1ASif "%r %n %t" "${args[@]}")
 	for _pkg in "${args[@]}"; do
 		in_array "$_pkg" "${pkgs[@]}" || binariespackages+=("$_pkg")
 	done
 	[[ $repo_pkgs ]] && install_from_abs "${repo_pkgs[@]}"
-	for _pkg in "${aur_pkgs[@]}"; do install_from_aur "$_pkg"; done
-	# Install precompiled packages
 	[[ $binariespackages ]] && su_pacman -S "${PACMAN_S_ARG[@]}" "${binariespackages[@]}"
+	for _pkg in "${aur_pkgs[@]}"; do install_from_aur "$_pkg"; done
 }
 
 # Search to upgrade devel package 
 upgrade_devel_package(){
-	local devel_pkgs
+	local devel_pkgs=()
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
-	parse_pacman_conf
 	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
 	do
-		if in_array "$PKG" "${PKGS_IGNORED[@]}"; then
-			echo -e "${PKG}: ${COL_RED} "$(gettext '(ignored from pacman.conf)')"${NO_COLOR}"
-		else
-			devel_pkgs+=($PKG)
-		fi
+		is_package_ignored "$PKG" && continue
+		devel_pkgs+=($PKG)
 	done
 	[[ $devel_pkgs ]] || return 0
 	show_targets 'Targets' "${devel_pkgs[@]}" && for PKG in ${devel_pkgs[@]}; do
@@ -349,4 +299,4 @@ upgrade_devel_package(){
 	done
 }
 
-
+# vim: set ts=4 sw=4 noet: 

@@ -47,7 +47,7 @@ install:
 	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/pacman_conf.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 lib/pkgbuild.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m755 bashcompletion $(DESTDIR)$(completiondir)/yaourt
+	$(INSTALL) -m644 bashcompletion $(DESTDIR)$(completiondir)/yaourt
 	# Install locale
 	for file in po/*/*.po; \
 	do \

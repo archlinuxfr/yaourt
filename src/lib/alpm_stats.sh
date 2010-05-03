@@ -1,47 +1,36 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE:  alpm_stats.sh
-# 
-#   DESCRIPTION: yaourt's library for misc stats on alpm db 
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr)
-#       VERSION:  1.0
-#===============================================================================
+# alpm_stats.sh : collect and show some stats about local database.
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
+
 loadlibrary pacman_conf
 loadlibrary pkgbuild
-unset repos_packages orphans 
+unset repos_packages orphans repositories
 pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
 
+# set orphans, repo_packages, pkg_nb*
+# parse pacman conf for ignored/hold packages
 buildpackagelist()
 {
-	list_repositories
-	#construct the list of packages	
-	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 f_upgrades=16 f_group=32 
-	IFS=$'\n'	
-	for line in $(package-query -Qf "%4 %s %n"); do
-		IFS=' '
-		local data=($line)
+	repositories=($(package-query -L))
+	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 \
+		  f_upgrades=16 f_group=32 	
+	while read pkgstate pkgrepo pkgname; do
 		(( pkgs_nb++ ))
-		(( ${data[0]} & f_deps )) && (( ++pkgs_nb_d )) && (( ${data[0]} & f_unrequired )) && {
-			(( pkgs_nb_dt++ ))
-			orphans+=(${data[2]})
-		}
-		(( ${data[0]} & f_explicit )) && (( pkgs_nb_e++ ))
-		(( ${data[0]} & f_upgrades )) && (( pkgs_nb_u++ ))
+		(( pkgstate & f_deps )) && (( ++pkgs_nb_d )) && \
+			(( pkgstate & f_unrequired )) && {
+				(( pkgs_nb_dt++ ))
+				orphans+=($pkgname)
+			}
+		(( pkgstate & f_explicit )) && (( pkgs_nb_e++ ))
+		(( pkgstate & f_upgrades )) && (( pkgs_nb_u++ ))
 		local reponumber=0
 		for repo in ${repositories[@]}; do
-			[[ "$repo" == "${data[1]}" ]] && (( ++repos_packages[$reponumber] )) && break
+			[[ "$repo" == "$pkgrepo" ]] && (( ++repos_packages[$reponumber] )) \
+				&& break
 			(( reponumber++ ))
 		done
-	done
-	unset IFS
-	# Construction de la liste des paquets ignorés/noupgrade/holdpkg
-	parse_pacman_conf
+	done < <(package-query -Qf "%4 %s %n")
 }
 
 showpackagestats(){
@@ -109,4 +98,4 @@ showdiskusage()
 	[[ "$SRCDEST" ]] && srcdestsize=`du -sh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null
 	echo -e "${COL_GREEN}$(gettext 'Space used by src downloaded in cache:') ${COL_YELLOW} $srcdestsize"
 }
-
+# vim: set ts=4 sw=4 noet: 

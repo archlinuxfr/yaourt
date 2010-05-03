@@ -1,22 +1,11 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE: pkgbuild.sh
-# 
-#   DESCRIPTION: yaourt's library to manage PKGBUILD
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:  Julien MISCHKOWITZ (wain@archlinux.fr) 
-#                 Tuxce (tuxce.net@gmail.com) 
-#       VERSION:  1.0
-#===============================================================================
+# pkgbuild.sh : deals with PKGBUILD, makepkg ...
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 loadlibrary alpm_query
 
-# This file use global variables
+# Global vars:
 # SPLITPKG:	1 if current PKGBUILD describe multiple package
 # PKGBUILD_VARS : important vars in PKGBUILD like pkgbase, pkgname ...
 # PKGBUILD_DEPS : deps not installed or provided
@@ -246,7 +235,7 @@ build_package()
 		if [[ -d "$wdirDEVEL" ]]; then
 			prompt "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them (faster) ? ') $(yes_no 1)"
 			if useragrees; then
-				cp ./* "$wdirDEVEL/"
+				cp -a ./* "$wdirDEVEL/"
 				cd $wdirDEVEL
 			fi
 		else
@@ -255,7 +244,7 @@ build_package()
 				warning $(eval_gettext 'Unable to write in ${wdirDEVEL} directory. Using /tmp directory')
 				wdirDEVEL="$wdir/$PKG"
 			else
-				cp -r ./* "$wdirDEVEL/"
+				cp -a ./* "$wdirDEVEL/"
 				cd "$wdirDEVEL"
 			fi
 		fi
@@ -368,6 +357,23 @@ install_package()
 	return $failed
 }
 
+# Initialise build dir ($1)
+init_build_dir()
+{
+	local wdir="$1"
+	if [[ -d "$wdir" ]]; then
+		rm -rf "$wdir" || { error $(eval_gettext 'Unable to delete directory $wdir. Please remove it using root privileges.'); return 1; }
+	fi
+	mkdir -p "$wdir" || { error $(eval_gettext 'Unable to create directory $wdir.'); return 1; }
+	cd $wdir
+}
+
+custom_pkg ()
+{
+	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "/etc/customizepkg.d/$1" ]] && return 0
+	return 1
+}
+
 # Call build_package until success or abort
 # on success, call install_package
 # Usage: package_loop ($trust)
@@ -377,6 +383,9 @@ package_loop ()
 	local trust=${1:-0}
 	local default_answer=1
 	local ret=0
+	# Customise PKGBUILD
+	custom_pkg "$PKG" && customizepkg --modify
+
 	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
@@ -404,4 +413,4 @@ package_loop ()
 
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
 source_makepkg_conf 
-
+# vim: set ts=4 sw=4 noet: 

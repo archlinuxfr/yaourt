@@ -1,17 +1,7 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE: basicfunctions.sh
-# 
-#   DESCRIPTION: yaourt's basic functions
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
-#       VERSION:  1.0
-#===============================================================================
+# basicfunctions.sh: common functions and initialisation 
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 COLUMNS=$(tput cols)
 
@@ -32,9 +22,8 @@ initpath(){
 
 # Load library but never reload twice the same lib
 loadlibrary(){
-	eval alreadyload=\$$1
-	[[ "$alreadyload" ]] && return 0
-	if [[ ! -f "/usr/lib/yaourt/$1.sh" ]]; then
+	[[ "${!1}" ]] && return 0
+	if [[ ! -r "/usr/lib/yaourt/$1.sh" ]]; then
 		error "$1.sh file is missing"
 		die 1
 	fi
@@ -42,21 +31,20 @@ loadlibrary(){
 	eval $1=1
 }
 
-# Fill line
+printf -v P_INDENT "%*s" ${COLUMNS:-0}
+# Fill line ($color_start,$content,$color_end)
 echo_fill ()
 {
-	printf -v_fill "%${COLUMNS}s" ""
-	echo -e "$1${_fill// /$2}$3"
+	echo -e "$1${P_INDENT// /$2}$3"
 }
 
-# Wrap output
+# Wrap string
 # usage: str_wrap ($indent, $str)
 # return: set $strwrap with wrapped content
-printf -vout "%*s" ${COLUMNS:-0}
-P_INDENT="$out"
 str_wrap ()
 {
 	local indent=${1:-0} ; shift
+	(( indent > COLUMNS )) && { strwrap="$*"; return 0; }
 	strwrap="${P_INDENT:0:$indent}$*"
 	(( ${#strwrap} < COLUMNS-indent-1 )) && return 0 || { strwrap=""; set -- $*; }
 	local i=0 strout=""
@@ -175,7 +163,7 @@ run_editor ()
 		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(gettext '("A" to abort)')"
 		local answer=$(userinput "YNA" ${answer_str:$default_answer:1})
 		echo
-		[[ "$answer" = "A" ]] && echo -e "\n$(gettext 'Aborted...')" && return 2
+		[[ "$answer" = "A" ]] && msg "$(gettext 'Aborted...')" && return 2
 		[[ "$answer" = "N" ]] && return 1
 	fi
 	if [[ ! "$EDITOR" ]]; then
@@ -184,7 +172,7 @@ run_editor ()
 		echo -e ${COL_BLUE}"export EDITOR=\"vim\""${NO_COLOR}" $(gettext '(in ~/.bashrc)')"
 		echo $(gettext '(replace vim with your favorite editor)')
 		echo
-		echo -ne ${COL_ARROW}"==> "${NO_COLOR}$(eval_gettext 'Edit $file with: ')
+		prompt2 "$(eval_gettext 'Edit $file with: ')"
 		read -e EDITOR
 		echo
 	fi
@@ -204,13 +192,19 @@ check_root ()
 	fi
 }	
 
-###################################
-### MAIN OF INIT PROGRAM        ###
-###################################
+check_dir ()
+{
+	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }	
+	[[ ! -w "${!1}" ]] && { error "${!1} $(gettext 'is not writable')"; return 1; }	
+	eval $1'="$(readlink -e "${!1}")"'	# get cannonical name
+	return 0
+}
+	
+# Main init
+
 declare -A COL_REPOS	#TODO not its place
 shopt -s extglob
 loadlibrary color
-# defautconfig
 EDITFILES=1
 DEVEL=0
 DEVELBUILDDIR="/var/abs/local/yaourtbuild"
@@ -226,9 +220,8 @@ AURSEARCH=1
 AUTOSAVEBACKUPFILE=0
 MAXCOMMENTS=5
 NOENTER=1
-ORDERBY="asc"
 PACMANBIN="/usr/bin/pacman"
-TMPDIR="/tmp"
+TMPDIR=${TMPDIR:-/tmp}
 COLORMODE=""
 SHOWORPHANS=1
 DIFFEDITCMD="vimdiff"
@@ -239,8 +232,6 @@ DETAILUPGRADE=1
 [[ -n "$EXPORTDIR" ]] && EXPORT=1
 (( FORCEENGLISH )) && export LC_ALL=C
 in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
-[[ -d "$TMPDIR" ]] || { error $TMPDIR $(gettext 'is not a directory'); die 1;}
-[[ -w "$TMPDIR" ]] || { error $TMPDIR $(gettext 'is not writable'); die 1;}
-TMPDIR=$(readlink -e "$TMPDIR")
+check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
-
+# vim: set ts=4 sw=4 noet: 

@@ -1,28 +1,20 @@
 #!/bin/bash
-#===============================================================================
 #
-#          FILE: aur.sh
-# 
-#   DESCRIPTION: yaourt's library to access Arch User Repository
-# 
-#       OPTIONS:  ---
-#  REQUIREMENTS:  ---
-#          BUGS:  ---
-#         NOTES:  ---
-#        AUTHOR:   Julien MISCHKOWITZ (wain@archlinux.fr) 
-#       VERSION:  1.0
-#===============================================================================
+# aur.sh : deals with AUR
+# This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 AUR_URL="http://aur.archlinux.org/"
 AUR_PKG_URL="$AUR_URL/packages.php?setlang=en&ID="
 
 loadlibrary abs
+loadlibrary pkgbuild
 # Get sources in current dir
 aur_get_pkgbuild ()
 {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
-	#(( $# > 1 )) && local pkgurl=$2 || local pkgurl=$(package-query -Aif "%u" "$pkg")
+	#(( $# > 1 )) && local pkgurl=$2 || \
+	#local pkgurl=$(package-query -Aif "%u" "$pkg")
 	local pkgurl="$AUR_URL/packages/$pkg/$pkg.tar.gz"
 	if [[ ! "$pkgurl" ]] || ! curl -fs "$pkgurl" -o "$pkg.tar.gz"; then
 		error $(eval_gettext '$pkg not found in AUR.');
@@ -47,7 +39,8 @@ info_from_aur() {
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
 		{ error "$PKG not found in repos nor in AUR"; return 1; }
-	sed -i -n -e '/\$(\|`\|[><](\|[&|]\|;/d' -e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
+	sed -i -n -e '/\$(\|`\|[><](\|[&|]\|;/d' \
+		-e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
 		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
@@ -146,41 +139,48 @@ vote_package(){
 
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur(){
-	local PKG="$1"
+	local PKG="${1#*/}"
 	title $(eval_gettext 'Installing $PKG from AUR')
-	wdir="$YAOURTTMPDIR/aur-$PKG"
-	if [[ -d "$wdir" ]]; then
-		msg $(gettext 'Resuming previous build')
-	else
-		mkdir -p "$wdir" || { error $(eval_gettext 'Unable to create directory $wdir.'); return 1; }
-	fi
-	cd "$wdir/"
+	init_build_dir "$YAOURTTMPDIR/aur-$PKG" || return 1
 	aurid=""
 
-	read aurid version numvotes outofdate pkgurl description < <(package-query -Ai "$PKG" -f "%i %v %w %o %u %d")
+	read aurid version numvotes outofdate pkgurl description < \
+		<(package-query -Ai "$PKG" -f "%i %v %w %o %u %d")
 	[[ "${aurid#-}" ]] || return 1
 	
 	# grab comments and info from aur page
 	echo
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	[[ -d "$PKG" ]] || mkdir "$PKG" || return 1
-	cd "$PKG" && aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
+	aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
 	aurcomments $aurid
 	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
 	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"
-
-	# Customise PKGBUILD
-	custom_pkg "$PKG" && customizepkg --modify
 
 	# Build, install/export
 	package_loop 0 || { manage_error 1; return 1; }
 
 	# Check if this package has been voted on AUR, and vote for it
 	(( AURVOTE )) && vote_package "$pkgbase" "$aurid"
+	return 0
+}
 
-	#msg "Delete $wdir"
-	rm -rf "$wdir" || warning $(eval_gettext 'Unable to delete directory $wdir.')
-	echo
+# aur_update_exists ($pkgname,$version,$localversion,outofdate)
+aur_update_exists()
+{
+	if [[ ! ${2#-} ]]; then
+		((DETAILUPGRADE)) && echo -e "$1: ${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"
+		return 1
+	elif is_x_gt_y "$3" "$2"; then
+		((DETAILUPGRADE)) && echo -e "$1: (${COL_RED}local=$3 ${NO_COLOR}aur=$2)"
+		return 1
+	elif [[ "$2" = "$3" ]]; then
+		((DETAILUPGRADE)) && {
+			echo -en "$1: $(gettext 'up to date ')"
+			(( outofdate )) && echo -e "${COL_RED}($2 "$(gettext 'flagged as out of date')")${NO_COLOR}" || echo
+		}
+		return 1
+	fi
+	is_package_ignored "$1" $DETAILUPGRADE && return 1
 	return 0
 }
 
@@ -188,9 +188,8 @@ upgrade_from_aur(){
 	title $(gettext 'upgrading AUR unsupported packages')
 	msg $(gettext 'Searching for new version on AUR')
 	loadlibrary pacman_conf
-	parse_pacman_conf
 	# Search for new version on AUR
-	(( ! DETAILUPGRADE )) && f_pkgs=($(pacman -Qqm)) 
+	(( ! DETAILUPGRADE )) && local f_pkgs=($(pacman -Qqm)) 
 	classify_pkg ${#f_pkgs[@]} < <(package-query -AQmf '%n %r %v %l %o %d')
 	sync_first "${syncfirstpkgs[@]}"
 	pkgs+=("${srcpkgs[@]}")
@@ -205,4 +204,4 @@ upgrade_from_aur(){
 	done
 }
 
-
+# vim: set ts=4 sw=4 noet: 

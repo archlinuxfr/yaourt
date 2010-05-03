@@ -1,29 +1,24 @@
 #!/bin/bash
+#
+# Yaourt (Yet Another Outil Utilisateur): More than a Pacman frontend
+#
+# Copyright (c) 2008-2010 Julien MISCHKOWITZ <wain@archlinux.fr>
+# Copyright (c) 2010 tuxce <tuxce.net@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify it
+# under the terms of the GNU Library General Public License as published
+# by the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 #set -x
-#
-#   Yaourt (Yet Another Outil Utilisateur): More than a Pacman frontend
-#
-#   Copyright (C) 2008, Julien MISCHKOWITZ wain@archlinux.fr
-#   Homepage: http://www.archlinux.fr/yaourt-en
-#   Based on:
-#   yogurt from Federico Pelloni <federico.pelloni@gmail.com>
-#   srcpac from Jason Chu  <jason@archlinux.org>
-#   pacman from Judd Vinet <jvinet@zeroflux.org>
-#
-#       This program is free software; you can redistribute it and/or modify
-#       it under the terms of the GNU General Public License as published by
-#       the Free Software Foundation; either version 2 of the License, or
-#       (at your option) any later version.
-#       
-#       This program is distributed in the hope that it will be useful,
-#       but WITHOUT ANY WARRANTY; without even the implied warranty of
-#       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#       GNU General Public License for more details.
-#       
-#       You should have received a copy of the GNU General Public License
-#       along with this program; if not, write to the Free Software
-#       Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-#       MA 02110-1301, USA.
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
@@ -56,7 +51,7 @@ usage(){
 	return 0
 }
 version(){
-	plain "$(gettext "yaourt $VERSION is a pacman frontend with AUR support and more")"
+	echo "$(gettext "yaourt $VERSION is a pacman frontend with AUR support and more")"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
 	exit
 }
@@ -65,12 +60,6 @@ die(){
 	# reset term title
 	(( TERMINALTITLE )) && [[ $DISPLAY ]] &&  echo -n -e "\033]0;$TERM\007"
 	exit $ret
-}
-
-# Unset package information
-free_pkg ()
-{
-	unset repo pkgname pkgver lver group outofdate votes pkgdesc
 }
 
 # usage: pkg_output repo pkgname pkgver lver group outofdate votes pkgdesc
@@ -132,7 +121,7 @@ launch_with_su(){
 
 # Define programs arguments
 # Usage: program_arg ($dest, $arg)
-#	$dest: 1: pacman -S  2: makepkg 4: yaourt -S
+#	$dest: 1: pacman -S  2: makepkg 4: yaourt 8: pacman -Q
 program_arg ()
 {
 	local dest=$1; shift
@@ -198,14 +187,15 @@ show_new_orphans(){
 	neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" )
 	if [[ "$neworphans" ]]; then
 		plain $(gettext 'Packages that were installed as dependencies but are no longer required by any installed package:')
-		list "$neworphans"
+		echo_wrap 4 "$neworphans"
 	fi
 
 	# Test local database
 	testdb 
 
 	# save original of backup files (pacnew/pacsave)
-	if [[ "$MAJOR" != "remove" ]] && (( AUTOSAVEBACKUPFILE )) && ! diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
+	if [[ "$MAJOR" != "remove" ]] && (( AUTOSAVEBACKUPFILE )) && ! \
+		diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
 		msg $(gettext 'Searching for original config files to save')
 		launch_with_su pacdiffviewer --backup
 	fi
@@ -216,40 +206,40 @@ show_new_orphans(){
 ###################################
 
 # Search for packages
-# usage: search ($interactive, $lite)
+# usage: search ($interactive)
 # interactive:1 -> line number
-# lite: 1 -> don't print description
 # return: global var PKGSFOUND
 search ()
 {
 	local interactive=${1:-0}
-	local lite=${2:-0}
 	local i=1
 	local search_option="${PACMAN_Q_ARG[@]}"
-	local format
+	local format="%n %s %v"
 	if [[ "$MAJOR" = "query" ]]; then
-		(( interactive )) && DATE=0
 		search_option+=" -Q"
-		lver="-"
+		format+=" - - - %g"
 	else
 		DATE=0
-		lver="%l"
+		format+=" %l %w %o %g"
 		search_option+=" -S"
 	fi
-	(( SEARCH )) && search_option+=" -s" && lite=0
-	(( DATE )) && format="%1 " || format="- "
-	(( lite )) && format+="%n %s %v - - - %g" || format+="%n %s %v $lver %w %o %g  %d"
+	if (( SEARCH )); then
+		search_option+=" -s"
+		format+=" %d"
+	else
+		[[ $args ]] && search_option+=" -i"
+	fi
 	(( AURSEARCH )) && search_option+=" -A"
-	(( ! SEARCH )) && [[ $args ]] && search_option+=" -i"
-	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}"; return; }
-	(( DATE )) && > "$YAOURTTMPDIR/instdate"
-	local cmd=(package-query $search_option -f "$format")
-	pkgdesc=""
+	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}";return; }
+	if (( DATE )); then
+		format="%1 $format" 
+		> "$YAOURTTMPDIR/instdate"
+	else
+		format="- $format"
+	fi
+	local cmd=(package-query --csep '\ ' $search_option -f "$format")
 	unset PKGSFOUND
-	while read _date pkgname repo pkgver lver votes outofdate group_desc; do 
-		group=${group_desc%%  *}
-		(( lite )) || pkgdesc=${group_desc#*  }
-		[[ "$MAJOR" = "query" ]] && lver=""
+	while read _date pkgname repo pkgver lver votes outofdate group pkgdesc; do 
 		PKGSFOUND+=("${repo}/${pkgname}")
 		pkg_output "$repo" "$pkgname" "$pkgver" "$lver" \
 			"$group" "$outofdate" "$votes" "$pkgdesc"
@@ -257,15 +247,16 @@ search ()
 			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
 			(( i ++ ))
 		fi
-		(( DATE )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" || \
-			echo -e "$pkgoutput"
+		(( DATE )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" \
+			|| echo -e "$pkgoutput"
 	done < <("${cmd[@]}" "${args[@]}")
 	if (( DATE )); then
-		sort $YAOURTTMPDIR/instdate | awk '{
+		sort "$YAOURTTMPDIR/instdate" | awk '{
 			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
 			}'
 	fi
-}	
+}
+	
 # Handle special query
 yaourt_query_type ()
 {
@@ -274,6 +265,20 @@ yaourt_query_type ()
 	for arg in ${args[@]}; do
 		searchforpackageswhich "$QUERYTYPE" "$arg"
 	done
+}
+
+yaourt_install_packages ()
+{
+	loadlibrary abs
+	loadlibrary aur
+	prepare_orphan_list
+	sync_packages
+	show_new_orphans
+	#show package which have not been installed
+	if [[ $error_package ]]; then
+		warning "$(gettext 'Following packages have not been installed:')"
+		echo_wrap 4 "${error_package[*]}"
+	fi
 }
 	
 # Handle sync
@@ -294,7 +299,7 @@ yaourt_sync ()
 		loadlibrary aur
 		prepare_orphan_list
 		sysupgrade
-		# Upgrade all AUR packages or all Devel packages
+		# Upgrade all AUR packages and/or all Devel packages
 		(( DEVEL )) && upgrade_devel_package
 		(( AURUPGRADE )) && upgrade_from_aur
 		show_new_orphans
@@ -310,51 +315,37 @@ yaourt_sync ()
 			title $(eval_gettext 'Informations for $arg')
 			_repo="${arg%/*}"
 			if [[ "$_repo" = "$arg" || "$_repo" != "aur" ]]; then
-				$PACMANBIN -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null || info_from_aur "${arg#*/}"
+				$PACMANBIN -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null ||\
+					 info_from_aur "${arg#*/}"
 			else
 				info_from_aur "${arg#*/}"
 			fi
 		done
 		return
 	fi
-	loadlibrary abs
-	loadlibrary aur
-	prepare_orphan_list
-	sync_packages
-	show_new_orphans
-	#show package which have not been installed
-	if [[ $error_package ]]; then
-		warning "$(gettext 'Following packages have not been installed:')"
-		echo_wrap 4 "${error_package[*]}"
-	fi
+	yaourt_install_packages
 }
 
 # Handle query
 yaourt_query ()
 {
-	loadlibrary alpm_query
-	# query in a backup file or in current alpm db
-	if [[ $BACKUPFILE ]]; then
-		loadlibrary alpm_backup
-		is_an_alpm_backup "$BACKUPFILE" || die 1
-		title $(gettext 'Query backup database')
-		msg $(gettext 'Query backup database')
-		$PACMANBIN --dbpath "$backupdir/" -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
-		return
+	if (( CHANGELOG || LIST || INFO )); then
+		$PACMANBIN -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
+		return $?
 	fi
-	(( CHANGELOG || LIST || INFO )) && pacman_cmd 0
 	if (( OWNER )); then
 		# pacman will call "which" on futur version
+		loadlibrary alpm_query
 		search_which_package_owns
 	elif (( DEPENDS && UNREQUIRED )); then
+		loadlibrary alpm_query
 		search_forgotten_orphans
 	elif [[ $QUERYTYPE ]]; then
 		yaourt_query_type
 	else
 		title $(gettext "Query installed packages")
 		msg $(gettext "Query installed packages")
-		AURSEARCH=0 search 0 1
-		#list_installed_packages
+		AURSEARCH=0 search 0
 	fi
 }
 
@@ -425,16 +416,8 @@ while [[ $1 ]]; do
 		--ignore)           program_arg 1 $1; shift; IGNOREPKG+=("$1"); program_arg 1 $1;;
 		--ignoregroup)      program_arg 1 $1; shift; IGNOREGRP+=("$1"); program_arg 1 $1;;
 		--aur)              AUR=1; AURUPGRADE=1; AURSEARCH=1;;
-		-B|--backup)        MAJOR="backup"; 
-			savedir=$(pwd)
-			if [[ ${2:0:1} != "-" ]]; then
-				[ -d "$2" ] && savedir="$( readlink -e "$2")"
-				[ -f "$2" ] && backupfile="$( readlink -e "$2")"
-				[[ -z "$savedir" && -z "$backupfile" ]] && error $(gettext 'wrong argument') && die 1
-				shift
-			fi
-			;;
-		--backupfile)       COLORMODE="textonly"; shift; BACKUPFILE="$1";;
+		-B|--backup)        MAJOR="backup";;
+		--backupfile)       shift; BACKUPFILE="$1";;
 		-b|--build)         BUILD=1; program_arg 4 $1;;
 		-C)                 MAJOR="clean";;
 		--conflicts)        QUERYTYPE="conflicts";;
@@ -467,6 +450,13 @@ while [[ $1 ]]; do
 	shift
 done
 
+# Init colors (or not)
+[[ -t 1 ]] || { COLORMODE="textonly" TERMINALTITLE=0; }
+[[ $COLORMODE = "textonly" ]] && program_arg 2 "-m" # no color for makepkg
+[[ $COLORMODE ]] && program_arg 4  "--$COLORMODE"
+initcolor
+
+# No options
 if ! [[ "$MAJOR" ]]; then
 	[[ $args ]] || pacman_cmd 0
 	# If no action and files as argument, act like -U *
@@ -475,31 +465,30 @@ if ! [[ "$MAJOR" ]]; then
 	done
 	if [[ $filelist ]]; then
 		args=( "${filelist[@]}" )
-		MAJOR="upgrade"
+		su_pacman -U "${args[@]}"
+		return $?
 	else
 		# Interactive search else.
 		MAJOR="interactivesearch"
 	fi
 fi
 
-[[ "$BACKUPFILE" && ! -r "$BACKUPFILE" ]] && { error $(eval_gettext 'Unable to read $BACKUPFILE file'); die 1; }
-
+# Init path, complete options and check some permissions
 (( ! SYSUPGRADE && UPGRADES )) && [[ "$MAJOR" = "sync" ]] && SYSUPGRADE=1
-if (( EXPORT )); then
-	[ -d "$EXPORTDIR" ] || { error $EXPORTDIR $(gettext 'is not a directory'); die 1;}
-	[ -w "$EXPORTDIR" ] || { error $EXPORTDIR $(gettext 'is not writable'); die 1;}
-	EXPORTDIR=$(readlink -e "$EXPORTDIR")
-fi
-
-
-[ -d "$TMPDIR" ] || { error $TMPDIR $(gettext 'is not a directory'); die 1;}
-[ -w "$TMPDIR" ] || { error $TMPDIR $(gettext 'is not writable'); die 1;}
-TMPDIR=$(readlink -e "$TMPDIR")
+(( EXPORT )) && { check_dir EXPORTDIR || die 1; }
+check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
-[[ -t 1 ]] || { COLORMODE="textonly" TERMINALTITLE=0; }
-[[ $COLORMODE ]] && program_arg 4  "--$COLORMODE"
 initpath
-initcolor
+
+# -Q --backupfile
+[[ "$BACKUPFILE" ]] && if [[ -r "$BACKUPFILE" ]]; then
+	loadlibrary alpm_backup 
+	is_an_alpm_backup "$BACKUPFILE" || die 1
+	program_arg 8 "-b" "$backupdir"
+else
+	error $(eval_gettext 'Unable to read $BACKUPFILE file')
+	die 1
+fi
 
 # Refresh
 if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINTURIS )); then
@@ -522,10 +511,7 @@ case "$MAJOR" in
 		;;
 
 	stats)
-		loadlibrary pacman_conf
 		loadlibrary alpm_stats
-		tmp_files="$YAOURTTMPDIR/stats.$$"
-		mkdir -p "$tmp_files" || die 1
 		buildpackagelist
 		showpackagestats
 		showrepostats
@@ -545,13 +531,9 @@ case "$MAJOR" in
 		build_or_get "$PKG"
 		;;
 
-	backup)
+	backup) 
 		loadlibrary alpm_backup
-		if [[ $backupfile ]]; then
-			restore_alpm_db || die 1
-		elif [[ $savedir ]]; then 
-			save_alpm_db || die 1
-		fi
+		yaourt_backup "${args[0]}"
 		;;
 	
 	sync) yaourt_sync ;;
@@ -567,14 +549,18 @@ case "$MAJOR" in
 			(( line )) || die 1	# not a number, range neither 
 			(( ${line%-*}-1 < ${#PKGSFOUND[@]} )) || die 1	# > no package corresponds
 			if [[ ${line/-/} != $line ]]; then
-				for ((i=${line%-*}-1; i<${line#*-}; i++)); do packages+=(${PKGSFOUND[$i]}); done
+				for ((i=${line%-*}-1; i<${line#*-}; i++)); do
+					packages+=(${PKGSFOUND[$i]});
+				done
 			else
 				packages+=(${PKGSFOUND[$((line - 1))]})
 			fi
 		done
 		echo 
-		exec $YAOURTBIN -S "${YAOURT_ARG[@]}" "${packages[@]}"
+		args=("${packages[@]}")
+		yaourt_install_packages
 		;;
+		
 	*) pacman_cmd 0 ;;
 esac
 die $failed
