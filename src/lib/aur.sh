@@ -14,7 +14,7 @@ aur_get_pkgbuild ()
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
 	#(( $# > 1 )) && local pkgurl=$2 || \
-	#local pkgurl=$(package-query -Aif "%u" "$pkg")
+	#local pkgurl=$(pkgquery -Aif "%u" "$pkg")
 	local pkgurl="$AUR_URL/packages/$pkg/$pkg.tar.gz"
 	if [[ ! "$pkgurl" ]] || ! curl -fs "$pkgurl" -o "$pkg.tar.gz"; then
 		error $(eval_gettext '$pkg not found in AUR.');
@@ -145,7 +145,7 @@ install_from_aur(){
 	aurid=""
 
 	read aurid version numvotes outofdate pkgurl description < \
-		<(package-query -Ai "$PKG" -f "%i %v %w %o %u %d")
+		<(pkgquery -Ai "$PKG" -f "%i %v %w %o %u %d")
 	[[ "${aurid#-}" ]] || return 1
 	
 	# grab comments and info from aur page
@@ -189,8 +189,8 @@ upgrade_from_aur(){
 	msg $(gettext 'Searching for new version on AUR')
 	loadlibrary pacman_conf
 	# Search for new version on AUR
-	(( ! DETAILUPGRADE )) && local f_pkgs=($(pacman -Qqm)) 
-	classify_pkg ${#f_pkgs[@]} < <(package-query -AQmf '%n %r %v %l %o %d')
+	(( ! DETAILUPGRADE )) && local f_pkgs=($(pacman_parse -Qqm)) 
+	classify_pkg ${#f_pkgs[@]} < <(pkgquery -AQmf '%n %r %v %l %o %d')
 	sync_first "${syncfirstpkgs[@]}"
 	pkgs+=("${srcpkgs[@]}")
 	[[ $pkgs ]] || return 0

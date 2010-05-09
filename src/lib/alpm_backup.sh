@@ -9,7 +9,7 @@ save_alpm_db(){
 	local savedir="$1" savefile="$1/pacman-$(date +%Y-%m-%d_%Hh%M).tar.bz2"
 	msg $(eval_gettext 'Saving pacman database in $savedir')
 	title $(eval_gettext 'Saving pacman database in $savedir')
-	bsdtar -cjf "$savefile" -C "$PACMANROOT" "local/" && \
+	bsdtar -cjf "$savefile" -C "$PACMANDB" "local/" && \
 		msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
 }
 
@@ -24,7 +24,7 @@ is_an_alpm_backup(){
 		mkdir -p "$backupdir" || return 1
 		tar -xjf "$1" -C "$backupdir/"
 	fi
-	$PACMANBIN --dbpath "$backupdir/" --query | LC_ALL=C sort > "$backupdb"
+	pacman_parse --dbpath "$backupdir/" --query | LC_ALL=C sort > "$backupdb"
 	if [[ ! -s "$backupdb" ]]; then
 		_file="$1"
 		error $(eval_gettext '$_file is not a valid alpm database backup')
@@ -41,7 +41,7 @@ restore_alpm_db(){
 	local savedb="$YAOURTTMPDIR/backup/alpmdb$$"
 	mkdir -p "$savedb" || return 1
 	is_an_alpm_backup "$1" || return 1
-	$PACMANBIN --query | LC_ALL=C sort > "$nowdb"
+	pacman_parse	 --query | LC_ALL=C sort > "$nowdb"
 	msg $(gettext 'New packages installed since backup:')
 	LC_ALL=C comm -13 "$backupdb" "$nowdb" 
 	echo
@@ -55,12 +55,12 @@ restore_alpm_db(){
 	read -e 
 	[[ "$REPLY" != "$(gettext 'yes')" ]] && return 0
 	msg $(gettext 'Deleting pacman DB')
-	launch_with_su mv "$PACMANROOT/local/" "$savedb"
+	launch_with_su mv "$PACMANDB/local/" "$savedb"
 	msg $(gettext 'Copying backup')
-	launch_with_su mv "$backupdir/local/" "$PACMANROOT/local" && \
+	launch_with_su mv "$backupdir/local/" "$PACMANDB/local" && \
 		launch_with_su rm -rf  "$backupdir" 
 	msg $(gettext 'Testing the new database')
-	$PACMANBIN --query | LC_ALL=C sort > "$nowdb"
+	pacman_parse --query | LC_ALL=C sort > "$nowdb"
 	if ! diff "$backupdb" "$nowdb" &> /dev/null; then
 		warning $(gettext 'Your backup is not successfully restored')
 	else

@@ -84,7 +84,7 @@ check_deps ()
 {
 	local nodisplay=${1:-0}
 	eval $PKGBUILD_VARS
-	PKGBUILD_DEPS=( $(pacman -T "${depends[@]}" "${makedepends[@]}" ) )
+	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" ) )
 	unset PKGBUILD_DEPS_INSTALLED
 	for dep in "${depends[@]}" "${makedepends[@]}"
 	do
@@ -114,7 +114,7 @@ check_conflicts ()
 {
 	local nodisplay=${1:-0}
 	eval $PKGBUILD_VARS
-	local cfs=( $(pacman -T "${conflicts[@]}") )
+	local cfs=( $(pacman_parse -T "${conflicts[@]}") )
 	unset PKGBUILD_CONFLICTS
 	if (( ${#cfs[@]} != ${#conflicts[@]} )); then 
 		for cf in "${conflicts[@]}"
@@ -128,7 +128,7 @@ check_conflicts ()
 		# which conflict with.
 		local i=0
 		for cf in "${PKGBUILD_CONFLICTS[@]}"; do
-			package-query -Qqi "${cf%[<=>]*}" || unset PKGBUILD_CONFLICTS[$i]
+			pkgquery -Qqi "${cf%[<=>]*}" || unset PKGBUILD_CONFLICTS[$i]
 			(( i++ ))
 		done
 		[[ "$PKGBUILD_CONFLICTS" ]] && (( nodisplay )) && return 1
@@ -136,7 +136,7 @@ check_conflicts ()
 	(( nodisplay )) && return 0
 	if [[ "$PKGBUILD_CONFLICTS" ]]; then 
 		msg "$(eval_gettext '$PKG conflicts:')"
-		for cf in $(package-query -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
+		for cf in $(pkgquery -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
 			echo -e " - ${COL_BOLD}$cf${NO_COLOR}"
 		done
 	fi
@@ -150,7 +150,7 @@ manage_conflicts ()
 	local _pkg=$1
 	shift
 	[[ "$*" ]] || return 0
-	local pkgs=( $(package-query -Qif "%n" "${@%[<=>]*}") )
+	local pkgs=( $(pkgquery -Qif "%n" "${@%[<=>]*}") )
 	(( ! ${#pkgs[@]} )) && return 0
 	warning $(eval_gettext '$_pkg conflicts with those packages:')
 	for pkg in "${pkgs[@]}"; do
@@ -263,7 +263,7 @@ build_package()
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
 		$YAOURTBIN -S "${YAOURT_ARG[@]}" --asdeps "${PKGBUILD_DEPS[@]%[<=>]*}"
-		local _deps_left=( $(pacman -T "${PKGBUILD_DEPS[@]}") )
+		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
 		if (( ${#_deps_left[@]} )); then
 			warning $(gettext 'Dependencies have been installed before the failure')
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
@@ -310,9 +310,9 @@ install_package()
 	fi
 
 	for _file in "$YPKGDEST/"*; do
-		local pkg_conflicts=($(package-query -Qp -f "%c" "$_file"))
-		eval $(package-query -Qp -f "_pkg=%n;_pkgver=%v" "$_file")
-		pkg_conflicts=( "${pkg_conflicts[@]}" $(package-query -Q --query-type conflicts -f "%n" "$_pkg=$_pkgver"))
+		local pkg_conflicts=($(pkgquery -Qp -f "%c" "$_file"))
+		eval $(pkgquery -Qp -f "_pkg=%n;_pkgver=%v" "$_file")
+		pkg_conflicts=( "${pkg_conflicts[@]}" $(pkgquery -Q --query-type conflicts -f "%n" "$_pkg=$_pkgver"))
 		(( ! ${#pkg_conflicts[@]} )) && continue;
 		manage_conflicts "$_pkg" "${pkg_conflicts[@]}" || return 1
 	done
@@ -327,8 +327,8 @@ install_package()
 			V)	local pkg_nb=${#pkgname[@]}
 				local i=0
 				for _file in "$YPKGDEST"/*; do
-					$PACMANBIN --query --list --file "$_file"
-					$PACMANBIN --query --info --file "$_file"
+					$PACMANBIN -Qlp "$_file"
+					$PACMANBIN -Qlp "$_file"
 					(( ++i )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
 				done
 				;;

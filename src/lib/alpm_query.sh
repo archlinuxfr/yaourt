@@ -6,19 +6,19 @@
 # Query installed version
 pkgversion()
 {
-	package-query -Qif "%v" "$1"
+	pkgquery -Qif "%v" "$1"
 }
 
 # Test if $1 is installed or provided by an installed package
 isavailable()
 {
-	package-query -1Siq "$1" || package-query -1Sq --query-type provides "$1"
+	pkgquery -1Siq "$1" || pkgquery -1Sq --query-type provides "$1"
 }
 
 # Return package repository
 sourcerepository()
 {
-	package-query -1SQif "%r" "$1" 
+	pkgquery -1SQif "%r" "$1" 
 }
 
 # search in sync db for packages wich depends on/conflicts whith/provides argument
@@ -37,7 +37,7 @@ searchforpackageswhich(){
 	else
 		_opt=(-Sf '%r %n %v %l')
 	fi
-	package-query "${_opt[@]}" --query-type $action "$name" |
+	pkgquery "${_opt[@]}" --query-type $action "$name" |
 	while read repo pkgname pkgver lver; do
 		pkg_output "$repo" "$pkgname" "$pkgver" "$lver"
 		echo -e "$pkgoutput"
@@ -48,7 +48,7 @@ search_which_package_owns(){
 	for arg in ${args[@]}; do
 		title $(eval_gettext 'Searching wich package owns "$arg"')
 		argpath=$(type -p "$arg") || argpath="$arg"
-		$PACMANBIN -Qo "$argpath"
+		$PACMANBIN "${PACMAN_C_ARG[@]}" -Qo "$argpath"
 	done
 }
 

@@ -17,16 +17,16 @@ abs_get_pkgbuild ()
 	local repo=${1%/*} pkg=${1#*/}
 	if [[ $RSYNCCMD ]] && in_array "$repo" "${ABS_REPO[@]}"; then
 		[[ $3 ]] && local arch=$3 || \
-			local arch=$(package-query -Sif "%a" "$repo/$pkg")
+			local arch=$(pkgquery -Sif "%a" "$repo/$pkg")
 		$RSYNCCMD $RSYNCOPT "$RSYNCSRC/$arch/$repo/$pkg/" . && return 0
 	fi
 	# TODO: store abs archive somewhere else.
 	local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
 	local abs_url 
-	local repo_date=$(stat -c "%Z" "$PACMANROOT/sync/$repo/.lastupdate")
+	local repo_date=$(stat -c "%Z" "$PACMANDB/sync/$repo/.lastupdate")
 	local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
 	if (( $? )) || (( abs_repo_date < repo_date )); then
-		abs_url=$(package-query -1Sif "%u" "$repo/$pkg")
+		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
 		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
 		msg "$1: $(gettext 'retrieve abs archive')"
 		curl -f -# "$abs_url" -o "$abs_tar" || return 1
@@ -63,7 +63,7 @@ sync_first ()
 
 # Build packages from repos
 install_from_abs(){
-	for _line in $(package-query -1Sif "repo=%r;PKG=%n;_pkgver=%v;_arch=%a" "$@"); do
+	for _line in $(pkgquery -1Sif "repo=%r;PKG=%n;_pkgver=%v;_arch=%a" "$@"); do
 		eval $_line
 		local package="$repo/$PKG"
 		(( ! BUILD )) && ! custom_pkg "$PKG" && binariespackages+=(${package#-/}) && continue
@@ -74,7 +74,7 @@ install_from_abs(){
 		init_build_dir "$YAOURTTMPDIR/abs-$PKG" || return 1
 
 		# With splitted package, abs folder may not correspond to package name
-		local pkgbase=( $(grep -A1 '%BASE%' "$PACMANROOT/sync/$repo/$PKG-$_pkgver/desc" ) )
+		local pkgbase=( $(grep -A1 '%BASE%' "$PACMANDB/sync/$repo/$PKG-$_pkgver/desc" ) )
 		[[ $pkgbase ]] || pkgbase=( '' "$PKG" )
 		abs_get_pkgbuild $repo/${pkgbase[1]} $_arch || return 1
 		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
@@ -123,7 +123,7 @@ classify_pkg ()
 			# new package (not installed at this time)
 			pkgver=$rversion
 			local requiredbypkg=$(printf "%q" "$(gettext 'not found')")
-			local pkg_dep_on=( $(package-query -S --query-type depends -f "%n" "$pkgname") )
+			local pkg_dep_on=( $(pkgquery -S --query-type depends -f "%n" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
 				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
 			done
@@ -180,7 +180,7 @@ sysupgrade()
 {
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 	(( ! DETAILUPGRADE )) && { su_pacman -S "${PACMAN_S_ARG[@]}" $_arg; return $?; }
-	$PACMANBIN -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
+	pacman_parse -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
 	
 	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
 	packages=("${packages[@]##*/}")
@@ -188,7 +188,7 @@ sysupgrade()
 	rm "$YAOURTTMPDIR/sysupgrade"
 	[[ ! "$packages" ]] && return 0	
 	loadlibrary pacman_conf
-	classify_pkg < <(package-query -1Sif '%n %r %v %l - %d' "${packages[@]}")
+	classify_pkg < <(pkgquery -1Sif '%n %r %v %l - %d' "${packages[@]}")
 	sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
@@ -273,7 +273,7 @@ sync_packages()
 		[[ "$repo" = "-" ]] && continue
 		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
 		pkgs+=("$target")
-	done < <(package-query -1ASif "%r %n %t" "${args[@]}")
+	done < <(pkgquery -1ASif "%r %n %t" "${args[@]}")
 	for _pkg in "${args[@]}"; do
 		in_array "$_pkg" "${pkgs[@]}" || binariespackages+=("$_pkg")
 	done
@@ -288,7 +288,7 @@ upgrade_devel_package(){
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
-	for PKG in $(pacman -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
+	for PKG in $(pacman_parse -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
 	do
 		is_package_ignored "$PKG" && continue
 		devel_pkgs+=($PKG)

@@ -121,18 +121,21 @@ launch_with_su(){
 
 # Define programs arguments
 # Usage: program_arg ($dest, $arg)
-#	$dest: 1: pacman -S  2: makepkg 4: yaourt 8: pacman -Q
+# dest:
+A_PS=1 A_M=2 A_Y=4 A_PQ=8 A_PC=16 A_PKC=32
 program_arg ()
 {
 	local dest=$1; shift
-	(( $dest & 1 )) && PACMAN_S_ARG+=("$@")
-	(( $dest & 2 )) && MAKEPKG_ARG+=("$@")
-	(( $dest & 4 )) && YAOURT_ARG+=("$@")
-	(( $dest & 8 )) && PACMAN_Q_ARG+=("$@")
+	(( dest & 1 ))  && PACMAN_S_ARG+=("$@")
+	(( dest & 2 ))  && MAKEPKG_ARG+=("$@")
+	(( dest & 4 ))  && YAOURT_ARG+=("$@")
+	(( dest & 8 ))  && PACMAN_Q_ARG+=("$@")
+	(( dest & 16 )) && PACMAN_C_ARG+=("$@")
+	(( dest & 32 )) && PKGQUERY_C_ARG+=("$@")
 }
 
-# Wait if lock exists, then launch pacman as root
-su_pacman ()
+# Wait while pacman locks exists
+pacman_queue()
 {
 	# from nesl247
 	if [[ -f "$LOCKFILE" ]]; then
@@ -141,7 +144,11 @@ su_pacman ()
 			sleep 3
 		done
 	fi
-	launch_with_su $PACMANBIN "$@"
+}
+# launch pacman as root
+su_pacman ()
+{
+	pacman_queue; launch_with_su $PACMANBIN "${PACMAN_C_ARG[@]}" "$@"
 }
 
 # Launch pacman and exit
@@ -149,7 +156,7 @@ pacman_cmd ()
 {
 	(( ! $1 )) && exec $PACMANBIN "${ARGSANS[@]}"
 	prepare_orphan_list
-	su_pacman "${ARGSANS[@]}"  
+	pacman_queue; launch_with_su $PACMANBIN "${ARGSANS[@]}"  
 	local ret=$?
 	(( ! ret )) && show_new_orphans
 	exit $ret
@@ -168,16 +175,16 @@ prepare_orphan_list(){
 	INSTALLED_BEFORE="$YAOURTTMPDIR/orphans/installed_before.$$"
 	INSTALLED_AFTER="$YAOURTTMPDIR/orphans/installed_after.$$"
 	# search orphans before removing or upgrading
-	pacman -Qqt | LC_ALL=C sort > $ORPHANS_BEFORE
+	pacman_parse -Qqt | LC_ALL=C sort > $ORPHANS_BEFORE
 	# store package list before
-	pacman -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
+	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
 	awk '{print $1}' "$INSTALLED_BEFORE.full"> $INSTALLED_BEFORE
 }
 show_new_orphans(){
 	(( ! SHOWORPHANS )) && return
 	# search for new orphans after upgrading or after removing (exclude new installed package)
-	pacman -Qqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
-	pacman -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
+	pacman_parse -Qqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
+	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
 	awk '{print $1}' "$INSTALLED_AFTER.full" > $INSTALLED_AFTER
 
 	LC_ALL=C comm -1 -3 "$INSTALLED_BEFORE" "$INSTALLED_AFTER" > "$INSTALLED_AFTER.newonly"
@@ -230,14 +237,14 @@ search ()
 		[[ $args ]] && search_option+=" -i"
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
-	(( QUIET )) && { package-query $search_option -f "%n" "${args[@]}";return; }
+	(( QUIET )) && { pkgquery $search_option -f "%n" "${args[@]}";return; }
 	if (( DATE )); then
 		format="%1 $format" 
 		> "$YAOURTTMPDIR/instdate"
 	else
 		format="- $format"
 	fi
-	local cmd=(package-query --csep '\ ' $search_option -f "$format")
+	local cmd=(pkgquery --csep '\ ' $search_option -f "$format")
 	unset PKGSFOUND
 	while read _date pkgname repo pkgver lver votes outofdate group pkgdesc; do 
 		PKGSFOUND+=("${repo}/${pkgname}")
@@ -315,7 +322,7 @@ yaourt_sync ()
 			title $(eval_gettext 'Informations for $arg')
 			_repo="${arg%/*}"
 			if [[ "$_repo" = "$arg" || "$_repo" != "aur" ]]; then
-				$PACMANBIN -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null ||\
+				pacman_out -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null ||\
 					 info_from_aur "${arg#*/}"
 			else
 				info_from_aur "${arg#*/}"
@@ -330,7 +337,7 @@ yaourt_sync ()
 yaourt_query ()
 {
 	if (( CHANGELOG || LIST || INFO )); then
-		$PACMANBIN -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
+		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
 		return $?
 	fi
 	if (( OWNER )); then
@@ -356,11 +363,12 @@ yaourt_query ()
 YAOURTBIN=$0
 source /usr/lib/yaourt/basicfunctions.sh || exit 1 
 
-unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
+unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
 	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
-	DEPENDS PRINTURIS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG failed 
+	DEPENDS PRINTURIS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG \
+	PACMAN_C_ARG PKGQUERY_C_ARG failed 
 
 # Grab environement options
 {
@@ -370,7 +378,7 @@ unset MAJOR ROOT NEWROOT NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 } &> /dev/null
 
 # makepkg check root
-(( ! UID )) && program_arg 2 "--asroot"
+(( ! UID )) && program_arg $A_M "--asroot"
 
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")
@@ -390,43 +398,44 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
-		-R|--remove|-U|--upgrade|-w|--downloadonly)	pacman_cmd 1 ;;
-		--asdeps|--needed)  program_arg 1 $1;;
+		-R|--remove|-U|--upgrade|-w|--downloadonly)	pacman_cmd 1;;
+		--changelog|--check)pacman_cmd 0;;
+		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
+		--cachedir|--logfile) program_arg $A_PC "$1" "$2"; shift;;
+		--asdeps|--needed)  program_arg $A_PS $1;;
 		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
-		--deps)             DEPENDS=1; program_arg 8 $1;;
-		-d)                 DEPENDS=1; NODEPS=1; program_arg 15 $1;;
-		-e|--explicit)      EXPLICITE=1; program_arg 8 $1;;
-		-m|--foreign)       FOREIGN=1; program_arg 8 $1;;
-		-g|--groups)        GROUP=1; program_arg 8 $1;;
-		-i|--info)          INFO=1; program_arg 9 $1;;
-		--changelog)        pacman_cmd 0;;
-		-l|--list)          LIST=1; program_arg 8 $1;;
-		--noconfirm)        NOCONFIRM=1; EDITFILES=0; program_arg 7 $1;;
-		--nodeps)           NODEPS=1; program_arg 7 $1;;
+		--deps)             DEPENDS=1; program_arg $A_PQ $1;;
+		-d)                 DEPENDS=1; NODEPS=1; program_arg $((A_PS | A_M | A_Y | A_PQ)) $1;;
+		-e|--explicit)      EXPLICITE=1; program_arg $A_PQ $1;;
+		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
+		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
+		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
+		-l|--list)          LIST=1; program_arg $A_PQ $1;;
+		--noconfirm)        NOCONFIRM=1; EDITFILES=0; program_arg $A_PS $1;;
+		--nodeps)           NODEPS=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-o|--owner)         OWNER=1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
-		-r|--root)          ROOT=1; shift; NEWROOT="$1"; _opt="'$1'";;
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
-		-t|--unrequired)    UNREQUIRED=1; program_arg 8 $1;;
-		-u|--upgrades)      (( UPGRADES ++ )); program_arg 8 $1;;
-		--holdver)          HOLDVER=1; program_arg 6 $1;;
-		-A|--ignorearch)    IGNOREARCH=1; program_arg 6 $1;;
-		--ignore)           program_arg 1 $1; shift; IGNOREPKG+=("$1"); program_arg 1 $1;;
-		--ignoregroup)      program_arg 1 $1; shift; IGNOREGRP+=("$1"); program_arg 1 $1;;
+		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
+		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
+		--holdver)          HOLDVER=1; program_arg $((A_M | A_Y)) $1;;
+		-A|--ignorearch)    IGNOREARCH=1; program_arg $((A_M | A_Y)) $1;;
+		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=("$1");;
+		--ignoregroup)      program_arg $A_PS $1; shift; IGNOREGRP+=("$1");; 
 		--aur)              AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;
-		-b|--build)         BUILD=1; program_arg 4 $1;;
+		-b|--build)         BUILD=1; program_arg $A_Y $1;;
 		-C)                 MAJOR="clean";;
 		--conflicts)        QUERYTYPE="conflicts";;
 		--database)         CLEANDATABASE=1;;
 		--date)             DATE=1;;
 		--depends)          QUERYTYPE="depends";;
 		--devel)            DEVEL=1;;
-		--export)           EXPORT=1; program_arg 4 $1; shift; EXPORTDIR="$1"; program_arg 4 $1;;
-		-f|--force)         FORCE=1; program_arg 7 $1;;
+		--export)           EXPORT=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
+		-f|--force)         FORCE=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild"; shift; PKG="$1";;
 		-h|--help)          usage; exit 0;;
 		--lightbg)          COLORMODE="lightbg";;
@@ -434,16 +443,16 @@ while [[ $1 ]]; do
 		--provides)         QUERYTYPE="provides";;
 		-p|--print-uris)    PRINTURIS=1;;
 		--replaces)         QUERYTYPE="replaces";;
-		-s|--search)        SEARCH=1; program_arg 8 $1;;
+		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--stats)            MAJOR="stats";;
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
-			program_arg 1 "--noconfirm" "--force";;
+			program_arg $A_PS "--noconfirm" "--force";;
 		--textonly)         COLORMODE="textonly";;
-		--tmp)              program_arg 4 $1; shift; TMPDIR="$1"; program_arg 4 $1;;
+		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
-		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg 5 $1;;
+		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_Y)) $1;;
 		-*)                 pacman_cmd 0;;
 		*)                  args+=("$1") ;; 
 	esac
@@ -452,8 +461,8 @@ done
 
 # Init colors (or not)
 [[ -t 1 ]] || { COLORMODE="textonly" TERMINALTITLE=0; }
-[[ $COLORMODE = "textonly" ]] && program_arg 2 "-m" # no color for makepkg
-[[ $COLORMODE ]] && program_arg 4  "--$COLORMODE"
+[[ $COLORMODE = "textonly" ]] && program_arg $A_M "-m" # no color for makepkg
+[[ $COLORMODE ]] && program_arg $A_Y  "--$COLORMODE"
 initcolor
 
 # No options
@@ -478,17 +487,16 @@ fi
 (( EXPORT )) && { check_dir EXPORTDIR || die 1; }
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
-initpath
-
 # -Q --backupfile
 [[ "$BACKUPFILE" ]] && if [[ -r "$BACKUPFILE" ]]; then
 	loadlibrary alpm_backup 
 	is_an_alpm_backup "$BACKUPFILE" || die 1
-	program_arg 8 "-b" "$backupdir"
+	program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
 else
 	error $(eval_gettext 'Unable to read $BACKUPFILE file')
 	die 1
 fi
+initpath
 
 # Refresh
 if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINTURIS )); then
@@ -504,7 +512,7 @@ case "$MAJOR" in
 		(( CLEAN )) && _arg="-c" || _arg=""
 		if (( CLEANDATABASE )); then
 			echo "Option depreceated, please use '{pacman,yaourt} -Sc[c]' instead"
-			su_pacman $PACMANBIN -Sc
+			su_pacman -Sc
 		else
 			launch_with_su pacdiffviewer $_arg
 		fi

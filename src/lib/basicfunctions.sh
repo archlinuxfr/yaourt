@@ -3,19 +3,25 @@
 # basicfunctions.sh: common functions and initialisation 
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
+unset PACMANDB LOCKFILE
 COLUMNS=$(tput cols)
+
+# pacman & package-query call with command line options
+pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_out () { $PACMANBIN "${PACMAN_C_ARG[@]}" "$@"; }
+pkgquery () { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
 
 # set misc path
 initpath(){
 	readarray -t P_CONF < <(
-	LC_ALL=C pacman --verbose | sed -n \
+	pacman_parse --verbose | sed -n \
 		-e 's|/ *$|/|' \
 		-e 's/^Conf File *: //p' \
 		-e 's/^DB Path *: //p' \
 		-e 's/^Cache Dirs *: //p' \
 		-e 's/^Lock File *: //p' \
 		-e 's/^Log File *: //p' )
-	PACMANROOT=${P_CONF[1]}
+	PACMANDB=${P_CONF[1]}
 	LOCKFILE=${P_CONF[3]}
 	mkdir -p "$YAOURTTMPDIR"
 }
@@ -128,7 +134,7 @@ yes_no ()
 
 
 is_x_gt_y(){
-	[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]
+	[[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]]
 }
 
 
@@ -199,7 +205,7 @@ check_dir ()
 	eval $1'="$(readlink -e "${!1}")"'	# get cannonical name
 	return 0
 }
-	
+
 # Main init
 
 declare -A COL_REPOS	#TODO not its place

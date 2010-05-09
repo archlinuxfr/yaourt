@@ -12,7 +12,7 @@ pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
 # parse pacman conf for ignored/hold packages
 buildpackagelist()
 {
-	repositories=($(package-query -L))
+	repositories=($(pkgquery -L))
 	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 \
 		  f_upgrades=16 f_group=32 	
 	while read pkgstate pkgrepo pkgname; do
@@ -30,7 +30,7 @@ buildpackagelist()
 				&& break
 			(( reponumber++ ))
 		done
-	done < <(package-query -Qf "%4 %s %n")
+	done < <(pkgquery -Qf "%4 %s %n")
 }
 
 showpackagestats(){
@@ -80,7 +80,7 @@ showdiskusage()
 	# Get space used by installed package (from info in alpm db)
 	_msg_label=$(gettext 'Theorical - Real space used by packages:')
 	_msg_prog=$(gettext 'progression:')
-	package-query -Qf "%2 %3" | while read s_t s_r; do
+	pkgquery -Qf "%2 %3" | while read s_t s_r; do
 		(( size_t+=s_t ))
 		(( size_r+=s_r ))
 		echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $i/$pkgs_nb" >&2
@@ -92,7 +92,7 @@ showdiskusage()
 		fi
 	done
 	# Get cachedir
-	cachedir=(`LC_ALL=C pacman --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
+	cachedir=(`pacman_parse --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
 	# space used by download packages or sources in cache
 	echo -e "${COL_GREEN}$(gettext 'Space used by pkg downloaded in cache (cachedir):') ${COL_YELLOW} $(du -sh $cachedir 2>/dev/null|awk '{print $1}')"
 	[[ "$SRCDEST" ]] && srcdestsize=`du -sh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null

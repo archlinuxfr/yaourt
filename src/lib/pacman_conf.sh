@@ -10,10 +10,10 @@
 parse_pacman_conf()
 {
 	unset PKGS_IGNORED IgnoredPkg IgnoredGroup HoldPkg SyncFirst
-	eval $(LC_ALL=C pacman --debug | 
+	eval $(pacman_parse --debug | 
 		sed -n 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=(\2)/p')
 	PKGS_IGNORED=("${IgnoredPkg[@]}")
-	[[ $IgnoredGroup ]] && PKGS_IGNORED+=($(pacman -Sqg "${IgnoredGroup[@]}"))
+	[[ $IgnoredGroup ]] && PKGS_IGNORED+=($(pacman_parse -Sqg "${IgnoredGroup[@]}"))
 	return 0
 }
 
