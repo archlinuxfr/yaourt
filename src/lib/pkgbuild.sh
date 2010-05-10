@@ -392,7 +392,7 @@ package_loop ()
 		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
 		prompt "$(eval_gettext 'Continue building ''$PKG'' ? ')$(yes_no 1)"
-		useragrees || { ret=1; break; }
+		useragrees || { failed=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
