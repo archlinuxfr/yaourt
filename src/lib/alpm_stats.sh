@@ -35,8 +35,12 @@ buildpackagelist()
 
 showpackagestats(){
 	echo_fill "$COL_BLUE" - "$NO_COLOR"
-	printf "${COL_BLUE}%${COLUMNS}s\r|${NO_COLOR}${COL_BOLD}%*s ${COL_GREEN}%s${NO_COLOR}\n" \
-	  "|" $((COLUMNS/2)) "Archlinux " "($NAME $VERSION)"
+	if [[ -t 1 ]]; then
+		printf "${COL_BLUE}%${COLUMNS}s\r|${NO_COLOR}${COL_BOLD}%*s ${COL_GREEN}%s${NO_COLOR}\n" \
+			"|" $((COLUMNS/2)) "Archlinux " "($NAME $VERSION)"
+	else
+		printf "%*s %s\n" 40 "Archlinux " "($NAME $VERSION)"
+	fi
 	echo_fill "$COL_BLUE" - "$NO_COLOR"
 	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
 	echo -e "${COL_GREEN}$(gettext 'Total installed packages:')  ${COL_YELLOW}$pkgs_nb"	
@@ -54,22 +58,23 @@ showpackagestats(){
 }
 
 showrepostats(){
-	local NBCOLMAX=4
-	local nbcol=1
+	local strout=""
 	echo -e "${COL_GREEN}$(gettext 'Number of configured repositories:')  ${NO_COLOR}${COL_YELLOW}${#repositories[@]}"
 	echo -e "${COL_GREEN}$(gettext 'Packages by repositories (ordered by pacman''s priority)')${NO_COLOR}:"
 	local reponumber=0 pkgs_l=0
 	for repo in ${repositories[@]}; do
 		[[ ${repos_packages[$reponumber]} ]] || repos_packages[$reponumber]=0
 		(( pkgs_l+=repos_packages[$reponumber] ))
-		echo -en "${NO_COLOR}${repo}${COL_YELLOW}(${repos_packages[$reponumber]})${NO_COLOR}, "
+		strout+="${repo}(${repos_packages[$reponumber]}), "
 		(( reponumber++ ))
-		(( nbcol++ ))
-		(( nbcol % NBCOLMAX )) || echo
 	done
-	echo -e " ${NO_COLOR}$(gettext 'others')*${COL_YELLOW}($((pkgs_nb-pkgs_l)))${NO_COLOR}"
+	strout+=" $(gettext 'others')*($((pkgs_nb-pkgs_l)))"
+	str_wrap 4 "$strout"
+	strwrap=${strwrap//\(/$COL_YELLOW\(}
+	strwrap=${strwrap//)/)$NO_COLOR}
+	echo -e "$strwrap"
 	echo
-	echo -e "${NO_COLOR}"*$(gettext 'others')" $(gettext 'are packages from local build or AUR Unsupported')${NO_COLOR}"
+	echo_wrap 4 "*$(gettext 'others') $(gettext 'are packages from local build or AUR Unsupported')"
 	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
 }
 
@@ -80,22 +85,20 @@ showdiskusage()
 	# Get space used by installed package (from info in alpm db)
 	_msg_label=$(gettext 'Theorical - Real space used by packages:')
 	_msg_prog=$(gettext 'progression:')
-	pkgquery -Qf "%2 %3" | while read s_t s_r; do
+	while read s_t s_r; do
 		(( size_t+=s_t ))
 		(( size_r+=s_r ))
-		echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $i/$pkgs_nb" >&2
-		(( i++ ))
-		if (( i > $pkgs_nb )); then
-			echo -en "\r"; echo_fill "" " " ""
-			echo -e "${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M"
-			echo -e "${COL_GREEN}$(gettext 'Real space used by packages:') ${COL_YELLOW}$(($size_r/1048576))M"
-		fi
-	done
+		[[ -t 1 ]] && \
+			echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $i/$pkgs_nb"
+	done < <(pkgquery -Qf "%2 %3")
+	[[ -t 1 ]] && { echo -en "\r"  ; echo_fill "" " " ""; }
+	echo -e "${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M"
+	echo -e "${COL_GREEN}$(gettext 'Real space used by packages:') ${COL_YELLOW}$(($size_r/1048576))M"	
 	# Get cachedir
 	cachedir=(`pacman_parse --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
 	# space used by download packages or sources in cache
 	echo -e "${COL_GREEN}$(gettext 'Space used by pkg downloaded in cache (cachedir):') ${COL_YELLOW} $(du -sh $cachedir 2>/dev/null|awk '{print $1}')"
 	[[ "$SRCDEST" ]] && srcdestsize=`du -sh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null
-	echo -e "${COL_GREEN}$(gettext 'Space used by src downloaded in cache:') ${COL_YELLOW} $srcdestsize"
+	echo -e "${COL_GREEN}$(gettext 'Space used by src downloaded in cache:') ${COL_YELLOW} $srcdestsize$NO_COLOR"
 }
 # vim: set ts=4 sw=4 noet: 
