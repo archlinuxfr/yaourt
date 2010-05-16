@@ -14,8 +14,9 @@ title(){
 }
 initcolor(){
 	# no special caracter for textonly mode
-	[[ "$COLORMODE" = "textonly" ]] && TERMINALTITLE=0 && return 0
-
+	[[ "$COLORMODE" = "textonly" ]] && return 0
+	# no color on exit (even on user interrupt)
+	trap "echo -e '\e[0m'" 0
 	# font type
 	COL_BOLD="\033[1m"
 	COL_INVERT="\033[7m"
@@ -90,10 +91,6 @@ prompt2(){
 error(){
 	_showmsg "$COL_RED" "$(gettext 'ERROR: ')" "$*\n"
 	return 1
-}
-cleanoutput(){
-	(( ! TERMINALTITLE )) || [[ ! $DISPLAY ]] && return 0
-	tput sgr0
 }
 
 # vim: set ts=4 sw=4 noet: 
