@@ -230,23 +230,19 @@ build_package()
 
 	if check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
-		wdirDEVEL="$DEVELBUILDDIR/${pkgbase}"
-		# Using previous build directory
-		if [[ -d "$wdirDEVEL" ]]; then
+		local wdirDEVEL="$DEVELBUILDDIR/${pkgbase}"
+		local use_devel_dir=0
+		if [[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]]; then
+			# Using previous build directory
 			prompt "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them (faster) ? ') $(yes_no 1)"
-			if useragrees; then
-				cp -a ./* "$wdirDEVEL/"
-				cd $wdirDEVEL
-			fi
-		else
-			mkdir -p $wdirDEVEL 2> /dev/null
-			if (( $? )); then
+			useragrees && use_devel_dir=1
+		elif [[ ! -d "$wdirDEVEL" ]]; then
+			# Create a new build directory
+			mkdir -p $wdirDEVEL 2> /dev/null && use_devel_dir=1
+		fi
+		if (( use_devel_dir )); then
+			cp -a ./* "$wdirDEVEL/" && cd $wdirDEVEL || \
 				warning $(eval_gettext 'Unable to write in ${wdirDEVEL} directory. Using /tmp directory')
-				wdirDEVEL="$wdir/$PKG"
-			else
-				cp -a ./* "$wdirDEVEL/"
-				cd "$wdirDEVEL"
-			fi
 		fi
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
 			# re-read PKGBUILD to update version
@@ -275,10 +271,11 @@ build_package()
 	fi
 	
 	# Build 
-	check_root
-	mkpkg_opt=("${MAKEPKG_ARG[@]}")
-	(( SUDOINSTALLED )) || (( runasroot )) &&  mkgpkg_opt+=("--syncdeps")
-	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${mkpkg_opt[@]}" --force -p ./PKGBUILD
+	if (( ! UID )); then
+		warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
+		sleep 2
+	fi
+	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')

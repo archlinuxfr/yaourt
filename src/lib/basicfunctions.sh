@@ -187,17 +187,6 @@ run_editor ()
 	wait
 }
 
-check_root ()
-{
-	if (( ! UID )); then
-		runasroot=1
-        warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
-		sleep 2
-	else
-		runasroot=0
-	fi
-}	
-
 check_dir ()
 {
 	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }	

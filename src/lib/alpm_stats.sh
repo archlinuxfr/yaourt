@@ -89,7 +89,7 @@ showdiskusage()
 		(( size_t+=s_t ))
 		(( size_r+=s_r ))
 		[[ -t 1 ]] && \
-			echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $i/$pkgs_nb"
+			echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $((i++))/$pkgs_nb"
 	done < <(pkgquery -Qf "%2 %3")
 	[[ -t 1 ]] && { echo -en "\r"  ; echo_fill "" " " ""; }
 	echo -e "${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M"

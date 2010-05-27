@@ -22,7 +22,7 @@
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
-	eval_gettext () { echo "$1"; }
+	eval_gettext () { eval echo $1; }
 	gettext () { echo "$1"; }
 }
 
@@ -234,7 +234,8 @@ search ()
 		search_option+=" -s"
 		format+=" %d"
 	else
-		[[ $args ]] && search_option+=" -i"
+		[[ $args ]] && (( ! GROUP )) && search_option+=" -i"
+		[[ ! $args ]] && (( GROUP )) && format="%n"
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
 	(( QUIET )) && { pkgquery $search_option -f "%n" "${args[@]}";return; }
@@ -411,7 +412,7 @@ while [[ $1 ]]; do
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
-		--noconfirm)        NOCONFIRM=1; EDITFILES=0; program_arg $A_PS $1;;
+		--noconfirm)        NOCONFIRM=1; program_arg $A_PS $1;;
 		--nodeps)           NODEPS=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-o|--owner)         OWNER=1;;
 		-Q|--query)         MAJOR="query";;
@@ -447,7 +448,7 @@ while [[ $1 ]]; do
 		--stats)            MAJOR="stats";;
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
-			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2; EDITFILES=0
+			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2
 			program_arg $A_PS "--noconfirm" "--force";;
 		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
@@ -496,6 +497,7 @@ else
 	error $(eval_gettext 'Unable to read $BACKUPFILE file')
 	die 1
 fi
+(( NOCONFIRM )) && EDITFILES=0
 initpath
 
 # Refresh
