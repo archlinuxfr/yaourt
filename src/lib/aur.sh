@@ -154,7 +154,7 @@ install_from_aur(){
 	aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
 	aurcomments $aurid
 	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
-	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(gettext '( Unsupported package: Potentally dangerous ! )')"${NO_COLOR}"
+	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(gettext '( Unsupported package: Potentially dangerous ! )')"${NO_COLOR}"
 
 	# Build, install/export
 	package_loop 0 || { manage_error 1; return 1; }

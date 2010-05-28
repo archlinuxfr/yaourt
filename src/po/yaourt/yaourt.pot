@@ -600,7 +600,7 @@ msgid "Downloading $PKG PKGBUILD from AUR..."
 msgstr ""
 
 #: ../../lib/aur.sh:161
-msgid "( Unsupported package: Potentally dangerous ! )"
+msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr ""
 
 #: ../../lib/aur.sh:173
