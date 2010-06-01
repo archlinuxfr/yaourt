@@ -27,7 +27,7 @@ type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
 }
 
 NAME="yaourt"
-VERSION="0.9.3.2"
+VERSION="0.9.4"
 
 
 ###################################
