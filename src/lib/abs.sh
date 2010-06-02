@@ -147,7 +147,7 @@ display_update ()
 	while true; do
 		echo
 		msg "$(gettext 'Continue upgrade ?') $(yes_no 1)"
-		prompt "$(gettext '[V]iew package detail   [M]anualy select packages')"
+		prompt "$(gettext '[V]iew package detail   [M]anually select packages')"
 		local answer=$(userinput "YNVM" "Y")
 		case "$answer" in
 			V)	showupgradepackage full;;

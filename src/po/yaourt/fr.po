@@ -305,7 +305,7 @@ msgid "Continue upgrade ?"
 msgstr "Continuer la mise à jour ?"
 
 #: ../../lib/abs.sh:171
-msgid "[V]iew package detail   [M]anualy select packages"
+msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]oir les détails.   Sélectionner les paquets [M]anuellement."
 
 #: ../../lib/abs.sh:172
