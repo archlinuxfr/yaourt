@@ -180,8 +180,8 @@ sysupgrade()
 {
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 	(( ! DETAILUPGRADE )) && { su_pacman -S "${PACMAN_S_ARG[@]}" $_arg; return $?; }
-	pacman_parse -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || return 1
-	
+	pacman_parse -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || \
+		{ cat "$YAOURTTMPDIR/sysupgrade"; return 1; }
 	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
 	packages=("${packages[@]##*/}")
 	packages=("${packages[@]%-*-*-*.pkg*}")
