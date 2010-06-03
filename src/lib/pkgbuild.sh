@@ -275,7 +275,9 @@ build_package()
 		warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
 		sleep 2
 	fi
-	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
+	local _arg=""
+	(( SUDOINSTALLED || ! UID )) && _arg="-s" 
+	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${MAKEPKG_ARG[@]}" $_arg -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')

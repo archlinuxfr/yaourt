@@ -198,7 +198,7 @@ sysupgrade()
 		[[ $pkgs ]] || return $ret
 	fi
 	[[ $pkgs ]] || return 0
-	display_update && su_pacman -S "${PACMAN_S_ARG[@]}" "${pkgs[@]}"
+	display_update && su_pacman -S "${PACMAN_S_ARG[@]}" $_arg 
 }
 
 # Show package to upgrade
