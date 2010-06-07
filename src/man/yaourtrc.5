@@ -186,6 +186,12 @@ example: PROMPT_COMMAND=\'echo \-ne "\e\e033]0;${USER}@${HOSTNAME}: ${PWD}\e\e00
 .RS 4
 Define the diff editor to use ($DIFFEDITCMD file1 file2)\&.
 .RE
+.RE
+.PP
+\fBSUDONOVERIF=0\fR
+.RS 4
+If set to 1, yaourt doesn\(cqt do sudo checks\&. (For users with timestamp_timeout=0 in sudoers)
+.RE
 .SH "SEE ALSO"
 .sp
 \fByaourt\fR(8)

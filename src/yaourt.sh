@@ -27,7 +27,7 @@ type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
 }
 
 NAME="yaourt"
-VERSION="0.9.4.3"
+VERSION="0.9.4.4"
 
 
 ###################################
@@ -94,6 +94,7 @@ manage_error(){
 is_sudo_allowed()
 {
 	if (( SUDOINSTALLED )); then
+		(( SUDONOVERIF )) && return 0
 		sudo -nl "$@" &> /dev/null || \
 			(sudo -v && sudo -l "$@") &>/dev/null && return 0
 	fi
@@ -126,12 +127,12 @@ A_PS=1 A_M=2 A_Y=4 A_PQ=8 A_PC=16 A_PKC=32
 program_arg ()
 {
 	local dest=$1; shift
-	(( dest & 1 ))  && PACMAN_S_ARG+=("$@")
-	(( dest & 2 ))  && MAKEPKG_ARG+=("$@")
-	(( dest & 4 ))  && YAOURT_ARG+=("$@")
-	(( dest & 8 ))  && PACMAN_Q_ARG+=("$@")
-	(( dest & 16 )) && PACMAN_C_ARG+=("$@")
-	(( dest & 32 )) && PKGQUERY_C_ARG+=("$@")
+	(( dest & A_PS ))  && PACMAN_S_ARG+=("$@")
+	(( dest & A_M ))  && MAKEPKG_ARG+=("$@")
+	(( dest & A_Y ))  && YAOURT_ARG+=("$@")
+	(( dest & A_PQ ))  && PACMAN_Q_ARG+=("$@")
+	(( dest & A_PC )) && PACMAN_C_ARG+=("$@")
+	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
 }
 
 # Wait while pacman locks exists
@@ -412,7 +413,7 @@ while [[ $1 ]]; do
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
-		--noconfirm)        NOCONFIRM=1; program_arg $A_PS $1;;
+		--noconfirm)        NOCONFIRM=1; program_arg $((A_PS | A_Y)) $1;;
 		--nodeps)           NODEPS=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-o|--owner)         OWNER=1;;
 		-Q|--query)         MAJOR="query";;
@@ -423,8 +424,8 @@ while [[ $1 ]]; do
 		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
 		--holdver)          HOLDVER=1; program_arg $((A_M | A_Y)) $1;;
 		-A|--ignorearch)    IGNOREARCH=1; program_arg $((A_M | A_Y)) $1;;
-		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=("$1");;
-		--ignoregroup)      program_arg $A_PS $1; shift; IGNOREGRP+=("$1");; 
+		--ignore)           program_arg $((A_PS | A_Y)) $1 "$2"; shift; IGNOREPKG+=("$1");;
+		--ignoregroup)      program_arg $((A_PS | A_Y)) $1; shift; IGNOREGRP+=("$1");; 
 		--aur)              AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;
@@ -449,7 +450,7 @@ while [[ $1 ]]; do
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2
-			program_arg $A_PS "--noconfirm" "--force";;
+			program_arg $((A_PS | A_Y)) "--noconfirm" "--force";;
 		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
