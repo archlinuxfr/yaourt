@@ -308,9 +308,8 @@ yaourt_sync ()
 		loadlibrary aur
 		prepare_orphan_list
 		sysupgrade
-		# Upgrade all AUR packages and/or all Devel packages
+		# Upgrade devel packages
 		(( DEVEL )) && upgrade_devel_package
-		(( AURUPGRADE )) && upgrade_from_aur
 		show_new_orphans
 		return
 	fi
@@ -352,8 +351,8 @@ yaourt_query ()
 	elif [[ $QUERYTYPE ]]; then
 		yaourt_query_type
 	else
-		title $(gettext "Query installed packages")
-		msg $(gettext "Query installed packages")
+		#title $(gettext "Query installed packages")
+		#msg $(gettext "Query installed packages")
 		AURSEARCH=0 search 0
 	fi
 }
@@ -426,7 +425,7 @@ while [[ $1 ]]; do
 		-A|--ignorearch)    IGNOREARCH=1; program_arg $((A_M | A_Y)) $1;;
 		--ignore)           program_arg $((A_PS | A_Y)) $1 "$2"; shift; IGNOREPKG+=("$1");;
 		--ignoregroup)      program_arg $((A_PS | A_Y)) $1; shift; IGNOREGRP+=("$1");; 
-		--aur)              AUR=1; AURUPGRADE=1; AURSEARCH=1;;
+		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;
 		-b|--build)         BUILD=1; program_arg $A_Y $1;;
@@ -477,7 +476,7 @@ if ! [[ "$MAJOR" ]]; then
 	if [[ $filelist ]]; then
 		args=( "${filelist[@]}" )
 		su_pacman -U "${args[@]}"
-		return $?
+		die $?
 	else
 		# Interactive search else.
 		MAJOR="interactivesearch"

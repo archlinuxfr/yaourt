@@ -207,6 +207,14 @@ msgstr ""
 msgid "Unable to delete directory $wdir. Please remove it using root privileges."
 msgstr ""
 
+#: ../../lib/abs.sh:40
+msgid "Yes"
+msgstr ""
+
+#: ../../lib/abs.sh:40
+msgid "No"
+msgstr ""
+
 #: ../../lib/abs.sh:54
 msgid "Repository     "
 msgstr ""
@@ -223,8 +231,20 @@ msgstr ""
 msgid "URL            "
 msgstr ""
 
+#: ../../lib/abs.sh:57
+msgid "AUR URL        "
+msgstr ""
+
 #: ../../lib/abs.sh:58
 msgid "Licenses       "
+msgstr ""
+
+#: ../../lib/abs.sh:58
+msgid "Out Of Date    "
+msgstr ""
+
+#: ../../lib/abs.sh:58
+msgid "Votes          "
 msgstr ""
 
 #: ../../lib/abs.sh:59
@@ -277,6 +297,10 @@ msgstr ""
 #: ../../lib/abs.sh:101
 #, sh-format
 msgid "Do it now ?"
+msgstr ""
+
+#: ../../lib/abs.sh:102
+msgid "Foreign packages: "
 msgstr ""
 
 #: ../../lib/abs.sh:120

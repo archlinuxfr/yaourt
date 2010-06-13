@@ -36,6 +36,8 @@ aur_show_info()
 info_from_aur() {
 	title "Searching info on AUR for $1"
 	PKG=$1
+	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$PKG")
+	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
 		{ error "$PKG not found in repos nor in AUR"; return 1; }
@@ -50,12 +52,14 @@ info_from_aur() {
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
 	source "$tmpfile"
-	shopt -s extglob
 	aur_show_info "Repository     " "${COL_REPOS[aur]}aur${NO_COLOR}"
 	aur_show_info "Name           " "${COL_BOLD}$pkgname${NO_COLOR}"
 	aur_show_info "Version        " "${COL_GREEN}$pkgver-$pkgrel${NO_COLOR}"
 	aur_show_info "URL            " "${COL_CYAN}$url${NO_COLOR}"
+	aur_show_info "AUR URL        " "${COL_CYAN}${AUR_URL}packages.php?ID=$id${NO_COLOR}"
 	aur_show_info "Licenses       " "${license[*]}"
+	aur_show_info "Votes          " "$votes"
+	aur_show_info "Out Of Date    " "$outofdate"
 	aur_show_info "Groups         " "${groups[*]}"
 	aur_show_info "Provides       " "${provides[*]}"
 	aur_show_info "Depends On     " "${depends[*]}"
@@ -182,26 +186,6 @@ aur_update_exists()
 	fi
 	is_package_ignored "$1" $DETAILUPGRADE && return 1
 	return 0
-}
-
-upgrade_from_aur(){
-	title $(gettext 'upgrading AUR unsupported packages')
-	msg $(gettext 'Searching for new version on AUR')
-	loadlibrary pacman_conf
-	# Search for new version on AUR
-	(( ! DETAILUPGRADE )) && local f_pkgs=($(pacman_parse -Qqm)) 
-	classify_pkg ${#f_pkgs[@]} < <(pkgquery -AQmf '%n %r %v %l %o %d')
-	sync_first "${syncfirstpkgs[@]}"
-	pkgs+=("${srcpkgs[@]}")
-	[[ $pkgs ]] || return 0
-	if (( ! DETAILUPGRADE )); then
-		show_targets 'AUR targets' "${pkgs[@]}" || return 0
-	else
-		display_update || return 0
-	fi
-	for PKG in ${pkgs[@]}; do
-		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
-	done
 }
 
 # vim: set ts=4 sw=4 noet: 

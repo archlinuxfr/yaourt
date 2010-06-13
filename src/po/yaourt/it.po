@@ -206,6 +206,14 @@ msgstr "Recupero PKGBUILD e sorgenti locali..."
 msgid "Unable to delete directory $wdir. Please remove it using root privileges."
 msgstr "Impossibile eliminare la cartella $wdir. Rimuovila con privilegi di root."
 
+#: ../../lib/abs.sh:40
+msgid "Yes"
+msgstr "Sì"
+
+#: ../../lib/abs.sh:40
+msgid "No"
+msgstr "No"
+
 #: ../../lib/abs.sh:54
 msgid "Repository     "
 msgstr "Deposito     "
@@ -222,9 +230,21 @@ msgstr "Versione        "
 msgid "URL            "
 msgstr "URL            "
 
+#: ../../lib/abs.sh:57
+msgid "AUR URL        "
+msgstr "AUR URL        "
+
 #: ../../lib/abs.sh:58
 msgid "Licenses       "
-msgstr "Licenze       "
+msgstr "Licenze        "
+
+#: ../../lib/abs.sh:58
+msgid "Out Of Date    "
+msgstr "Aggiornati     "
+
+#: ../../lib/abs.sh:58
+msgid "Votes          "
+msgstr "Votazioni      "
 
 #: ../../lib/abs.sh:59
 msgid "Groups         "
@@ -267,6 +287,10 @@ msgstr "Descrizione    "
 #, sh-format
 msgid "Unable to create directory $wdir."
 msgstr "Impossibile creare la cartella $wdir."
+
+#: ../../lib/abs.sh:102
+msgid "Foreign packages: "
+msgstr "Pachetti orfani: "
 
 #: ../../lib/abs.sh:99
 #: ../../lib/abs.sh:108

@@ -98,13 +98,13 @@ classify_pkg ()
 	local i=0 bar="|/-\\"
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
-		((! DETAILUPGRADE )) && echo -en "${bar:$((++i%4)):1} $i / $1\r"
 		if [[ "$repo" = "aur" ]]; then
+			((! DETAILUPGRADE )) && echo -en " $(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1\r"
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" \
 				|| continue
 		fi
 		[[ " ${SyncFirst[@]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
-		custom_pkg "$pkgname" && srcpkgs+=("$pkgname") || pkgs+=("$pkgname")
+		custom_pkg "$pkgname" && srcpkgs+=("$pkgname") || pkgs+=("$repo/$pkgname")
 		if [[ "$lversion" != "-" ]]; then
 			pkgver=$lversion
 			lrel=${lversion#*-}
@@ -132,7 +132,7 @@ classify_pkg ()
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
 	done 
-	((! DETAILUPGRADE)) && echo -n "            "
+	((! DETAILUPGRADE)) && echo
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 	unset newrelease newversion newpkgs
@@ -178,17 +178,24 @@ show_targets ()
 # Searching for packages to update, buid from sources if necessary
 sysupgrade()
 {
+	unset packages
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
-	(( ! DETAILUPGRADE )) && { su_pacman -S "${PACMAN_S_ARG[@]}" $_arg; return $?; }
-	pacman_parse -Sp $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || \
-		{ cat "$YAOURTTMPDIR/sysupgrade"; return 1; }
-	packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
-	packages=("${packages[@]##*/}")
-	packages=("${packages[@]%-*-*-*.pkg*}")
-	rm "$YAOURTTMPDIR/sysupgrade"
-	[[ ! "$packages" ]] && return 0	
+	if (( ! DETAILUPGRADE )); then
+		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
+	else	
+		pacman_parse -Sp --noconfirm $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || \
+			{ cat "$YAOURTTMPDIR/sysupgrade"; return 1; }
+		packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
+		packages=("${packages[@]##*/}")
+		packages=("${packages[@]%-*-*-*.pkg*}")
+		rm "$YAOURTTMPDIR/sysupgrade"
+	fi
+	#[[ ! "$packages" ]] && return 0	
 	loadlibrary pacman_conf
-	classify_pkg < <(pkgquery -1Sif '%n %r %v %l - %d' "${packages[@]}")
+	local cmd="echo -n"
+	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
+	((AURUPGRADE)) && cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
+	DETAILUPGRADE=0 classify_pkg $(pacman -Qqm | wc -l)< <(eval $cmd)
 	sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
@@ -198,9 +205,19 @@ sysupgrade()
 		[[ $pkgs ]] || return $ret
 	fi
 	[[ $pkgs ]] || return 0
-	display_update && su_pacman -S "${PACMAN_S_ARG[@]}" $_arg 
+	if display_update; then
+		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
+		local _noconfirm=$NOCONFIRM _editfiles=$EDITFILES aurcomment=$AURCOMMENT
+		((! AURUPGRADECONFIRM)) && { NOCONFIRM=1 EDITFILES=0 AURCOMMENT=0; }
+		for PKG in ${pkgs[@]}; do
+			[[ ${PKG#aur/} = $PKG ]] && continue
+			install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
+		done
+		((! AURUPGRADECONFIRM)) && { CONFIRM=$_noconfirm EDITFILES=$_editfiles AURCOMMENT=$_aurcomment; }
+	fi
 }
 
+	
 # Show package to upgrade
 showupgradepackage()
 {
@@ -288,7 +305,9 @@ upgrade_devel_package(){
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
-	for PKG in $(pacman_parse -Qq | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
+	local _arg="-Qq"
+	((AURDEVELONLY)) && _arg+="m"
+	for PKG in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
 	do
 		is_package_ignored "$PKG" && continue
 		devel_pkgs+=($PKG)

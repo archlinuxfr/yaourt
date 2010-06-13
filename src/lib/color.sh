@@ -4,6 +4,8 @@
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 COLORMODES=( textonly nocolor lightbg )
+export COLORMODE=""
+
 title(){
 	(( ! TERMINALTITLE )) || [[ ! $DISPLAY ]] && return 0
 	case $TERM in
@@ -16,41 +18,26 @@ initcolor(){
 	# no special caracter for textonly mode
 	[[ "$COLORMODE" = "textonly" ]] && return 0
 	# no color on exit (even on user interrupt)
-	trap "echo -e '\e[0m'" 0
+	trap "echo -ne '\e[0m'" 0
 	# font type
 	COL_BOLD="\033[1m"
 	COL_INVERT="\033[7m"
 	COL_BLINK="\033[5m"
 	NO_COLOR="\033[0m"
-
 	# No italic out of Xorg or under screen
 	[[ $DISPLAY && "${TERM:0:6}" != "screen" ]] && COL_ITALIQUE="\033[3m"
-
+	[[ "$COLORMODE" = "nocolor" ]] && return 0
 	# Color list
-	case $COLORMODE in
-		"lightbg")
-			COL_WHITE="\033[1;37m"
-			COL_RED="\033[1;31m"
-			COL_CYAN="\033[1;36m"
-			COL_GREEN="\033[1;32m"
-			COL_PINK="\033[1;35m"
-			COL_BLUE="\033[1;34m"
-			COL_BLACK="\033[1;30m"
-			COL_MAGENTA="\033[1;35m"
-			COL_YELLOW="$COL_CYAN"
-			;;
-		*)
-			COL_WHITE="\033[1;37m"
-			COL_YELLOW="\033[1;33m"
-			COL_RED="\033[1;31m"
-			COL_CYAN="\033[1;36m"
-			COL_GREEN="\033[1;32m"
-			COL_PINK="\033[1;35m"
-			COL_BLUE="\033[1;34m"
-			COL_BLACK="\033[1;30m"
-			COL_MAGENTA="\033[1;35m"
-		;;
-	esac
+	COL_WHITE="\033[1;37m"
+	COL_YELLOW="\033[1;33m"
+	COL_RED="\033[1;31m"
+	COL_CYAN="\033[1;36m"
+	COL_GREEN="\033[1;32m"
+	COL_PINK="\033[1;35m"
+	COL_BLUE="\033[1;34m"
+	COL_BLACK="\033[1;30m"
+	COL_MAGENTA="\033[1;35m"
+	[[ $COLORMODE = "lightbg" ]] && COL_YELLOW="$COL_CYAN"
 
 	# Color functions
 	COL_REPOS[core]=$COL_RED

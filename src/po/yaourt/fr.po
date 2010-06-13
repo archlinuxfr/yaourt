@@ -210,6 +210,14 @@ msgstr "Récupération du PKGBUILD et fichiers locaux..."
 msgid "Unable to delete directory $wdir. Please remove it using root privileges."
 msgstr "Impossible de supprimer le dossier $wdir. Veuillez le supprimer en root."
 
+#: ../../lib/abs.sh:40
+msgid "Yes"
+msgstr "Oui"
+
+#: ../../lib/abs.sh:40
+msgid "No"
+msgstr "Non"
+
 #: ../../lib/abs.sh:54
 msgid "Repository     "
 msgstr "Dépôt               "
@@ -226,9 +234,21 @@ msgstr "Version             "
 msgid "URL            "
 msgstr "URL                 "
 
+#: ../../lib/abs.sh:57
+msgid "AUR URL        "
+msgstr "AUR URL             "
+
 #: ../../lib/abs.sh:58
 msgid "Licenses       "
 msgstr "Licences            "
+
+#: ../../lib/abs.sh:58
+msgid "Out Of Date    "
+msgstr "Périmé              "
+
+#: ../../lib/abs.sh:58
+msgid "Votes          "
+msgstr "Votes               "
 
 #: ../../lib/abs.sh:59
 msgid "Groups         "
@@ -281,6 +301,10 @@ msgstr "Les paquets suivants devraient être mis à jour en premier :"
 #, sh-format
 msgid "Do it now ?"
 msgstr "Le faire maintenant ?"
+
+#: ../../lib/abs.sh:102
+msgid "Foreign packages: "
+msgstr "Paquets orphelins: "
 
 #: ../../lib/abs.sh:120
 msgid "Source targets"

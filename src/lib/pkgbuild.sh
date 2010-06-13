@@ -232,14 +232,8 @@ build_package()
 		#msg "Building last CVS/SVN/HG/GIT version"
 		local wdirDEVEL="$DEVELBUILDDIR/${pkgbase}"
 		local use_devel_dir=0
-		if [[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]]; then
-			# Using previous build directory
-			prompt "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them (faster) ? ') $(yes_no 1)"
-			useragrees && use_devel_dir=1
-		elif [[ ! -d "$wdirDEVEL" ]]; then
-			# Create a new build directory
-			mkdir -p $wdirDEVEL 2> /dev/null && use_devel_dir=1
-		fi
+		[[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]] && use_devel_dir=1
+		[[ ! -d "$wdirDEVEL" ]] && mkdir -p $wdirDEVEL 2> /dev/null && use_devel_dir=1
 		if (( use_devel_dir )); then
 			cp -a ./* "$wdirDEVEL/" && cd $wdirDEVEL || \
 				warning $(eval_gettext 'Unable to write in ${wdirDEVEL} directory. Using /tmp directory')
@@ -258,7 +252,9 @@ build_package()
 	# install deps from abs (build or download) as depends
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
-		$YAOURTBIN -S "${YAOURT_ARG[@]}" --asdeps "${PKGBUILD_DEPS[@]%[<=>]*}"
+		local _arg="--asdeps"
+		((SYSUPGRADE && ! AURUPGRADECONFIRM)) && _arg+=" --noconfirm"
+		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]%[<=>]*}"
 		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
 		if (( ${#_deps_left[@]} )); then
 			warning $(gettext 'Dependencies have been installed before the failure')
@@ -326,7 +322,6 @@ install_package()
 			V)	local pkg_nb=${#pkgname[@]}
 				local i=0
 				for _file in "$YPKGDEST"/*; do
-					$PACMANBIN -Qlp "$_file"
 					$PACMANBIN -Qlp "$_file"
 					(( ++i )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
 				done
