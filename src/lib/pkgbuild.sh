@@ -144,29 +144,6 @@ check_conflicts ()
 	return 0
 }
 
-# Manage PKGBUILD conflicts
-manage_conflicts ()
-{
-	local _pkg=$1
-	shift
-	[[ "$*" ]] || return 0
-	local pkgs=( $(pkgquery -Qif "%n" "${@%[<=>]*}") )
-	(( ! ${#pkgs[@]} )) && return 0
-	warning $(eval_gettext '$_pkg conflicts with those packages:')
-	for pkg in "${pkgs[@]}"; do
-		echo -e " - ${COL_BOLD}$pkg${NO_COLOR}"
-	done
-	prompt "$(gettext 'Do you want to remove them with "pacman -Rd" ? ') $(yes_no 2)"
-	if ! useragrees "YN" "N"; then
-		su_pacman -Rd "${pkgs[@]}" 
-		if (( $? )); then
-			error $(eval_gettext 'Unable to remove:') ${pkgs[@]}.
-			return 1
-		fi
-	fi
-	return 0
-}
-
 # Check if PKGBUILD install a devel version
 # call read_pkgbuild() before
 check_devel ()
@@ -271,9 +248,7 @@ build_package()
 		warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
 		sleep 2
 	fi
-	local _arg=""
-	(( SUDOINSTALLED || ! UID )) && _arg="-s" 
-	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${MAKEPKG_ARG[@]}" $_arg -f -p ./PKGBUILD
+	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')
@@ -303,14 +278,6 @@ install_package()
 		msg $(eval_gettext 'Exporting ${pkgbase} to ${EXPORTDIR} repository')
 		cp -vfp "$YPKGDEST/"* "$EXPORTDIR/" 
 	fi
-
-	for _file in "$YPKGDEST/"*; do
-		local pkg_conflicts=($(pkgquery -Qp -f "%c" "$_file"))
-		eval $(pkgquery -Qp -f "_pkg=%n;_pkgver=%v" "$_file")
-		pkg_conflicts=( "${pkg_conflicts[@]}" $(pkgquery -Q --query-type conflicts -f "%n" "$_pkg=$_pkgver"))
-		(( ! ${#pkg_conflicts[@]} )) && continue;
-		manage_conflicts "$_pkg" "${pkg_conflicts[@]}" || return 1
-	done
 
 	while true; do
 		echo
