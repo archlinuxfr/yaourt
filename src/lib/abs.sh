@@ -273,7 +273,6 @@ showupgradepackage()
 # Sync packages
 sync_packages()
 {
-	local repo_pkgs aur_pkgs _pkg
 	# Install from a list of packages
 	if [[ -f "${args[0]}" ]] && file -b "${args[0]}" | grep -qi text ; then
 		if (( ! SYSUPGRADE )); then 
@@ -285,15 +284,21 @@ sync_packages()
 	fi
 	[[ "$args" ]] || return 0
 	# Install from arguments
-	local pkgs=()
-	while read repo pkg target; do
-		[[ "$repo" = "-" ]] && continue
-		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
-		pkgs+=("$target")
-	done < <(pkgquery -1ASif "%r %n %t" "${args[@]}")
-	for _pkg in "${args[@]}"; do
-		in_array "$_pkg" "${pkgs[@]}" || binariespackages+=("$_pkg")
+	declare -A pkgs_search pkgs_found
+	declare -a repo_pkgs aur_pkgs
+	for _pkg in "${args[@]}"; do pkgs_search[$_pkg]=1; done
+	# Search for exact match, pkg which provides it, then in AUR
+	for _arg in "-1Si" "-S --query-type provides" "-Ai"; do
+		while read repo pkg target; do
+			((pkgs_search[$target])) || continue
+			unset pkgs_search[$target]
+			((pkgs_found[$pkg])) && continue
+			pkgs_found[$pkg]=1
+			[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
+		done < <(pkgquery -f "%r %n %t" $_arg "${!pkgs_search[@]}")
+		((! ${#pkgs_search[@]})) && break
 	done
+	binariespackages=("${!pkgs_search[@]}")
 	[[ $repo_pkgs ]] && install_from_abs "${repo_pkgs[@]}"
 	[[ $binariespackages ]] && su_pacman -S "${PACMAN_S_ARG[@]}" "${binariespackages[@]}"
 	for _pkg in "${aur_pkgs[@]}"; do install_from_aur "$_pkg"; done
