@@ -44,14 +44,6 @@ searchforpackageswhich(){
 	done
 }
 
-search_which_package_owns(){
-	for arg in ${args[@]}; do
-		title $(eval_gettext 'Searching wich package owns "$arg"')
-		argpath=$(type -p "$arg") || argpath="$arg"
-		$PACMANBIN "${PACMAN_C_ARG[@]}" -Qo "$argpath"
-	done
-}
-
 # searching for packages installed as dependecy from another packages, but not required anymore
 search_forgotten_orphans(){
 	local orphans

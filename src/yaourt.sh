@@ -341,11 +341,7 @@ yaourt_query ()
 		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
 		return $?
 	fi
-	if (( OWNER )); then
-		# pacman will call "which" on futur version
-		loadlibrary alpm_query
-		search_which_package_owns
-	elif (( DEPENDS && UNREQUIRED )); then
+	if (( DEPENDS && UNREQUIRED )); then
 		loadlibrary alpm_query
 		search_forgotten_orphans
 	elif [[ $QUERYTYPE ]]; then
@@ -366,7 +362,7 @@ source /usr/lib/yaourt/basicfunctions.sh || exit 1
 
 unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
-	CLEANDATABASE DATE UNREQUIRED FOREIGN OWNER GROUP QUERYTYPE \
+	CLEANDATABASE DATE UNREQUIRED FOREIGN GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PRINTURIS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG \
 	PACMAN_C_ARG PKGQUERY_C_ARG failed 
@@ -399,8 +395,8 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
-		-R|--remove|-U|--upgrade|-w|--downloadonly)	pacman_cmd 1;;
-		--changelog|--check)pacman_cmd 0;;
+		-D|--database|-R|--remove|-U|--upgrade|-w|--downloadonly) pacman_cmd 1;;
+		-o|--owns|--changelog|--check|-k|--print|--print-format) pacman_cmd 0;;
 		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile) program_arg $A_PC "$1" "$2"; shift;;
 		--asdeps|--needed)  program_arg $A_PS $1;;
@@ -414,7 +410,6 @@ while [[ $1 ]]; do
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
 		--noconfirm)        NOCONFIRM=1; program_arg $((A_PS | A_Y)) $1;;
 		--nodeps)           NODEPS=1; program_arg $((A_PS | A_M | A_Y)) $1;;
-		-o|--owner)         OWNER=1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
 		-S|--sync)          MAJOR="sync";;
@@ -443,6 +438,7 @@ while [[ $1 ]]; do
 		--nocolor)          COLORMODE="nocolor";;
 		--provides)         QUERYTYPE="provides";;
 		-p|--print-uris)    PRINTURIS=1;;
+		--pkg)              program_arg $((A_M)) $1 "$2"; shift;;
 		--replaces)         QUERYTYPE="replaces";;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--stats)            MAJOR="stats";;
