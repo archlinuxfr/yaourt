@@ -822,8 +822,8 @@ msgstr "Makepkg n'a pas pu construire $PKG."
 
 #: ../../lib/pkgbuild.sh:320
 #, sh-format
-msgid "Exporting ${pkgbase} to ${EXPORTDIR} repository"
-msgstr "Export de ${pkgbase} vers le dépôt ${EXPORTDIR}"
+msgid "Exporting ${pkgbase} to ${PKGDEST} repository"
+msgstr "Export de ${pkgbase} vers le dépôt ${PKGDEST}"
 
 #: ../../lib/pkgbuild.sh:334
 #, sh-format

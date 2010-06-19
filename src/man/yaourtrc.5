@@ -132,9 +132,19 @@ If set to 0, user needs to press Enter for each "yes/no" question\&.
 If set to 0, don\(cqt propose to edit files (from AUR or from ABS)\&.
 .RE
 .PP
+\fBEXPORT=0\fR
+.RS 4
+Export builded package to \fB$EXPORTDIR\fR or, if not defined to \fB$PKGDEST\fR (see \fBmakepkg.conf\fR(5))\&.
+.RE
+.PP
+\fBEXPORTSRC=0\fR
+.RS 4
+Export sources to $EXPORTDIR or, if not defined to \fB$SRCPKGDEST\fR or \fB$PKGDEST\fR (see \fBmakepkg.conf\fR(5))\&.
+.RE
+.PP
 \fBEXPORTDIR=""\fR
 .RS 4
-Specify the folder where yaourt export built packages for local repository. This option export \&.pkg\&.tar\&.gz + PKGBUILD + local sources files\&.
+Specify the folder where yaourt export built packages for local repository\&.
 .RE
 .PP
 \fBFORCEENGLISH=0\fR

@@ -162,6 +162,7 @@ install_from_aur(){
 
 	# Build, install/export
 	package_loop 0 || { manage_error 1; return 1; }
+	rm -r "$YAOURTTMPDIR/aur-$PKG"
 
 	# Check if this package has been voted on AUR, and vote for it
 	(( AURVOTE )) && vote_package "$pkgbase" "$aurid"

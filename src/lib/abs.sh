@@ -81,6 +81,7 @@ install_from_abs(){
 
 		# Build, install/export
 		package_loop 1 || { manage_error 1; continue; }
+		rm -r "$YAOURTTMPDIR/abs-$PKG"
 	done
 }
 

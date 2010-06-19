@@ -430,7 +430,7 @@ while [[ $1 ]]; do
 		--date)             DATE=1;;
 		--depends)          QUERYTYPE="depends";;
 		--devel)            DEVEL=1;;
-		--export)           EXPORT=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
+		--export)           EXPORT=1; EXPORTSRC=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
 		-f|--force)         FORCE=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild"; shift; PKG="$1";;
 		-h|--help)          usage; exit 0;;
@@ -481,7 +481,7 @@ fi
 
 # Init path, complete options and check some permissions
 (( ! SYSUPGRADE && UPGRADES )) && [[ "$MAJOR" = "sync" ]] && SYSUPGRADE=1
-(( EXPORT )) && { check_dir EXPORTDIR || die 1; }
+(( EXPORT )) && [[ $EXPORTDIR ]] && { check_dir EXPORTDIR || die 1; }
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 # -Q --backupfile

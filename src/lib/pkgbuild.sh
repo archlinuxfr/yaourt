@@ -20,12 +20,20 @@ source_makepkg_conf ()
 	# but suppose default confdir = /etc
 	local _PKGDEST=${PKGDEST}
 	local _SRCDEST=${SRCDEST}
+	local _SRCPKGDEST=${SRCPKGDEST}
 	[[ -r /etc/makepkg.conf ]] && source /etc/makepkg.conf || return 1
 	[[ -r ~/.makepkg.conf ]] && source ~/.makepkg.conf
 	# Preserve environnement variable
 	# else left empty (do not set to $PWD)
 	PKGDEST=${_PKGDEST:-$PKGDEST}
 	SRCDEST=${_SRCDEST:-$SRCDEST}
+	# Use $EXPORTDIR if defined in {/etc/,~/.}yaourtrc
+	export PKGDEST=${EXPORTDIR:-$PKGDEST}
+	export SRCDEST=${EXPORTDIR:-$SRCDEST}
+	# Since pacman 3.4, SRCPKGDEST for makepkg --[all]source
+	SRCPKGDEST=${_SRCPKGDEST:-$SRCPKGDEST}
+	SRCPKGDEST=${SRCPKGDEST:-$PKGDEST}
+	export SRCPKGDEST=${EXPORTDIR:-$SRCPKGDEST}
 }
 
 # Read PKGBUILD
@@ -45,19 +53,19 @@ read_pkgbuild ()
 
 	unset ${vars[*]}
 	local pkgbuild_tmp=$(mktemp --tmpdir=".")
-	echo "yaourt_$$() {"                > $pkgbuild_tmp
-	cat PKGBUILD                        >> $pkgbuild_tmp
-	echo                                >> $pkgbuild_tmp
+	echo "yaourt_$$() {"                            > $pkgbuild_tmp
+	cat PKGBUILD                                    >> $pkgbuild_tmp
+	echo                                            >> $pkgbuild_tmp
 	if (( update )); then
-		echo "devel_check"              >> $pkgbuild_tmp
-		echo "devel_update"             >> $pkgbuild_tmp
+		echo "devel_check"                          >> $pkgbuild_tmp
+		echo "devel_update"                         >> $pkgbuild_tmp
 	fi
-	echo "declare -p ${vars[*]} >&3"    >> $pkgbuild_tmp
-	echo "return 0"                     >> $pkgbuild_tmp
-	echo "}"                            >> $pkgbuild_tmp
-	echo "( yaourt_$$ ) || exit 1"      >> $pkgbuild_tmp		
-	echo "exit 0"                       >> $pkgbuild_tmp
-	PKGBUILD_VARS="$(makepkg "${MAKEPKG_ARG[@]}" -p "$pkgbuild_tmp" 3>&1 1>/dev/null 2>&1 | tr '\n' ';')"
+	echo "declare -p ${vars[*]} 2>/dev/null >&3"    >> $pkgbuild_tmp
+	echo "return 0"                                 >> $pkgbuild_tmp
+	echo "}"                                        >> $pkgbuild_tmp
+	echo "( yaourt_$$ ) || exit 1"                  >> $pkgbuild_tmp
+	echo "exit 0"                                   >> $pkgbuild_tmp
+	PKGBUILD_VARS="$(makepkg "${MAKEPKG_ARG[@]}" -p "$pkgbuild_tmp" 3>&1 1>/dev/null | tr '\n' ';')"
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
 	[[ "$pkgbase" ]] || pkgbase="${pkgname[0]}"
@@ -205,9 +213,9 @@ build_package()
 	eval $PKGBUILD_VARS
 	msg "$(gettext 'Building and installing package')"
 
-	if check_devel;then
+	local wdirDEVEL="$DEVELBUILDDIR/${pkgbase}"
+	if [[ "$(readlink -f .)" != "$wdirDEVEL" ]] && check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
-		local wdirDEVEL="$DEVELBUILDDIR/${pkgbase}"
 		local use_devel_dir=0
 		[[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]] && use_devel_dir=1
 		[[ ! -d "$wdirDEVEL" ]] && mkdir -p $wdirDEVEL 2> /dev/null && use_devel_dir=1
@@ -237,7 +245,7 @@ build_package()
 			warning $(gettext 'Dependencies have been installed before the failure')
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
 				in_array $_deps "${_deps_left[@]}" || \
-					$YAOURTBIN -Rcsn "${YAOURT_ARG[@]}" "${_deps%[<=>]*}"
+					$YAOURTBIN -Rsn "${YAOURT_ARG[@]}" "${_deps%[<=>]*}"
 			done
 			return 1
 		fi
@@ -254,12 +262,7 @@ build_package()
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')
 		return 1
 	fi
-	if (( EXPORT )); then
-		YSRCPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" SRCPKGDEST.XXX)
-		PKGDEST="$YSRCPKGDEST" makepkg --allsource
-		bsdtar -vxf "$YSRCPKGDEST/"* -C "$EXPORTDIR"
-		rm -r "$YSRCPKGDEST"
-	fi
+	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && makepkg --allsource
 	return 0
 }
 
@@ -269,14 +272,9 @@ install_package()
 {
 	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
-	if (( EXPORT )); then
-		for _pkg in ${pkgname[@]}; do
-			cd "$EXPORTDIR"  || break
-			find . -maxdepth 1 -regex "./$pkgname-[^-]+-[^-]+-[^-]+$PKGEXT" -delete
-			cd - > /dev/null
-		done
-		msg $(eval_gettext 'Exporting ${pkgbase} to ${EXPORTDIR} repository')
-		cp -vfp "$YPKGDEST/"* "$EXPORTDIR/" 
+	if (( EXPORT )) && [[ $PKGDEST ]]; then
+		msg $(eval_gettext 'Exporting ${pkgbase} to ${PKGDEST} repository')
+		cp -vfp "$YPKGDEST/"* "$PKGDEST/" 
 	fi
 
 	while true; do

@@ -206,6 +206,7 @@ DEVELBUILDDIR="/var/abs/local/yaourtbuild"
 AURDEVELONLY=0
 EXPORTDIR=""
 EXPORT=0
+EXPORTSRC=0
 TERMINALTITLE=1
 NOCONFIRM=0
 FORCE=0
@@ -226,7 +227,6 @@ DETAILUPGRADE=1
 
 [[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
 [[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
-[[ -n "$EXPORTDIR" ]] && EXPORT=1
 (( FORCEENGLISH )) && export LC_ALL=C
 in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
 check_dir TMPDIR || die 1

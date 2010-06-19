@@ -815,7 +815,7 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh:320
 #, sh-format
-msgid "Exporting ${pkgbase} to ${EXPORTDIR} repository"
+msgid "Exporting ${pkgbase} to ${PKGDEST} repository"
 msgstr ""
 
 #: ../../lib/pkgbuild.sh:334
