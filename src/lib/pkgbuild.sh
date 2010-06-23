@@ -136,7 +136,7 @@ check_conflicts ()
 		# which conflict with.
 		local i=0
 		for cf in "${PKGBUILD_CONFLICTS[@]}"; do
-			pkgquery -Qqi "${cf%[<=>]*}" || unset PKGBUILD_CONFLICTS[$i]
+			pkgquery -Qqi "$cf" || unset PKGBUILD_CONFLICTS[$i]
 			(( i++ ))
 		done
 		[[ "$PKGBUILD_CONFLICTS" ]] && (( nodisplay )) && return 1
