@@ -220,50 +220,24 @@ show_new_orphans(){
 search ()
 {
 	local interactive=${1:-0}
-	local i=1
 	local search_option="${PACMAN_Q_ARG[@]}"
-	local format="%n %s %v"
 	if [[ "$MAJOR" = "query" ]]; then
 		search_option+=" -Q"
-		format+=" - - - %g"
+		((AUR && FOREIGN)) && search_option+=" -A"
 	else
 		DATE=0
-		format+=" %l %w %o %g"
 		search_option+=" -S"
 	fi
 	if (( SEARCH )); then
 		search_option+=" -s"
-		format+=" %d"
 	else
 		[[ $args ]] && (( ! GROUP )) && search_option+=" -i"
-		[[ ! $args ]] && (( GROUP )) && format="%n"
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
+	(( DATE )) && search_option+=" --sort 1"
 	(( QUIET )) && { pkgquery $search_option -f "%n" "${args[@]}";return; }
-	if (( DATE )); then
-		format="%1 $format" 
-		> "$YAOURTTMPDIR/instdate"
-	else
-		format="- $format"
-	fi
-	local cmd=(pkgquery --csep '\ ' $search_option -f "$format")
-	unset PKGSFOUND
-	while read _date pkgname repo pkgver lver votes outofdate group pkgdesc; do 
-		PKGSFOUND+=("${repo}/${pkgname}")
-		pkg_output "$repo" "$pkgname" "$pkgver" "$lver" \
-			"$group" "$outofdate" "$votes" "$pkgdesc"
-		if (( interactive )); then
-			pkgoutput="${COL_NUMBER}${i}${NO_COLOR} $pkgoutput"
-			(( i ++ ))
-		fi
-		(( DATE )) && echo -e "$_date $pkgoutput" >> "$YAOURTTMPDIR/instdate" \
-			|| echo -e "$pkgoutput"
-	done < <("${cmd[@]}" "${args[@]}")
-	if (( DATE )); then
-		sort "$YAOURTTMPDIR/instdate" | awk '{
-			printf("%s: %s\n", strftime("%X %x",$1), substr ($0, length($1)+1));
-			}'
-	fi
+	(( interactive )) && search_option+=" --yaourt-n"
+	{ readarray -t PKGSFOUND < <(pkgquery --yaourt $search_option "${args[@]}"); } 2>&1
 }
 	
 # Handle special query
