@@ -238,7 +238,7 @@ build_package()
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
 		local _arg="--asdeps"
-		((SYSUPGRADE && ! UP_NOCONFIRM)) && _arg+=" --noconfirm"
+		((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]%[<=>]*}"
 		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
 		if (( ${#_deps_left[@]} )); then
@@ -304,7 +304,7 @@ install_package()
 		esac
 	done
 	local _arg=""
-	((SYSUPGRADE && ! UP_NOCONFIRM)) && _arg+=" --noconfirm"
+	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) && for _file in "$YPKGDEST"/*; do
 		su_pacman -Uf "${PACMAN_S_ARG[@]}" $_arg $_file || failed=$?
 		(( failed )) && break
