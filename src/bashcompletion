@@ -4,87 +4,47 @@
 # Bash completion for yaourt
 # Use pacman completion (_pacman())
 #
-# Distributed under the terms of the GNU General Public License, v2 or later.
+# This file is in the public domain.
 #
 
 
-_available_repos ()
-{
-  COMPREPLY=( $( compgen -W "$(\package-query -L)" -- $cur ) )
-}
-
-_installed_pkgs ()
-{
-  local installed_pkgs
-  installed_pkgs=( $( \ls /var/lib/pacman/local/ ) )
-  COMPREPLY=( $( compgen -W "${installed_pkgs[*]%-*-*}" -- $cur ) )
-}
-
-_available_pkgs ()
-{
-  COMPREPLY=( $( compgen -W "$(\pacman -Ssq "^$cur")" -- $cur ) )
-}
-
-_installed_groups ()
-{
-  COMPREPLY=( $( compgen -W "$(\pacman -Qgq | \awk "{print \$1}" | \sort -u)" -- $cur ) )
-}
-
-_available_groups ()
-{
-  COMPREPLY=( $( compgen -W "$(\pacman -Sgq | \sort -u)" -- $cur ) )
-}
-
 ## yaourt completion
+
+_yaourt_backup_file() {
+  compopt -o filenames; _filedir 'tar.*'
+}
 
 _yaourt ()
 {
-  _pacman &> /dev/null 
-  local arg op cur
-  cur=${COMP_WORDS[COMP_CWORD]}
-  if [ $COMP_CWORD -eq 1 ] && [[ "$cur" == -* ]]; then
-    COMPREPLY+=( $( compgen -W '\
-      -B --backup \
-      -C \
-      -G --getpkgbuild \
-      ' -- $cur ) )
-    return 0
-  fi  
-  for arg in "${COMP_WORDS[@]}"; do
-    case "${arg:0:2}" in
-      -@(B|C|G|Q|S))
-        op="${arg:1:1}"
-        ;;
-      --)
-        case "${arg:2}" in
-          backup) op="B" ;;
-          getpkgbuild) op="G" ;;
-          sync) op="S" ;;
-          query) op="Q" ;;
-        esac ;;
-    esac
+  local op cur o
+  COMPREPLY=()
+  cur=$(_get_cword)
+  if ((COMP_CWORD == 1)); then
+    if [[ $cur != -* ]]; then
+      _pacman_file; return 0; 
+    else
+      _pacman &> /dev/null 
+      _arch_compgen "${COMPREPLY[@]}" "-B --backup -C -G --getpkgbuild --stats"
+      return 0
+    fi
+  fi
+  for o in 'D database' 'Q query' 'R remove' 'S sync' 'U upgrade' 'B backup' 'C' 'G getpkgbuild'; do
+    _arch_incomp "$o" && break
   done
+  (($?)) && op="" || op="${o% *}"
+  _arch_incomp 'backupfile' || [[ $op == "B" ]] || _pacman &> /dev/null 
   if [[ "$cur" == -* ]]; then
-    case "${op}" in
-      C)
-        COMPREPLY=( $( compgen -W '-c --clean' -- $cur ) )
-        ;;
-      Q)
-        COMPREPLY+=( $( compgen -W '--backupfile --date' -- $cur ) )
-        ;;
-      S)
-        COMPREPLY+=( $( compgen -W '-b --build \
-          --aur --devel --holdver' -- $cur ) )
-        ;; 
+    case "$op" in
+      C) _arch_compgen "-c --clean";;
+      Q) _arch_compgen  "${COMPREPLY[@]}" "--backupfile --date";;
+      S) _arch_compgen  "${COMPREPLY[@]}" "-b --build -a --aur --devel --holdver";; 
     esac
   else
-    case "${op}" in
-      B)
-        COMPREPLY=( $( compgen -d -- "$cur" ) \
-                    $( compgen -f -X '!*.tar.bz2' -- "$cur" ) )
-        ;;
-      G) _available_pkgs;
+    case "$op" in
+      Q) _arch_incomp 'backupfile' && _yaourt_backup_file;;
+      B) _yaourt_backup_file;;
+      G) _pacman_pkg Slq;;
     esac
   fi
 }
-complete -o filenames -F _yaourt yaourt 
+complete -o default -F _yaourt yaourt 
