@@ -105,7 +105,7 @@ classify_pkg ()
 				|| continue
 		fi
 		[[ " ${SyncFirst[@]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
-		custom_pkg "$pkgname" && srcpkgs+=("$pkgname") || pkgs+=("$repo/$pkgname")
+		custom_pkg "$pkgname" && srcpkgs+=("$repo/$pkgname") || pkgs+=("$repo/$pkgname")
 		if [[ "$lversion" != "-" ]]; then
 			pkgver=$lversion
 			lrel=${lversion#*-}
@@ -172,7 +172,7 @@ show_targets ()
 	echo
 	echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "$*" 
 	echo
-	prompt "$(gettext 'Proceed with upgrade? ') $(yes_no 1) "
+	prompt "$(gettext 'Proceed with upgrade? ') $(yes_no 1)"
 	useragrees 
 }	
 
@@ -180,15 +180,16 @@ show_targets ()
 sysupgrade()
 {
 	unset packages
+	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFRIM=1; }
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 	if (( ! DETAILUPGRADE )); then
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
 	else	
-		pacman_parse -Sp --noconfirm $_arg "${PACMAN_S_ARG[@]}" 1> "$YAOURTTMPDIR/sysupgrade" || \
-			{ cat "$YAOURTTMPDIR/sysupgrade"; return 1; }
-		packages=($(grep '://' "$YAOURTTMPDIR/sysupgrade"))
-		packages=("${packages[@]##*/}")
-		packages=("${packages[@]%-*-*-*.pkg*}")
+		pacman_parse -Sp --print-format "## %n" \
+		             --noconfirm $_arg "${PACMAN_S_ARG[@]}" \
+		             "${args[@]}" 1> "$YAOURTTMPDIR/sysupgrade" ||
+			{ grep -v '^## ' "$YAOURTTMPDIR/sysupgrade"; return 1; }
+		packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade"))
 		rm "$YAOURTTMPDIR/sysupgrade"
 	fi
 	#[[ ! "$packages" ]] && return 0	
@@ -200,22 +201,22 @@ sysupgrade()
 	sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
-		show_targets 'Source targets' "${srcpkgs[@]}" || return 0
-		BUILD=1 install_from_abs "${srcpkgs[@]}" 
+		show_targets 'Source targets' "${srcpkgs[@]#*/}" || return 0
+		BUILD=1 build_or_get "${srcpkgs[@]}" 
 		local ret=$?
 		[[ $pkgs ]] || return $ret
 	fi
 	[[ $pkgs ]] || return 0
-	if display_update; then
+	if (( ! DETAILUPGRADE )); then
+		show_targets 'AUR targets' "${pkgs[@]#aur/}" || return 0
+	else
+		display_update || return 0
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
-		local _noconfirm=$NOCONFIRM _editfiles=$EDITFILES aurcomment=$AURCOMMENT
-		((! AURUPGRADECONFIRM)) && { NOCONFIRM=1 EDITFILES=0 AURCOMMENT=0; }
-		for PKG in ${pkgs[@]}; do
-			[[ ${PKG#aur/} = $PKG ]] && continue
-			install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
-		done
-		((! AURUPGRADECONFIRM)) && { CONFIRM=$_noconfirm EDITFILES=$_editfiles AURCOMMENT=$_aurcomment; }
 	fi
+	for PKG in ${pkgs[@]}; do
+		[[ ${PKG#aur/} = $PKG ]] && continue
+		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
+	done
 }
 
 	

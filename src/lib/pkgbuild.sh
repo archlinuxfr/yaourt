@@ -238,7 +238,7 @@ build_package()
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
 		local _arg="--asdeps"
-		((SYSUPGRADE && ! AURUPGRADECONFIRM)) && _arg+=" --noconfirm"
+		((SYSUPGRADE && ! UP_NOCONFIRM)) && _arg+=" --noconfirm"
 		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]%[<=>]*}"
 		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
 		if (( ${#_deps_left[@]} )); then
@@ -256,7 +256,7 @@ build_package()
 		warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
 		sleep 2
 	fi
-	PKGDEST="$YPKGDEST" nice -n 15 makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
+	PKGDEST="$YPKGDEST" makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')
@@ -281,14 +281,13 @@ install_package()
 		echo
 		msg "$(eval_gettext 'Continue installing ''$PKG'' ?') $(yes_no 1)"
 		prompt $(gettext '[v]iew package contents   [c]heck package with namcap')
-		local answer=$(userinput "YNVC" "Y")
+		local answer=$(builduserinput "YNVC" "Y")
 		echo
 		case "$answer" in
-			V)	local pkg_nb=${#pkgname[@]}
-				local i=0
+			V)	local i=0
 				for _file in "$YPKGDEST"/*; do
+					(( i++ )) && { prompt2 $(gettext 'Press any key to continue'); read -n 1; }
 					$PACMANBIN -Qlp "$_file"
-					(( ++i )) && (( i < pkg_nb )) && { prompt $(gettext 'Press any key to continue'); read -n 1; }
 				done
 				;;
 			C)	if type -p namcap &>/dev/null ; then
@@ -304,8 +303,10 @@ install_package()
 			*)	break;;
 		esac
 	done
+	local _arg=""
+	((SYSUPGRADE && ! UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) && for _file in "$YPKGDEST"/*; do
-		su_pacman -Uf $PACMAN_S_ARG $_file || failed=$?
+		su_pacman -Uf "${PACMAN_S_ARG[@]}" $_arg $_file || failed=$?
 		(( failed )) && break
 	done
 	if (( failed )); then 
@@ -351,13 +352,13 @@ package_loop ()
 		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
 		prompt "$(eval_gettext 'Continue building ''$PKG'' ? ')$(yes_no 1)"
-		useragrees || { failed=1; break; }
+		builduseragrees || { failed=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
 			0|2) break ;;
 			1)	prompt "$(eval_gettext 'Restart building ''$PKG'' ? ')$(yes_no 2)"
-				useragrees "YN" "N" && { failed=1; break; }
+				builduseragrees "YN" "N" && { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
 		esac

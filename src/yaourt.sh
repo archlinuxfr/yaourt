@@ -293,8 +293,8 @@ yaourt_install_packages ()
 # Handle sync
 yaourt_sync ()
 {
-	(( PRINTURIS && REFRESH )) && pacman_cmd 1
-	(( PRINTURIS && ! REFRESH )) && pacman_cmd 0
+	(( PRINT && REFRESH )) && pacman_cmd 1
+	(( PRINT && ! REFRESH )) && pacman_cmd 0
 	if (( GROUP || LIST || SEARCH)); then
 		(( LIST )) && {
 			title $(gettext 'listing all packages in repo(s)')
@@ -337,7 +337,7 @@ yaourt_sync ()
 # Handle query
 yaourt_query ()
 {
-	if (( CHANGELOG || LIST || INFO )); then
+	if (( CHANGELOG || LIST || INFO || FILE )); then
 		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
 		return $?
 	fi
@@ -362,9 +362,9 @@ source /usr/lib/yaourt/basicfunctions.sh || exit 1
 
 unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
-	CLEANDATABASE DATE UNREQUIRED FOREIGN GROUP QUERYTYPE \
+	DATE UNREQUIRED FOREIGN GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
-	DEPENDS PRINTURIS PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG \
+	DEPENDS PRINT PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG \
 	PACMAN_C_ARG PKGQUERY_C_ARG failed 
 
 # Grab environement options
@@ -396,9 +396,10 @@ unset OPTS
 while [[ $1 ]]; do
 	case "$1" in
 		-D|--database|-R|--remove|-U|--upgrade|-w|--downloadonly) pacman_cmd 1;;
-		-o|--owns|--changelog|--check|-k|--print|--print-format) pacman_cmd 0;;
+		-o|--owns|--changelog|--check|-k|--file) pacman_cmd 0;;
 		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
-		--cachedir|--logfile) program_arg $A_PC "$1" "$2"; shift;;
+		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
+		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
 		--asdeps|--needed)  program_arg $A_PS $1;;
 		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
 		--deps)             DEPENDS=1; program_arg $A_PQ $1;;
@@ -426,7 +427,6 @@ while [[ $1 ]]; do
 		-b|--build)         BUILD=1; program_arg $A_Y $1;;
 		-C)                 MAJOR="clean";;
 		--conflicts)        QUERYTYPE="conflicts";;
-		--database)         CLEANDATABASE=1;;
 		--date)             DATE=1;;
 		--depends)          QUERYTYPE="depends";;
 		--devel)            DEVEL=1;;
@@ -437,7 +437,9 @@ while [[ $1 ]]; do
 		--lightbg)          COLORMODE="lightbg";;
 		--nocolor)          COLORMODE="nocolor";;
 		--provides)         QUERYTYPE="provides";;
-		-p|--print-uris)    PRINTURIS=1;;
+		-p|--print)         PRINT=1; FILE=1;;
+		--file)             FILE=1;;
+		--print-format)     ;; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; shift;;
 		--replaces)         QUERYTYPE="replaces";;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
@@ -493,11 +495,11 @@ else
 	error $(eval_gettext 'Unable to read $BACKUPFILE file')
 	die 1
 fi
-(( NOCONFIRM )) && EDITFILES=0
+(( NOCONFIRM )) && { EDITFILES=0; BUILD_NOCONFIRM=1; }
 initpath
 
 # Refresh
-if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINTURIS )); then
+if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )); then
 	title $(gettext 'synchronizing package databases')
 	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
 	su_pacman $_arg
@@ -508,12 +510,7 @@ fi
 case "$MAJOR" in
 	clean)
 		(( CLEAN )) && _arg="-c" || _arg=""
-		if (( CLEANDATABASE )); then
-			echo "Option depreceated, please use '{pacman,yaourt} -Sc[c]' instead"
-			su_pacman -Sc
-		else
-			launch_with_su pacdiffviewer $_arg
-		fi
+		launch_with_su pacdiffviewer $_arg
 		;;
 
 	stats)

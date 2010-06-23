@@ -123,6 +123,9 @@ useragrees()
 	return $ret
 }
 
+builduserinput () { NOCONFIRM=$BUILD_NOCONFIRM userinput "$@"; }
+builduseragrees () { NOCONFIRM=$BUILD_NOCONFIRM useragrees "$@"; }
+
 yes_no ()
 {
 	case $1 in
@@ -200,30 +203,39 @@ check_dir ()
 declare -A COL_REPOS	#TODO not its place
 shopt -s extglob
 loadlibrary color
-EDITFILES=1
+unset ABS_REPO 
+# General
+AUTOSAVEBACKUPFILE=0
+DEVELBUILDDIR="/var/abs/local/yaourtbuild/"
 DEVEL=0
-DEVELBUILDDIR="/var/abs/local/yaourtbuild"
+FORCEENGLISH=0
+FORCE=0
+TMPDIR=${TMPDIR:-/tmp}
+SUDONOVERIF=0 
+# AUR 
+AURCOMMENT=5
 AURDEVELONLY=0
-EXPORTDIR=""
+AURSEARCH=1
+AURUPGRADE=0
+AURVOTE=1
+# BUILD
 EXPORT=0
 EXPORTSRC=0
-TERMINALTITLE=1
+EXPORTDIR=""
+# Prompt
 NOCONFIRM=0
-FORCE=0
-AURCOMMENT=1
-AURUPGRADE=0
-AURUPGRADECONFIRM=1
-AURVOTE=1
-AURSEARCH=1
-AUTOSAVEBACKUPFILE=0
-MAXCOMMENTS=5
+UP_NOCONFIRM=0
+BUILD_NOCONFIRM=0
+EDITFILES=1
 NOENTER=1
-PACMANBIN="/usr/bin/pacman"
-TMPDIR=${TMPDIR:-/tmp}
+# OUTPUT
 COLORMODE=""
-SHOWORPHANS=1
-DIFFEDITCMD="vimdiff"
 DETAILUPGRADE=1
+SHOWORPHANS=1
+TERMINALTITLE=1
+# Command
+PACMANBIN="/usr/bin/pacman"
+DIFFEDITCMD="vimdiff"
 
 [[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
 [[ -r ~/.yaourtrc ]] && source ~/.yaourtrc

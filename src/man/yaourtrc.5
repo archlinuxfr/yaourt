@@ -2,12 +2,12 @@
 .\"     Title: yaourtrc
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 2010-04-11
+.\"      Date: 2010-06-23
 .\"    Manual: Yaourt Manual
-.\"    Source: Yaourt 0.9.4
+.\"    Source: Yaourt 0.9.4.4
 .\"  Language: English
 .\"
-.TH "YAOURTRC" "5" "2010\-04\-11" "Yaourt 0\&.9\&.4" "Yaourt Manual"
+.TH "YAOURTRC" "5" "2010\-06\-23" "Yaourt 0\&.9\&.4\&.4" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -24,7 +24,7 @@ yaourtrc \- yaourt configuration file
 .sp
 /etc/yaourtrc
 .sp
-\fB$HOME\fR/yaourtrc
+\fB$HOME\fR/\&.yaourtrc
 .SH "DESCRIPTION"
 .sp
 \fByaourt\fR(8) obtains configuration data from the following sources in the following order:
@@ -61,133 +61,148 @@ user\(cqs configuration file ($HOME/\&.yaourtrc)
 .\}
 system\-wide configuration file (/etc/yaourtrc)
 .RE
-.SH "OPTIONS"
+.SH "GENERAL OPTIONS"
 .PP
-\fBABS_REPO=(testing core extra community-testing community gnome-unstable kde-unstable)\fR
+\fBABS_REPO=\fR()
 .RS 4
-List of repositories where PKGBUILD can be retreived by rsync, see /etc/abs.conf\&.
+List of repositories where PKGBUILD can be retreived by rsync\&. (see /etc/abs\&.conf)
 .RE
 .PP
-\fBAURUPGRADE=0\fR
-.RS 4
-If set to 1, always search for new version of packages installed from AUR Unsupported when upgrading (yaourt \-Su)\&.
-.RE
-.PP
-\fBAURUPGRADECONFIRM=1\fR
-.RS 4
-If set to 0, do not prompt for aur upgrades\&.
-.RE
-.PP
-\fBDETAILUPGRADE=1\fR
-.RS 4
-If set to 0, do not detail updates (new version, release, packages)\&.
-.RE
-.PP
-\fBAURDEVELONLY=0\fR
-.RS 4
-If set to 1, search only for new version of foreign developpement CVS/SVN packages when upgrading (yaourt \-Su \--devel)\&.
-.RE
-.PP
-\fBDEVEL=0\fR
-.RS 4
-If set to 1, always search for new version of developpement CVS/SVN packages when upgrading (yaourt \-Su)\&.
-.RE
-.PP
-\fBDEVELBUILDDIR=/var/abs/local/yaourtbuild/\fR
-.RS 4
-Specify directory where to clone, build devel packages\&.
-.RE
-.PP
-\fBFORCE=0\fR
-.RS 4
-If set to 1, always bypass file conflict checks and overwrite conflicting files\&.
-.RE
-.PP
-\fBAURVOTE=1\fR
-.RS 4
-If set to 0, don\(cqt check the vote status for inclusion/keeping in [community], and it is unable to vote\&.
-.RE
-.PP
-\fBAUTOSAVEBACKUPFILE=0\fR
+\fBAUTOSAVEBACKUPFILE=\fR0
 .RS 4
 If set to 1, after each install, yaourt search for config files to backup (\&.pacnew files)\&. It store all files in /var/lib/yaourt/\&. These files will be used later with yaourt \-C to automerge current config files with new config files (\&.pacnew)\&.
 .RE
 .sp
 This option requires root password or sudo configured to allow runing /usr/bin/pacdiffviewer without password\&.
 .PP
-\fBCOLORMODE="normal"\fR
+\fBDEVELBUILDDIR=\fR"/var/abs/local/yaourtbuild/"
+.RS 4
+Specify directory where to clone, build devel packages\&.
+.RE
+.PP
+\fBDEVEL=\fR0
+.RS 4
+If set to 1, always search for new version of developpement CVS/SVN packages when upgrading (yaourt \-Su)\&.
+.RE
+.PP
+\fBEDITOR=\fR"$EDITOR"
+.RS 4
+Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing\&. Editor should not fork, for gvim: EDITOR="gvim \-\-nofork"
+.RE
+.PP
+\fBFORCEENGLISH=\fR0
+.RS 4
+If set to 1, yaourt use English for makepkg and pacman instead of system language\&.
+.RE
+.PP
+\fBFORCE=\fR0
+.RS 4
+If set to 1, always bypass file conflict checks and overwrite conflicting files\&.
+.RE
+.PP
+\fBTMPDIR=\fR"/tmp"
+.RS 4
+Specify the folder to save tempory files (default is /tmp)\&.
+.RE
+.sp
+\fBSUDONOVERIF=0\fR If set to 1, yaourt doesn\(cqt do sudo checks\&. (For users with timestamp_timeout=0 in sudoers)
+.SH "AUR OPTIONS"
+.PP
+\fBAURCOMMENT=\fR5
+.RS 4
+Show X last comments for packages built from AUR Unsupported\&.
+\fB0\fR
+to disable comments display, default to
+\fB5\fR\&.
+.RE
+.PP
+\fBAURDEVELONLY=\fR0
+.RS 4
+If set to 1, search only for new version of foreign developpement CVS/SVN packages when upgrading (yaourt \-Su \-\-devel)\&.
+.RE
+.PP
+\fBAURSEARCH=\fR1
+.RS 4
+If set to 0, don\(cqt search for packages on AUR Unsupported
+.RE
+.PP
+\fBAURUPGRADE=\fR0
+.RS 4
+If set to 1, always search for new version of packages installed from AUR Unsupported when upgrading (yaourt \-Su)\&.
+.RE
+.PP
+\fBAURVOTE=\fR1
+.RS 4
+If set to 0, don\(cqt check the vote status for inclusion/keeping in [community], and it is unable to vote\&.
+.RE
+.SH "BUILD OPTIONS"
+.PP
+\fBEXPORT=\fR0
+.RS 4
+Export builded package to $EXPORTDIR or, if not defined to $PKGDEST (see
+\fBmakepkg.conf\fR(5))\&.
+.RE
+.PP
+\fBEXPORTSRC=\fR0
+.RS 4
+Export sources to $EXPORTDIR or, if not defined to
+\fB$SRCPKGDEST\fR
+or
+\fB$PKGDEST\fR
+(see
+\fBmakepkg.conf\fR(5))\&.
+.RE
+.PP
+\fBEXPORTDIR=\fR""
+.RS 4
+Specify the folder where yaourt export built packages for local repository\&.
+.RE
+.SH "PROMPT OPTIONS"
+.PP
+\fBNOCONFIRM=\fR0
+.RS 4
+If set to 1, always use the default choice without confirmation\&.
+.RE
+.PP
+\fBUP_NOCONFIRM=\fR0
+.RS 4
+If set to 1, do not prompt for AUR or build upgrades\&.
+.RE
+.PP
+\fBBUILD_NOCONFIRM=\fR0
+.RS 4
+If set to 1, do not prompt while building\&.
+.RE
+.PP
+\fBEDITFILES=\fR1
+.RS 4
+If set to 0, don\(cqt propose to edit files (from AUR or from ABS)\&.
+.RE
+.PP
+\fBNOENTER=\fR1
+.RS 4
+If set to 0, user needs to press Enter for each "yes/no" question\&.
+.RE
+.SH "OUTPUT OPTIONS"
+.PP
+\fBCOLORMODE=\fR"normal"
 .RS 4
 Define the color style to use\&. COLORMODE can be "normal", "lightbg", "nocolor" or "textonly"\&.
 .RE
 .sp
 Note: nocolor use Bold and Italic fonts\&. textonly remove all special caracters and acts like TERMINALTITLE=0
 .PP
-\fBNOENTER=1\fR
+\fBDETAILUPGRADE=\fR1
 .RS 4
-If set to 0, user needs to press Enter for each "yes/no" question\&.
+If set to 0, do not detail/parse updates (new version, release, packages)\&.
 .RE
 .PP
-\fBEDITFILES=1\fR
-.RS 4
-If set to 0, don\(cqt propose to edit files (from AUR or from ABS)\&.
-.RE
-.PP
-\fBEXPORT=0\fR
-.RS 4
-Export builded package to \fB$EXPORTDIR\fR or, if not defined to \fB$PKGDEST\fR (see \fBmakepkg.conf\fR(5))\&.
-.RE
-.PP
-\fBEXPORTSRC=0\fR
-.RS 4
-Export sources to $EXPORTDIR or, if not defined to \fB$SRCPKGDEST\fR or \fB$PKGDEST\fR (see \fBmakepkg.conf\fR(5))\&.
-.RE
-.PP
-\fBEXPORTDIR=""\fR
-.RS 4
-Specify the folder where yaourt export built packages for local repository\&.
-.RE
-.PP
-\fBFORCEENGLISH=0\fR
-.RS 4
-If set to 1, yaourt use English for makepkg and pacman instead of system language\&.
-.RE
-.PP
-\fBMAXCOMMENTS=X\fR
-.RS 4
-Show X last comments for packages built from AUR Unsupported\&. default: MAXCOMMENTS=5
-.RE
-.PP
-\fBNOCONFIRM=0\fR
-.RS 4
-If set to 1, always use the default choice without confirmation\&.
-.RE
-.PP
-\fBPACMANBIN="/usr/bin/pacman"\fR
-.RS 4
-Specify the pacman binary to use with yaourt
-.RE
-.PP
-\fBEDITOR="$EDITOR"\fR
-.RS 4
-Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing\&. Editor should not fork, for gvim: EDITOR="gvim \-\-nofork"
-.RE
-.PP
-\fBAURSEARCH=1\fR
-.RS 4
-If set to 0, don\(cqt search for packages on AUR Unsupported
-.RE
-.PP
-\fBSHOWORPHANS=1\fR
+\fBSHOWORPHANS=\fR1
 .RS 4
 If set to 0, don\(cqt search for orphans
 .RE
 .PP
-\fBTMPDIR="/tmp"\fR
-.RS 4
-Specify the folder to save tempory files (default is /tmp)\&.
-.RE
-.PP
-\fBTERMINALTITLE=1\fR
+\fBTERMINALTITLE=\fR1
 .RS 4
 If set to 0, don\(cqt show the current yaourt\(cqs action in terminal title\&. By default, yaourt show messages like "Installing xxx from AUR"\&. It\(cqs recommended to add something like this in your \&.bashrc
 .sp
@@ -201,16 +216,16 @@ example: PROMPT_COMMAND=\'echo \-ne "\e\e033]0;${USER}@${HOSTNAME}: ${PWD}\e\e00
 .RE
 .\}
 .RE
+.SH "COMMAND OPTIONS"
 .PP
-\fBDIFFEDITCMD="vimdiff"\fR
+\fBPACMANBIN=\fR"/usr/bin/pacman"
+.RS 4
+Specify the pacman binary to use with yaourt
+.RE
+.PP
+\fBDIFFEDITCMD=\fR"vimdiff"
 .RS 4
 Define the diff editor to use ($DIFFEDITCMD file1 file2)\&.
-.RE
-.RE
-.PP
-\fBSUDONOVERIF=0\fR
-.RS 4
-If set to 1, yaourt doesn\(cqt do sudo checks\&. (For users with timestamp_timeout=0 in sudoers)
 .RE
 .SH "SEE ALSO"
 .sp

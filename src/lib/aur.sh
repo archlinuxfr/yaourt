@@ -86,7 +86,7 @@ function striphtml (str)
 	return str
 }
 BEGIN {
-	max='$MAXCOMMENTS'
+	max='$AURCOMMENT'
 	i=0
 	comment=0
 }
