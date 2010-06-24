@@ -236,8 +236,8 @@ search ()
 	(( AURSEARCH )) && search_option+=" -A"
 	(( DATE )) && search_option+=" --sort 1"
 	(( QUIET )) && { pkgquery $search_option -f "%n" "${args[@]}";return; }
-	(( interactive )) && search_option+=" --yaourt-n"
-	{ readarray -t PKGSFOUND < <(pkgquery --yaourt $search_option "${args[@]}"); } 2>&1
+	(( interactive )) && search_option+=" --number"
+	{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option "${args[@]}" 3>&1 1>&2 ); } 2>&1
 }
 	
 # Handle special query
@@ -411,8 +411,8 @@ while [[ $1 ]]; do
 		--lightbg)          COLORMODE="lightbg";;
 		--nocolor)          COLORMODE="nocolor";;
 		--provides)         QUERYTYPE="provides";;
-		-p|--print)         PRINT=1; FILE=1;;
-		--file)             FILE=1;;
+		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
+		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ;; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; shift;;
 		--replaces)         QUERYTYPE="replaces";;
