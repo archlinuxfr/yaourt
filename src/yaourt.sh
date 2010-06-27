@@ -235,9 +235,9 @@ search ()
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
 	(( DATE )) && search_option+=" --sort 1"
-	(( QUIET )) && { pkgquery $search_option -f "%n" "${args[@]}";return; }
+	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${args[@]}";return; }
 	(( interactive )) && search_option+=" --number"
-	{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option "${args[@]}" 3>&1 1>&2 ); } 2>&1
+	{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${args[@]}" 3>&1 1>&2 ); } 2>&1
 }
 	
 # Handle special query
@@ -356,6 +356,7 @@ ARGSANS=("$@")
 unset OPTS
 arg=$1
 while [[ $arg ]]; do
+	[[ $arg = "--" ]] && OPTS+=("$@") && break;
 	if [[ ${arg:0:1} = "-" && ${arg:1:1} != "-" ]]; then
 		OPTS+=("-${arg:1:1}")
 		(( ${#arg} > 2 )) && arg="-${arg:2}" || { shift; arg=$1; }
@@ -426,6 +427,7 @@ while [[ $1 ]]; do
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_Y)) $1;;
+		--)                 shift; args+=("$@"); break;;
 		-*)                 pacman_cmd 0;;
 		*)                  args+=("$1") ;; 
 	esac
