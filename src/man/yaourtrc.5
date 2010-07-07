@@ -75,7 +75,7 @@ If set to 1, after each install, yaourt search for config files to backup (\&.pa
 .sp
 This option requires root password or sudo configured to allow runing /usr/bin/pacdiffviewer without password\&.
 .PP
-\fBDEVELBUILDDIR=\fR"/var/abs/local/yaourtbuild/"
+\fBDEVELBUILDDIR=\fR"/var/abs/local/yaourtbuild"
 .RS 4
 Specify directory where to clone, build devel packages\&.
 .RE
@@ -218,7 +218,7 @@ example: PROMPT_COMMAND=\'echo \-ne "\e\e033]0;${USER}@${HOSTNAME}: ${PWD}\e\e00
 .RE
 .SH "COMMAND OPTIONS"
 .PP
-\fBPACMANBIN=\fR"/usr/bin/pacman"
+\fBPACMAN=\fR"pacman"
 .RS 4
 Specify the pacman binary to use with yaourt
 .RE

@@ -2,12 +2,12 @@
 .\"     Title: yaourt
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 2010-04-11
+.\"      Date: 2010-07-06
 .\"    Manual: Yaourt Manual
 .\"    Source: Yaourt 0.9.4
 .\"  Language: English
 .\"
-.TH "YAOURT" "8" "2010\-04\-11" "Yaourt 0\&.9\&.4" "Yaourt Manual"
+.TH "YAOURT" "8" "2010\-07\-06" "Yaourt 0\&.9\&.4" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -38,7 +38,7 @@ Interactive search + install
 Building packages directly from ABS sources
 Search output colorised
 Handling config files \&.pacnew/\&.pacsave
-Managing alpm database (save/restore/query database directly on backup file)
+Managing alpm database (save/restore/query a backup file)
 Alert user when new orphans are detected
 Check the database integrity after each operation
 Yaourt can be run as a non\-privileged user (safest for AUR)
@@ -251,6 +251,19 @@ With AUTOSAVEBACKUPFILE (\fByaourtrc\fR(5)), yaourt will search and save all fil
 .SH "CONFIGURATION"
 .sp
 See \fByaourtrc\fR(5) for more details on configuring yaourt using the \fIyaourtrc\fR file\&.
+.SH "ENVIRONMENT VARIABLES"
+.PP
+\fBPACMAN\fR
+.RS 4
+Set an alternative
+\fBpacman\fR(8)
+command\&.
+.RE
+.PP
+\fBTMPDIR\fR
+.RS 4
+Set a temporary folder to use\&.
+.RE
 .SH "SEE ALSO"
 .sp
 \fByaourtrc\fR(5), \fBmakepkg\fR(8), \fBpacman\fR(8)

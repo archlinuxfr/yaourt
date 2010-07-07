@@ -11,19 +11,19 @@ loadlibrary alpm_query
 # PKGBUILD_DEPS : deps not installed or provided
 # PKGBUILD_DEPS_INSTALLED : deps installed or provided
 # PKGBUILD_CONFLICTS : package installed and conflicts
-# PARCH : 'any' or CARCH in makepkg
 
 # source makepkg configuration
 source_makepkg_conf ()
 {
 	# From makepkg, try to source the same way
 	# but suppose default confdir = /etc
+	MAKEPKG_CONF=${MAKEPKG_CONF:-/etc/makepkg.conf}
 	local _PKGDEST=${PKGDEST}
 	local _SRCDEST=${SRCDEST}
 	local _SRCPKGDEST=${SRCPKGDEST}
-	[[ -r /etc/makepkg.conf ]] && source /etc/makepkg.conf || return 1
+	[[ -r $MAKEPKG_CONF ]] && source "$MAKEPKG_CONF" || return 1
 	[[ -r ~/.makepkg.conf ]] && source ~/.makepkg.conf
-	# Preserve environnement variable
+	# Preserve environment variable
 	# else left empty (do not set to $PWD)
 	PKGDEST=${_PKGDEST:-$PKGDEST}
 	SRCDEST=${_SRCDEST:-$SRCDEST}
@@ -68,7 +68,7 @@ read_pkgbuild ()
 	PKGBUILD_VARS="$(makepkg "${MAKEPKG_ARG[@]}" -p "$pkgbuild_tmp" 3>&1 1>/dev/null | tr '\n' ';')"
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
-	[[ "$pkgbase" ]] || pkgbase="${pkgname[0]}"
+	pkgbase=${pkgbase:-${pkgname[0]}}
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
 	PKGBUILD_VARS=${PKGBUILD_VARS//declare -- /}
 	if [[ ! "$pkgbase" ]]; then
@@ -80,7 +80,6 @@ read_pkgbuild ()
 		warning $(gettext 'This PKGBUILD describes a splitted package.')
 		msg $(gettext 'Specific package options are unknown')
 	}
-	[[ "$arch" = 'any' ]] && PARCH=any || PARCH=$CARCH
 	return 0
 }
 
@@ -245,7 +244,7 @@ build_package()
 			warning $(gettext 'Dependencies have been installed before the failure')
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
 				in_array $_deps "${_deps_left[@]}" || \
-					$YAOURTBIN -Rsn "${YAOURT_ARG[@]}" "${_deps%[<=>]*}"
+					$YAOURTBIN -Rs "${YAOURT_ARG[@]}" "${_deps%[<=>]*}"
 			done
 			return 1
 		fi
@@ -262,7 +261,7 @@ build_package()
 		error $(eval_gettext 'Makepkg was unable to build $PKG.')
 		return 1
 	fi
-	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && makepkg --allsource
+	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && makepkg --allsource -p ./PKGBUILD
 	return 0
 }
 
@@ -287,7 +286,7 @@ install_package()
 			V)	local i=0
 				for _file in "$YPKGDEST"/*; do
 					(( i++ )) && { prompt2 $(gettext 'Press any key to continue'); read -n 1; }
-					$PACMANBIN -Qlp "$_file"
+					$PACMAN -Qlp "$_file"
 				done
 				;;
 			C)	if type -p namcap &>/dev/null ; then

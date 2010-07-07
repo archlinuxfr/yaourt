@@ -18,7 +18,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#set -x
 export TEXTDOMAINDIR=/usr/share/locale
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
@@ -149,15 +148,15 @@ pacman_queue()
 # launch pacman as root
 su_pacman ()
 {
-	pacman_queue; launch_with_su $PACMANBIN "${PACMAN_C_ARG[@]}" "$@"
+	pacman_queue; launch_with_su $PACMAN "${PACMAN_C_ARG[@]}" "$@"
 }
 
 # Launch pacman and exit
 pacman_cmd ()
 {
-	(( ! $1 )) && exec $PACMANBIN "${ARGSANS[@]}"
+	(( ! $1 )) && exec $PACMAN "${ARGSANS[@]}"
 	prepare_orphan_list
-	pacman_queue; launch_with_su $PACMANBIN "${ARGSANS[@]}"  
+	pacman_queue; launch_with_su $PACMAN "${ARGSANS[@]}"  
 	local ret=$?
 	(( ! ret )) && show_new_orphans
 	exit $ret
@@ -332,7 +331,7 @@ yaourt_query ()
 ###################################
 # Basic init and librairies
 YAOURTBIN=$0
-source /usr/lib/yaourt/basicfunctions.sh || exit 1 
+source /usr/lib/yaourt/basicfunctions.sh 
 
 unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \

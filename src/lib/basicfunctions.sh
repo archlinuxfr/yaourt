@@ -8,7 +8,7 @@ COLUMNS=$(tput cols)
 
 # pacman & package-query call with command line options
 pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
-pacman_out () { $PACMANBIN "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_out () { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
 pkgquery () { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
 
 # set misc path
@@ -206,11 +206,10 @@ loadlibrary color
 unset ABS_REPO 
 # General
 AUTOSAVEBACKUPFILE=0
-DEVELBUILDDIR="/var/abs/local/yaourtbuild/"
+DEVELBUILDDIR="/var/abs/local/yaourtbuild"
 DEVEL=0
 FORCEENGLISH=0
 FORCE=0
-TMPDIR=${TMPDIR:-/tmp}
 SUDONOVERIF=0 
 # AUR 
 AURCOMMENT=5
@@ -234,13 +233,16 @@ DETAILUPGRADE=1
 SHOWORPHANS=1
 TERMINALTITLE=1
 # Command
-PACMANBIN="/usr/bin/pacman"
 DIFFEDITCMD="vimdiff"
 
 [[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
 [[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
 (( FORCEENGLISH )) && export LC_ALL=C
 in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
+TMPDIR=${TMPDIR:-/tmp}
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
+# PACMANBIN is depreceated
+PACMAN=${PACMAN:-$PACMANBIN}
+export PACMAN=${PACMAN:-pacman}
 # vim: set ts=4 sw=4 noet: 

@@ -73,7 +73,7 @@ prompt(){
 	_showmsg "$COL_ARROW"
 }
 prompt2(){
-	_showmsg "$COL_ARROW" "" "$*"
+	_showmsg "$COL_ARROW" "" "$* "
 }
 error(){
 	_showmsg "$COL_RED" "$(gettext 'ERROR: ')" "$*\n"

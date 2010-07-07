@@ -1,10 +1,7 @@
 post_install() {
 	cat <<-EndOfMessage
-	==> to use yaourt as user,add these entries to /etc/sudoers:
-           user ALL=NOPASSWD: /usr/bin/pacman
-           user ALL=NOPASSWD: /usr/bin/pacdiffviewer
-	(Please, use sudo very carefully)
-	==> for a full colorized output, install pacman-color and set PACMANBIN /etc/yaourtrc
+	==> for a full colorized output, install pacman-color and export PACMAN=pacman-color
+	    or set it into yaourtrc file.
 	EndOfMessage
 	/bin/true
 }

@@ -9,7 +9,7 @@ ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unst
 
 # General
 #AUTOSAVEBACKUPFILE=0
-#DEVELBUILDDIR="/var/abs/local/yaourtbuild/"
+#DEVELBUILDDIR="/var/abs/local/yaourtbuild"
 #DEVEL=0
 #EDITOR="$EDITOR"
 #FORCEENGLISH=0
@@ -43,5 +43,5 @@ ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unst
 #TERMINALTITLE=1
 
 # Command
-#PACMANBIN="/usr/bin/pacman"
+#PACMAN="pacman"
 #DIFFEDITCMD="vimdiff"
