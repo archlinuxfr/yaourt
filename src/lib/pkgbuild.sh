@@ -305,7 +305,7 @@ install_package()
 	local _arg=""
 	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) && for _file in "$YPKGDEST"/*; do
-		su_pacman -Uf "${PACMAN_S_ARG[@]}" $_arg $_file || failed=$?
+		su_pacman -U "${PACMAN_S_ARG[@]}" $_arg $_file || failed=$?
 		(( failed )) && break
 	done
 	if (( failed )); then 
