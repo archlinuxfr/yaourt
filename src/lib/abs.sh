@@ -260,8 +260,7 @@ showupgradepackage()
 					printf "%*s   $COL_RED$(eval_gettext '(required by $requiredbypkg)')" ${longestpkg[1]} "";;
 			esac
 			printf "\r%-*s  ${COL_GREEN}${line[3]}${NO_COLOR}" ${longestpkg[0]} ""
-			pkg_output ${line[1]} ${line[2]}
-			echo -e "\r$pkgoutput"
+			echo -e "\r${COL_REPOS[${line[1]}]:-$COL_O_REPOS}${line[1]}/$NO_COLOR${COL_BOLD}${line[2]}$NO_COLOR"
 			if [[ "$1" = "full" ]]; then
 				echo_wrap 4 "${line[6]}"
 			fi

@@ -61,28 +61,6 @@ die(){
 	exit $ret
 }
 
-# usage: pkg_output repo pkgname pkgver lver group outofdate votes pkgdesc
-T_INSTALLED="$(gettext 'installed')"
-T_OUTOFDATE="$(gettext 'Out of Date')"
-pkg_output()
-{
-	pkgoutput=""
-	[[ ${1#-} ]] && pkgoutput+="${COL_REPOS[$1]:-$COL_O_REPOS}$1/$NO_COLOR"
-	[[ $2 ]] && pkgoutput+="${COL_BOLD}$2 ${COL_GREEN}$3${NO_COLOR}"
-	if [[ ${4#-} ]]; then
-		pkgoutput+=" ${COL_INSTALLED}["
-		[[ "$4" != "$3" ]] && pkgoutput+="${COL_RED}$4${COL_INSTALLED} "
-		pkgoutput+="$T_INSTALLED]${NO_COLOR}"
-	fi
-	[[ ${5#-} ]] && pkgoutput+=" $COL_GROUP($5)$NO_COLOR"
-	[[ "$6" = "1" ]] && pkgoutput+=" ${COL_INSTALLED}($T_OUTOFDATE)$NO_COLOR"
-	[[ ${7#-} ]] && pkgoutput+=" $COL_NUMBER($7)${NO_COLOR}"
-	if [[ $8 ]]; then
-		str_wrap 4 "$8"
-		pkgoutput+="\n$COL_ITALIQUE$strwrap$NO_COLOR"
-	fi
-}
-
 manage_error(){
 	(( ! $# )) || (( ! $1 )) && return 0
 	error_package+=("$PKG")

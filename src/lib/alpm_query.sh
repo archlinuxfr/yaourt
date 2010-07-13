@@ -23,8 +23,7 @@ sourcerepository()
 
 # search in sync db for packages wich depends on/conflicts whith/provides argument
 searchforpackageswhich(){
-	local action="$1"
-	local name="$2"
+	local _opt _msg action="$1" name="$2"
 	case "$action" in
 		depends) _msg='Packages which depend on $name:';;
 		conflicts) _msg='Packages which conflict with $name:';;
@@ -32,16 +31,8 @@ searchforpackageswhich(){
 		provides) _msg='Packages which provide $name:';;
 	esac
 	msg $(eval_gettext "$_msg")
-	if [[ "$MAJOR" = "query" ]]; then
-		_opt=(-Qf '%s %n %v -') 
-	else
-		_opt=(-Sf '%r %n %v %l')
-	fi
-	pkgquery "${_opt[@]}" --query-type $action "$name" |
-	while read repo pkgname pkgver lver; do
-		pkg_output "$repo" "$pkgname" "$pkgver" "$lver"
-		echo -e "$pkgoutput"
-	done
+	[[ "$MAJOR" = "query" ]] && _opt="-Q" || _opt="-S"
+	pkgquery $_opt --query-type $action "$name"
 }
 
 # searching for packages installed as dependecy from another packages, but not required anymore
