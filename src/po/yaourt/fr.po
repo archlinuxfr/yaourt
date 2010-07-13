@@ -42,32 +42,32 @@ msgid "yaourt {-V --version}"
 msgstr ""
 
 #: ../../yaourt.sh:48
-msgid "yaourt {-Q --query}   [options] [package(s)]"
-msgstr "yaourt {-Q --query}   [options] [paquet(s)]"
+msgid "yaourt {-Q --query}       [options] [package(s)]"
+msgstr "yaourt {-Q --query}       [options] [paquet(s)]"
 
 #: ../../yaourt.sh:49
-msgid "yaourt {-R --remove}  [options] [package(s)]"
-msgstr "yaourt {-R --remove}  [options] [paquet(s)]"
+msgid "yaourt {-R --remove}      [options] <package(s)>"
+msgstr "yaourt {-R --remove}      [options] <paquet(s)>"
 
 #: ../../yaourt.sh:50
-msgid "yaourt {-S --sync}    [options] [package(s)]"
-msgstr "yaourt {-S --sync}    [options] [paquet(s)]"
+msgid "yaourt {-S --sync}        [options] [package(s)]"
+msgstr "yaourt {-S --sync}        [options] [paquet(s)]"
 
 #: ../../yaourt.sh:51
-msgid "yaourt {-U --upgrade} [options] [package(s)]"
-msgstr "yaourt {-U --upgrade} [options] [paquet(s)]"
+msgid "yaourt {-U --upgrade}     [options] <package(s)>"
+msgstr "yaourt {-U --upgrade}     [options] <paquet(s)>"
 
 #: ../../yaourt.sh:52
-msgid "yaourt {-C --clean}   [options]"
+msgid "yaourt {-C --clean}       [options]"
 msgstr ""
 
 #: ../../yaourt.sh:53
-msgid "yaourt {-B --backup}  (save directory|restore file)"
-msgstr "yaourt {-B --backup}  (dossier destination|base à restaurer)"
+msgid "yaourt {-B --backup}      [save directory|restore file]"
+msgstr "yaourt {-B --backup}      [dossier destination|base à restaurer]"
 
 #: ../../yaourt.sh:54
-msgid "yaourt {-G --getpkgbuild} package"
-msgstr "yaourt {-G --getpkgbuild} paquet"
+msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
+msgstr "yaourt {-G --getpkgbuild} [options] <paquet(s)>"
 
 #: ../../yaourt.sh:55
 msgid "yaourt {--stats}"
@@ -183,13 +183,23 @@ msgstr "synchronisation des bases de données de paquets"
 msgid "get PKGBUILD"
 msgstr "télécharger le PKGBUILD"
 
+#: ../../yaourt.sh:505
+#, sh-format
+msgid "Download $pkg sources"
+msgstr "Télécharge les sources de $pkg"
+
 #: ../../yaourt.sh:510
-msgid "PKGBUILD file already exist. Replace ? "
-msgstr "Le PKGBUILD existe déjà. Remplacer ? "
+msgid "$pkg directory already exist. Replace ?"
+msgstr "Le dossier $pkg existe déjà. Remplacer ?"
 
 #: ../../yaourt.sh:529
-msgid "Enter n° (separated by blanks, or a range) of packages to be installed"
-msgstr "Entrer le(s) n° (séparés par des espaces, ou un intervalle) des paquets à installer"
+msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
+msgstr "Numéro(s) des paquets à installer (ex: 1 2 3 ou 1-3)"
+
+#: ../../lib/abs.sh:31
+#, sh-format
+msgid "Download abs archive"
+msgstr "Télécharge l'archive abs"
 
 #: ../../lib/abs.sh:49
 #, sh-format
@@ -490,7 +500,7 @@ msgstr "Paquets remplaçant $name:"
 
 #: ../../lib/alpm_query.sh:40
 #, sh-format
-msgid "Packages which provide on $name:"
+msgid "Packages which provide $name:"
 msgstr "Paquets fournissant $name:"
 
 #: ../../lib/alpm_query.sh:49

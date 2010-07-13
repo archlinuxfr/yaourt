@@ -20,7 +20,7 @@ aur_get_pkgbuild ()
 		error $(eval_gettext '$pkg not found in AUR.');
 		return 1;
 	fi
-	bsdtar -s "/$pkg//" -xvf "$pkg.tar.gz"
+	bsdtar --strip-components 1 -xvf "$pkg.tar.gz"
 	rm "$pkg.tar.gz"
 }
 
@@ -41,14 +41,7 @@ info_from_aur() {
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
 		{ error "$PKG not found in repos nor in AUR"; return 1; }
-	sed -i -n -e '/\$(\|`\|[><](\|[&|]\|;/d' \
-		-e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
-		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
-		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
-		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
-		-e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
-		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/last_mod="\1"/p }' \
-		-e 'd' "$tmpfile" 
+	sanitize_pkgbuild "$tmpfile" 
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
 	source "$tmpfile"

@@ -39,13 +39,13 @@ usage(){
 	echo -e "\t$(gettext 'yaourt (search pattern|package file)')"
 	echo -e "\t$(gettext 'yaourt {-h --help}')"
 	echo -e "\t$(gettext 'yaourt {-V --version}')"
-	echo -e "\t$(gettext 'yaourt {-Q --query}   [options] [package(s)]')"
-	echo -e "\t$(gettext 'yaourt {-R --remove}  [options] [package(s)]')"
-	echo -e "\t$(gettext 'yaourt {-S --sync}    [options] [package(s)]')"
-	echo -e "\t$(gettext 'yaourt {-U --upgrade} [options] [package(s)]')"
-	echo -e "\t$(gettext 'yaourt {-C --clean}   [options]')"
-	echo -e "\t$(gettext 'yaourt {-B --backup}  (save directory|restore file)')"
-	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} package')"
+	echo -e "\t$(gettext 'yaourt {-Q --query}       [options] [package(s)]')"
+	echo -e "\t$(gettext 'yaourt {-R --remove}      [options] <package(s)>')"
+	echo -e "\t$(gettext 'yaourt {-S --sync}        [options] [package(s)]')"
+	echo -e "\t$(gettext 'yaourt {-U --upgrade}     [options] <package(s)>')"
+	echo -e "\t$(gettext 'yaourt {-C --clean}       [options]')"
+	echo -e "\t$(gettext 'yaourt {-B --backup}      [save directory|restore file]')"
+	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} [options] <package(s)>')"
 	echo -e "\t$(gettext 'yaourt {--stats}')"
 	return 0
 }
@@ -286,7 +286,7 @@ yaourt_sync ()
 		show_new_orphans
 		return
 	fi
-	[[ ! $args ]] && { (( ! REFRESH )) && pacman_cmd 1; }
+	[[ ! $args ]] && (( ! REFRESH )) && pacman_cmd 1; 
 	if [[ $QUERYTYPE ]]; then
 		yaourt_query_type
 		return
@@ -376,8 +376,8 @@ while [[ $1 ]]; do
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
 		--asdeps|--needed)  program_arg $A_PS $1;;
 		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
-		--deps)             DEPENDS=1; program_arg $A_PQ $1;;
-		-d)                 DEPENDS=1; NODEPS=1; program_arg $((A_PS | A_M | A_Y | A_PQ)) $1;;
+		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
+		-d)                 ((DEPENDS++)); NODEPS=1; program_arg $((A_PS | A_M | A_Y | A_PQ)) $1;;
 		-e|--explicit)      EXPLICITE=1; program_arg $A_PQ $1;;
 		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
@@ -406,7 +406,7 @@ while [[ $1 ]]; do
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
 		-f|--force)         FORCE=1; program_arg $((A_PS | A_M | A_Y)) $1;;
-		-G|--getpkgbuild)   MAJOR="getpkgbuild"; shift; PKG="$1";;
+		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
 		--lightbg)          COLORMODE="lightbg";;
 		--nocolor)          COLORMODE="nocolor";;
@@ -498,15 +498,8 @@ case "$MAJOR" in
 
 	getpkgbuild)
 		title "$(gettext 'get PKGBUILD')"
-		loadlibrary aur
-		loadlibrary abs
-		# don't replace the file if exist
-		if [[ -f "./PKGBUILD" ]]; then
-			prompt "$(gettext 'PKGBUILD file already exist. Replace ? ')$(yes_no 1)"
-			useragrees || die 1
-		fi
-		#msg "Get PKGBUILD for $PKG"
-		build_or_get "$PKG"
+		loadlibrary pkgbuild
+		get_pkgbuild "${args[0]}"
 		;;
 
 	backup) 
@@ -520,7 +513,7 @@ case "$MAJOR" in
 	interactivesearch)
 		SEARCH=1 search 1 
 		[[ $PKGSFOUND ]] || die 0
-		prompt $(gettext 'Enter n° (separated by blanks, or a range) of packages to be installed')
+		prompt $(gettext 'Enter n° of packages to be installed (ex: 1 2 3 or 1-3)')
 		read -ea packagesnum
 		[[ $packagesnum ]] || die 0
 		for line in ${packagesnum[@]/,/ }; do

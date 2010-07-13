@@ -28,13 +28,16 @@ initpath(){
 
 # Load library but never reload twice the same lib
 loadlibrary(){
-	[[ "${!1}" ]] && return 0
-	if [[ ! -r "/usr/lib/yaourt/$1.sh" ]]; then
-		error "$1.sh file is missing"
-		die 1
-	fi
-	source "/usr/lib/yaourt/$1.sh" || warning "problem in $1.sh library"
-	eval $1=1
+	while [[ $1 ]]; do
+		[[ "${!1}" ]] && return 0
+		if [[ ! -r "/usr/lib/yaourt/$1.sh" ]]; then
+			error "$1.sh file is missing"
+			die 1
+		fi
+		source "/usr/lib/yaourt/$1.sh" || warning "problem in $1.sh library"
+		eval $1=1
+		shift
+	done
 }
 
 printf -v P_INDENT "%*s" ${COLUMNS:-0}

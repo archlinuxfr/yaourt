@@ -14,10 +14,9 @@ loadlibrary pkgbuild
 # Usage abs_get_pkgbuild ($repo/$pkg[,$arch])
 abs_get_pkgbuild ()
 {
-	local repo=${1%/*} pkg=${1#*/}
+	local repo=${1%/*} pkg=${1#*/} arch=$2
 	if [[ $RSYNCCMD ]] && in_array "$repo" "${ABS_REPO[@]}"; then
-		[[ $3 ]] && local arch=$3 || \
-			local arch=$(pkgquery -Sif "%a" "$repo/$pkg")
+		[[ $arch ]] || arch=$(pkgquery -Sif "%a" "$repo/$pkg")
 		$RSYNCCMD $RSYNCOPT "$RSYNCSRC/$arch/$repo/$pkg/" . && return 0
 	fi
 	# TODO: store abs archive somewhere else.
@@ -28,24 +27,22 @@ abs_get_pkgbuild ()
 	if (( $? )) || (( abs_repo_date < repo_date )); then
 		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
 		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
-		msg "$1: $(gettext 'retrieve abs archive')"
+		msg "$1: $(gettext 'Download abs archive')"
 		curl -f -# "$abs_url" -o "$abs_tar" || return 1
 	fi
-	bsdtar -s "/${repo}.${pkg}//" -xvf "$abs_tar" "$repo/$pkg"
+	bsdtar --strip-components 2 -xvf "$abs_tar" "$repo/$pkg"
 }
-
+	
 # Build from abs or aur
-build_or_get ()
+build_pkg ()
 {
 	[[ $1 ]] || return 1
-	local pkg=${1#*/} _func="aur"
-	[[ "$1" != "${1///}" ]] && local repo=${1%/*} || \
-		local repo="$(sourcerepository $pkg)"
-	[[ -n "$repo" && "$repo" != "aur" && "$repo" != "local" ]] && _func="abs"
-	if [[ "$MAJOR" = "getpkgbuild" ]]; then
-		${_func}_get_pkgbuild "$repo/$pkg"
+	local repo pkg=${1#*/}
+	[[ $1 != $pkg ]] && repo=${1%/*} || repo="$(sourcerepository "$pkg")"
+	if [[ $repo = "aur" || $repo = "local" ]]; then
+		install_from_aur "$repo/$pkg"
 	else
-		BUILD=1 install_from_${_func} "$repo/$pkg"
+		BUILD=1 install_from_abs "$repo/$pkg"
 	fi
 }
 
@@ -202,7 +199,7 @@ sysupgrade()
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
 		show_targets 'Source targets' "${srcpkgs[@]#*/}" || return 0
-		BUILD=1 build_or_get "${srcpkgs[@]}" 
+		build_pkg "${srcpkgs[@]}" 
 		local ret=$?
 		[[ $pkgs ]] || return $ret
 	fi
@@ -321,7 +318,7 @@ upgrade_devel_package(){
 	done
 	[[ $devel_pkgs ]] || return 0
 	show_targets 'Targets' "${devel_pkgs[@]}" && for PKG in ${devel_pkgs[@]}; do
-		build_or_get "$PKG"
+		build_pkg "$PKG"
 	done
 }
 

@@ -368,7 +368,64 @@ package_loop ()
 	return $failed
 }
 
+# sanitize_pkgbuild(pkgbuild)
+# Turn a PKGBUILD into a harmless script (at least try to)
+sanitize_pkgbuild ()
+{
+	sed -i -n -e '/\$(\|`\|[><](\|[&|]\|;/d' \
+		-e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
+		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
+		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
+		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
+		-e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
+		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/last_mod="\1"/p }' \
+		-e '/ *build *( *)/q' \
+		-e 'd' "$1"
+}
 
+# get_pkgbuild ($pkgs)
+# Get each package source and decompress into pkg directory
+get_pkgbuild ()
+{
+	local i pkgs repo pkg arch pkgbuild_tmp deps cwd=$(pwd)
+	pkgs=("$@")
+	loadlibrary aur abs
+	declare -A pkgs_downloaded
+	pkgbuild_tmp=$(mktemp)
+	for ((i=0; i<${#pkgs[@]}; i++)); do
+		cd "$cwd"
+		read repo pkg arch < <(pkgquery -1ASif '%r %n %a' "${pkgs[$i]}")
+		[[ ! $pkg ]] && continue
+		[[ ${pkgs_downloaded[$pkg]} ]] && continue
+		pkgs_downloaded[${pkg}]=1
+		if [[ -d $pkg ]]; then
+			prompt2 "$(eval_gettext '$pkg directory already exist. Replace ?') $(yes_no 1)"
+			useragrees || continue
+		else
+			mkdir "$pkg" 
+		fi
+		cd "$pkg" || continue
+		msg "$(eval_gettext 'Download $pkg sources')"
+		if [[ $repo = "aur" ]]; then
+			aur_get_pkgbuild "$pkg"
+		else
+			abs_get_pkgbuild "$repo/$pkg" "${arch#-}"
+		fi
+		(($?)) && continue
+		if ((DEPENDS)); then
+			cp PKGBUILD "$pkgbuild_tmp"
+			sanitize_pkgbuild "$pkgbuild_tmp"
+			unset depends makedepends
+			. <( source "$pkgbuild_tmp" &> /dev/null && declare -p depends makedepends 2> /dev/null ) || continue
+			deps=("${depends[@]}" "${makedepends[@]}")
+			((DEPENDS>1)) || deps=($(pacman_parse -T "${deps[@]}"))
+			[[ $deps ]] || continue
+			pkgs+=($(pkgquery -Aif '%n' "${deps[@]}"))
+		fi
+	done
+	rm "$pkgbuild_tmp"
+	cd "$cwd"
+}
 
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
 source_makepkg_conf 
