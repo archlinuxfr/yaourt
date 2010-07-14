@@ -238,7 +238,7 @@ build_package()
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
 		local _arg="--asdeps"
 		((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
-		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]%[<=>]*}"
+		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]}"
 		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
 		if (( ${#_deps_left[@]} )); then
 			warning $(gettext 'Dependencies have been installed before the failure')
