@@ -22,7 +22,7 @@ parse_pacman_conf()
 is_package_ignored ()
 {
 	if [[ " ${PKGS_IGNORED[@]} " =~ " $1 " ]]; then
-		(($2)) && echo -e "$1: ${COL_RED} "$(gettext '(ignoring package upgrade)')"${NO_COLOR}"
+		(($2)) && echo -e "$1: $CRED "$(gettext '(ignoring package upgrade)')"$C0"
 		return 0
 	fi
 	return 1

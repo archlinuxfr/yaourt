@@ -167,7 +167,7 @@ show_targets ()
 	local t="$(gettext "$1") "; shift
 	t+="($#): "
 	echo
-	echo_wrap_next_line "$COL_YELLOW$t$NO_COLOR" ${#t} "$*" 
+	echo_wrap_next_line "$CYELLOW$t$C0" ${#t} "$*" 
 	echo
 	prompt "$(gettext 'Proceed with upgrade? ') $(yes_no 1)"
 	useragrees 
@@ -254,13 +254,13 @@ showupgradepackage()
 			echo "# ${line[6]}" >> "$YAOURTTMPDIR/sysuplist"
 		else
 			case "${line[0]}" in
-				1) printf "%*s   $COL_BOLD${line[4]}$NO_COLOR -> $COL_RED${line[5]}$NO_COLOR" ${longestpkg[1]} "";;
-				2) printf "%*s   -> $COL_RED${line[4]}$NO_COLOR" ${longestpkg[1]} "";;
+				1) printf "%*s   $CBOLD${line[4]}$C0 -> $CRED${line[5]}$C0" ${longestpkg[1]} "";;
+				2) printf "%*s   -> $CRED${line[4]}$C0" ${longestpkg[1]} "";;
 				3) requiredbypkg=${line[4]}
-					printf "%*s   $COL_RED$(eval_gettext '(required by $requiredbypkg)')" ${longestpkg[1]} "";;
+					printf "%*s   $CRED$(eval_gettext '(required by $requiredbypkg)')$C0" ${longestpkg[1]} "";;
 			esac
-			printf "\r%-*s  ${COL_GREEN}${line[3]}${NO_COLOR}" ${longestpkg[0]} ""
-			echo -e "\r${COL_REPOS[${line[1]}]:-$COL_O_REPOS}${line[1]}/$NO_COLOR${COL_BOLD}${line[2]}$NO_COLOR"
+			printf "\r%-*s  $CGREEN${line[3]}$C0" ${longestpkg[0]} ""
+			echo -e "\r${colors[${line[1]}]:-${colors[other]}}${line[1]}/$C0${colors[pkg]}${line[2]}$C0"
 			if [[ "$1" = "full" ]]; then
 				echo_wrap 4 "${line[6]}"
 			fi

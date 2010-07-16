@@ -96,7 +96,7 @@ list_select ()
 	local i=0
 	for _line in "$@"; do
 		(( i++ ))
-		echo -e  "$COL_NUMBER$i$NO_COLOR $_line"
+		echo -e  "${colors[nb]}$i$C0 $_line"
 	done
 	echo
 }
@@ -179,10 +179,10 @@ run_editor ()
 		[[ "$answer" = "N" ]] && return 1
 	fi
 	if [[ ! "$EDITOR" ]]; then
-		echo -e ${COL_RED}$(gettext 'Please add \$EDITOR to your environment variables')
-		echo -e ${NO_COLOR}$(gettext 'for example:')
-		echo -e ${COL_BLUE}"export EDITOR=\"vim\""${NO_COLOR}" $(gettext '(in ~/.bashrc)')"
-		echo $(gettext '(replace vim with your favorite editor)')
+		echo -e "$CRED$(gettext 'Please add \$EDITOR to your environment variables')"
+		echo -e "$C0$(gettext 'for example:')"
+		echo -e "${CBLUE}export EDITOR=\"vim\"$C0 $(gettext '(in ~/.bashrc)')"
+		echo "$(gettext '(replace vim with your favorite editor)')"
 		echo
 		prompt2 "$(eval_gettext 'Edit $file with: ')"
 		read -e EDITOR
@@ -203,10 +203,10 @@ check_dir ()
 
 # Main init
 
-declare -A COL_REPOS	#TODO not its place
+declare -A colors	#TODO not its place
 shopt -s extglob
 loadlibrary color
-unset ABS_REPO 
+unset ABS_REPO
 # General
 AUTOSAVEBACKUPFILE=0
 DEVELBUILDDIR="/var/abs/local/yaourtbuild"
@@ -231,7 +231,7 @@ BUILD_NOCONFIRM=0
 EDITFILES=1
 NOENTER=1
 # OUTPUT
-COLORMODE=""
+USECOLOR=1
 DETAILUPGRADE=1
 SHOWORPHANS=1
 TERMINALTITLE=1
@@ -241,7 +241,6 @@ DIFFEDITCMD="vimdiff"
 [[ -r /etc/yaourtrc ]] && source /etc/yaourtrc
 [[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
 (( FORCEENGLISH )) && export LC_ALL=C
-in_array "$COLORMODE" "${COLORMODES[@]}" || COLORMODE=""
 TMPDIR=${TMPDIR:-/tmp}
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"

@@ -102,11 +102,11 @@ check_deps ()
 	(( nodisplay )) && return 0
 	msg "$(eval_gettext '$PKG dependencies:')"
 	for dep in "${PKGBUILD_DEPS_INSTALLED[@]}"; do
-		echo -e " - ${COL_BOLD}$dep${NO_COLOR}" $(gettext '(already installed)')
+		echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
 	done
 	for dep in "${PKGBUILD_DEPS[@]}"; do
-		isavailable $dep && echo -e " - ${COL_BLUE}$dep${NO_COLOR}" $(gettext '(package found)') && continue
-		echo -e " - ${COL_YELLOW}$dep${NO_COLOR}" $(gettext '(building from AUR)') 
+		isavailable $dep && echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
+		echo -e " - $CYELLOW$dep$C0" $(gettext '(building from AUR)') 
 	done
 	echo
 	return 0 
@@ -144,7 +144,7 @@ check_conflicts ()
 	if [[ "$PKGBUILD_CONFLICTS" ]]; then 
 		msg "$(eval_gettext '$PKG conflicts:')"
 		for cf in $(pkgquery -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
-			echo -e " - ${COL_BOLD}$cf${NO_COLOR}"
+			echo -e " - $CBOLD$cf$C0"
 		done
 	fi
 	echo

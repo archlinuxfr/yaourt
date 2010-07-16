@@ -117,7 +117,7 @@ previous_version ()
 {
 	[[ $1 ]] || return 
 	local file=$1
-	read pkgname pkgver < <(LC_ALL=C pacman_parse -Qo "$file" |
+	read pkgname pkgver < <(pacman_parse -Qo "$file" |
 		awk '{print $(NF-1)" "$NF}' 2>/dev/null)
 	[[ $pkgname ]] || return 
 	[[ -d "$SAVEDIR/$pkgname/" ]] || return 

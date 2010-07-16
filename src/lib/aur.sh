@@ -29,7 +29,7 @@ aur_show_info()
 	local t="$(gettext "$1"): "; shift
 	local len=${#t} str=""
 	[[ $* ]] && str=("$@") || str="None"
-	echo_wrap_next_line "${COL_BOLD}$t${NO_COLOR}" $len "${str[@]}"
+	echo_wrap_next_line "$CBOLD$t$C0" $len "${str[@]}"
 }
 
 # Grab info for package on AUR Unsupported
@@ -45,11 +45,11 @@ info_from_aur() {
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
 	source "$tmpfile"
-	aur_show_info "Repository     " "${COL_REPOS[aur]}aur${NO_COLOR}"
-	aur_show_info "Name           " "${COL_BOLD}$pkgname${NO_COLOR}"
-	aur_show_info "Version        " "${COL_GREEN}$pkgver-$pkgrel${NO_COLOR}"
-	aur_show_info "URL            " "${COL_CYAN}$url${NO_COLOR}"
-	aur_show_info "AUR URL        " "${COL_CYAN}${AUR_URL}packages.php?ID=$id${NO_COLOR}"
+	aur_show_info "Repository     " "${colors[aur]:-${colors[other]}}aur$C0"
+	aur_show_info "Name           " "$CBOLD$pkgname$C0"
+	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
+	aur_show_info "URL            " "$CCYAN$url$C0"
+	aur_show_info "AUR URL        " "$CCYAN${AUR_URL}packages.php?ID=$id$C0"
 	aur_show_info "Licenses       " "${license[*]}"
 	aur_show_info "Votes          " "$votes"
 	aur_show_info "Out Of Date    " "$outofdate"
@@ -84,7 +84,7 @@ BEGIN {
 	comment=0
 }
 /<div class="comment-header">/ {
-	line="\n'${COL_YELLOW}'"striphtml($0)"'${NO_COLOR}'"
+	line="\n'$CYELLOW'"striphtml($0)"'$C0'"
 }
 /<\/blockquote>/ {
 	comment=0
@@ -114,10 +114,7 @@ END {
 
 # Check if this package has been voted on AUR, and vote for it
 vote_package(){
-	if (( ! AURVOTEINSTALLED )); then
-		echo -e "${COL_ITALIQUE}"$(gettext 'If you like this package, please install aurvote\nand vote for its inclusion/keeping in [community]')"${NO_COLOR}"
-		return
-	fi
+	(( ! AURVOTEINSTALLED )) && return
 	echo
 	local _pkg=$1
 	msg $(eval_gettext 'Checking vote status for $_pkg')
@@ -150,8 +147,8 @@ install_from_aur(){
 	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
 	aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
 	aurcomments $aurid
-	echo -e "${COL_BOLD}${PKG} ${version} ${NO_COLOR}: ${description}"
-	echo -e "${COL_BOLD}${COL_BLINK}${COL_RED}"$(gettext '( Unsupported package: Potentially dangerous ! )')"${NO_COLOR}"
+	echo -e "$CBOLD$PKG $version $C0: $description"
+	echo -e "$CBLINK$CRED"$(gettext '( Unsupported package: Potentially dangerous ! )')"$C0"
 
 	# Build, install/export
 	package_loop 0 || { manage_error 1; return 1; }
@@ -166,15 +163,15 @@ install_from_aur(){
 aur_update_exists()
 {
 	if [[ ! ${2#-} ]]; then
-		((DETAILUPGRADE)) && echo -e "$1: ${COL_YELLOW}"$(gettext 'not found on AUR')"${NO_COLOR}"
+		((DETAILUPGRADE)) && echo -e "$1: $CYELLOW"$(gettext 'not found on AUR')"$C0"
 		return 1
 	elif is_x_gt_y "$3" "$2"; then
-		((DETAILUPGRADE)) && echo -e "$1: (${COL_RED}local=$3 ${NO_COLOR}aur=$2)"
+		((DETAILUPGRADE)) && echo -e "$1: (${CRED}local=$3 ${C0}aur=$2)"
 		return 1
 	elif [[ "$2" = "$3" ]]; then
 		((DETAILUPGRADE)) && {
 			echo -en "$1: $(gettext 'up to date ')"
-			(( outofdate )) && echo -e "${COL_RED}($2 "$(gettext 'flagged as out of date')")${NO_COLOR}" || echo
+			(( outofdate )) && echo -e "$CRED($2 "$(gettext 'flagged as out of date')")$C0" || echo
 		}
 		return 1
 	fi

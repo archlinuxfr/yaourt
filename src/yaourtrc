@@ -37,7 +37,7 @@ ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unst
 #NOENTER=1
 
 # Output
-#COLORMODE="normal"
+#USECOLOR=1
 #DETAILUPGRADE=1
 #SHOWORPHANS=1
 #TERMINALTITLE=1

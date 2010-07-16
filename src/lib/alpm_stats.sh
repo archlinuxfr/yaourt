@@ -34,33 +34,33 @@ buildpackagelist()
 }
 
 showpackagestats(){
-	echo_fill "$COL_BLUE" - "$NO_COLOR"
+	echo_fill "$CBLUE" - "$C0"
 	if [[ -t 1 ]]; then
-		printf "${COL_BLUE}%${COLUMNS}s\r|${NO_COLOR}${COL_BOLD}%*s ${COL_GREEN}%s${NO_COLOR}\n" \
+		printf "$C0%${COLUMNS}s\r|$C0$CBOLD%*s $CGREEN%s$C0\n" \
 			"|" $((COLUMNS/2)) "Archlinux " "($NAME $VERSION)"
 	else
 		printf "%*s %s\n" 40 "Archlinux " "($NAME $VERSION)"
 	fi
-	echo_fill "$COL_BLUE" - "$NO_COLOR"
-	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
-	echo -e "${COL_GREEN}$(gettext 'Total installed packages:')  ${COL_YELLOW}$pkgs_nb"	
-	echo -e "${COL_GREEN}$(gettext 'Explicitly installed packages:')  ${NO_COLOR}${COL_YELLOW}$pkgs_nb_e"	
-	echo -e "${COL_GREEN}$(gettext 'Packages installed as dependencies to run other packages:')  ${COL_YELLOW}$pkgs_nb_d"   
-	echo -e "${COL_GREEN}$(gettext 'Packages out of date:')  ${COL_YELLOW}$pkgs_nb_u"   
+	echo_fill "$CBLUE" - "$C0"
+	echo; echo_fill "$CBLUE" - "$C0"
+	echo -e "$CGREEN$(gettext 'Total installed packages:')  $CYELLOW$pkgs_nb"	
+	echo -e "$CGREEN$(gettext 'Explicitly installed packages:')  $C0$CYELLOW$pkgs_nb_e"	
+	echo -e "$CGREEN$(gettext 'Packages installed as dependencies to run other packages:')  ${CYELLOW}$pkgs_nb_d"   
+	echo -e "$CGREEN$(gettext 'Packages out of date:')  $CYELLOW$pkgs_nb_u"   
 	if (( pkgs_nb_dt )); then
-		echo -e "${COL_RED}$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')${NO_COLOR}"
+		echo -e "$CRED$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')$C0"
 		echo_wrap 4 "${orphans[*]}"
 	fi
-	echo -e "${COL_GREEN}$(gettext 'Hold packages:') (${#HoldPkg[@]}) ${NO_COLOR}${COL_YELLOW}${HoldPkg[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Ignored packages:') (${#IgnorePkg[@]}) ${NO_COLOR}${COL_YELLOW}${IgnorePkg[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Ignored groups:') (${#IgnoreGroup[@]}) ${NO_COLOR}${COL_YELLOW}${IgnoreGroup[@]}"
-	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
+	echo -e "$CGREEN$(gettext 'Hold packages:') (${#HoldPkg[@]}) $C0$CYELLOW${HoldPkg[@]}"
+	echo -e "$CGREEN$(gettext 'Ignored packages:') (${#IgnorePkg[@]}) $C0$CYELLOW${IgnorePkg[@]}"
+	echo -e "$CGREEN$(gettext 'Ignored groups:') (${#IgnoreGroup[@]}) $C0$CYELLOW${IgnoreGroup[@]}"
+	echo; echo_fill "$CBLUE" - "$C0"
 }
 
 showrepostats(){
 	local strout=""
-	echo -e "${COL_GREEN}$(gettext 'Number of configured repositories:')  ${NO_COLOR}${COL_YELLOW}${#repositories[@]}"
-	echo -e "${COL_GREEN}$(gettext 'Packages by repositories (ordered by pacman''s priority)')${NO_COLOR}:"
+	echo -e "$CGREEN$(gettext 'Number of configured repositories:')  $C0$CYELLOW${#repositories[@]}"
+	echo -e "$CGREEN$(gettext 'Packages by repositories (ordered by pacman''s priority)')$C0:"
 	local reponumber=0 pkgs_l=0
 	for repo in ${repositories[@]}; do
 		[[ ${repos_packages[$reponumber]} ]] || repos_packages[$reponumber]=0
@@ -70,12 +70,12 @@ showrepostats(){
 	done
 	strout+=" $(gettext 'others')*($((pkgs_nb-pkgs_l)))"
 	str_wrap 4 "$strout"
-	strwrap=${strwrap//\(/$COL_YELLOW\(}
-	strwrap=${strwrap//)/)$NO_COLOR}
+	strwrap=${strwrap//\(/$CYELLOW\(}
+	strwrap=${strwrap//)/)$C0}
 	echo -e "$strwrap"
 	echo
 	echo_wrap 4 "*$(gettext 'others') $(gettext 'are packages from local build or AUR Unsupported')"
-	echo; echo_fill "$COL_BLUE" - "$NO_COLOR"
+	echo; echo_fill "$CBLUE" - "$C0"
 }
 
 showdiskusage()
@@ -89,16 +89,16 @@ showdiskusage()
 		(( size_t+=s_t ))
 		(( size_r+=s_r ))
 		[[ -t 1 ]] && \
-			echo -ne "\r${COL_GREEN} $_msg_label ${COL_YELLOW}$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $((i++))/$pkgs_nb"
+			echo -ne "\r$CGREEN $_msg_label $CYELLOW$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $((i++))/$pkgs_nb"
 	done < <(pkgquery -Qf "%2 %3")
 	[[ -t 1 ]] && { echo -en "\r"  ; echo_fill "" " " ""; }
-	echo -e "${COL_GREEN}$(gettext 'Theorical space used by packages:') ${COL_YELLOW}$(($size_t/1048576))M"
-	echo -e "${COL_GREEN}$(gettext 'Real space used by packages:') ${COL_YELLOW}$(($size_r/1048576))M"	
+	echo -e "$CGREEN$(gettext 'Theorical space used by packages:') $CYELLOW$(($size_t/1048576))M"
+	echo -e "$CGREEN$(gettext 'Real space used by packages:') $CYELLOW$(($size_r/1048576))M"	
 	# Get cachedir
 	cachedir=(`pacman_parse --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
 	# space used by download packages or sources in cache
-	echo -e "${COL_GREEN}$(gettext 'Space used by pkg downloaded in cache (cachedir):') ${COL_YELLOW} $(du -sh $cachedir 2>/dev/null|awk '{print $1}')"
+	echo -e "$CGREEN$(gettext 'Space used by pkg downloaded in cache (cachedir):') $CYELLOW $(du -sh $cachedir 2>/dev/null|awk '{print $1}')"
 	[[ "$SRCDEST" ]] && srcdestsize=`du -sh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null
-	echo -e "${COL_GREEN}$(gettext 'Space used by src downloaded in cache:') ${COL_YELLOW} $srcdestsize$NO_COLOR"
+	echo -e "${CGREEN}$(gettext 'Space used by src downloaded in cache:') $CYELLOW $srcdestsize$C0"
 }
 # vim: set ts=4 sw=4 noet: 

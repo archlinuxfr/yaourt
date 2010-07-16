@@ -386,8 +386,8 @@ while [[ $1 ]]; do
 		-f|--force)         FORCE=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
-		--lightbg)          COLORMODE="lightbg";;
-		--nocolor)          COLORMODE="nocolor";;
+		--nocolor)          USECOLOR=0; program_arg $A_Y $1;;
+		--lightbg)          USECOLOR=2; program_arg $A_Y $1;;
 		--provides)         QUERYTYPE="provides";;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
@@ -400,7 +400,6 @@ while [[ $1 ]]; do
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2
 			program_arg $((A_PS | A_Y)) "--noconfirm" "--force";;
-		--textonly)         COLORMODE="textonly";;
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_Y)) $1;;
@@ -412,9 +411,8 @@ while [[ $1 ]]; do
 done
 
 # Init colors (or not)
-[[ -t 1 ]] || { COLORMODE="textonly" TERMINALTITLE=0; }
-[[ $COLORMODE = "textonly" ]] && program_arg $A_M "-m" # no color for makepkg
-[[ $COLORMODE ]] && program_arg $A_Y  "--$COLORMODE"
+[[ -t 1 ]] || { USECOLOR=0; TERMINALTITLE=0; }
+((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor" 
 initcolor
 
 # No options
