@@ -216,7 +216,10 @@ build_package()
 	if [[ "$(readlink -f .)" != "$wdirDEVEL" ]] && check_devel;then
 		#msg "Building last CVS/SVN/HG/GIT version"
 		local use_devel_dir=0
-		[[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]] && use_devel_dir=1
+		if [[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]]; then
+			prompt2 "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them ?') $(yes_no 1)"
+			builduseragrees && use_devel_dir=1
+		fi
 		[[ ! -d "$wdirDEVEL" ]] && mkdir -p $wdirDEVEL 2> /dev/null && use_devel_dir=1
 		if (( use_devel_dir )); then
 			cp -a ./* "$wdirDEVEL/" && cd $wdirDEVEL || \

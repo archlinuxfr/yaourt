@@ -796,7 +796,7 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh:247
 #, sh-format
-msgid "The sources of ${pkgbase} were kept last time. Use them (faster) ? "
+msgid "The sources of ${pkgbase} were kept last time. Use them ?"
 msgstr ""
 
 #: ../../lib/pkgbuild.sh:255

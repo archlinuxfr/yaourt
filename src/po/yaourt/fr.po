@@ -803,8 +803,8 @@ msgstr "Construction et installation du paquet"
 
 #: ../../lib/pkgbuild.sh:247
 #, sh-format
-msgid "The sources of ${pkgbase} were kept last time. Use them (faster) ? "
-msgstr "Les sources de ${pkgbase} ont été gardées. Les réutiliser ? (plus rapide) "
+msgid "The sources of ${pkgbase} were kept last time. Use them ?"
+msgstr "Les sources de ${pkgbase} ont été gardées. Les réutiliser ?"
 
 #: ../../lib/pkgbuild.sh:255
 #, sh-format
