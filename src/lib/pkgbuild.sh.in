@@ -16,8 +16,7 @@ loadlibrary alpm_query
 source_makepkg_conf ()
 {
 	# From makepkg, try to source the same way
-	# but suppose default confdir = /etc
-	MAKEPKG_CONF=${MAKEPKG_CONF:-/etc/makepkg.conf}
+	MAKEPKG_CONF=${MAKEPKG_CONF:-@sysconfdir@/makepkg.conf}
 	local _PKGDEST=${PKGDEST}
 	local _SRCDEST=${SRCDEST}
 	local _SRCPKGDEST=${SRCPKGDEST}
@@ -332,7 +331,7 @@ init_build_dir()
 
 custom_pkg ()
 {
-	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "/etc/customizepkg.d/$1" ]] && return 0
+	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "@sysconfdir@/customizepkg.d/$1" ]] && return 0
 	return 1
 }
 

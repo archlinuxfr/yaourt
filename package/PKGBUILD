@@ -10,7 +10,7 @@ license="GPL"
 depends=('diffutils' 'pacman>=3.4.0' 'package-query')
 makedepends=('git')
 optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
-    'customizepkg: automatically modify PKGUILD during install/upgrade'
+    'customizepkg: automatically modify PKGBUILD during install/upgrade'
     'rsync: retrieve PKGBUILD from official repositories'
     'pacman-color: fully colorized output')
 provides=('yaourt')
@@ -23,5 +23,10 @@ build() {
 	cp -r ../../src/ $srcdir/yaourt/
 	cp ../../src/ChangeLog $startdir/
 	cd $srcdir/yaourt/
-	make install DESTDIR=$pkgdir || return 1
+	make PREFIX=/usr sysconfdir=/etc localstatedir=/var 
+}
+
+package() {
+	cd $srcdir/yaourt/
+	make PREFIX=/usr sysconfdir=/etc localstatedir=/var DESTDIR=$pkgdir install
 }

@@ -18,8 +18,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-#set -x
-export TEXTDOMAINDIR=/usr/share/locale
+export TEXTDOMAINDIR='@localedir@'
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
 	eval_gettext () { echo "$1"; }
@@ -27,10 +26,10 @@ type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
 }
 
 myname=pacdiffviewer
-myversion=0.4
+myversion='@VERSION@'
 
 ROOTDIR=
-SAVEDIR=$ROOTDIR/var/lib/yaourt/backupfiles
+SAVEDIR='@localstatedir@/lib/yaourt/backupfiles'
 LOCATE=0
 SEARCH_REP=(/etc/ /boot/)
 DIFFEDITCMD="vimdiff"
@@ -252,7 +251,7 @@ manage()
 	fi
 }
 
-. /usr/lib/yaourt/basicfunctions.sh
+. '@libdir@/yaourt/basicfunctions.sh'
 initcolor
 action=""
 while [[ $1 ]]; do

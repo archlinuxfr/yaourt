@@ -18,15 +18,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-export TEXTDOMAINDIR=/usr/share/locale
+export TEXTDOMAINDIR='@localedir@'
 export TEXTDOMAIN=yaourt
 type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
 	eval_gettext () { eval echo $1; }
 	gettext () { echo "$1"; }
 }
 
-NAME="yaourt"
-VERSION="0.9.4.4"
+NAME='yaourt'
+VERSION='@VERSION@'
 
 
 ###################################
@@ -309,7 +309,7 @@ yaourt_query ()
 ###################################
 # Basic init and librairies
 YAOURTBIN=$0
-source /usr/lib/yaourt/basicfunctions.sh 
+. '@libdir@/yaourt/basicfunctions.sh'
 
 unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \

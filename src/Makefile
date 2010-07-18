@@ -1,63 +1,79 @@
-# Makefile for yaourt
-#
-# Copyright (C) 2008 Julien MISCHKOWITZ <wain@archlinux.fr>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; version 2 of the License.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-#
+# yaourt: pacman frontend
 
-VERSION = 1.0
+VERSION = $(shell git describe --abbrev=4)
+DESTDIR =
+PREFIX = /usr/local
 SHELL = /bin/bash
-INSTALL = /bin/install -c
-GZIP = /bin/gzip
+INSTALL = /bin/install 
 MSGFMT = /usr/bin/msgfmt
 SED = /bin/sed
-DESTDIR =
-bindir = /usr/bin
-libdir = /usr/lib/yaourt
-sysconfdir = /etc
+bindir = $(PREFIX)/bin
+libdir = $(PREFIX)/lib
+sysconfdir = $(PREFIX)/etc
 completiondir = ${sysconfdir}/bash_completion.d
-localedir = /usr/share/locale
+localedir = $(PREFIX)/share/locale
+localstatedir = $(PREFIX)/var
+mandir = $(PREFIX)/share/man
 
-PROGRAMS = yaourt pacdiffviewer
-install: 
+SCRIPTS = yaourt.sh pacdiffviewer.sh lib/basicfunctions.sh lib/pkgbuild.sh
+
+all: $(SCRIPTS)
+
+$(SCRIPTS): ${SCRIPTS:.sh=.sh.in}
+	@echo '	GEN' $@
+	@$(SED) -e 's|@VERSION@|$(VERSION)|g' \
+	        -e 's|@localedir@|$(localedir)|g' \
+	        -e 's|@sysconfdir@|$(sysconfdir)|g' \
+	        -e 's|@libdir@|$(libdir)|g' \
+	        -e 's|@localstatedir@|$(localstatedir)|g' \
+	        $@.in > $@
+
+install: $(SCRIPTS)
 	$(INSTALL) -d $(DESTDIR)$(bindir)
-	$(INSTALL) -d $(DESTDIR)$(libdir)
+	$(INSTALL) -d $(DESTDIR)$(libdir)/yaourt
 	$(INSTALL) -d $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -d $(DESTDIR)$(completiondir)
+	$(INSTALL) -d $(DESTDIR)$(mandir)/man{5,8}
+	# Scripts
 	$(INSTALL) -m755 yaourt.sh $(DESTDIR)$(bindir)/yaourt
 	$(INSTALL) -m755 pacdiffviewer.sh $(DESTDIR)$(bindir)/pacdiffviewer
+	# Configuration
 	$(INSTALL) -m644 yaourtrc $(DESTDIR)$(sysconfdir)/yaourtrc
-	$(INSTALL) -m644 lib/alpm_backup.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/alpm_query.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/alpm_stats.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/abs.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/aur.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/basicfunctions.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/pacman_conf.sh $(DESTDIR)$(libdir)
-	$(INSTALL) -m644 lib/pkgbuild.sh $(DESTDIR)$(libdir)
 	$(INSTALL) -m644 bashcompletion $(DESTDIR)$(completiondir)/yaourt
-	# Install locale
-	for file in po/*/*.po; \
+	# Libs
+	$(INSTALL) -m644 lib/alpm_backup.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/alpm_query.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/alpm_stats.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/abs.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/aur.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/basicfunctions.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/pacman_conf.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/pkgbuild.sh $(DESTDIR)$(libdir)/yaourt
+	# Man
+	$(INSTALL) -m644 man/*.5 $(DESTDIR)$(mandir)/man5
+	$(INSTALL) -m644 man/*.8 $(DESTDIR)$(mandir)/man8
+	# Locales
+	test -x $(MSGFMT) && for file in po/*/*.po; \
 	do \
 	  package=$$(echo $$file | $(SED) -e 's#po/\([^/]\+\).*#\1#'); \
 	  lang=$$(echo $$file | $(SED) -e 's#.*/\([^/]\+\).po#\1#'); \
 	  $(INSTALL) -d $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES; \
 	  $(MSGFMT) -o $(DESTDIR)$(localedir)/$$lang/LC_MESSAGES/$$package.mo $$file; \
 	done
-	# Install Man Page
-	cd man/ ; \
-	make install ; \
 
-.PHONY: install
+dist:
+	mkdir yaourt-$(VERSION) 
+	cp -a AUTHORS ChangeLog INSTALL COPYING Makefile pacdiffviewer.sh.in yaourt.sh.in yaourtrc \
+	  bashcompletion lib man po yaourt-$(VERSION)
+	$(SED) -i -e 's|^VERSION.*|VERSION=$(VERSION)|g' yaourt-$(VERSION)/Makefile
+	tar zcvf yaourt-$(VERSION).tar.gz yaourt-$(VERSION)
+	rm -rf yaourt-$(VERSION)
+
+clean:
+	rm -f $(SCRIPTS)
+	rm -f yaourt-$(VERSION).tar.gz
+	rm -rf yaourt-$(VERSION)
+
+
+.PHONY: all install clean dist
