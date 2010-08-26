@@ -11,7 +11,9 @@ parse_pacman_conf()
 {
 	unset PKGS_IGNORED IgnorePkg IgnoreGroup HoldPkg SyncFirst
 	eval $(pacman_parse --debug | 
-		sed -n 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=(\2)/p')
+		sed -n  -e 's/"/\\"/g' \
+		  -e 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=("\2")/p'
+	)
 	IGNOREPKG+=("${IgnorePkg[@]}")
 	PKGS_IGNORED=("${IGNOREPKG[@]}")
 	IGNOREGRP+=("${IgnoreGroup[@]}")
