@@ -21,6 +21,15 @@ sourcerepository()
 	pkgquery -1SQif "%r" "$1" 
 }
 
+# Get pkgbase
+get_pkgbase ()
+{
+	local pkgbase pkgname=$1 repo=$2 pkgver=$3
+	[[ -z $repo || -z $pkgver ]] && read repo pkgver < <(pkgquery -Sif '%r %n' $pkgname)
+	pkgbase=$(sed -n '/%BASE%/,/^$/ { /^[^%]/p}' "$PACMANDB/sync/$repo/$pkgname-$pkgver/desc" 2> /dev/null)
+	echo ${pkgbase:-$pkgname}
+}
+
 # search in sync db for packages wich depends on/conflicts whith/provides argument
 searchforpackageswhich(){
 	local _opt _msg action="$1" name="$2"

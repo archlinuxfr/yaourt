@@ -475,7 +475,7 @@ case "$MAJOR" in
 	getpkgbuild)
 		title "$(gettext 'get PKGBUILD')"
 		loadlibrary pkgbuild
-		get_pkgbuild "${args[0]}"
+		get_pkgbuild "${args[@]}"
 		;;
 
 	backup) 

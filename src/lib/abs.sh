@@ -71,9 +71,8 @@ install_from_abs(){
 		init_build_dir "$YAOURTTMPDIR/abs-$PKG" || return 1
 
 		# With splitted package, abs folder may not correspond to package name
-		local pkgbase=( $(grep -A1 '%BASE%' "$PACMANDB/sync/$repo/$PKG-$_pkgver/desc" ) )
-		[[ $pkgbase ]] || pkgbase=( '' "$PKG" )
-		abs_get_pkgbuild $repo/${pkgbase[1]} $_arch || return 1
+		local pkgbase=$(get_pkgbase $PKG $repo $_pkgver)
+		abs_get_pkgbuild $repo/$pkgbase $_arch || return 1
 		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
 
 		# Build, install/export

@@ -389,15 +389,16 @@ sanitize_pkgbuild ()
 # Get each package source and decompress into pkg directory
 get_pkgbuild ()
 {
-	local i pkgs repo pkg arch pkgbuild_tmp deps cwd=$(pwd)
+	local i pkgs repo pkg pkgbase pkgver arch pkgbuild_tmp deps cwd=$(pwd)
 	pkgs=("$@")
 	loadlibrary aur abs
 	declare -A pkgs_downloaded
 	pkgbuild_tmp=$(mktemp)
 	for ((i=0; i<${#pkgs[@]}; i++)); do
 		cd "$cwd"
-		read repo pkg arch < <(pkgquery -1ASif '%r %n %a' "${pkgs[$i]}")
+		read repo pkg arch pkgver < <(pkgquery -1ASif '%r %n %a %v' "${pkgs[$i]}")
 		[[ ! $pkg ]] && continue
+		pkg=$(get_pkgbase $pkg $repo $pkgver)
 		[[ ${pkgs_downloaded[$pkg]} ]] && continue
 		pkgs_downloaded[${pkg}]=1
 		if [[ -d $pkg ]]; then
