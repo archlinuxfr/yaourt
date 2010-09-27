@@ -453,7 +453,7 @@ initpath
 if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )); then
 	title $(gettext 'synchronizing package databases')
 	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
-	su_pacman $_arg
+	su_pacman $_arg || exit $?
 fi
 
 
