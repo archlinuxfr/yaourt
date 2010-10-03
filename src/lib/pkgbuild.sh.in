@@ -273,7 +273,10 @@ install_package()
 {
 	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
-	if (( EXPORT )) && [[ $PKGDEST ]]; then
+	if (( EXPORT==2 )); then
+		msg $(eval_gettext 'Exporting ${pkgbase} to ${CACHEDIR} repository')
+		launch_with_su cp -vf "$YPKGDEST/"* "$CACHEDIR/" 
+	elif (( EXPORT )) && [[ $PKGDEST ]]; then
 		msg $(eval_gettext 'Exporting ${pkgbase} to ${PKGDEST} repository')
 		cp -vfp "$YPKGDEST/"* "$PKGDEST/" 
 	fi

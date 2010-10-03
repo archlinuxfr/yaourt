@@ -25,8 +25,9 @@ ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unst
 #AURVOTE=1
 
 # Build
-#EXPORT=0           # Export builded package
-#EXPORTSRC=0        # Need EXPORT=1 to be used
+#EXPORT=0           # Export to 1: EXPORTDIR or PKGDEST
+                    # 2: pacman cache (as root)
+#EXPORTSRC=0        # Need EXPORT>0 to be used
 #EXPORTDIR=""       # If empty, use makepkg's connfiguration (see makepkg.conf)
 
 # Prompt

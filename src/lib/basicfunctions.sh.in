@@ -22,6 +22,7 @@ initpath(){
 		-e 's/^Lock File *: //p' \
 		-e 's/^Log File *: //p' )
 	PACMANDB=${P_CONF[1]}
+	CACHEDIR=${P_CONF[2]}
 	LOCKFILE=${P_CONF[3]}
 	mkdir -p "$YAOURTTMPDIR"
 }
