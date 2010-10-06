@@ -53,32 +53,32 @@ sync_first ()
 	echo_wrap 4 "$*"
 	prompt "$(eval_gettext 'Do it now ?') $(yes_no 1)"
 	useragrees || return 0
-	args=("$@")
+	ARGS=("$@")
 	sync_packages
 	die $?
 }
 
 # Build packages from repos
 install_from_abs(){
-	for _line in $(pkgquery -1Sif "repo=%r;PKG=%n;_pkgver=%v;_arch=%a" "$@"); do
-		eval $_line
-		local package="$repo/$PKG"
-		(( ! BUILD )) && ! custom_pkg "$PKG" && binariespackages+=(${package#-/}) && continue
-		msg $(eval_gettext 'Building $PKG from sources.')
-		title $(eval_gettext 'Install $PKG from sources')
+	local repo pkgname pkgver arch package pkgbase
+	while read repo pkgname pkgver arch; do 
+		local package="$repo/$pkgname"
+		(( ! BUILD )) && ! custom_pkg "$pkgname" && bin_pkgs+=(${package#-/}) && continue
+		msg $(eval_gettext 'Building $pkgname from sources.')
+		title $(eval_gettext 'Install $pkgname from sources')
 		echo
 		msg $(gettext 'Retrieving PKGBUILD and local sources...')
-		init_build_dir "$YAOURTTMPDIR/abs-$PKG" || return 1
+		init_build_dir "$YAOURTTMPDIR/abs-$pkgname" || return 1
 
 		# With splitted package, abs folder may not correspond to package name
-		local pkgbase=$(get_pkgbase $PKG $repo $_pkgver)
-		abs_get_pkgbuild $repo/$pkgbase $_arch || return 1
+		pkgbase=$(get_pkgbase $pkgname $repo $pkgver)
+		abs_get_pkgbuild $repo/$pkgbase $arch || return 1
 		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
 
 		# Build, install/export
-		package_loop 1 || { manage_error 1; continue; }
-		rm -rf "$YAOURTTMPDIR/abs-$PKG"
-	done
+		package_loop 1 ||  manage_error $pkgname || continue
+		rm -rf "$YAOURTTMPDIR/abs-$pkgname"
+	done < <(pkgquery -1Sif "%r %n %v %a" "$@")
 }
 
 # Set vars:
@@ -90,9 +90,12 @@ install_from_abs(){
 # read from stdin: pkgname repo rversion lversion outofdate pkgdesc
 classify_pkg ()
 {
-	unset newrelease newversion newpkgs syncfirstpkgs srcpkgs pkgs
+	declare -a newrelease newversion newpkgs
+	unset syncfirstpkgs srcpkgs pkgs
 	longestpkg=(0 0) 
 	local i=0 bar="|/-\\"
+	local pkgname repo rversion lversion outofdate pkgdesc \
+	      pkgver lrel rrel lver rver
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
 		if [[ "$repo" = "aur" ]]; then
@@ -136,7 +139,6 @@ classify_pkg ()
 	((DETAILUPGRADE<2)) && echo
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
-	unset newrelease newversion newpkgs
 }
 
 display_update ()
@@ -154,7 +156,7 @@ display_update ()
 			V)	showupgradepackage full;;
 			M)	showupgradepackage manual
 				run_editor "$YAOURTTMPDIR/sysuplist" 0
-				declare args="$YAOURTTMPDIR/sysuplist"
+				ARGS=("$YAOURTTMPDIR/sysuplist")
 				SYSUPGRADE=2
 				sync_packages
 				return 2
@@ -179,7 +181,7 @@ show_targets ()
 # Searching for packages to update, buid from sources if necessary
 sysupgrade()
 {
-	unset packages
+	local packages pkgs pkg
 	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFRIM=1; }
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 	if (( ! DETAILUPGRADE )); then
@@ -187,7 +189,7 @@ sysupgrade()
 	else	
 		pacman_parse -Sp --print-format "## %n" \
 		             --noconfirm $_arg "${PACMAN_S_ARG[@]}" \
-		             "${args[@]}" 1> "$YAOURTTMPDIR/sysupgrade" ||
+		             "${ARGS[@]}" 1> "$YAOURTTMPDIR/sysupgrade" ||
 			{ grep -v '^## ' "$YAOURTTMPDIR/sysupgrade"; return 1; }
 		packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade"))
 		rm "$YAOURTTMPDIR/sysupgrade"
@@ -213,9 +215,9 @@ sysupgrade()
 		display_update || return 0
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
 	fi
-	for PKG in ${pkgs[@]}; do
-		[[ ${PKG#aur/} = $PKG ]] && continue
-		install_from_aur "$PKG" || error $(eval_gettext 'unable to update $PKG')
+	for pkg in ${pkgs[@]}; do
+		[[ ${pkg#aur/} = $pkg ]] && continue
+		install_from_aur "$pkg" || error $(eval_gettext 'unable to update $pkg')
 	done
 }
 
@@ -229,7 +231,7 @@ showupgradepackage()
 		local separator=$(echo_fill "" "#" "")
 	fi
 	
-	local exuptype=0
+	local exuptype=0 line _msg requiredbypkg
 	for line in "${upgrade_details[@]}"; do
 		eval line=($line)
 		if (( exuptype != ${line[0]} )); then
@@ -260,7 +262,7 @@ showupgradepackage()
 				1) printf "%*s   $CBOLD${line[4]}$C0 -> $CRED${line[5]}$C0" ${longestpkg[1]} "";;
 				2) printf "%*s   -> $CRED${line[4]}$C0" ${longestpkg[1]} "";;
 				3) requiredbypkg=${line[4]}
-					printf "%*s   $CRED$(eval_gettext '(required by $requiredbypkg)')$C0" ${longestpkg[1]} "";;
+				   printf "%*s   $CRED$(eval_gettext '(required by $requiredbypkg)')$C0" ${longestpkg[1]} "";;
 			esac
 			printf "\r%-*s  $CGREEN${line[3]}$C0" ${longestpkg[0]} ""
 			echo -e "\r${colors[${line[1]}]:-${colors[other]}}${line[1]}/$C0${colors[pkg]}${line[2]}$C0"
@@ -275,19 +277,20 @@ showupgradepackage()
 sync_packages()
 {
 	# Install from a list of packages
-	if [[ -f "${args[0]}" ]] && file -b "${args[0]}" | grep -qi text ; then
+	if [[ -f ${ARGS[0]} ]] && file -b "${ARGS[0]}" | grep -qi text ; then
 		if (( ! SYSUPGRADE )); then 
 			title $(gettext 'Installing from a package list')
 			msg $(gettext 'Installing from a package list')
 		fi
 		AURVOTE=0
-		args=( `grep -o '^[^#[:space:]]*' "${args[0]}"` ) 
+		ARGS=( `grep -o '^[^#[:space:]]*' "${ARGS[0]}"` ) 
 	fi
-	[[ "$args" ]] || return 0
+	[[ $ARGS ]] || return 0
 	# Install from arguments
 	declare -A pkgs_search pkgs_found
-	declare -a repo_pkgs aur_pkgs
-	for _pkg in "${args[@]}"; do pkgs_search[$_pkg]=1; done
+	declare -a repo_pkgs aur_pkgs bin_pkgs
+	local _pkg _arg repo pkg target 
+	for _pkg in "${ARGS[@]}"; do pkgs_search[$_pkg]=1; done
 	# Search for exact match, pkg which provides it, then in AUR
 	for _arg in "-1Si" "-S --query-type provides" "-Ai"; do
 		while read repo pkg target; do
@@ -299,28 +302,28 @@ sync_packages()
 		done < <(pkgquery -f "%r %n %t" $_arg "${!pkgs_search[@]}")
 		((! ${#pkgs_search[@]})) && break
 	done
-	binariespackages=("${!pkgs_search[@]}")
+	bin_pkgs=("${!pkgs_search[@]}")
 	[[ $repo_pkgs ]] && install_from_abs "${repo_pkgs[@]}"
-	[[ $binariespackages ]] && su_pacman -S "${PACMAN_S_ARG[@]}" "${binariespackages[@]}"
+	[[ $bin_pkgs ]] && su_pacman -S "${PACMAN_S_ARG[@]}" "${bin_pkgs[@]}"
 	for _pkg in "${aur_pkgs[@]}"; do install_from_aur "$_pkg"; done
 }
 
 # Search to upgrade devel package 
 upgrade_devel_package(){
-	local devel_pkgs=()
+	declare -a devel_pkgs
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	loadlibrary pacman_conf
-	local _arg="-Qq"
+	local _arg="-Qq" pkg
 	((AURDEVELONLY)) && _arg+="m"
-	for PKG in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
+	for pkg in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
 	do
-		is_package_ignored "$PKG" && continue
-		devel_pkgs+=($PKG)
+		is_package_ignored "$pkg" && continue
+		devel_pkgs+=($pkg)
 	done
 	[[ $devel_pkgs ]] || return 0
-	show_targets 'Targets' "${devel_pkgs[@]}" && for PKG in ${devel_pkgs[@]}; do
-		build_pkg "$PKG"
+	show_targets 'Targets' "${devel_pkgs[@]}" && for pkg in ${devel_pkgs[@]}; do
+		build_pkg "$pkg"
 	done
 }
 

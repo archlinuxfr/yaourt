@@ -10,7 +10,7 @@ save_alpm_db(){
 	msg $(eval_gettext 'Saving pacman database in $savedir')
 	title $(eval_gettext 'Saving pacman database in $savedir')
 	bsdtar -cjf "$savefile" -C "$PACMANDB" "local/" && \
-		msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
+	    msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
 }
 
 # test if file is an alpm database backup
@@ -41,7 +41,7 @@ restore_alpm_db(){
 	local savedb="$YAOURTTMPDIR/backup/alpmdb$$"
 	mkdir -p "$savedb" || return 1
 	is_an_alpm_backup "$1" || return 1
-	pacman_parse	 --query | LC_ALL=C sort > "$nowdb"
+	pacman_parse --query | LC_ALL=C sort > "$nowdb"
 	msg $(gettext 'New packages installed since backup:')
 	LC_ALL=C comm -13 "$backupdb" "$nowdb" 
 	echo

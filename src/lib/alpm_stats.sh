@@ -5,8 +5,6 @@
 
 loadlibrary pacman_conf
 loadlibrary pkgbuild
-unset repos_packages orphans repositories
-pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
 
 # set orphans, repo_packages, pkg_nb*
 # parse pacman conf for ignored/hold packages
@@ -14,7 +12,8 @@ buildpackagelist()
 {
 	repositories=($(pkgquery -L))
 	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 \
-		  f_upgrades=16 f_group=32 	
+	      f_upgrades=16 f_group=32 	
+	local pkgstate pkgrepo pkgname
 	while read pkgstate pkgrepo pkgname; do
 		(( pkgs_nb++ ))
 		(( pkgstate & f_deps )) && (( ++pkgs_nb_d )) && \
@@ -24,7 +23,7 @@ buildpackagelist()
 			}
 		(( pkgstate & f_explicit )) && (( pkgs_nb_e++ ))
 		(( pkgstate & f_upgrades )) && (( pkgs_nb_u++ ))
-		local reponumber=0
+		local reponumber=0 repo
 		for repo in ${repositories[@]}; do
 			[[ "$repo" == "$pkgrepo" ]] && (( ++repos_packages[$reponumber] )) \
 				&& break
@@ -36,8 +35,8 @@ buildpackagelist()
 showpackagestats(){
 	echo_fill "$CBLUE" - "$C0"
 	if [[ -t 1 ]]; then
-		printf "$C0%${COLUMNS}s\r|$C0$CBOLD%*s $CGREEN%s$C0\n" \
-			"|" $((COLUMNS/2)) "Archlinux " "($NAME $VERSION)"
+		printf "$CBLUE%${COLUMNS}s\r|$C0$CBOLD%*s $CGREEN%s$C0\n" \
+		    "|" $((COLUMNS/2)) "Archlinux " "($NAME $VERSION)"
 	else
 		printf "%*s %s\n" 40 "Archlinux " "($NAME $VERSION)"
 	fi
@@ -58,10 +57,10 @@ showpackagestats(){
 }
 
 showrepostats(){
-	local strout=""
+	local strout="" strwrap
 	echo -e "$CGREEN$(gettext 'Number of configured repositories:')  $C0$CYELLOW${#repositories[@]}"
 	echo -e "$CGREEN$(gettext 'Packages by repositories (ordered by pacman''s priority)')$C0:"
-	local reponumber=0 pkgs_l=0
+	local reponumber=0 pkgs_l=0 repo
 	for repo in ${repositories[@]}; do
 		[[ ${repos_packages[$reponumber]} ]] || repos_packages[$reponumber]=0
 		(( pkgs_l+=repos_packages[$reponumber] ))
@@ -80,11 +79,12 @@ showrepostats(){
 
 showdiskusage()
 {
-	local cachedir size_t=0 size_r=0 i=1 _msg_label _msg_prog
+	local cachedir size_t=0 size_r=0 i=1 _msg_label _msg_prog srcdestsize
 
 	# Get space used by installed package (from info in alpm db)
 	_msg_label=$(gettext 'Theorical - Real space used by packages:')
 	_msg_prog=$(gettext 'progression:')
+	local s_t s_r
 	while read s_t s_r; do
 		(( size_t+=s_t ))
 		(( size_r+=s_r ))
@@ -101,4 +101,14 @@ showdiskusage()
 	[[ "$SRCDEST" ]] && srcdestsize=`du -sh $SRCDEST 2>/dev/null|awk '{print $1}'` || srcdestsize=null
 	echo -e "${CGREEN}$(gettext 'Space used by src downloaded in cache:') $CYELLOW $srcdestsize$C0"
 }
+
+yaourt_stats ()
+{
+	declare -a repos_packages orphans repositories
+	local pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
+	buildpackagelist
+	showpackagestats
+	showrepostats
+	showdiskusage
+}	
 # vim: set ts=4 sw=4 noet: 

@@ -46,7 +46,6 @@ searchforpackageswhich(){
 
 # searching for packages installed as dependecy from another packages, but not required anymore
 search_forgotten_orphans(){
-	local orphans
 	#msg "$(gettext 'Packages installed as dependencies but are no longer required by any installed package')"
 	AURSEARCH=0 search 0
 	[[ $PKGSFOUND ]] || return

@@ -47,12 +47,10 @@ usage(){
 	echo -e "\t$(gettext 'yaourt {-B --backup}      [save directory|restore file]')"
 	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} [options] <package(s)>')"
 	echo -e "\t$(gettext 'yaourt {--stats}')"
-	return 0
 }
 version(){
 	echo "$(gettext "yaourt $VERSION is a pacman frontend with AUR support and more")"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
-	exit
 }
 die(){
 	local ret=${1:-0}
@@ -62,8 +60,7 @@ die(){
 }
 
 manage_error(){
-	(( ! $# )) || (( ! $1 )) && return 0
-	error_package+=("$PKG")
+	ERROR_PKGS+=("$1")
 	return 1
 }
 
@@ -80,18 +77,18 @@ is_sudo_allowed()
 
 launch_with_su(){
 	#msg "try to launch '${@}' with sudo"
-	command=$1
+	local command=$1
 	if is_sudo_allowed "$@"; then
 		#echo "Allowed to use sudo $command"
 		sudo "$@" || return 1
 	else
 		(( $UID )) && echo -e $(eval_gettext 'You are not allowed to launch $command with sudo\nPlease enter root password') 1>&2 
 		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
-		errorfile="/tmp/yaourt_error.$RANDOM"
+		local errorfile="/tmp/yaourt_error.$RANDOM"
 		for i in 1 2 3; do 
 			su --shell=/bin/bash --command "$* || touch $errorfile"
 			(( $? )) && [[ ! -f "$errorfile" ]] && continue
-			[ -f "$errorfile" ] && return 1 || return 0
+			[[ -f "$errorfile" ]] && return 1 || return 0
 		done
 		return 1
 	fi
@@ -105,10 +102,10 @@ program_arg ()
 {
 	local dest=$1; shift
 	(( dest & A_PS ))  && PACMAN_S_ARG+=("$@")
-	(( dest & A_M ))  && MAKEPKG_ARG+=("$@")
-	(( dest & A_Y ))  && YAOURT_ARG+=("$@")
+	(( dest & A_M ))   && MAKEPKG_ARG+=("$@")
+	(( dest & A_Y ))   && YAOURT_ARG+=("$@")
 	(( dest & A_PQ ))  && PACMAN_Q_ARG+=("$@")
-	(( dest & A_PC )) && PACMAN_C_ARG+=("$@")
+	(( dest & A_PC ))  && PACMAN_C_ARG+=("$@")
 	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
 }
 
@@ -140,6 +137,14 @@ pacman_cmd ()
 	exit $ret
 }
 
+# Refresh pacman database
+pacman_refresh ()
+{
+	local _arg
+	title $(gettext 'synchronizing package databases')
+	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
+	su_pacman $_arg || exit $?
+}
 
 ###################################
 ### Package database functions  ###
@@ -169,7 +174,7 @@ show_new_orphans(){
 	LC_ALL=C comm -2 -3 "$ORPHANS_AFTER.tmp" "$INSTALLED_AFTER.newonly" > $ORPHANS_AFTER
 
 	# show new orphans after removing/upgrading
-	neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" )
+	local neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" )
 	if [[ "$neworphans" ]]; then
 		plain $(gettext 'Packages that were installed as dependencies but are no longer required by any installed package:')
 		echo_wrap 4 "$neworphans"
@@ -208,21 +213,22 @@ search ()
 	if (( SEARCH )); then
 		search_option+=" -s"
 	else
-		[[ $args ]] && (( ! GROUP )) && search_option+=" -i"
+		[[ $ARGS ]] && (( ! GROUP )) && search_option+=" -i"
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
 	(( DATE )) && search_option+=" --sort 1"
-	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${args[@]}";return; }
+	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${ARGS[@]}";return; }
 	(( interactive )) && search_option+=" --number"
-	{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${args[@]}" 3>&1 1>&2 ); } 2>&1
+	{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
 }
 	
 # Handle special query
 yaourt_query_type ()
 {
+	local arg
 	title $(gettext 'query packages')
 	loadlibrary alpm_query
-	for arg in ${args[@]}; do
+	for arg in ${ARGS[@]}; do
 		searchforpackageswhich "$QUERYTYPE" "$arg"
 	done
 }
@@ -235,15 +241,17 @@ yaourt_install_packages ()
 	sync_packages
 	show_new_orphans
 	#show package which have not been installed
-	if [[ $error_package ]]; then
+	if [[ $ERROR_PKGS ]]; then
 		warning "$(gettext 'Following packages have not been installed:')"
-		echo_wrap 4 "${error_package[*]}"
+		echo_wrap 4 "${ERROR_PKGS[*]}"
+		return 1
 	fi
 }
 	
 # Handle sync
 yaourt_sync ()
 {
+	local arg
 	(( PRINT && REFRESH )) && pacman_cmd 1
 	(( PRINT && ! REFRESH )) && pacman_cmd 0
 	if (( GROUP || LIST || SEARCH)); then
@@ -264,15 +272,15 @@ yaourt_sync ()
 		show_new_orphans
 		return
 	fi
-	[[ ! $args ]] && (( ! REFRESH )) && pacman_cmd 1; 
+	[[ ! $ARGS ]] && (( ! REFRESH )) && pacman_cmd 1; 
 	if [[ $QUERYTYPE ]]; then
 		yaourt_query_type
 		return
 	elif (( INFO )); then
 		loadlibrary aur
-		for arg in ${args[@]}; do
+		for arg in ${ARGS[@]}; do
 			title $(eval_gettext 'Informations for $arg')
-			_repo="${arg%/*}"
+			local _repo="${arg%/*}"
 			if [[ "$_repo" = "$arg" || "$_repo" != "aur" ]]; then
 				pacman_out -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null ||\
 					 info_from_aur "${arg#*/}"
@@ -289,7 +297,7 @@ yaourt_sync ()
 yaourt_query ()
 {
 	if (( CHANGELOG || LIST || INFO || FILE )); then
-		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${args[@]}"
+		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${ARGS[@]}"
 		return $?
 	fi
 	if (( DEPENDS && UNREQUIRED )); then
@@ -301,6 +309,51 @@ yaourt_query ()
 		#title $(gettext "Query installed packages")
 		#msg $(gettext "Query installed packages")
 		AURSEARCH=0 search 0
+	fi
+}
+
+# Handle interactive search
+yaourt_interactive ()
+{
+	local line packages
+	SEARCH=1 search 1 
+	[[ $PKGSFOUND ]] || die 0
+	prompt $(gettext 'Enter n° of packages to be installed (ex: 1 2 3 or 1-3)')
+	read -ea packagesnum
+	[[ $packagesnum ]] || die 0
+	for line in ${packagesnum[@]/,/ }; do
+		(( line )) || die 1	# not a number, range neither 
+		(( ${line%-*}-1 < ${#PKGSFOUND[@]} )) || die 1	# > no package corresponds
+		if [[ ${line/-/} != $line ]]; then
+			for ((i=${line%-*}-1; i<${line#*-}; i++)); do
+				packages+=(${PKGSFOUND[$i]});
+			done
+		else
+			packages+=(${PKGSFOUND[$((line - 1))]})
+		fi
+	done
+	echo 
+	ARGS=("${packages[@]}")
+	yaourt_install_packages
+}
+
+# No action specified
+yaourt_no_action ()
+{
+	local file
+	declare -a filelist
+	[[ $ARGS ]] || pacman_cmd 0
+	# If no action and files as argument, act like -U *
+	for file in "${ARGS[@]}"; do
+		[[ "${file%.pkg.tar.*}" != "$file" && -r "$file" ]] && filelist+=("$file")
+	done
+	if [[ $filelist ]]; then
+		ARGS=( "${filelist[@]}" )
+		su_pacman -U "${ARGS[@]}"
+		die $?
+	else
+		# Interactive search else.
+		MAJOR="interactivesearch"
 	fi
 }
 
@@ -316,7 +369,7 @@ unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	DATE UNREQUIRED FOREIGN GROUP QUERYTYPE \
 	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
 	DEPENDS PRINT PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG \
-	PACMAN_C_ARG PKGQUERY_C_ARG failed 
+	PACMAN_C_ARG PKGQUERY_C_ARG ERROR_PKGS  
 
 # Grab environement options
 {
@@ -378,9 +431,8 @@ while [[ $1 ]]; do
 		--backupfile)       shift; BACKUPFILE="$1";;
 		-b|--build)         BUILD=1; program_arg $A_Y $1;;
 		-C)                 MAJOR="clean";;
-		--conflicts)        QUERYTYPE="conflicts";;
+		--conflicts|--depends|--provides|--replaces) QUERYTYPE=${1:2};;
 		--date)             DATE=1;;
-		--depends)          QUERYTYPE="depends";;
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
 		-f|--force)         FORCE=1;;
@@ -388,12 +440,10 @@ while [[ $1 ]]; do
 		-h|--help)          usage; exit 0;;
 		--nocolor)          USECOLOR=0; program_arg $A_Y $1;;
 		--lightbg)          USECOLOR=2; program_arg $A_Y $1;;
-		--provides)         QUERYTYPE="provides";;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ;; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; shift;;
-		--replaces)         QUERYTYPE="replaces";;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--stats)            MAJOR="stats";;
 		--sucre)            MAJOR="sync"
@@ -402,9 +452,9 @@ while [[ $1 ]]; do
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_Y)) $1;;
-		--)                 shift; args+=("$@"); break;;
+		--)                 shift; ARGS+=("$@"); break;;
 		-*)                 pacman_cmd 0;;
-		*)                  args+=("$1") ;; 
+		*)                  ARGS+=("$1") ;; 
 	esac
 	shift
 done
@@ -415,21 +465,7 @@ done
 initcolor
 
 # No options
-if ! [[ "$MAJOR" ]]; then
-	[[ $args ]] || pacman_cmd 0
-	# If no action and files as argument, act like -U *
-	for file in "${args[@]}"; do
-		[[ "${file%.pkg.tar.*}" != "$file" && -r "$file" ]] && filelist+=("$file")
-	done
-	if [[ $filelist ]]; then
-		args=( "${filelist[@]}" )
-		su_pacman -U "${args[@]}"
-		die $?
-	else
-		# Interactive search else.
-		MAJOR="interactivesearch"
-	fi
-fi
+[[ -z $MAJOR ]] && yaourt_no_action
 
 # Init path, complete options and check some permissions
 (( ! SYSUPGRADE && UPGRADES )) && [[ "$MAJOR" = "sync" ]] && SYSUPGRADE=1
@@ -455,12 +491,7 @@ fi
 initpath
 
 # Refresh
-if [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )); then
-	title $(gettext 'synchronizing package databases')
-	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
-	su_pacman $_arg || exit $?
-fi
-
+[[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )) && pacman_refresh
 
 # Action
 case "$MAJOR" in
@@ -471,50 +502,25 @@ case "$MAJOR" in
 
 	stats)
 		loadlibrary alpm_stats
-		buildpackagelist
-		showpackagestats
-		showrepostats
-		showdiskusage
+		yaourt_stats
 		;;
 
 	getpkgbuild)
 		title "$(gettext 'get PKGBUILD')"
 		loadlibrary pkgbuild
-		get_pkgbuild "${args[@]}"
+		get_pkgbuild "${ARGS[@]}"
 		;;
 
 	backup) 
 		loadlibrary alpm_backup
-		yaourt_backup "${args[0]}"
+		yaourt_backup "${ARGS[0]}"
 		;;
 	
 	sync) yaourt_sync ;;
 	query) yaourt_query ;;
-	
-	interactivesearch)
-		SEARCH=1 search 1 
-		[[ $PKGSFOUND ]] || die 0
-		prompt $(gettext 'Enter n° of packages to be installed (ex: 1 2 3 or 1-3)')
-		read -ea packagesnum
-		[[ $packagesnum ]] || die 0
-		for line in ${packagesnum[@]/,/ }; do
-			(( line )) || die 1	# not a number, range neither 
-			(( ${line%-*}-1 < ${#PKGSFOUND[@]} )) || die 1	# > no package corresponds
-			if [[ ${line/-/} != $line ]]; then
-				for ((i=${line%-*}-1; i<${line#*-}; i++)); do
-					packages+=(${PKGSFOUND[$i]});
-				done
-			else
-				packages+=(${PKGSFOUND[$((line - 1))]})
-			fi
-		done
-		echo 
-		args=("${packages[@]}")
-		yaourt_install_packages
-		;;
+	interactivesearch) yaourt_interactive ;;
 		
 	*) pacman_cmd 0 ;;
 esac
-die $failed
 
 # vim: set ts=4 sw=4 noet: 

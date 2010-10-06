@@ -54,6 +54,7 @@ usage()
 # Save files marked as backup in packages for a possible later merge
 backup_files()
 {
+	local _file _md5sum _version pkgname pkgver backupdir currentfile
 	pkgquery -Qf "%n - %v"$'\n'"%b" --csep $'\n' |
 	while read _file _md5sum _version
 	do
@@ -63,7 +64,7 @@ backup_files()
 		[[ "$_md5sum" = "-" ]] && pkgname="$_file" && pkgver="$_version" &&\
 			 continue
 		[[ ! -f "$ROOTDIR/$_file" ]] && continue
-		local backupdir="$SAVEDIR/$pkgname/$pkgname-$pkgver"
+		backupdir="$SAVEDIR/$pkgname/$pkgname-$pkgver"
 		[[ -f "$backupdir/$_file" ]] && continue
 		currentfile="$_file.pacnew"
 		[[ -f "$ROOTDIR/$currentfile" ]] || currentfile="$_file"
@@ -84,7 +85,7 @@ backup_files()
 create_db()
 {
 	unset PACOLD PACNEW PACSAVE
-	local pacfiles
+	local pacfiles _file ext
 	IFS=$'\n'
 	if (( LOCATE )); then
 		pacfiles=($(locate -eb "*.pacorig" "*.pacsave" "*.pacnew"))
@@ -115,13 +116,13 @@ create_db()
 previous_version ()
 {
 	[[ $1 ]] || return 
-	local file=$1
+	local file=$1 pkgname pkgver
 	read pkgname pkgver < <(pacman_parse -Qo "$file" |
 		awk '{print $(NF-1)" "$NF}' 2>/dev/null)
 	[[ $pkgname ]] || return 
 	[[ -d "$SAVEDIR/$pkgname/" ]] || return 
 	pushd "$SAVEDIR/$pkgname/" &> /dev/null
-	local pkgver_prev=""
+	local pkgver_prev="" _rep
 	for _rep in $(ls -Ad *-*); do
 		[[ "$_rep" = "$pkgname-$pkgver" || ! -f "${_rep}${file}" ||
 			$(vercmp $pkgver ${_rep#$pkgname-}) -lt 0 ]] && continue
@@ -223,6 +224,7 @@ manage()
 	echo
 	local ext=$1; shift
 	[[ $@ ]] || return
+	local pacfiles i _line
 	readarray -t pacfiles < <(stat -c "%Y %n" "$@" |
 		sort |
 		awk '{printf ("%s %s\n", strftime("%x %X",$1), substr ($0, length($1)+1))}')
@@ -242,7 +244,7 @@ manage()
 			fi
 		done
 	else
-		local i=0
+		i=0
 		for _line in "${pacfiles[@]}"; do
 			(( i++ ))
 			msg "$i/${#pacfiles[@]}:"

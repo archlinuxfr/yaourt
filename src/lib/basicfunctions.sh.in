@@ -3,8 +3,9 @@
 # basicfunctions.sh: common functions and initialisation 
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-unset PACMANDB LOCKFILE
+unset PACMANDB LOCKFILE CACHEDIR LOADEDLIBS
 COLUMNS=$(tput cols)
+declare -A LOADEDLIBS
 
 # pacman & package-query call with command line options
 pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
@@ -30,13 +31,13 @@ initpath(){
 # Load library but never reload twice the same lib
 loadlibrary(){
 	while [[ $1 ]]; do
-		[[ "${!1}" ]] && return 0
+		((LOADEDLIBS[$1])) && return 0
 		if [[ ! -r "@libdir@/yaourt/$1.sh" ]]; then
 			error "$1.sh file is missing"
 			die 1
 		fi
 		source "@libdir@/yaourt/$1.sh" || warning "problem in $1.sh library"
-		eval $1=1
+		LOADEDLIBS[$1]=1
 		shift
 	done
 }
@@ -57,7 +58,7 @@ str_wrap ()
 	(( indent > COLUMNS )) && { strwrap="$*"; return 0; }
 	strwrap="${P_INDENT:0:$indent}$*"
 	(( ${#strwrap} < COLUMNS-indent-1 )) && return 0 || { strwrap=""; set -- $*; }
-	local i=0 strout=""
+	local i=0 k strout=""
 	while [[ $1 ]]; do
 		strout+="$1 "
 		(( i+=${#1}+1 ))
@@ -74,6 +75,7 @@ str_wrap ()
 
 echo_wrap ()
 {
+	local strwrap
 	str_wrap "$1" "$2"
 	echo -e "$strwrap"
 }
@@ -82,8 +84,7 @@ echo_wrap_next_line ()
 {
 	echo -en "$1"; shift
 	local len=$1; shift
-	local strout=""
-	local i=0
+	local i=0 strout="" strwrap
 	for str in "$@"; do
 		str_wrap $len "$str"
 		(( i++ )) || strwrap=${strwrap##*( )}
@@ -94,7 +95,7 @@ echo_wrap_next_line ()
 
 list_select ()
 {
-	local i=0
+	local i=0 _line
 	for _line in "$@"; do
 		(( i++ ))
 		echo -e  "${colors[nb]}$i$C0 $_line"

@@ -71,7 +71,6 @@ read_pkgbuild ()
 	eval $PKGBUILD_VARS
 	pkgbase=${pkgbase:-${pkgname[0]}}
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
-	PKGBUILD_VARS=${PKGBUILD_VARS//declare -- /}
 	if [[ ! "$pkgbase" ]]; then
 		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
 		return 1
@@ -90,7 +89,7 @@ read_pkgbuild ()
 #	$nodisplay: 1: don't display depends information
 check_deps ()
 {
-	local nodisplay=${1:-0}
+	local nodisplay=${1:-0} dep
 	eval $PKGBUILD_VARS
 	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" ) )
 	unset PKGBUILD_DEPS_INSTALLED
@@ -120,7 +119,7 @@ check_deps ()
 # If nodisplay, return 1 if conflicts and 0 if not
 check_conflicts ()
 {
-	local nodisplay=${1:-0}
+	local nodisplay=${1:-0} cf
 	eval $PKGBUILD_VARS
 	local cfs=( $(pacman_parse -T "${conflicts[@]}") )
 	unset PKGBUILD_CONFLICTS
@@ -195,6 +194,7 @@ edit_pkgbuild ()
 	done
 	
 	eval $PKGBUILD_VARS
+	local installfile
 	for installfile in "${install[@]}"; do
 		[[ "$installfile" ]] || continue
 		run_editor "$installfile" $default_answer 
@@ -240,7 +240,7 @@ build_package()
 	# install deps from abs (build or download) as depends
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
-		local _arg="--asdeps"
+		local _arg="--asdeps" _deps
 		((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]}"
 		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
@@ -273,6 +273,7 @@ build_package()
 # Usage: install_package ()
 install_package()
 {
+	local _file failed=0
 	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
 	if (( EXPORT==2 )); then
@@ -312,8 +313,7 @@ install_package()
 	local _arg=""
 	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) && for _file in "$YPKGDEST"/*; do
-		su_pacman -U "${PACMAN_S_ARG[@]}" $_arg $_file || failed=$?
-		(( failed )) && break
+		su_pacman -U "${PACMAN_S_ARG[@]}" $_arg $_file || { failed=$?; break; }
 	done
 	if (( failed )); then 
 		warning $(eval_gettext 'Your packages are saved in $YAOURTTMPDIR/')
@@ -348,14 +348,13 @@ package_loop ()
 {
 	local trust=${1:-0}
 	local default_answer=1
-	local ret=0
+	local ret=0 failed=0
 	# Customise PKGBUILD
 	custom_pkg "$PKG" && customizepkg --modify
 
 	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
-		failed=0
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
 		prompt "$(eval_gettext 'Continue building ''$PKG'' ? ')$(yes_no 1)"
 		builduseragrees || { failed=1; break; }
@@ -385,7 +384,7 @@ sanitize_pkgbuild ()
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
 		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
 		-e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
-		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/last_mod="\1"/p }' \
+		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/declare last_mod="\1"/p }' \
 		-e '/ *build *( *)/q' \
 		-e 'd' "$1"
 }

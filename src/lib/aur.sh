@@ -34,13 +34,13 @@ aur_show_info()
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	title "Searching info on AUR for $1"
-	PKG=$1
-	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$PKG")
+	local pkgname=$1 id votes outofdate
+	title "Searching info on AUR for $pkgname"
+	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
-		{ error "$PKG not found in repos nor in AUR"; return 1; }
+	curl -fis "$AUR_URL/packages/$pkgname/$pkgname/PKGBUILD" -o "$tmpfile" || \
+		{ error "$pkgname not found in repos nor in AUR"; return 1; }
 	sanitize_pkgbuild "$tmpfile" 
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
@@ -133,29 +133,28 @@ vote_package(){
 
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur(){
-	local PKG="${1#*/}"
-	title $(eval_gettext 'Installing $PKG from AUR')
-	init_build_dir "$YAOURTTMPDIR/aur-$PKG" || return 1
-	aurid=""
+	local pkgname="${1#*/}" aurid version numvotes outofdate pkgurl description
+	title $(eval_gettext 'Installing $pkgname from AUR')
+	init_build_dir "$YAOURTTMPDIR/aur-$pkgname" || return 1
 
 	read aurid version numvotes outofdate pkgurl description < \
-		<(pkgquery -Ai "$PKG" -f "%i %v %w %o %u %d")
+	  <(pkgquery -Ai "$pkgname" -f "%i %v %w %o %u %d")
 	[[ "${aurid#-}" ]] || return 1
 	
 	# grab comments and info from aur page
 	echo
-	msg $(eval_gettext 'Downloading $PKG PKGBUILD from AUR...')
-	aur_get_pkgbuild "$PKG" "$pkgurl" || return 1
+	msg $(eval_gettext 'Downloading $pkgname PKGBUILD from AUR...')
+	aur_get_pkgbuild "$pkgname" "$pkgurl" || return 1
 	aurcomments $aurid
-	echo -e "$CBOLD$PKG $version $C0: $description"
+	echo -e "$CBOLD$pkgname $version $C0: $description"
 	echo -e "$CBLINK$CRED"$(gettext '( Unsupported package: Potentially dangerous ! )')"$C0"
 
 	# Build, install/export
-	package_loop 0 || { manage_error 1; return 1; }
-	rm -rf "$YAOURTTMPDIR/aur-$PKG"
+	package_loop 0 || manage_error $pkgname || return 1
+	rm -rf "$YAOURTTMPDIR/aur-$pkgname"
 
 	# Check if this package has been voted on AUR, and vote for it
-	(( AURVOTE )) && vote_package "$pkgbase" "$aurid"
+	(( AURVOTE )) && vote_package "$pkgname" "$aurid"
 	return 0
 }
 
