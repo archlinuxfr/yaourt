@@ -255,7 +255,7 @@ manage()
 	fi
 }
 
-. '@libdir@/yaourt/basicfunctions.sh'
+. '@libdir@/yaourt/util.sh'
 initcolor
 action=""
 while [[ $1 ]]; do

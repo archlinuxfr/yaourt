@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# pacman_conf.sh: parse and query pacman.conf file
+# pacman.sh: parse and query pacman.conf file
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 # This file use global variables

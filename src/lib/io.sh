@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# color.sh : color vars & colored output & title modification
+# io.sh : Input/output functions
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 # Set teminal title.

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# basicfunctions.sh: common functions and initialisation 
+# util.sh: common functions and initialisation 
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 unset PACMANDB LOCKFILE CACHEDIR LOADEDLIBS
@@ -207,7 +207,7 @@ check_dir ()
 
 declare -A colors	#TODO not its place
 shopt -s extglob
-loadlibrary color
+loadlibrary io
 unset ABS_REPO
 # General
 AUTOSAVEBACKUPFILE=0

@@ -195,7 +195,7 @@ sysupgrade()
 		rm "$YAOURTTMPDIR/sysupgrade"
 	fi
 	#[[ ! "$packages" ]] && return 0	
-	loadlibrary pacman_conf
+	loadlibrary pacman
 	local cmd="echo -n"
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
 	((AURUPGRADE)) && cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
@@ -313,7 +313,7 @@ upgrade_devel_package(){
 	declare -a devel_pkgs
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
-	loadlibrary pacman_conf
+	loadlibrary pacman
 	local _arg="-Qq" pkg
 	((AURDEVELONLY)) && _arg+="m"
 	for pkg in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")

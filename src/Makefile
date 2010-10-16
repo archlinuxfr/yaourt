@@ -15,7 +15,7 @@ localedir = $(PREFIX)/share/locale
 localstatedir = $(PREFIX)/var
 mandir = $(PREFIX)/share/man
 
-SCRIPTS = yaourt.sh pacdiffviewer.sh lib/basicfunctions.sh lib/pkgbuild.sh
+SCRIPTS = yaourt.sh pacdiffviewer.sh lib/util.sh lib/pkgbuild.sh
 
 all: $(SCRIPTS)
 
@@ -46,9 +46,9 @@ install: $(SCRIPTS)
 	$(INSTALL) -m644 lib/alpm_stats.sh $(DESTDIR)$(libdir)/yaourt
 	$(INSTALL) -m644 lib/abs.sh $(DESTDIR)$(libdir)/yaourt
 	$(INSTALL) -m644 lib/aur.sh $(DESTDIR)$(libdir)/yaourt
-	$(INSTALL) -m644 lib/basicfunctions.sh $(DESTDIR)$(libdir)/yaourt
-	$(INSTALL) -m644 lib/color.sh $(DESTDIR)$(libdir)/yaourt
-	$(INSTALL) -m644 lib/pacman_conf.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/util.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/io.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/pacman.sh $(DESTDIR)$(libdir)/yaourt
 	$(INSTALL) -m644 lib/pkgbuild.sh $(DESTDIR)$(libdir)/yaourt
 	# Man
 	$(INSTALL) -m644 man/*.5 $(DESTDIR)$(mandir)/man5

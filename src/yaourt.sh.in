@@ -361,7 +361,7 @@ yaourt_no_action ()
 ###################################
 # Basic init and librairies
 YAOURTBIN=$0
-. '@libdir@/yaourt/basicfunctions.sh'
+. '@libdir@/yaourt/util.sh'
 
 unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
