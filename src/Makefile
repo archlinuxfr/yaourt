@@ -1,21 +1,23 @@
 # yaourt: pacman frontend
 
-VERSION = $(shell git describe --abbrev=4)
-DESTDIR =
-PREFIX = /usr/local
-SHELL = /bin/bash
-INSTALL = /bin/install 
-MSGFMT = /usr/bin/msgfmt
-SED = /bin/sed
-bindir = $(PREFIX)/bin
-libdir = $(PREFIX)/lib
-sysconfdir = $(PREFIX)/etc
+VERSION       = $(shell git describe --abbrev=4)
+DESTDIR       =
+PREFIX        = /usr/local
+SHELL         = /bin/bash
+INSTALL       = /bin/install 
+MSGFMT        = /usr/bin/msgfmt
+SED           = /bin/sed
+bindir        = $(PREFIX)/bin
+libdir        = $(PREFIX)/lib
+sysconfdir    = $(PREFIX)/etc
 completiondir = ${sysconfdir}/bash_completion.d
-localedir = $(PREFIX)/share/locale
+localedir     = $(PREFIX)/share/locale
 localstatedir = $(PREFIX)/var
-mandir = $(PREFIX)/share/man
+mandir        = $(PREFIX)/share/man
+dbpath        = ${localstatedir}/lib/pacman/
+cachedir      = ${localstatedir}/cache/pacman/pkg/
 
-SCRIPTS = yaourt.sh pacdiffviewer.sh lib/util.sh lib/pkgbuild.sh
+SCRIPTS = yaourt.sh pacdiffviewer.sh lib/util.sh lib/pkgbuild.sh lib/pacman.sh
 
 all: $(SCRIPTS)
 
@@ -26,6 +28,8 @@ $(SCRIPTS): ${SCRIPTS:.sh=.sh.in}
 	        -e 's|@sysconfdir@|$(sysconfdir)|g' \
 	        -e 's|@libdir@|$(libdir)|g' \
 	        -e 's|@localstatedir@|$(localstatedir)|g' \
+	        -e 's|@dbpath@|$(dbpath)|g' \
+	        -e 's|@cachedir@|$(cachedir)|g' \
 	        $@.in > $@
 
 install: $(SCRIPTS)
