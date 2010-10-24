@@ -274,11 +274,10 @@ yaourt_no_action ()
 ###################################
 # Basic init and librairies
 
-unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
-	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
-	DATE UNREQUIRED FOREIGN GROUP QUERYTYPE \
-	QUIET AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
-	DEPENDS PRINT   
+unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
+	IGNOREGRP IGNOREPKG CHANGELOG LIST INFO DATE UNREQUIRED \
+	FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
+	AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED
 
 # Grab environement options
 {
@@ -305,24 +304,24 @@ while [[ $1 ]]; do
 		--asdeps|--needed)  program_arg $A_PS $1;;
 		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
 		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
-		-d)                 ((DEPENDS++)); NODEPS=1; program_arg $((A_PS | A_M | A_Y | A_PQ)) $1;;
-		-e|--explicit)      EXPLICITE=1; program_arg $A_PQ $1;;
+		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_Y | A_PQ)) $1;;
+		-e|--explicit)      program_arg $A_PQ $1;;
 		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
 		--noconfirm)        NOCONFIRM=1;;
-		--nodeps)           NODEPS=1; program_arg $((A_PS | A_M | A_Y)) $1;;
+		--nodeps)           program_arg $((A_PS | A_M | A_Y)) $1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
 		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
-		--holdver)          HOLDVER=1; program_arg $((A_M | A_Y)) $1;;
-		-A|--ignorearch)    IGNOREARCH=1; program_arg $((A_M | A_Y)) $1;;
+		--holdver)          program_arg $((A_M | A_Y)) $1;;
+		-A|--ignorearch)    program_arg $((A_M | A_Y)) $1;;
 		--ignore)           program_arg $((A_PS | A_Y)) $1 "$2"; shift; IGNOREPKG+=("$1");;
-		--ignoregroup)      program_arg $((A_PS | A_Y)) $1; shift; IGNOREGRP+=("$1");; 
+		--ignoregroup)      program_arg $((A_PS | A_Y)) $1 "$2"; shift; IGNOREGRP+=("$1");;
 		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;
