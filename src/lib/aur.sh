@@ -3,7 +3,7 @@
 # aur.sh : deals with AUR
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-AUR_URL="http://aur.archlinux.org/"
+AUR_URL="https://aur.archlinux.org/"
 AUR_PKG_URL="$AUR_URL/packages.php?setlang=en&ID="
 
 loadlibrary abs
