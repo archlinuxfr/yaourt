@@ -24,7 +24,7 @@ abs_get_pkgbuild ()
 	local abs_url 
 	local repo_date=$(stat -c "%Z" "$PACMANDB/$repo.db.tar.gz")
 	local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
-	if (( $? )) || (( abs_repo_date < repo_date )); then
+	if [[ ! $abs_repo_date ]] || (( ${abs_repo_date%.*} < ${repo_date%.*} )); then
 		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
 		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
 		msg "$1: $(gettext 'Download abs archive')"
