@@ -96,7 +96,11 @@ classify_pkg ()
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
 		if [[ "$repo" = "aur" ]]; then
-			((! DETAILUPGRADE )) && echo -en " $(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1\r"
+			if ((DETAILUPGRADE<2)); then
+				echo -en "\r"
+				((REFRESH)) && echo -n " "
+			  	echo -en "$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1"
+			fi
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" \
 				|| continue
 		fi
@@ -193,7 +197,7 @@ sysupgrade()
 	local cmd="echo -n"
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
 	((AURUPGRADE)) && cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
-	DETAILUPGRADE=0 classify_pkg $(pacman -Qqm | wc -l)< <(eval $cmd)
+	classify_pkg $( ((DETAILUPGRADE<2)) && pacman -Qqm | wc -l)< <(eval $cmd)
 	sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
