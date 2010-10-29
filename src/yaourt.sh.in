@@ -361,7 +361,7 @@ while [[ $1 ]]; do
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
-		--noconfirm)        NOCONFIRM=1; program_arg $((A_PS | A_Y)) $1;;
+		--noconfirm)        NOCONFIRM=1;;
 		--nodeps)           NODEPS=1; program_arg $((A_PS | A_M | A_Y)) $1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
@@ -383,7 +383,7 @@ while [[ $1 ]]; do
 		--depends)          QUERYTYPE="depends";;
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
-		-f|--force)         FORCE=1; program_arg $((A_PS | A_M | A_Y)) $1;;
+		-f|--force)         FORCE=1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
 		--nocolor)          USECOLOR=0; program_arg $A_Y $1;;
@@ -398,8 +398,7 @@ while [[ $1 ]]; do
 		--stats)            MAJOR="stats";;
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
-			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2
-			program_arg $((A_PS | A_Y)) "--noconfirm" "--force";;
+			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2;;
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_Y)) $1;;
@@ -446,7 +445,13 @@ else
 	error $(eval_gettext 'Unable to read $BACKUPFILE file')
 	die 1
 fi
-(( NOCONFIRM )) && { EDITFILES=0; BUILD_NOCONFIRM=1; }
+if (( NOCONFIRM )); then
+	EDITFILES=0
+	BUILD_NOCONFIRM=1
+	AURVOTE=0
+	program_arg $((A_PS | A_M | A_Y)) "--noconfirm"
+fi
+((FORCE)) && program_arg $((A_PS | A_M | A_Y)) "--force"
 initpath
 
 # Refresh
