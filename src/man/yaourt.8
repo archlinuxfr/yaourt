@@ -1,13 +1,22 @@
 '\" t
 .\"     Title: yaourt
 .\"    Author: [see the "Authors" section]
-.\" Generator: DocBook XSL Stylesheets v1.75.2 <http://docbook.sf.net/>
-.\"      Date: 2010-07-06
+.\" Generator: DocBook XSL Stylesheets v1.76.0 <http://docbook.sf.net/>
+.\"      Date: 2010-11-02
 .\"    Manual: Yaourt Manual
-.\"    Source: Yaourt 0.9.4
+.\"    Source: Yaourt 0.9.5.1
 .\"  Language: English
 .\"
-.TH "YAOURT" "8" "2010\-07\-06" "Yaourt 0\&.9\&.4" "Yaourt Manual"
+.TH "YAOURT" "8" "2010\-11\-02" "Yaourt 0\&.9\&.5\&.1" "Yaourt Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
 .\" -----------------------------------------------------------------
 .\" * set default formatting
 .\" -----------------------------------------------------------------
@@ -29,24 +38,7 @@ yaourt \- more than a frontend to pacman
 .sp
 Yaourt is a pacman frontend with a lot of features\&.
 .sp
-.if n \{\
-.RS 4
-.\}
-.nf
-AUR support (search, install, vote \&.\&.\&.)
-Interactive search + install
-Building packages directly from ABS sources
-Search output colorised
-Handling config files \&.pacnew/\&.pacsave
-Managing alpm database (save/restore/query a backup file)
-Alert user when new orphans are detected
-Check the database integrity after each operation
-Yaourt can be run as a non\-privileged user (safest for AUR)
-root password will be required only when it is necessary\&.
-.fi
-.if n \{\
-.RE
-.\}
+AUR/ABS support, colorized output, interactive search/install, save/restore Alpm database, orphans detection, manage \&.pac* files, \&...
 .SH "OPERATIONS"
 .sp
 Since the majority of those options are same as pacman\(cqs ones (\fBpacman\fR(8)), this manual page will focus on the specific ones\&.
@@ -116,14 +108,9 @@ Export builded packages and their sources (\fBmakepkg\fR(8)) to <dir>\&.
 Force installation or updates\&.
 .RE
 .PP
-\fB\-\-lightbg\fR
-.RS 4
-Use light colors (depreceated)\&.
-.RE
-.PP
 \fB\-\-nocolor\fR
 .RS 4
-Disable colors\&.
+Disable color\&.
 .RE
 .PP
 \fB\-\-noconfirm\fR
@@ -134,7 +121,7 @@ Don\(cqt ask for confirmation\&.
 \fB\-\-sucre\fR
 .RS 4
 Equivalent to
-\fI\-Sfyu \-\-aur \-\-devel\fR
+\fI\-Sfyua \-\-devel\fR
 .RE
 .PP
 \fB\-\-tmp <dir>\fR
@@ -190,12 +177,13 @@ Filter output to packages not required by any currently installed package\&. Wit
 .RE
 .SH "SYNC OPTIONS"
 .PP
-\fB\-\-aur\fR
+\fB\-a, \-\-aur\fR
 .RS 4
 Also search in AUR database\&. With
 \fI\-u\fR
 or
-\fI\-\-sysupgrade\fR, upgrade aur packages that are out of date\&.
+\fI\-\-sysupgrade\fR, upgrade aur packages that are out of date\&. With
+\fI\-Qm\fR, display more info about foreign package\&.
 .RE
 .PP
 \fB\-\-conflicts\fR
@@ -218,7 +206,7 @@ Show packages that depends on one of the targets
 With
 \fI\-u\fR
 or
-\fI\-\-sysupgrade\fR, search an update for all devel packages\&.
+\fI\-\-sysupgrade\fR, search an update for devel packages\&.
 .RE
 .PP
 \fB\-i, \-\-info\fR
@@ -258,6 +246,12 @@ command\&.
 \fBTMPDIR\fR
 .RS 4
 Set a temporary folder to use\&.
+.RE
+.PP
+\fBYAOURT_COLORS\fR
+.RS 4
+Set a user defined colors\&. (see
+\fBpackage-query\fR(8))
 .RE
 .SH "SEE ALSO"
 .sp

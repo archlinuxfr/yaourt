@@ -194,4 +194,36 @@ yaourt 0.9.4
 - Fix conflict detection bugs
 - Fix -Sbu (sysupgrade with build)
 
+yaourt 0.9.5
+- Configuration variable (yaourtrc)
+  * SUDONOVERIF: Bypass sudo verification (for users with timestamp_timeout=0)
+  * UP_NOCONFIRM: No prompt while building upgrades
+  * BUILD_NOCONFIRM: Only prompt for file edit
+  * AURDEVELONLY: If set and --devel, only check foreign devel packages
+  * EXPORTSRC: Also export source (makepkg --allsource)
+  * EXPORT=2: Export to pacman cache as root
 
+- Environment variable
+  * PACMAN: pacman bin, also used by makepkg
+  * YAOURT_COLORS: colon-separated list of key=color
+    (see PQ_COLORS in man package-query)
+
+- New options
+  * -Qma: display informations about foreign packages
+
+- Behavior changes:
+  * -G <pkg>: download source (abs/aur) in a newly created directory
+    -Gd <pkg>: also download aur dependencies not currently installed
+    -Gdd <pkg>: download pkg and all aur dependencies
+
+- Depreceated:
+  * PACMANBIN replaced by PACMAN
+  * MAXCOMMENTS replaced by AURCOMMENT
+  * COLORMODE dropped
+  * --textonly, --lightbg
+
+- Bugfixes
+- Support more pacman/makepkg options
+
+yaourt 0.9.5.1
+- bugfix release
