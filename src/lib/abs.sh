@@ -133,7 +133,7 @@ classify_pkg ()
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
 	done 
-	((! DETAILUPGRADE)) && echo
+	((DETAILUPGRADE<2)) && echo
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 	unset newrelease newversion newpkgs
