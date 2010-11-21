@@ -57,7 +57,9 @@ read_pkgbuild ()
 	echo                                            >> $pkgbuild_tmp
 	if (( update )); then
 		echo "devel_check"                          >> $pkgbuild_tmp
-		echo "devel_update"                         >> $pkgbuild_tmp
+		# HOLDVER=1 to disable the double check when
+		# devel_update() source PKGBUILD
+		echo "HOLDVER=1 devel_update"               >> $pkgbuild_tmp
 	fi
 	echo "declare -p ${vars[*]} 2>/dev/null >&3"    >> $pkgbuild_tmp
 	echo "return 0"                                 >> $pkgbuild_tmp
