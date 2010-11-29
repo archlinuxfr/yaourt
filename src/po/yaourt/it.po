@@ -300,7 +300,7 @@ msgstr "Impossibile creare la cartella $wdir."
 
 #: ../../lib/abs.sh:102
 msgid "Foreign packages: "
-msgstr "Pachetti orfani: "
+msgstr "Altri pacchetti: "
 
 #: ../../lib/abs.sh:99
 #: ../../lib/abs.sh:108

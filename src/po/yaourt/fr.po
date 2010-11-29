@@ -314,7 +314,7 @@ msgstr "Le faire maintenant ?"
 
 #: ../../lib/abs.sh:102
 msgid "Foreign packages: "
-msgstr "Paquets orphelins: "
+msgstr "Paquets étrangers: "
 
 #: ../../lib/abs.sh:120
 msgid "Source targets"
