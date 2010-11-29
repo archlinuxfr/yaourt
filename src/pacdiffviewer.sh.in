@@ -190,7 +190,7 @@ manage_file ()
 			_prompt_action+="M"
 			_msg+=" $(gettext '**automerge**')"
 		fi
-		msg $_msg
+		msg "$_msg"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
 		# gettext "ERSCA"
