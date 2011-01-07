@@ -20,9 +20,11 @@
 #
 export TEXTDOMAINDIR='@localedir@'
 export TEXTDOMAIN=yaourt
-type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
-	eval_gettext () { eval echo $1; }
-	gettext () { echo "$1"; }
+type -t gettext &> /dev/null || { gettext () { echo "$@"; }; }
+_gettext ()
+{
+	local str=$1; shift
+	printf "$(gettext "$str")" "$@" 
 }
 
 NAME='yaourt'
@@ -49,7 +51,7 @@ usage(){
 	echo -e "\t$(gettext 'yaourt {--stats}')"
 }
 version(){
-	echo "$(gettext "yaourt $VERSION is a pacman frontend with AUR support and more")"
+	echo "$(_gettext "yaourt %s is a pacman frontend with AUR support and more" "$VERSION")"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
 }
 die(){
@@ -76,13 +78,10 @@ is_sudo_allowed()
 }
 
 launch_with_su(){
-	#msg "try to launch '${@}' with sudo"
-	local command=$1
 	if is_sudo_allowed "$@"; then
-		#echo "Allowed to use sudo $command"
 		sudo "$@" || return 1
 	else
-		(( $UID )) && echo -e $(eval_gettext 'You are not allowed to launch $command with sudo\nPlease enter root password') 1>&2 
+		(( $UID )) && echo -e "$(_gettext 'You are not allowed to launch %s with sudo\nPlease enter root password' "$1")" 1>&2 
 		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
 		local errorfile="/tmp/yaourt_error.$RANDOM"
 		for i in 1 2 3; do 
@@ -279,7 +278,7 @@ yaourt_sync ()
 	elif (( INFO )); then
 		loadlibrary aur
 		for arg in ${ARGS[@]}; do
-			title $(eval_gettext 'Informations for $arg')
+			title $(_gettext 'Informations for %s' $arg)
 			local _repo="${arg%/*}"
 			if [[ "$_repo" = "$arg" || "$_repo" != "aur" ]]; then
 				pacman_out -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null ||\
@@ -478,7 +477,7 @@ YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 	is_an_alpm_backup "$BACKUPFILE" || die 1
 	program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
 else
-	error $(eval_gettext 'Unable to read $BACKUPFILE file')
+	error $(_gettext 'Unable to read %s file' "$BACKUPFILE")
 	die 1
 fi
 if (( NOCONFIRM )); then

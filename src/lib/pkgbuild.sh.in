@@ -72,7 +72,7 @@ read_pkgbuild ()
 	pkgbase=${pkgbase:-${pkgname[0]}}
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
 	if [[ ! "$pkgbase" ]]; then
-		echo $(eval_gettext 'Unable to read PKGBUILD for $PKG')
+		echo $(gettext 'Unable to read PKGBUILD')
 		return 1
 	fi
 	(( ${#pkgname[@]} > 1 )) && SPLITPKG=1 || SPLITPKG=0
@@ -100,7 +100,7 @@ check_deps ()
 		fi
 	done
 	(( nodisplay )) && return 0
-	msg "$(eval_gettext '$PKG dependencies:')"
+	msg "$(_gettext '%s dependencies:' "$pkgbase")"
 	for dep in "${PKGBUILD_DEPS_INSTALLED[@]}"; do
 		echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
 	done
@@ -142,7 +142,7 @@ check_conflicts ()
 	fi
 	(( nodisplay )) && return 0
 	if [[ "$PKGBUILD_CONFLICTS" ]]; then 
-		msg "$(eval_gettext '$PKG conflicts:')"
+		msg "$(_gettext '%s conflicts:' "$pkgbase")"
 		for cf in $(pkgquery -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
 			echo -e " - $CBOLD$cf$C0"
 		done
@@ -218,20 +218,20 @@ build_package()
 		#msg "Building last CVS/SVN/HG/GIT version"
 		local use_devel_dir=0
 		if [[ -d "$wdirDEVEL" && -w "$wdirDEVEL" ]]; then
-			prompt2 "$(eval_gettext 'The sources of ${pkgbase} were kept last time. Use them ?') $(yes_no 1)"
+			prompt2 "$(_gettext 'The sources of %s were kept last time. Use them ?' "$pkgbase") $(yes_no 1)"
 			builduseragrees && use_devel_dir=1
 		fi
 		[[ ! -d "$wdirDEVEL" ]] && mkdir -p $wdirDEVEL 2> /dev/null && use_devel_dir=1
 		if (( use_devel_dir )); then
 			cp -a ./* "$wdirDEVEL/" && cd $wdirDEVEL || \
-				warning $(eval_gettext 'Unable to write in ${wdirDEVEL} directory. Using /tmp directory')
+				warning $(_gettext 'Unable to write in %s directory. Using /tmp directory' "$wdirDEVEL")
 		fi
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
 			# re-read PKGBUILD to update version
 			read_pkgbuild 1 || return 1
 			eval $PKGBUILD_VARS
 			if ! is_x_gt_y "$pkgver-$pkgrel" $(pkgversion $pkgbase); then
-				msg $(eval_gettext '$pkgbase is already up to date.')
+				msg $(_gettext '%s is already up to date.' "$pkgbase")
 				return 2
 			fi
 		fi
@@ -239,7 +239,7 @@ build_package()
 
 	# install deps from abs (build or download) as depends
 	if [[ $PKGBUILD_DEPS ]]; then
-		msg $(eval_gettext 'Install or build missing dependencies for $PKG:')
+		msg $(_gettext 'Install or build missing dependencies for %s:' "$pkgbase")
 		local _arg="--asdeps" _deps
 		((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]}"
@@ -262,7 +262,7 @@ build_package()
 	PKGDEST="$YPKGDEST" makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
 
 	if (( $? )); then
-		error $(eval_gettext 'Makepkg was unable to build $PKG.')
+		error $(_gettext 'Makepkg was unable to build %s.' "$pkgbase")
 		return 1
 	fi
 	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && makepkg --allsource -p ./PKGBUILD
@@ -277,16 +277,16 @@ install_package()
 	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
 	if (( EXPORT==2 )); then
-		msg $(eval_gettext 'Exporting ${pkgbase} to ${CACHEDIR} repository')
+		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "$CACHEDIR")
 		launch_with_su cp -vf "$YPKGDEST/"* "$CACHEDIR/" 
 	elif (( EXPORT )) && [[ $PKGDEST ]]; then
-		msg $(eval_gettext 'Exporting ${pkgbase} to ${PKGDEST} repository')
+		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "$PKGDEST")
 		cp -vfp "$YPKGDEST/"* "$PKGDEST/" 
 	fi
 
 	while true; do
 		echo
-		msg "$(eval_gettext 'Continue installing ''$PKG'' ?') $(yes_no 1)"
+		msg "$(_gettext "Continue installing %s ?" "$pkgbase") $(yes_no 1)"
 		prompt $(gettext '[v]iew package contents   [c]heck package with namcap')
 		local answer=$(builduserinput "YNVC" "Y")
 		echo
@@ -316,8 +316,8 @@ install_package()
 		su_pacman -U "${PACMAN_S_ARG[@]}" $_arg $_file || { failed=$?; break; }
 	done
 	if (( failed )); then 
-		warning $(eval_gettext 'Your packages are saved in $YAOURTTMPDIR/')
-		cp -i "$YPKGDEST"/* $YAOURTTMPDIR/ || warning $(eval_gettext 'Unable to copy packages to $YAOURTTMPDIR/ directory')
+		warning $(_gettext "Your packages are saved in %s" "$YAOURTTMPDIR")
+		cp -i "$YPKGDEST"/* $YAOURTTMPDIR/ || warning $(_gettext 'Unable to copy packages to %s directory' "$YAOURTTMPDIR")
 	fi
 
 	return $failed
@@ -328,9 +328,9 @@ init_build_dir()
 {
 	local wdir="$1"
 	if [[ -d "$wdir" ]]; then
-		rm -rf "$wdir" || { error $(eval_gettext 'Unable to delete directory $wdir. Please remove it using root privileges.'); return 1; }
+		rm -rf "$wdir" || { error $(_gettext 'Unable to delete directory %s. Please remove it using root privileges.' "$wdir"); return 1; }
 	fi
-	mkdir -p "$wdir" || { error $(eval_gettext 'Unable to create directory $wdir.'); return 1; }
+	mkdir -p "$wdir" || { error $(_gettext 'Unable to create directory %s.' "$wdir"); return 1; }
 	cd $wdir
 }
 
@@ -350,19 +350,19 @@ package_loop ()
 	local default_answer=1
 	local ret=0 failed=0
 	# Customise PKGBUILD
-	custom_pkg "$PKG" && customizepkg --modify
+	custom_pkg "$pkgbase" && customizepkg --modify
 
 	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
-		prompt "$(eval_gettext 'Continue building ''$PKG'' ? ')$(yes_no 1)"
+		prompt "$(_gettext 'Continue building %s ? ' "$pkgbase")$(yes_no 1)"
 		builduseragrees || { failed=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
 			0|2) break ;;
-			1)	prompt "$(eval_gettext 'Restart building ''$PKG'' ? ')$(yes_no 2)"
+			1)	prompt "$(_gettext 'Restart building %s ? ' "$pkgbase")$(yes_no 2)"
 				builduseragrees "YN" "N" && { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
@@ -406,13 +406,13 @@ get_pkgbuild ()
 		[[ ${pkgs_downloaded[$pkg]} ]] && continue
 		pkgs_downloaded[${pkg}]=1
 		if [[ -d $pkg ]]; then
-			prompt2 "$(eval_gettext '$pkg directory already exist. Replace ?') $(yes_no 1)"
+			prompt2 "$(_gettext '%s directory already exist. Replace ?' "$pkg") $(yes_no 1)"
 			useragrees || continue
 		else
 			mkdir "$pkg" 
 		fi
 		cd "$pkg" || continue
-		msg "$(eval_gettext 'Download $pkg sources')"
+		msg "$(_gettext 'Download %s sources' "$pkg")"
 		if [[ $repo = "aur" ]]; then
 			aur_get_pkgbuild "$pkg"
 		else

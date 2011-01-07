@@ -20,9 +20,11 @@
 #
 export TEXTDOMAINDIR='@localedir@'
 export TEXTDOMAIN=yaourt
-type gettext.sh > /dev/null 2>&1 && { . gettext.sh; } || {
-	eval_gettext () { echo "$1"; }
-	gettext () { echo "$1"; }
+type -t gettext &> /dev/null || { gettext () { echo "$@"; }; }
+_gettext ()
+{
+	local str=$1; shift
+	printf "$(gettext "$str")" "$@" 
 }
 
 myname=pacdiffviewer

@@ -17,7 +17,7 @@ aur_get_pkgbuild ()
 	#local pkgurl=$(pkgquery -Aif "%u" "$pkg")
 	local pkgurl="$AUR_URL/packages/$pkg/$pkg.tar.gz"
 	if [[ ! "$pkgurl" ]] || ! curl -fs "$pkgurl" -o "$pkg.tar.gz"; then
-		error $(eval_gettext '$pkg not found in AUR.');
+		error $(_gettext '%s not found in AUR.' "$pkg");
 		return 1;
 	fi
 	bsdtar --strip-components 1 -xvf "$pkg.tar.gz"
@@ -40,7 +40,7 @@ info_from_aur() {
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl -fis "$AUR_URL/packages/$pkgname/$pkgname/PKGBUILD" -o "$tmpfile" || \
-		{ error "$pkgname not found in repos nor in AUR"; return 1; }
+		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	sanitize_pkgbuild "$tmpfile" 
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
@@ -116,14 +116,13 @@ END {
 vote_package(){
 	(( ! AURVOTEINSTALLED )) && return
 	echo
-	local _pkg=$1
-	msg $(eval_gettext 'Checking vote status for $_pkg')
+	msg $(_gettext 'Checking vote status for %s' "$1")
 	local pkgvote=`aurvote --id --check "$1/$2"`
 	if [[ "${pkgvote}" = "already voted" ]]; then
-		echo $(eval_gettext 'You have already voted for $_pkg inclusion/keeping in [community]')
+		echo $(_gettext 'You have already voted for %s inclusion/keeping in [community]' "$1")
 	elif [[ "$pkgvote" = "not voted" ]]; then
 		echo
-		prompt "$(eval_gettext 'Do you want to vote for $_pkg inclusion/keeping in [community] ? ')$(yes_no 1)"
+		prompt "$(_gettext 'Do you want to vote for %s inclusion/keeping in [community] ? ' "$1")$(yes_no 1)"
 		useragrees || return
 		aurvote --id --vote "$1/$2"
 	else
@@ -134,7 +133,7 @@ vote_package(){
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur(){
 	local pkgname="${1#*/}" aurid version numvotes outofdate pkgurl description
-	title $(eval_gettext 'Installing $pkgname from AUR')
+	title $(_gettext 'Installing %s from AUR' "$pkgname")
 	init_build_dir "$YAOURTTMPDIR/aur-$pkgname" || return 1
 
 	read aurid version numvotes outofdate pkgurl description < \
@@ -143,7 +142,7 @@ install_from_aur(){
 	
 	# grab comments and info from aur page
 	echo
-	msg $(eval_gettext 'Downloading $pkgname PKGBUILD from AUR...')
+	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "$pkgname")
 	aur_get_pkgbuild "$pkgname" "$pkgurl" || return 1
 	aurcomments $aurid
 	echo -e "$CBOLD$pkgname $version $C0: $description"

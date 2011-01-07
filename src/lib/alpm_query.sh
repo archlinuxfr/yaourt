@@ -34,12 +34,12 @@ get_pkgbase ()
 searchforpackageswhich(){
 	local _opt _msg action="$1" name="$2"
 	case "$action" in
-		depends) _msg='Packages which depend on $name:';;
-		conflicts) _msg='Packages which conflict with $name:';;
-		replaces) _msg='Packages which replace $name:';;
-		provides) _msg='Packages which provide $name:';;
+		depends) _msg='Packages which depend on %s:';;
+		conflicts) _msg='Packages which conflict with %s:';;
+		replaces) _msg='Packages which replace %s:';;
+		provides) _msg='Packages which provide %s:';;
 	esac
-	msg $(eval_gettext "$_msg")
+	msg $(_gettext "$_msg" "$name")
 	[[ "$MAJOR" = "query" ]] && _opt="-Q" || _opt="-S"
 	pkgquery $_opt --query-type $action "$name"
 }
@@ -49,7 +49,7 @@ search_forgotten_orphans(){
 	#msg "$(gettext 'Packages installed as dependencies but are no longer required by any installed package')"
 	AURSEARCH=0 search 0
 	[[ $PKGSFOUND ]] || return
-	prompt "$(eval_gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
+	prompt "$(gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
 	useragrees "YN" "N" || su_pacman -Rcs "${PKGSFOUND[@]#*/}"
 }
 # vim: set ts=4 sw=4 noet: 

@@ -174,7 +174,7 @@ run_editor ()
 	local answer_str=" YN"
 	local answer='Y'
 	if (( default_answer )); then
-		prompt "$(eval_gettext 'Edit $file ?') $(yes_no $default_answer) $(gettext '("A" to abort)')"
+		prompt "$(_gettext 'Edit %s ?' "$file") $(yes_no $default_answer) $(gettext '("A" to abort)')"
 		local answer=$(userinput "YNA" ${answer_str:$default_answer:1})
 		echo
 		[[ "$answer" = "A" ]] && msg "$(gettext 'Aborted...')" && return 2
@@ -186,7 +186,7 @@ run_editor ()
 		echo -e "${CBLUE}export EDITOR=\"vim\"$C0 $(gettext '(in ~/.bashrc)')"
 		echo "$(gettext '(replace vim with your favorite editor)')"
 		echo
-		prompt2 "$(eval_gettext 'Edit $file with: ')"
+		prompt2 "$(_gettext 'Edit %s with: ' "$file")"
 		read -e EDITOR
 		echo
 	fi

@@ -49,9 +49,9 @@ build_pkg ()
 sync_first ()
 {
 	[[ $* ]] || return 0
-	warning $(eval_gettext 'The following packages should be upgraded first :')
+	warning $(gettext 'The following packages should be upgraded first :')
 	echo_wrap 4 "$*"
-	prompt "$(eval_gettext 'Do it now ?') $(yes_no 1)"
+	prompt "$(gettext 'Do it now ?') $(yes_no 1)"
 	useragrees || return 0
 	ARGS=("$@")
 	sync_packages
@@ -64,8 +64,8 @@ install_from_abs(){
 	while read repo pkgname pkgver arch; do 
 		local package="$repo/$pkgname"
 		(( ! BUILD )) && ! custom_pkg "$pkgname" && bin_pkgs+=(${package#-/}) && continue
-		msg $(eval_gettext 'Building $pkgname from sources.')
-		title $(eval_gettext 'Install $pkgname from sources')
+		msg $(_gettext 'Building %s from sources.' "$pkgname")
+		title $(_gettext 'Install %s from sources' "$pkgname")
 		echo
 		msg $(gettext 'Retrieving PKGBUILD and local sources...')
 		init_build_dir "$YAOURTTMPDIR/abs-$pkgname" || return 1
@@ -217,7 +217,7 @@ sysupgrade()
 	fi
 	for pkg in ${pkgs[@]}; do
 		[[ ${pkg#aur/} = $pkg ]] && continue
-		install_from_aur "$pkg" || error $(eval_gettext 'unable to update $pkg')
+		install_from_aur "$pkg" || error $(_gettext 'unable to update %s' "$pkgname")
 	done
 }
 
@@ -254,7 +254,7 @@ showupgradepackage()
 				1) echo "${line[3]} ${line[4]} -> ${line[5]}";;
 				2) echo "${line[3]} -> ${line[4]}";;
 				3) requiredbypkg=${line[4]}
-				   echo "${line[3]} $(eval_gettext '(required by $requiredbypkg)')";;
+				   echo "${line[3]} $(_gettext '(required by %s)' "$requiredbypkg")";;
 			esac >> "$YAOURTTMPDIR/sysuplist"
 			echo "# ${line[6]}" >> "$YAOURTTMPDIR/sysuplist"
 		else
@@ -262,7 +262,7 @@ showupgradepackage()
 				1) printf "%*s   $CBOLD${line[4]}$C0 -> $CRED${line[5]}$C0" ${longestpkg[1]} "";;
 				2) printf "%*s   -> $CRED${line[4]}$C0" ${longestpkg[1]} "";;
 				3) requiredbypkg=${line[4]}
-				   printf "%*s   $CRED$(eval_gettext '(required by $requiredbypkg)')$C0" ${longestpkg[1]} "";;
+				   printf "%*s   $CRED$(_gettext '(required by %s)' "$requiredbypkg")$C0" ${longestpkg[1]} "";;
 			esac
 			printf "\r%-*s  $CGREEN${line[3]}$C0" ${longestpkg[0]} ""
 			echo -e "\r${colors[${line[1]}]:-${colors[other]}}${line[1]}/$C0${colors[pkg]}${line[2]}$C0"

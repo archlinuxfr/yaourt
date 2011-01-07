@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: yaourt 0.9.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2010-04-09 16:51+0100\n"
+"PO-Revision-Date: 2010-10-06 16:51+0100\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: archlinux.fr <wain@archlinux.fr>\n"
 "MIME-Version: 1.0\n"
@@ -75,8 +75,8 @@ msgstr ""
 
 #: ../../yaourt.sh:59
 #, sh-format
-msgid "yaourt $VERSION is a pacman frontend with AUR support and more"
-msgstr "yaourt $VERSION est un frontend pacman avec support d'AUR et plus encore"
+msgid "yaourt %s is a pacman frontend with AUR support and more"
+msgstr "yaourt %s est un frontend pacman avec support d'AUR et plus encore"
 
 #: ../../yaourt.sh:60
 msgid "homepage: http://archlinux.fr/yaourt-en"
@@ -93,10 +93,10 @@ msgstr "Périmé"
 #: ../../yaourt.sh:117
 #, sh-format
 msgid ""
-"You are not allowed to launch $command with sudo\\n"
+"You are not allowed to launch %s with sudo\\n"
 "Please enter root password"
 msgstr ""
-"Vous n'êtes pas autorisé à lancer $command avec sudo\\n"
+"Vous n'êtes pas autorisé à lancer %s avec sudo\\n"
 "Veuillez entrer le mot de passe root"
 
 #: ../../yaourt.sh:146
@@ -135,8 +135,8 @@ msgstr "chercher des paquets"
 
 #: ../../yaourt.sh:289
 #, sh-format
-msgid "Informations for $arg"
-msgstr "Informations de $arg"
+msgid "Informations for %s"
+msgstr "Informations de %s"
 
 #: ../../yaourt.sh:304
 msgid "Following packages have not been installed:"
@@ -159,8 +159,8 @@ msgstr "mauvais argument"
 
 #: ../../yaourt.sh:455
 #, sh-format
-msgid "Unable to read $BACKUPFILE file"
-msgstr "Impossible de lire $BACKUPFILE"
+msgid "Unable to read %s file"
+msgstr "Impossible de lire %s"
 
 #: ../../yaourt.sh:459
 #: ../../yaourt.sh:465
@@ -183,14 +183,14 @@ msgstr "synchronisation des bases de données de paquets"
 msgid "get PKGBUILD"
 msgstr "télécharger le PKGBUILD"
 
+#: ../../yaourt.sh:510
+msgid "%s directory already exist. Replace ?"
+msgstr "Le dossier %s existe déjà. Remplacer ?"
+
 #: ../../yaourt.sh:505
 #, sh-format
-msgid "Download $pkg sources"
-msgstr "Télécharge les sources de $pkg"
-
-#: ../../yaourt.sh:510
-msgid "$pkg directory already exist. Replace ?"
-msgstr "Le dossier $pkg existe déjà. Remplacer ?"
+msgid "Download %s sources"
+msgstr "Télécharge les sources de %s"
 
 #: ../../yaourt.sh:529
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
@@ -203,13 +203,13 @@ msgstr "Télécharge l'archive abs"
 
 #: ../../lib/abs.sh:49
 #, sh-format
-msgid "Building $PKG from sources."
-msgstr "Compilation de $PKG depuis les sources."
+msgid "Building %s from sources."
+msgstr "Compilation de %s depuis les sources."
 
 #: ../../lib/abs.sh:50
 #, sh-format
-msgid "Install $PKG from sources"
-msgstr "Installation de $PKG depuis les sources"
+msgid "Install %s from sources"
+msgstr "Installation de %s depuis les sources"
 
 #: ../../lib/abs.sh:54
 msgid "Retrieving PKGBUILD and local sources..."
@@ -217,8 +217,8 @@ msgstr "Récupération du PKGBUILD et fichiers locaux..."
 
 #: ../../lib/abs.sh:57
 #, sh-format
-msgid "Unable to delete directory $wdir. Please remove it using root privileges."
-msgstr "Impossible de supprimer le dossier $wdir. Veuillez le supprimer en root."
+msgid "Unable to delete directory %s Please remove it using root privileges."
+msgstr "Impossible de supprimer le dossier %s Veuillez le supprimer en root."
 
 #: ../../lib/abs.sh:40
 msgid "Yes"
@@ -299,8 +299,8 @@ msgstr "Description         "
 #: ../../lib/abs.sh:59
 #: ../../lib/aur.sh:147
 #, sh-format
-msgid "Unable to create directory $wdir."
-msgstr "Impossible de créer le dossier $wdir."
+msgid "Unable to create directory %s."
+msgstr "Impossible de créer le dossier %s."
 
 #: ../../lib/abs.sh:99
 #, sh-format
@@ -370,8 +370,8 @@ msgstr "non trouvé"
 
 #: ../../lib/abs.sh:263
 #, sh-format
-msgid "(required by $requiredbypkg)"
-msgstr "(requis par $requiredbypkg)"
+msgid "(required by %s)"
+msgstr "(requis par %s)"
 
 #: ../../lib/abs.sh:265
 msgid "required by "
@@ -405,18 +405,18 @@ msgstr "Voulez-vous mettre à jour ces paquets ? "
 #: ../../lib/alpm_backup.sh:19
 #: ../../lib/alpm_backup.sh:20
 #, sh-format
-msgid "Saving pacman database in $savedir"
-msgstr "Sauvegarde de la base de données pacman dans $savedir"
+msgid "Saving pacman database in %s"
+msgstr "Sauvegarde de la base de données pacman dans %s"
 
 #: ../../lib/alpm_backup.sh:23
 #, sh-format
-msgid "$savedir is not a writable directory"
-msgstr "ne peut pas écrire dans $savedir"
+msgid "%s is not a writable directory"
+msgstr "ne peut pas écrire dans %s"
 
 #: ../../lib/alpm_backup.sh:30
 #, sh-format
-msgid "Pacman database successfully saved in \"$savefile\""
-msgstr "Base de données pacman sauvée dans \"$savefile\""
+msgid "Pacman database successfully saved in %s"
+msgstr "Base de données pacman sauvée dans %s"
 
 #: ../../lib/alpm_backup.sh:37
 #: ../../lib/alpm_backup.sh:38
@@ -425,8 +425,8 @@ msgstr "Analyse de la sauvegarde"
 
 #: ../../lib/alpm_backup.sh:45
 #, sh-format
-msgid "$_file is not a valid alpm database backup"
-msgstr "$_file n'est pas une sauvegarde de base alpm valide"
+msgid "%s is not a valid alpm database backup"
+msgstr "%s n'est pas une sauvegarde de base alpm valide"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "New packages installed since backup:"
@@ -443,8 +443,8 @@ msgstr "Attention ! Voulez-vous restaurer cette sauvegarde ?"
 
 #: ../../lib/alpm_backup.sh:66
 #, sh-format
-msgid "(local db will be saved in $savedb)"
-msgstr "(la base de données locale sera sauvée dans $savedb)"
+msgid "(local db will be saved in %s)"
+msgstr "(la base de données locale sera sauvée dans %s)"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "If you want to restore this backup, type \"yes\""
@@ -480,33 +480,28 @@ msgstr "Votre sauvegarde a été restaurée avec succès"
 
 #: ../../lib/alpm_backup.sh:82
 #, sh-format
-msgid "(old database is saved in $savedb)"
-msgstr "(l'ancienne base est sauvée dans $savedb)"
+msgid "(old database is saved in %s)"
+msgstr "(l'ancienne base est sauvée dans %s)"
 
 #: ../../lib/alpm_query.sh:39
 #, sh-format
-msgid "Packages which depend on $name:"
-msgstr "Paquets dépendants de $name:"
+msgid "Packages which depend on %s:"
+msgstr "Paquets dépendants de %s:"
 
 #: ../../lib/alpm_query.sh:40
 #, sh-format
-msgid "Packages which conflicts with $name:"
-msgstr "Paquets en conflit avec $name:"
+msgid "Packages which conflicts with %s:"
+msgstr "Paquets en conflit avec %s:"
 
 #: ../../lib/alpm_query.sh:41
 #, sh-format
-msgid "Packages which replace $name:"
-msgstr "Paquets remplaçant $name:"
+msgid "Packages which replace %s:"
+msgstr "Paquets remplaçant %s:"
 
 #: ../../lib/alpm_query.sh:40
 #, sh-format
-msgid "Packages which provide $name:"
-msgstr "Paquets fournissant $name:"
-
-#: ../../lib/alpm_query.sh:49
-#, sh-format
-msgid "Searching wich package owns \"$arg\""
-msgstr "Recherche du paquet possédant \"$arg\""
+msgid "Packages which provide %s:"
+msgstr "Paquets fournissant %s:"
 
 #: ../../lib/alpm_query.sh:58
 msgid "Packages installed as dependencies but are no longer required by any installed package"
@@ -540,8 +535,8 @@ msgstr "Paquets périmés :"
 
 #: ../../lib/alpm_stats.sh:57
 #, sh-format
-msgid "Where $pkgs_nb_dt packages seems no more used by any package:"
-msgstr "Dont $pkgs_nb_dt semblent ne plus être requis par aucun paquet :"
+msgid "Where %s packages seems no more used by any package:"
+msgstr "Dont %s semblent ne plus être requis par aucun paquet :"
 
 #: ../../lib/alpm_stats.sh:60
 msgid "Hold packages:"
@@ -598,8 +593,8 @@ msgstr "Espace utilisé par les sources en cache :"
 
 #: ../../lib/aur.sh:27
 #, sh-format
-msgid "$pkg not found in AUR."
-msgstr "$pkg non trouvé sur AUR."
+msgid "%s not found in AUR."
+msgstr "%s non trouvé sur AUR."
 
 #: ../../lib/aur.sh:120
 msgid ""
@@ -611,23 +606,23 @@ msgstr ""
 
 #: ../../lib/aur.sh:125
 #, sh-format
-msgid "Checking vote status for $_pkg"
-msgstr "Vérification du vote pour $_pkg"
+msgid "Checking vote status for %s"
+msgstr "Vérification du vote pour %s"
 
 #: ../../lib/aur.sh:128
 #, sh-format
-msgid "You have already voted for $_pkg inclusion/keeping in [community]"
-msgstr "Vous avez déjà voté pour inclure/conserver $_pkg dans [community]"
+msgid "You have already voted for %s inclusion/keeping in [community]"
+msgstr "Vous avez déjà voté pour inclure/conserver %s dans [community]"
 
 #: ../../lib/aur.sh:131
 #, sh-format
-msgid "Do you want to vote for $_pkg inclusion/keeping in [community] ? "
-msgstr "Voulez-vous voter pour inclure/conserver  $_pkg dans [community] ? "
+msgid "Do you want to vote for %s inclusion/keeping in [community] ? "
+msgstr "Voulez-vous voter pour inclure/conserver  %s dans [community] ? "
 
 #: ../../lib/aur.sh:142
 #, sh-format
-msgid "Installing $PKG from AUR"
-msgstr "Installation de $PKG depuis AUR"
+msgid "Installing %s from AUR"
+msgstr "Installation de %s depuis AUR"
 
 #: ../../lib/aur.sh:145
 msgid "Resuming previous build"
@@ -635,8 +630,8 @@ msgstr "Relance la compilation"
 
 #: ../../lib/aur.sh:156
 #, sh-format
-msgid "Downloading $PKG PKGBUILD from AUR..."
-msgstr "Téléchargement du PKGBUILD de $PKG depuis AUR..."
+msgid "Downloading %s PKGBUILD from AUR..."
+msgstr "Téléchargement du PKGBUILD de %s depuis AUR..."
 
 #: ../../lib/aur.sh:161
 msgid "( Unsupported package: Potentially dangerous ! )"
@@ -644,8 +639,8 @@ msgstr "( Paquet non supporté : peut être dangereux ! )"
 
 #: ../../lib/aur.sh:173
 #, sh-format
-msgid "Unable to delete directory $wdir."
-msgstr "Impossible de supprimer le dossier $wdir."
+msgid "Unable to delete directory %s."
+msgstr "Impossible de supprimer le dossier %s."
 
 #: ../../lib/aur.sh:180
 msgid "upgrading AUR unsupported packages"
@@ -677,17 +672,12 @@ msgstr "marqué comme périmé"
 
 #: ../../lib/aur.sh:220
 #, sh-format
-msgid "unable to update $package"
-msgstr "impossible de mettre à jour $package"
+msgid "unable to update %s"
+msgstr "impossible de mettre à jour %s"
 
 #: ../../lib/aur.sh:226
 msgid "Packages that can be updated from AUR:"
 msgstr "Paquets pouvant être mis à jour depuis AUR :"
-
-#: ../../lib/aur.sh:232
-#, sh-format
-msgid "unable to update $PKG"
-msgstr "impossible de mettre à jour $PKG"
 
 #: ../../lib/basicfunctions.sh:71
 msgid "[Y/n]"
@@ -703,8 +693,8 @@ msgstr "[o/n]"
 
 #: ../../lib/basicfunctions.sh:111
 #, sh-format
-msgid "Edit $file ?"
-msgstr "Éditer $file ?"
+msgid "Edit %s ?"
+msgstr "Éditer %s ?"
 
 #: ../../lib/basicfunctions.sh:111
 msgid "(\"A\" to abort)"
@@ -720,8 +710,8 @@ msgstr "Annulé..."
 
 #: ../../lib/basicfunctions.sh:118
 #, sh-format
-msgid "Please add \\$EDITOR to your environment variables"
-msgstr "Veuillez ajouter \\$EDITOR à vos variables d'environnement"
+msgid "Please add \\%s to your environment variables"
+msgstr "Veuillez ajouter \\%s à vos variables d'environnement"
 
 #: ../../lib/basicfunctions.sh:119
 msgid "for example:"
@@ -737,8 +727,8 @@ msgstr "(remplacez vim par votre éditeur favori)"
 
 #: ../../lib/basicfunctions.sh:123
 #, sh-format
-msgid "Edit $file with: "
-msgstr "Éditer $file avec :"
+msgid "Edit %s with: "
+msgstr "Éditer %s avec :"
 
 #: ../../lib/basicfunctions.sh:136
 msgid ""
@@ -750,8 +740,8 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh:78
 #, sh-format
-msgid "Unable to read PKGBUILD for $PKG"
-msgstr "Impossible de lire le PKGBUILD de $PKG"
+msgid "Unable to read PKGBUILD"
+msgstr "Impossible de lire le PKGBUILD"
 
 #: ../../lib/pkgbuild.sh:83
 msgid "This PKGBUILD describes a splitted package."
@@ -763,8 +753,8 @@ msgstr "Les options du paquet sont inconnues"
 
 #: ../../lib/pkgbuild.sh:107
 #, sh-format
-msgid "$PKG dependencies:"
-msgstr "Dépendances de $PKG :"
+msgid "%s dependencies:"
+msgstr "Dépendances de %s :"
 
 #: ../../lib/pkgbuild.sh:109
 msgid "(already installed)"
@@ -780,13 +770,13 @@ msgstr "(compilation depuis AUR)"
 
 #: ../../lib/pkgbuild.sh:149
 #, sh-format
-msgid "$PKG conflicts:"
-msgstr "$PKG est en conflit avec :"
+msgid "%s conflicts:"
+msgstr "%s est en conflit avec :"
 
 #: ../../lib/pkgbuild.sh:166
 #, sh-format
-msgid "$_pkg conflicts with those packages:"
-msgstr "$_pkg est en conflit avec ces paquets :"
+msgid "%s conflicts with those packages:"
+msgstr "%s est en conflit avec ces paquets :"
 
 #: ../../lib/pkgbuild.sh:170
 msgid "Do you want to remove them with \"pacman -Rd\" ? "
@@ -803,23 +793,23 @@ msgstr "Construction et installation du paquet"
 
 #: ../../lib/pkgbuild.sh:247
 #, sh-format
-msgid "The sources of ${pkgbase} were kept last time. Use them ?"
-msgstr "Les sources de ${pkgbase} ont été gardées. Les réutiliser ?"
+msgid "The sources of %s were kept last time. Use them ?"
+msgstr "Les sources de %s ont été gardées. Les réutiliser ?"
 
 #: ../../lib/pkgbuild.sh:255
 #, sh-format
-msgid "Unable to write in ${wdirDEVEL} directory. Using /tmp directory"
-msgstr "Impossible d'écrire dans ${wdirDEVEL}, utilisation de /tmp"
+msgid "Unable to write in %s directory. Using /tmp directory"
+msgstr "Impossible d'écrire dans %s, utilisation de /tmp"
 
 #: ../../lib/pkgbuild.sh:267
 #, sh-format
-msgid "$pkgbase is already up to date."
-msgstr "$pkgbase est déjà à jour."
+msgid "%s is already up to date."
+msgstr "%s est déjà à jour."
 
 #: ../../lib/pkgbuild.sh:275
 #, sh-format
-msgid "Install or build missing dependencies for $PKG:"
-msgstr "Installation/compilation des dépendances manquantes pour $PKG :"
+msgid "Install or build missing dependencies for %s:"
+msgstr "Installation/compilation des dépendances manquantes pour %s:"
 
 #: ../../lib/pkgbuild.sh:279
 msgid "Dependencies have been installed before the failure"
@@ -827,18 +817,18 @@ msgstr "Des dépendances ont été installées avant l'échec"
 
 #: ../../lib/pkgbuild.sh:296
 #, sh-format
-msgid "Makepkg was unable to build $PKG."
-msgstr "Makepkg n'a pas pu construire $PKG."
+msgid "Makepkg was unable to build %s."
+msgstr "Makepkg n'a pas pu construire %s."
 
 #: ../../lib/pkgbuild.sh:320
 #, sh-format
-msgid "Exporting ${pkgbase} to ${PKGDEST} repository"
-msgstr "Export de ${pkgbase} vers le dépôt ${PKGDEST}"
+msgid "Exporting %s to %s directory"
+msgstr "Export de %s vers le dépôt %s"
 
 #: ../../lib/pkgbuild.sh:334
 #, sh-format
-msgid "Continue installing $PKG ?"
-msgstr "Installer $PKG ?"
+msgid "Continue installing %s ?"
+msgstr "Installer %s ?"
 
 #: ../../lib/pkgbuild.sh:335
 msgid "[v]iew package contents   [c]heck package with namcap"
@@ -858,23 +848,23 @@ msgstr "namcap n'est pas installé"
 
 #: ../../lib/pkgbuild.sh:365
 #, sh-format
-msgid "Your packages are saved in $YAOURTTMPDIR/"
-msgstr "Paquets conservés dans $YAOURTTMPDIR/"
+msgid "Your packages are saved in %s"
+msgstr "Paquets conservés dans %s"
 
 #: ../../lib/pkgbuild.sh:366
 #, sh-format
-msgid "Unable to copy packages to $YAOURTTMPDIR/ directory"
-msgstr "Impossible de copier les paquets dans $YAOURTTMPDIR/"
+msgid "Unable to copy packages to %s directory"
+msgstr "Impossible de copier les paquets dans %s"
 
 #: ../../lib/pkgbuild.sh:386
 #, sh-format
-msgid "Continue building $PKG ? "
-msgstr "Lancer la compilation de $PKG ? "
+msgid "Continue building %s ? "
+msgstr "Lancer la compilation de %s ? "
 
 #: ../../lib/pkgbuild.sh:392
 #, sh-format
-msgid "Restart building $PKG ? "
-msgstr "Relancer la compilation de $PKG ? "
+msgid "Restart building %s ? "
+msgstr "Relancer la compilation de %s ? "
 
 #: ../../pacdiffviewer.sh:45
 msgid "Patch: "

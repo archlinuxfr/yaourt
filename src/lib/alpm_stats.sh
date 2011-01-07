@@ -47,7 +47,7 @@ showpackagestats(){
 	echo -e "$CGREEN$(gettext 'Packages installed as dependencies to run other packages:')  ${CYELLOW}$pkgs_nb_d"   
 	echo -e "$CGREEN$(gettext 'Packages out of date:')  $CYELLOW$pkgs_nb_u"   
 	if (( pkgs_nb_dt )); then
-		echo -e "$CRED$(eval_gettext 'Where $pkgs_nb_dt packages seems no more used by any package:')$C0"
+		echo -e "$CRED$(_gettext 'Where %s packages seems no more used by any package:' "$pkgs_nb_dt")$C0"
 		echo_wrap 4 "${orphans[*]}"
 	fi
 	echo -e "$CGREEN$(gettext 'Hold packages:') (${#HoldPkg[@]}) $C0$CYELLOW${HoldPkg[@]}"

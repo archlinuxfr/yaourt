@@ -7,10 +7,10 @@
 # $1: directory
 save_alpm_db(){
 	local savedir="$1" savefile="$1/pacman-$(date +%Y-%m-%d_%Hh%M).tar.bz2"
-	msg $(eval_gettext 'Saving pacman database in $savedir')
-	title $(eval_gettext 'Saving pacman database in $savedir')
+	msg $(_gettext 'Saving pacman database in %s' "$savedir")
+	title $(_gettext 'Saving pacman database in %s' "$savedir")
 	bsdtar -cjf "$savefile" -C "$PACMANDB" "local/" && \
-	    msg $(eval_gettext 'Pacman database successfully saved in "$savefile"')
+	    msg $(_gettext 'Pacman database successfully saved in %s' "$savefile")
 }
 
 # test if file is an alpm database backup
@@ -26,8 +26,7 @@ is_an_alpm_backup(){
 	fi
 	pacman_parse --dbpath "$backupdir/" --query | LC_ALL=C sort > "$backupdb"
 	if [[ ! -s "$backupdb" ]]; then
-		_file="$1"
-		error $(eval_gettext '$_file is not a valid alpm database backup')
+		error $(_gettext '%s is not a valid alpm database backup' "$1")
 		return 1
 	fi
 	return 0
@@ -50,7 +49,7 @@ restore_alpm_db(){
 	echo
 	title "$(gettext 'Warning! Do you want to restore this backup ?')"
 	msg "$(gettext 'Warning! Do you want to restore this backup ?')"
-	msg "$(eval_gettext '(local db will be saved in $savedb)')"
+	msg "$(_gettext '(local db will be saved in %s)' "$savedb")"
 	prompt $(gettext 'If you want to restore this backup, type "yes"')
 	read -e 
 	[[ "$REPLY" != "$(gettext 'yes')" ]] && return 0
@@ -67,7 +66,7 @@ restore_alpm_db(){
 		msg $(gettext 'Your backup has been successfully restored')
 		msg "$(cat "$nowdb" | wc -l) $(gettext 'packages found')"
 	fi
-	msg $(eval_gettext '(old database is saved in $savedb)')
+	msg $(_gettext '(old database is saved in %s)' "$savedb")
 }
 
 # save ($1 is a dir) or restore ($1 is a file) alpm database
