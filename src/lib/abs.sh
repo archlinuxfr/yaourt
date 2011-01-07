@@ -195,7 +195,6 @@ sysupgrade()
 		rm "$YAOURTTMPDIR/sysupgrade"
 	fi
 	#[[ ! "$packages" ]] && return 0	
-	loadlibrary pacman
 	local cmd="echo -n"
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
 	((AURUPGRADE)) && cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
@@ -265,7 +264,7 @@ showupgradepackage()
 				   printf "%*s   $CRED$(_gettext '(required by %s)' "$requiredbypkg")$C0" ${longestpkg[1]} "";;
 			esac
 			printf "\r%-*s  $CGREEN${line[3]}$C0" ${longestpkg[0]} ""
-			echo -e "\r${colors[${line[1]}]:-${colors[other]}}${line[1]}/$C0${colors[pkg]}${line[2]}$C0"
+			echo -e "\r${C[${line[1]}]:-${C[other]}}${line[1]}/$C0${C[pkg]}${line[2]}$C0"
 			if [[ "$1" = "full" ]]; then
 				echo_wrap 4 "${line[6]}"
 			fi
@@ -313,7 +312,6 @@ upgrade_devel_package(){
 	declare -a devel_pkgs
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
-	loadlibrary pacman
 	local _arg="-Qq" pkg
 	((AURDEVELONLY)) && _arg+="m"
 	for pkg in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")

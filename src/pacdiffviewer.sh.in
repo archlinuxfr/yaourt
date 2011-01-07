@@ -20,15 +20,11 @@
 #
 export TEXTDOMAINDIR='@localedir@'
 export TEXTDOMAIN=yaourt
-type -t gettext &> /dev/null || { gettext () { echo "$@"; }; }
-_gettext ()
-{
-	local str=$1; shift
-	printf "$(gettext "$str")" "$@" 
-}
 
-myname=pacdiffviewer
-myversion='@VERSION@'
+NAME='pacdiffviewer'
+VERSION='@VERSION@'
+
+. '@libdir@/yaourt/util.sh'
 
 ROOTDIR=
 SAVEDIR='@localstatedir@/lib/yaourt/backupfiles'
@@ -38,11 +34,11 @@ DIFFEDITCMD="vimdiff"
 QUIET=0
 [[ -d "$SAVEDIR" ]] && MERGE=1 || MERGE=0
 tmp_file=$(mktemp)
-trap 'rm "$tmp_file"' 0
+CLEANUP+=("rm $tmp_file")
 
 usage()
 {
-	echo "$myname $myversion"
+	echo "$NAME $VERSION"
 	[[ "$1" = "-v" ]] && exit 0
 	echo -e "\t-c $(gettext 'Delete all *.pac* found')"
 	echo -e "\t-b $(gettext 'Save all packages backup files for a later merge')"
@@ -255,8 +251,7 @@ manage()
 	fi
 }
 
-. '@libdir@/yaourt/util.sh'
-initcolor
+init_color
 action=""
 while [[ $1 ]]; do
 	case "$1" in 

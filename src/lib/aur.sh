@@ -45,7 +45,7 @@ info_from_aur() {
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc
 	source "$tmpfile"
-	aur_show_info "Repository     " "${colors[aur]:-${colors[other]}}aur$C0"
+	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
 	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
 	aur_show_info "URL            " "$CCYAN$url$C0"
@@ -145,7 +145,8 @@ install_from_aur(){
 	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "$pkgname")
 	aur_get_pkgbuild "$pkgname" "$pkgurl" || return 1
 	aurcomments $aurid
-	echo -e "$CBOLD$pkgname $version $C0: $description"
+	local len="$pkgname $version : "
+	echo_wrap_next_line "$CBOLD$pkgname $version $C0: " ${#len} "$description"
 	echo -e "$CBLINK$CRED"$(gettext '( Unsupported package: Potentially dangerous ! )')"$C0"
 
 	# Build, install/export

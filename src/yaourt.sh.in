@@ -20,16 +20,11 @@
 #
 export TEXTDOMAINDIR='@localedir@'
 export TEXTDOMAIN=yaourt
-type -t gettext &> /dev/null || { gettext () { echo "$@"; }; }
-_gettext ()
-{
-	local str=$1; shift
-	printf "$(gettext "$str")" "$@" 
-}
 
 NAME='yaourt'
 VERSION='@VERSION@'
 
+. '@libdir@/yaourt/util.sh'
 
 ###################################
 ### General functions           ###
@@ -51,99 +46,10 @@ usage(){
 	echo -e "\t$(gettext 'yaourt {--stats}')"
 }
 version(){
-	echo "$(_gettext "yaourt %s is a pacman frontend with AUR support and more" "$VERSION")"
+	echo "yaourt $VERSION"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
 }
-die(){
-	local ret=${1:-0}
-	# reset term title
-	(( TERMINALTITLE )) && [[ $DISPLAY ]] &&  echo -n -e "\033]0;$TERM\007"
-	exit $ret
-}
 
-manage_error(){
-	ERROR_PKGS+=("$1")
-	return 1
-}
-
-# Check if sudo is allowed for given command
-is_sudo_allowed()
-{
-	if (( SUDOINSTALLED )); then
-		(( SUDONOVERIF )) && return 0
-		sudo -nl "$@" &> /dev/null || \
-			(sudo -v && sudo -l "$@") &>/dev/null && return 0
-	fi
-	return 1
-}
-
-launch_with_su(){
-	if is_sudo_allowed "$@"; then
-		sudo "$@" || return 1
-	else
-		(( $UID )) && echo -e "$(_gettext 'You are not allowed to launch %s with sudo\nPlease enter root password' "$1")" 1>&2 
-		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
-		local errorfile="/tmp/yaourt_error.$RANDOM"
-		for i in 1 2 3; do 
-			su --shell=/bin/bash --command "$* || touch $errorfile"
-			(( $? )) && [[ ! -f "$errorfile" ]] && continue
-			[[ -f "$errorfile" ]] && return 1 || return 0
-		done
-		return 1
-	fi
-}
-
-# Define programs arguments
-# Usage: program_arg ($dest, $arg)
-# dest:
-A_PS=1 A_M=2 A_Y=4 A_PQ=8 A_PC=16 A_PKC=32
-program_arg ()
-{
-	local dest=$1; shift
-	(( dest & A_PS ))  && PACMAN_S_ARG+=("$@")
-	(( dest & A_M ))   && MAKEPKG_ARG+=("$@")
-	(( dest & A_Y ))   && YAOURT_ARG+=("$@")
-	(( dest & A_PQ ))  && PACMAN_Q_ARG+=("$@")
-	(( dest & A_PC ))  && PACMAN_C_ARG+=("$@")
-	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
-}
-
-# Wait while pacman locks exists
-pacman_queue()
-{
-	# from nesl247
-	if [[ -f "$LOCKFILE" ]]; then
-		msg $(gettext 'Pacman is currently in use, please wait.')
-		while [[ -f "$LOCKFILE" ]]; do
-			sleep 3
-		done
-	fi
-}
-# launch pacman as root
-su_pacman ()
-{
-	pacman_queue; launch_with_su $PACMAN "${PACMAN_C_ARG[@]}" "$@"
-}
-
-# Launch pacman and exit
-pacman_cmd ()
-{
-	(( ! $1 )) && exec $PACMAN "${ARGSANS[@]}"
-	prepare_orphan_list
-	pacman_queue; launch_with_su $PACMAN "${ARGSANS[@]}"  
-	local ret=$?
-	(( ! ret )) && show_new_orphans
-	exit $ret
-}
-
-# Refresh pacman database
-pacman_refresh ()
-{
-	local _arg
-	title $(gettext 'synchronizing package databases')
-	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
-	su_pacman $_arg || exit $?
-}
 
 ###################################
 ### Package database functions  ###
@@ -175,8 +81,7 @@ show_new_orphans(){
 	# show new orphans after removing/upgrading
 	local neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" )
 	if [[ "$neworphans" ]]; then
-		plain $(gettext 'Packages that were installed as dependencies but are no longer required by any installed package:')
-		echo_wrap 4 "$neworphans"
+		info_list "$(gettext 'Packages no longer required by any installed package:')" "$neworphans"
 	fi
 
 	# Test local database
@@ -185,8 +90,8 @@ show_new_orphans(){
 	# save original of backup files (pacnew/pacsave)
 	if [[ "$MAJOR" != "remove" ]] && (( AUTOSAVEBACKUPFILE )) && ! \
 		diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
-		msg $(gettext 'Searching for original config files to save')
-		launch_with_su pacdiffviewer --backup
+		info_progress "$(gettext 'Searching for original config files to save')" \
+		  launch_with_su pacdiffviewer --backup
 	fi
 
 }
@@ -295,6 +200,14 @@ yaourt_sync ()
 # Handle query
 yaourt_query ()
 {
+	[[ -n $BACKUPFILE ]] && if [[ -r "$BACKUPFILE" ]]; then   # -Q --backupfile
+		loadlibrary alpm_backup 
+		is_an_alpm_backup "$BACKUPFILE" || die 1
+		program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
+	else
+		error $(_gettext 'Unable to read %s file' "$BACKUPFILE")
+		die 1
+	fi
 	if (( CHANGELOG || LIST || INFO || FILE )); then
 		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${ARGS[@]}"
 		return $?
@@ -360,19 +273,15 @@ yaourt_no_action ()
 ### MAIN PROGRAM                ###
 ###################################
 # Basic init and librairies
-YAOURTBIN=$0
-. '@libdir@/yaourt/util.sh'
 
 unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 	AUR HOLDVER IGNOREGRP IGNOREPKG IGNOREARCH CLEAN CHANGELOG LIST INFO \
 	DATE UNREQUIRED FOREIGN GROUP QUERYTYPE \
-	QUIET SUDOINSTALLED AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
-	DEPENDS PRINT PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG \
-	PACMAN_C_ARG PKGQUERY_C_ARG ERROR_PKGS  
+	QUIET AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED EXPLICITE \
+	DEPENDS PRINT   
 
 # Grab environement options
 {
-	type -p sudo && SUDOINSTALLED=1
 	type -p aurvote && AURVOTEINSTALLED=1
 	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
 } &> /dev/null
@@ -382,19 +291,8 @@ unset MAJOR NODEPS SEARCH BUILD REFRESH SYSUPGRADE \
 
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")
-unset OPTS
-arg=$1
-while [[ $arg ]]; do
-	[[ $arg = "--" ]] && OPTS+=("$@") && break;
-	if [[ ${arg:0:1} = "-" && ${arg:1:1} != "-" ]]; then
-		OPTS+=("-${arg:1:1}")
-		(( ${#arg} > 2 )) && arg="-${arg:2}" || { shift; arg=$1; }
-	else
-		OPTS+=("$arg"); shift; arg=$1
-	fi
-done
+explode_args "$@"
 set -- "${OPTS[@]}"
-unset arg
 unset OPTS
 
 while [[ $1 ]]; do
@@ -458,28 +356,16 @@ while [[ $1 ]]; do
 	shift
 done
 
-# Init colors (or not)
+# Init path & colors 
+init_paths
 [[ -t 1 ]] || { USECOLOR=0; TERMINALTITLE=0; }
 ((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor" 
-initcolor
+init_color
 
 # No options
 [[ -z $MAJOR ]] && yaourt_no_action
-
-# Init path, complete options and check some permissions
-(( ! SYSUPGRADE && UPGRADES )) && [[ "$MAJOR" = "sync" ]] && SYSUPGRADE=1
-(( EXPORT )) && [[ $EXPORTDIR ]] && { check_dir EXPORTDIR || die 1; }
-check_dir TMPDIR || die 1
-YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
-# -Q --backupfile
-[[ "$BACKUPFILE" ]] && if [[ -r "$BACKUPFILE" ]]; then
-	loadlibrary alpm_backup 
-	is_an_alpm_backup "$BACKUPFILE" || die 1
-	program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
-else
-	error $(_gettext 'Unable to read %s file' "$BACKUPFILE")
-	die 1
-fi
+# Complete options
+(( ! SYSUPGRADE && UPGRADES )) && [[ $MAJOR = "sync" ]] && SYSUPGRADE=1 # -Su
 if (( NOCONFIRM )); then
 	EDITFILES=0
 	BUILD_NOCONFIRM=1
@@ -487,7 +373,6 @@ if (( NOCONFIRM )); then
 	program_arg $((A_PS | A_M | A_Y)) "--noconfirm"
 fi
 ((FORCE)) && program_arg $((A_PS | A_M | A_Y)) "--force"
-initpath
 
 # Refresh
 [[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )) && pacman_refresh

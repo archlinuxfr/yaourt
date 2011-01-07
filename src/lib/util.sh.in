@@ -1,157 +1,104 @@
 #!/bin/bash
 #
-# util.sh: common functions and initialisation 
+# util.sh: common functions 
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-unset PACMANDB LOCKFILE CACHEDIR LOADEDLIBS
-COLUMNS=$(tput cols)
-declare -A LOADEDLIBS
+# Since we use some associated arrays, this file should be included from
+# outside a function.
 
-# pacman & package-query call with command line options
-pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
-pacman_out () { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
-pkgquery () { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
+SUDONOVERIF=0
+SUDOINSTALLED=0
+CLEANUP=()
+ERROR_PKGS=()
+declare -A LOADEDLIBS=()
 
-# set misc path
-initpath(){
-	readarray -t P_CONF < <(
-	pacman_parse --verbose | sed -n \
-		-e 's|/ *$|/|' \
-		-e 's/^Conf File *: //p' \
-		-e 's/^DB Path *: //p' \
-		-e 's/^Cache Dirs *: //p' \
-		-e 's/^Lock File *: //p' \
-		-e 's/^Log File *: //p' )
-	PACMANDB=${P_CONF[1]}
-	CACHEDIR=${P_CONF[2]}
-	LOCKFILE=${P_CONF[3]}
-	mkdir -p "$YAOURTTMPDIR"
+type -p sudo &> /dev/null && SUDOINSTALLED=1
+type -t gettext &> /dev/null || { gettext () { echo "$@"; }; }
+
+_gettext ()
+{
+	local str=$1; shift
+	printf "$(gettext "$str")" "$@" 
 }
 
+die() {	exit ${1:-0}; }
+
+# Called on exit
+# CLEANUP is an array of commands to be run at exit.
+cleanup()
+{
+	local line
+	for line in "${CLEANUP[@]}"; do eval $line; done
+}
+trap cleanup 0
+
+# explode_args ($arg1,...)
+# -ab --long -> -a -b --long
+# set $OPTS
+explode_args()
+{
+	unset OPTS
+	local arg=$1
+	while [[ $arg ]]; do
+		[[ $arg = "--" ]] && OPTS+=("$@") && break;
+		if [[ ${arg:0:1} = "-" && ${arg:1:1} != "-" ]]; then
+			OPTS+=("-${arg:1:1}")
+			(( ${#arg} > 2 )) && arg="-${arg:2}" || { shift; arg=$1; }
+		else
+			OPTS+=("$arg"); shift; arg=$1
+		fi
+	done
+}
+
+manage_error() { ERROR_PKGS+=("$1"); return 1; }
+
 # Load library but never reload twice the same lib
-loadlibrary(){
+loadlibrary()
+{
 	while [[ $1 ]]; do
 		((LOADEDLIBS[$1])) && return 0
 		if [[ ! -r "@libdir@/yaourt/$1.sh" ]]; then
 			error "$1.sh file is missing"
 			die 1
 		fi
-		source "@libdir@/yaourt/$1.sh" || warning "problem in $1.sh library"
+		. "@libdir@/yaourt/$1.sh" || warning "problem in $1.sh library"
 		LOADEDLIBS[$1]=1
 		shift
 	done
 }
 
-printf -v P_INDENT "%*s" ${COLUMNS:-0}
-# Fill line ($color_start,$content,$color_end)
-echo_fill ()
+# Check if sudo is allowed for given command
+is_sudo_allowed()
 {
-	echo -e "$1${P_INDENT// /$2}$3"
-}
-
-# Wrap string
-# usage: str_wrap ($indent, $str)
-# return: set $strwrap with wrapped content
-str_wrap ()
-{
-	local indent=${1:-0} ; shift
-	(( indent > COLUMNS )) && { strwrap="$*"; return 0; }
-	strwrap="${P_INDENT:0:$indent}$*"
-	(( ${#strwrap} < COLUMNS-indent-1 )) && return 0 || { strwrap=""; set -- $*; }
-	local i=0 k strout=""
-	while [[ $1 ]]; do
-		strout+="$1 "
-		(( i+=${#1}+1 ))
-		k=${#2}
-		if (( k && (i%COLUMNS)+indent+k>COLUMNS-1 )); then
-			strwrap+="${P_INDENT:0:$indent}$strout\n"
-			strout=""
-			i=0
-		fi
-		shift
-	done
-	strwrap+="${P_INDENT:0:$indent}$strout"
-}
-
-echo_wrap ()
-{
-	local strwrap
-	str_wrap "$1" "$2"
-	echo -e "$strwrap"
-}
-
-echo_wrap_next_line () 
-{
-	echo -en "$1"; shift
-	local len=$1; shift
-	local i=0 strout="" strwrap
-	for str in "$@"; do
-		str_wrap $len "$str"
-		(( i++ )) || strwrap=${strwrap##*( )}
-		strout+="$strwrap\n"
-	done
-	echo -en "$strout"
-}
-
-list_select ()
-{
-	local i=0 _line
-	for _line in "$@"; do
-		(( i++ ))
-		echo -e  "${colors[nb]}$i$C0 $_line"
-	done
-	echo
-}
-
-# ask 
-userinput() 
-{
-	local _key=${1:-YN}
-	local default=${2:-Y}
-	local answer
-	if (( NOCONFIRM ));then 
-		answer=$default
-	else
-		read -en $NOENTER
-		[[ $REPLY ]] && answer=$(echo ${REPLY^^*} | tr "$(gettext $_key)" "$_key") || answer=$default
-		[[ "${_key/$answer/}" = "$_key" ]] && answer=$default
+	if (( SUDOINSTALLED )); then
+		(( SUDONOVERIF )) && return 0
+		sudo -nl "$@" &> /dev/null || \
+			(sudo -v && sudo -l "$@") &>/dev/null && return 0
 	fi
-	echo $answer
-	[[ "$answer" = "$default" ]]
+	return 1
 }
 
-useragrees()
+# Run $* as root using sudo or su
+launch_with_su()
 {
-	userinput "$@" &> /dev/null
-	local ret=$?
-	echo 
-	return $ret
+	if is_sudo_allowed "$@"; then
+		sudo "$@" || return 1
+	else
+		(( $UID )) && msg "$(_gettext 'You are not allowed to launch %s with sudo\nPlease enter root password' "$1")" 1>&2 
+		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
+		local errorfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
+		for i in 1 2 3; do 
+			su --shell=/bin/bash --command "$* || touch $errorfile"
+			(( $? )) && [[ ! -f "$errorfile" ]] && continue
+			[[ ! -f "$errorfile" ]] && return 0
+			rm -f $errorfile
+		done
+		return 1
+	fi
 }
 
-builduserinput () { NOCONFIRM=$BUILD_NOCONFIRM userinput "$@"; }
-builduseragrees () { NOCONFIRM=$BUILD_NOCONFIRM useragrees "$@"; }
-
-yes_no ()
-{
-	case $1 in
-	  1) echo $(gettext "[Y/n]");;
-	  2) echo $(gettext "[y/N]");;
-	  *) echo $(gettext "[y/n]");;
-	esac
-}
-
-
-is_x_gt_y(){
-	[[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]]
-}
-
-
-##
-# From makepkg.
-#  usage : in_array( $needle, $haystack )
-# return : 0 - found
-#          1 - not found
-##
+# Check array item existence (from makepkg)
+# in_array ($needle, $array)
 in_array() {
 	local needle=$1; shift
 	[[ "$1" ]] || return 1 # Not Found
@@ -161,6 +108,53 @@ in_array() {
 	done
 	return 1 # Not Found
 }
+
+# Check directory write permissions and set a cannonical name
+# check_dir ($var)
+#   $var : name of variable containing directory
+check_dir()
+{
+	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }	
+	[[ ! -w "${!1}" ]] && { error "${!1} $(gettext 'is not writable')"; return 1; }	
+	eval $1'="$(readlink -e "${!1}")"'	# get cannonical name
+	return 0
+}
+
+# Check/init useful paths
+init_paths()
+{
+	check_dir TMPDIR || die 1
+	YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
+	mkdir -p "$YAOURTTMPDIR" || check_dir YAOURTTMPDIR || die 1
+	(( EXPORT )) && [[ $EXPORTDIR ]] && { check_dir EXPORTDIR || die 1; }
+	parse_pacman_conf
+}
+
+# Define programs arguments
+A_PS=1   # pacman sync
+A_M=2    # makepkg
+A_Y=4    # yaourt
+A_PQ=8   # pacman query
+A_PC=16  # pacman conf
+A_PKC=32 # package-query
+unset PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG PACMAN_C_ARG \
+      PKGQUERY_C_ARG
+# Usage: program_arg ($dest, $arg)
+program_arg ()
+{
+	local dest=$1; shift
+	(( dest & A_PS ))  && PACMAN_S_ARG+=("$@")
+	(( dest & A_M ))   && MAKEPKG_ARG+=("$@")
+	(( dest & A_Y ))   && YAOURT_ARG+=("$@")
+	(( dest & A_PQ ))  && PACMAN_Q_ARG+=("$@")
+	(( dest & A_PC ))  && PACMAN_C_ARG+=("$@")
+	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
+}
+
+# pacman & package-query call with command line options
+pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_out () { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
+pkgquery () { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
 
 # Run editor
 # Usage: run_editor ($file, $default_answer)
@@ -195,19 +189,11 @@ run_editor ()
 	wait
 }
 
-check_dir ()
-{
-	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }	
-	[[ ! -w "${!1}" ]] && { error "${!1} $(gettext 'is not writable')"; return 1; }	
-	eval $1'="$(readlink -e "${!1}")"'	# get cannonical name
-	return 0
-}
-
 # Main init
-
-declare -A colors	#TODO not its place
+. '@libdir@/yaourt/io.sh'
+. '@libdir@/yaourt/pacman.sh'
+LOADEDLIBS+=([util]=1 [io]=1 [pacman]=1)
 shopt -s extglob
-loadlibrary io
 unset ABS_REPO
 # General
 AUTOSAVEBACKUPFILE=0
@@ -249,4 +235,5 @@ YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 # PACMANBIN is depreceated
 PACMAN=${PACMAN:-$PACMANBIN}
 export PACMAN=${PACMAN:-pacman}
+
 # vim: set ts=4 sw=4 noet: 

@@ -3,6 +3,113 @@
 # io.sh : Input/output functions
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
+# This file should be included from outside a function.
+
+COLUMNS=$(tput cols)
+printf -v P_INDENT "%*s" ${COLUMNS:-0}
+P_UNDERLINE=${P_INDENT// /-}
+C0=''
+declare -A C=()
+
+# Fill line ($color_start,$content,$color_end)
+echo_fill ()
+{
+	echo -e "$1${P_INDENT// /$2}$3"
+}
+
+# Wrap string
+# usage: str_wrap ($indent, $str)
+# return: set $strwrap with wrapped content
+str_wrap ()
+{
+	local indent=${1:-0} ; shift
+	(( indent > COLUMNS )) && { strwrap="$*"; return 0; }
+	strwrap="${P_INDENT:0:$indent}$*"
+	(( ${#strwrap} < COLUMNS-indent-1 )) && return 0 || { strwrap=""; set -- $*; }
+	local i=0 k strout=""
+	while [[ $1 ]]; do
+		strout+="$1 "
+		(( i+=${#1}+1 ))
+		k=${#2}
+		if (( k && (i%COLUMNS)+indent+k>COLUMNS-1 )); then
+			strwrap+="${P_INDENT:0:$indent}$strout\n"
+			strout=""
+			i=0
+		fi
+		shift
+	done
+	strwrap+="${P_INDENT:0:$indent}$strout"
+}
+
+echo_wrap ()
+{
+	local strwrap
+	str_wrap "$1" "$2"
+	echo -e "$strwrap"
+}
+
+echo_wrap_next_line () 
+{
+	echo -en "$1"; shift
+	local len=$1; shift
+	local i=0 strout="" strwrap
+	for str in "$@"; do
+		str_wrap $len "$str"
+		(( i++ )) || strwrap=${strwrap##*( )}
+		strout+="$strwrap\n"
+	done
+	echo -en "$strout"
+}
+
+
+list_select ()
+{
+	local i=0 _line
+	for _line in "$@"; do
+		(( i++ ))
+		echo -e  "${C[nb]}$i$C0 $_line"
+	done
+	echo
+}
+
+# ask 
+userinput() 
+{
+	local _key=${1:-YN}
+	local default=${2:-Y}
+	local answer
+	if (( NOCONFIRM ));then 
+		answer=$default
+	else
+		read -en $NOENTER
+		[[ $REPLY ]] && answer=$(echo ${REPLY^^*} | tr "$(gettext $_key)" "$_key") || answer=$default
+		[[ "${_key/$answer/}" = "$_key" ]] && answer=$default
+	fi
+	echo $answer
+	[[ "$answer" = "$default" ]]
+}
+
+useragrees()
+{
+	userinput "$@" &> /dev/null
+	local ret=$?
+	echo 
+	return $ret
+}
+
+# ask while building
+builduserinput () { NOCONFIRM=$BUILD_NOCONFIRM userinput "$@"; }
+builduseragrees () { NOCONFIRM=$BUILD_NOCONFIRM useragrees "$@"; }
+
+yes_no ()
+{
+	case $1 in
+	  1) echo $(gettext "[Y/n]");;
+	  2) echo $(gettext "[y/N]");;
+	  *) echo $(gettext "[y/n]");;
+	esac
+}
+
 # Set teminal title.
 title(){
 	(( ! TERMINALTITLE )) || [[ ! $DISPLAY ]] && return 0
@@ -13,21 +120,22 @@ title(){
 	esac
 }
 
+
 # parse_color_var ($1)
 # $1 is a colon-separated list of keys
 # ex: core=1;31:extra=1;32
 parse_color_var ()
 {
 	local vars="BOLD BLINK RED GREEN YELLOW BLUE PURPLE CYAN"
-	local col key val colors_array=(${1//:/ })
-	for col in "${colors_array[@]}"; do
+	local col key val colors=(${1//:/ })
+	for col in "${colors[@]}"; do
 		[[ $col =~ ^[A-Za-z]+=[0-9\;]+$ ]] || continue
 		key=${col%=*} val="\033[${col#$key=}m"
-		[[ " ${vars[*]} " =~ " $key " ]] && eval C$key=\"$val\" || colors[$key]="$val"
+		[[ " ${vars[*]} " =~ " $key " ]] && eval C$key=\"$val\" || C[$key]="$val"
 	done
 }
 
-initcolor ()
+init_color ()
 {
 	((!USECOLOR)) || [[ $COLORMODE = "nocolor" ]] && return
 	C0="\033[0m" 
@@ -39,34 +147,21 @@ initcolor ()
 	export PQ_COLORS+="$pq_colors:$yaourt_colors:$YAOURT_COLORS"
 	((USECOLOR==2)) || [[ $COLORMODE = "lightbg" ]] && PQ_COLORS=${PQ_COLORS//33/36} # lightbg!
 	parse_color_var "$PQ_COLORS"
-	trap "echo -ne '\033[0m'" 0
+	CLEANUP+=("echo -ne '\033[0m'")
+	((TERMINALTITLE)) && [[ $DISPLAY ]] && CLEANUP+=("echo -ne '\033]0;$TERM\007'")
 }
-plain(){
-	echo -e "$CBOLD$*$C0" >&2
-}
-_showmsg(){
-	echo -en "$1==> $2$C0$CBOLD$3$C0" >&2
-}
-msg(){
-	_showmsg "$CGREEN" "" "$*\n"
-}
-warning(){
-	_showmsg "$CYELLOW" "$(gettext 'WARNING: ')" "$*\n"
-}
-P_UNDERLINE=${P_INDENT// /-}
-prompt(){
+
+
+_showmsg() { echo -en "$1==> $2$C0$CBOLD$3$C0" >&2; }
+msg() { _showmsg "$CGREEN" "" "$*\n"; }
+warning() { _showmsg "$CYELLOW" "$(gettext 'WARNING: ')" "$*\n"; }
+prompt() { 
 	local t="$*"
 	t=${#t}
 	_showmsg "$CYELLOW" "" "$*\n"
 	_showmsg "$CYELLOW" "" "${P_UNDERLINE:4:$t}\n"
 	_showmsg "$CYELLOW"
 }
-prompt2(){
-	_showmsg "$CYELLOW" "" "$* "
-}
-error(){
-	_showmsg "$CRED" "$(gettext 'ERROR: ')" "$*\n"
-	return 1
-}
+prompt2() { _showmsg "$CYELLOW" "" "$* "; }
+error() { _showmsg "$CRED" "$(gettext 'ERROR: ')" "$*\n"; return 1; }
 
-# vim: set ts=4 sw=4 noet: 

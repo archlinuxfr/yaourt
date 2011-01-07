@@ -3,7 +3,6 @@
 # alpm_stats.sh : collect and show some stats about local database.
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-loadlibrary pacman
 loadlibrary pkgbuild
 
 # set orphans, repo_packages, pkg_nb*
