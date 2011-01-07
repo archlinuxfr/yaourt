@@ -107,7 +107,7 @@ classify_pkg ()
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" \
 				|| continue
 		fi
-		[[ " ${SyncFirst[@]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
+		[[ " ${P[SyncFirst]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
 		custom_pkg "$pkgname" && srcpkgs+=("$repo/$pkgname") || pkgs+=("$repo/$pkgname")
 		if [[ "$lversion" != "-" ]]; then
 			pkgver=$lversion

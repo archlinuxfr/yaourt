@@ -31,6 +31,12 @@ buildpackagelist()
 	done < <(pkgquery -Qf "%4 %s %n")
 }
 
+_showpkgs() {
+	local str=$1;shift 
+	local p=("$@")
+	echo -e "$CGREEN$str (${#p[*]}) $C0$CYELLOW${p[@]}"
+}
+
 showpackagestats(){
 	echo_fill "$CBLUE" - "$C0"
 	if [[ -t 1 ]]; then
@@ -49,9 +55,9 @@ showpackagestats(){
 		echo -e "$CRED$(_gettext 'Where %s packages seems no more used by any package:' "$pkgs_nb_dt")$C0"
 		echo_wrap 4 "${orphans[*]}"
 	fi
-	echo -e "$CGREEN$(gettext 'Hold packages:') (${#HoldPkg[@]}) $C0$CYELLOW${HoldPkg[@]}"
-	echo -e "$CGREEN$(gettext 'Ignored packages:') (${#IgnorePkg[@]}) $C0$CYELLOW${IgnorePkg[@]}"
-	echo -e "$CGREEN$(gettext 'Ignored groups:') (${#IgnoreGroup[@]}) $C0$CYELLOW${IgnoreGroup[@]}"
+	_showpkgs "$(gettext 'Hold packages:')" ${P[HoldPkg]}
+	_showpkgs "$(gettext 'Ignored packages:')" ${P[IgnorePkg]}
+	_showpkgs "$(gettext 'Ignored groups:')" ${P[IgnoreGroup]}
 	echo; echo_fill "$CBLUE" - "$C0"
 }
 

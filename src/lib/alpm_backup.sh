@@ -9,7 +9,7 @@ save_alpm_db(){
 	local savedir="$1" savefile="$1/pacman-$(date +%Y-%m-%d_%Hh%M).tar.bz2"
 	msg $(_gettext 'Saving pacman database in %s' "$savedir")
 	title $(_gettext 'Saving pacman database in %s' "$savedir")
-	bsdtar -cjf "$savefile" -C "$PACMANDB" "local/" && \
+	bsdtar -cjf "$savefile" -C "${P[dbpath]}" "local/" && \
 	    msg $(_gettext 'Pacman database successfully saved in %s' "$savefile")
 }
 
@@ -54,9 +54,9 @@ restore_alpm_db(){
 	read -e 
 	[[ "$REPLY" != "$(gettext 'yes')" ]] && return 0
 	msg $(gettext 'Deleting pacman DB')
-	launch_with_su mv "$PACMANDB/local/" "$savedb"
+	launch_with_su mv "${P[dbpath]}/local/" "$savedb"
 	msg $(gettext 'Copying backup')
-	launch_with_su mv "$backupdir/local/" "$PACMANDB/local" && \
+	launch_with_su mv "$backupdir/local/" "${P[dbpath]}/local" && \
 		launch_with_su rm -rf  "$backupdir" 
 	msg $(gettext 'Testing the new database')
 	pacman_parse --query | LC_ALL=C sort > "$nowdb"

@@ -277,8 +277,8 @@ install_package()
 	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
 	if (( EXPORT==2 )); then
-		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "$CACHEDIR")
-		launch_with_su cp -vf "$YPKGDEST/"* "$CACHEDIR/" 
+		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "${P[cachedir]}")
+		launch_with_su cp -vf "$YPKGDEST/"* "${P[cachedir]}/" 
 	elif (( EXPORT )) && [[ $PKGDEST ]]; then
 		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "$PKGDEST")
 		cp -vfp "$YPKGDEST/"* "$PKGDEST/" 

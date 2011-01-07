@@ -3,36 +3,27 @@
 # pacman.sh: pacman interactions
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-# This file use global variables
-# PKGS_IGNORED: IgnoredPkg + IgnoredGroup (exploded) in pacman.conf
-# HoldPkg, SyncFirst ... 
+# Global var: P for pacman configuration
+declare -A P=()
 
 parse_pacman_conf()
 {
-	# Parse pacman configuration
-	local P_CONF
-	readarray -t P_CONF < <(
-	pacman_parse --verbose | sed -n \
-		-e 's|/ *$|/|' \
-		-e 's/^Conf File *: //p' \
-		-e 's/^DB Path *: //p' \
-		-e 's/^Cache Dirs *: //p' \
-		-e 's/^Lock File *: //p' \
-		-e 's/^Log File *: //p' )
-	PACMANDB=${P_CONF[1]}
-	CACHEDIR=${P_CONF[2]}
-	LOCKFILE=${P_CONF[3]}
+	# Default pacman configuration
+	P=([dbpath]="@dbpath@" [cachedir]="@cachedir@")
 	# Parse pacman options
-	unset PKGS_IGNORED HoldPkg SyncFirst
-	declare -a IgnorePkg=() IgnoreGroup=()
+	declare -a PKGS_IGNORED=() 
 	eval $(pacman_parse --debug | 
-		sed -n  -e 's/"/\\"/g' \
-		  -e 's/debug: config: \([a-zA-Z]\+\): \(.*\)/\1+=("\2")/p'
+	  sed -n -e 's/"/\\"/g' \
+             -e 's/debug: config: \([a-zA-Z]\+\): \(.*\)/P[\1]="${P[\1]}\2 "/p' \
+             -e 's/debug: config: \([a-zA-Z]\+\)$/P[\1]=1/p' \
+             -e "s/debug: option '\([a-zA-Z]\+\)' = \(.*\)/P[\1]=\"\2\"/p"
 	)
-	IGNOREPKG+=("${IgnorePkg[@]}")
+	# Add ignored packages from command line options
+	IGNOREPKG+=(${P[IgnorePkg]})
 	PKGS_IGNORED=("${IGNOREPKG[@]}")
-	IGNOREGRP+=("${IgnoreGroup[@]}")
+	IGNOREGRP+=(${P[IgnoreGroup]})
 	[[ $IGNOREGRP ]] && PKGS_IGNORED+=($(pacman_parse -Sqg "${IGNOREGRP[@]}"))
+	P[ignorepkg]="${PKGS_IGNORED[*]}"
 	return 0
 }
 
@@ -40,11 +31,9 @@ parse_pacman_conf()
 pacman_queue()
 {
 	# from nesl247
-	if [[ -f "$LOCKFILE" ]]; then
+	if [[ -f ${P[lockfile]} ]]; then
 		msg $(gettext 'Pacman is currently in use, please wait.')
-		while [[ -f "$LOCKFILE" ]]; do
-			sleep 3
-		done
+		while [[ -f ${P[lockfile]} ]]; do sleep 3; done
 	fi
 }
 
@@ -70,14 +59,14 @@ pacman_refresh ()
 {
 	local _arg
 	title $(gettext 'synchronizing package databases')
-	(( REFRESH > 1 )) && _arg="-Syy" || _arg="-Sy"
+	(( $1 > 1 )) && _arg="-Syy" || _arg="-Sy"
 	su_pacman $_arg || exit $?
 }
 
 
 is_package_ignored ()
 {
-	if [[ " ${PKGS_IGNORED[@]} " =~ " $1 " ]]; then
+	if [[ " ${P[ignorepkg]} " =~ " $1 " ]]; then
 		(($2)) && echo -e "$1: $CRED "$(gettext '(ignoring package upgrade)')"$C0"
 		return 0
 	fi

@@ -375,7 +375,7 @@ fi
 ((FORCE)) && program_arg $((A_PS | A_M | A_Y)) "--force"
 
 # Refresh
-[[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )) && pacman_refresh
+[[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )) && pacman_refresh $REFRESH
 
 # Action
 case "$MAJOR" in

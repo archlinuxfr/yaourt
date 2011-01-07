@@ -26,7 +26,7 @@ get_pkgbase ()
 {
 	local pkgbase pkgname=$1 repo=$2 pkgver=$3
 	[[ -z $repo || -z $pkgver ]] && read repo pkgver < <(pkgquery -Sif '%r %n' $pkgname)
-	pkgbase=$(sed -n '/%BASE%/,/^$/ { /^[^%]/p}' "$PACMANDB/sync/$repo/$pkgname-$pkgver/desc" 2> /dev/null)
+	pkgbase=$(sed -n '/%BASE%/,/^$/ { /^[^%]/p}' "${P[dbpath]}/sync/$repo/$pkgname-$pkgver/desc" 2> /dev/null)
 	echo ${pkgbase:-$pkgname}
 }
 
