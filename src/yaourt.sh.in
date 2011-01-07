@@ -153,7 +153,7 @@ prepare_orphan_list(){
 	INSTALLED_BEFORE="$YAOURTTMPDIR/orphans/installed_before.$$"
 	INSTALLED_AFTER="$YAOURTTMPDIR/orphans/installed_after.$$"
 	# search orphans before removing or upgrading
-	pacman_parse -Qqt | LC_ALL=C sort > $ORPHANS_BEFORE
+	pacman_parse -Qdqt | LC_ALL=C sort > $ORPHANS_BEFORE
 	# store package list before
 	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
 	awk '{print $1}' "$INSTALLED_BEFORE.full"> $INSTALLED_BEFORE
@@ -161,7 +161,7 @@ prepare_orphan_list(){
 show_new_orphans(){
 	(( ! SHOWORPHANS )) && return
 	# search for new orphans after upgrading or after removing (exclude new installed package)
-	pacman_parse -Qqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
+	pacman_parse -Qdqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
 	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
 	awk '{print $1}' "$INSTALLED_AFTER.full" > $INSTALLED_AFTER
 
