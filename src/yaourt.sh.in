@@ -23,7 +23,7 @@ export TEXTDOMAIN=yaourt
 
 NAME='yaourt'
 VERSION='@VERSION@'
-
+YAOURTBIN=$0
 . '@libdir@/yaourt/util.sh'
 
 ###################################
