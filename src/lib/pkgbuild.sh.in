@@ -248,7 +248,7 @@ build_package()
 			warning $(gettext 'Dependencies have been installed before the failure')
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
 				in_array $_deps "${_deps_left[@]}" || \
-					$YAOURTBIN -Rs "${YAOURT_ARG[@]}" "${_deps%[<=>]*}"
+				  su_pacman -Rs "${_deps%[<=>]*}"
 			done
 			return 1
 		fi
