@@ -16,6 +16,7 @@ localstatedir = $(PREFIX)/var
 mandir        = $(PREFIX)/share/man
 dbpath        = ${localstatedir}/lib/pacman/
 cachedir      = ${localstatedir}/cache/pacman/pkg/
+aururl        = https://aur.archlinux.org
 
 SCRIPTS = yaourt.sh pacdiffviewer.sh lib/util.sh lib/pkgbuild.sh lib/pacman.sh
 
@@ -30,6 +31,7 @@ $(SCRIPTS): ${SCRIPTS:.sh=.sh.in}
 	        -e 's|@localstatedir@|$(localstatedir)|g' \
 	        -e 's|@dbpath@|$(dbpath)|g' \
 	        -e 's|@cachedir@|$(cachedir)|g' \
+	        -e 's|@aururl@|$(aururl)|g' \
 	        $@.in > $@
 
 install: $(SCRIPTS)

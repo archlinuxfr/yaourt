@@ -334,8 +334,9 @@ while [[ $1 ]]; do
 		-f|--force)         FORCE=1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
-		--nocolor)          USECOLOR=0; program_arg $A_Y $1;;
+		--insecure)         program_arg $((A_Y | A_PKC | A_CC)) $1;;
 		--lightbg)          USECOLOR=2; program_arg $A_Y $1;;
+		--nocolor)          USECOLOR=0; program_arg $A_Y $1;;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ;; # --print-format needs --print

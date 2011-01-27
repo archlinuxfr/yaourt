@@ -137,8 +137,9 @@ A_Y=4    # yaourt
 A_PQ=8   # pacman query
 A_PC=16  # pacman conf
 A_PKC=32 # package-query
+A_CC=64  # curl opt
 unset PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG PACMAN_C_ARG \
-      PKGQUERY_C_ARG
+      PKGQUERY_C_ARG CURL_C_ARG
 # Usage: program_arg ($dest, $arg)
 program_arg ()
 {
@@ -149,12 +150,14 @@ program_arg ()
 	(( dest & A_PQ ))  && PACMAN_Q_ARG+=("$@")
 	(( dest & A_PC ))  && PACMAN_C_ARG+=("$@")
 	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
+	(( dest & A_CC ))  && CURL_C_ARG+=("$@")
 }
 
-# pacman & package-query call with command line options
+# programs call with command line options
 pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
 pacman_out () { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
 pkgquery () { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
+curl_fetch () { curl "${CURL_C_ARG[@]}" "$@"; }
 
 # Run editor
 # Usage: run_editor ($file, $default_answer)
@@ -202,7 +205,8 @@ DEVEL=0
 FORCEENGLISH=0
 FORCE=0
 SUDONOVERIF=0 
-# AUR 
+# AUR
+AURURL='@aururl@'
 AURCOMMENT=5
 AURDEVELONLY=0
 AURSEARCH=1
@@ -235,5 +239,7 @@ YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 # PACMANBIN is depreceated
 PACMAN=${PACMAN:-$PACMANBIN}
 export PACMAN=${PACMAN:-pacman}
+# Add --aur-url option to package-query args
+program_arg $A_PKC --aur-url "$AURURL"
 
 # vim: set ts=4 sw=4 noet: 

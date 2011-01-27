@@ -3,8 +3,7 @@
 # aur.sh : deals with AUR
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-AUR_URL="https://aur.archlinux.org/"
-AUR_PKG_URL="$AUR_URL/packages.php?setlang=en&ID="
+AUR_PKG_URL="$AURURL/packages.php?setlang=en&ID="
 
 loadlibrary abs
 loadlibrary pkgbuild
@@ -15,8 +14,8 @@ aur_get_pkgbuild ()
 	local pkg=${1#*/}
 	#(( $# > 1 )) && local pkgurl=$2 || \
 	#local pkgurl=$(pkgquery -Aif "%u" "$pkg")
-	local pkgurl="$AUR_URL/packages/$pkg/$pkg.tar.gz"
-	if [[ ! "$pkgurl" ]] || ! curl -fs "$pkgurl" -o "$pkg.tar.gz"; then
+	local pkgurl="$AURURL/packages/$pkg/$pkg.tar.gz"
+	if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
 		error $(_gettext '%s not found in AUR.' "$pkg");
 		return 1;
 	fi
@@ -39,7 +38,7 @@ info_from_aur() {
 	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	curl -fis "$AUR_URL/packages/$pkgname/$pkgname/PKGBUILD" -o "$tmpfile" || \
+	curl_fetch -fis "$AURURL/packages/$pkgname/$pkgname/PKGBUILD" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	sanitize_pkgbuild "$tmpfile" 
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
@@ -49,7 +48,7 @@ info_from_aur() {
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
 	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
 	aur_show_info "URL            " "$CCYAN$url$C0"
-	aur_show_info "AUR URL        " "$CCYAN${AUR_URL}packages.php?ID=$id$C0"
+	aur_show_info "AUR URL        " "$CCYAN${AURURL}/packages.php?ID=$id$C0"
 	aur_show_info "Licenses       " "${license[*]}"
 	aur_show_info "Votes          " "$votes"
 	aur_show_info "Out Of Date    " "$outofdate"
@@ -69,7 +68,7 @@ info_from_aur() {
 # scrap html page to show user's comments
 aurcomments(){
 	(( ! AURCOMMENT )) && return
-	curl -s "${AUR_PKG_URL}$1" | awk '
+	curl_fetch -s "${AUR_PKG_URL}$1" | awk '
 function striphtml (str)
 {
 	# strip tags and entities
