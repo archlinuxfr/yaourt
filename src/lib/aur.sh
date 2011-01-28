@@ -40,10 +40,10 @@ info_from_aur() {
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl_fetch -fis "$AURURL/packages/$pkgname/$pkgname/PKGBUILD" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
-	sanitize_pkgbuild "$tmpfile" 
-	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
-		conflicts replaces arch last_mod pkgdesc
-	source "$tmpfile"
+	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
+		conflicts replaces arch last_mod pkgdesc)
+	unset ${vars[*]}
+	. <( source_pkgbuild "$tmpfile" ${vars[*]} )
 	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
 	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
