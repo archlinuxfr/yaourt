@@ -22,7 +22,7 @@ abs_get_pkgbuild ()
 	# TODO: store abs archive somewhere else.
 	local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
 	local abs_url 
-	local repo_date=$(stat -c "%Z" "$PACMANDB/$repo.db.tar.gz")
+	local repo_date=$(stat -c "%Z" "${P[dbpath]}/$repo.db.tar.gz")
 	local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
 	if [[ ! $abs_repo_date ]] || (( ${abs_repo_date%.*} < ${repo_date%.*} )); then
 		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
