@@ -85,8 +85,6 @@ launch_with_su(){
 		#echo "Allowed to use sudo $command"
 		sudo "$@" || return 1
 	else
-		(( $UID )) && echo -e $(eval_gettext 'You are not allowed to launch $command with sudo\nPlease enter root password') 1>&2 
-		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
 		errorfile="/tmp/yaourt_error.$RANDOM"
 		for i in 1 2 3; do 
 			su --shell=/bin/bash --command "$* || touch $errorfile"
