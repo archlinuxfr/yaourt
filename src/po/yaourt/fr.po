@@ -90,15 +90,6 @@ msgstr "installé"
 msgid "Out of Date"
 msgstr "Périmé"
 
-#: ../../yaourt.sh:117
-#, sh-format
-msgid ""
-"You are not allowed to launch %s with sudo\\n"
-"Please enter root password"
-msgstr ""
-"Vous n'êtes pas autorisé à lancer %s avec sudo\\n"
-"Veuillez entrer le mot de passe root"
-
 #: ../../yaourt.sh:146
 #, sh-format
 msgid "Pacman is currently in use, please wait."

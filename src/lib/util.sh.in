@@ -84,8 +84,6 @@ launch_with_su()
 	if is_sudo_allowed "$@"; then
 		sudo "$@" || return 1
 	else
-		(( $UID )) && msg "$(_gettext 'You are not allowed to launch %s with sudo\nPlease enter root password' "$1")" 1>&2 
-		# hack: using tmp instead of YAOURTTMP because error file can't be removed without root password
 		local errorfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 		for i in 1 2 3; do 
 			su --shell=/bin/bash --command "$* || touch $errorfile"
