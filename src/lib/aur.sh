@@ -39,7 +39,7 @@ info_from_aur() {
 	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$PKG")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	curl -fis "$AUR_URL/packages/$PKG/$PKG/PKGBUILD" -o "$tmpfile" || \
+	curl -fis "$AUR_URL/packages/$PKG/PKGBUILD" -o "$tmpfile" || \
 		{ error "$PKG not found in repos nor in AUR"; return 1; }
 	sanitize_pkgbuild "$tmpfile" 
 	unset pkgname pkgver pkgrel url license groups provides depends optdepends \
