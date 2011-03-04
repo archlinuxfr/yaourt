@@ -38,7 +38,7 @@ info_from_aur() {
 	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	curl_fetch -fis "$AURURL/packages/$pkgname/$pkgname/PKGBUILD" -o "$tmpfile" || \
+	curl_fetch -fis "$AURURL/packages/$pkgname/PKGBUILD" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc)
