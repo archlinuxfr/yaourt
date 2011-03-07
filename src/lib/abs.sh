@@ -61,7 +61,7 @@ sync_first ()
 # Build packages from repos
 install_from_abs(){
 	local repo pkgname pkgver arch package pkgbase
-	while read repo pkgname pkgver arch; do 
+	while read -u 3 repo pkgname pkgver arch; do
 		local package="$repo/$pkgname"
 		(( ! BUILD )) && ! custom_pkg "$pkgname" && bin_pkgs+=(${package#-/}) && continue
 		msg $(_gettext 'Building %s from sources.' "$pkgname")
@@ -78,7 +78,7 @@ install_from_abs(){
 		# Build, install/export
 		package_loop 1 ||  manage_error $pkgname || continue
 		rm -rf "$YAOURTTMPDIR/abs-$pkgname"
-	done < <(pkgquery -1Sif "%r %n %v %a" "$@")
+	done 3< <(pkgquery -1Sif "%r %n %v %a" "$@")
 }
 
 # Set vars:
