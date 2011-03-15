@@ -5,6 +5,7 @@
 
 unset PACMANDB LOCKFILE
 COLUMNS=$(tput cols)
+declare -A LOADEDLIBS=()
 
 # pacman & package-query call with command line options
 pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
@@ -28,15 +29,16 @@ initpath(){
 }
 
 # Load library but never reload twice the same lib
-loadlibrary(){
+loadlibrary()
+{
 	while [[ $1 ]]; do
-		[[ "${!1}" ]] && return 0
+		((LOADEDLIBS[$1])) && return 0
 		if [[ ! -r "@libdir@/yaourt/$1.sh" ]]; then
 			error "$1.sh file is missing"
 			die 1
 		fi
-		source "@libdir@/yaourt/$1.sh" || warning "problem in $1.sh library"
-		eval $1=1
+		. "@libdir@/yaourt/$1.sh" || warning "problem in $1.sh library"
+		LOADEDLIBS[$1]=1
 		shift
 	done
 }
