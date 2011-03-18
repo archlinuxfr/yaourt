@@ -84,7 +84,7 @@ launch_with_su()
 	if is_sudo_allowed "$@"; then
 		sudo "$@" || return 1
 	else
-		local errorfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
+		local errorfile=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
 		for i in 1 2 3; do 
 			su --shell=/bin/bash --command "$* || touch $errorfile"
 			(( $? )) && [[ ! -f "$errorfile" ]] && continue
