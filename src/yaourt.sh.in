@@ -344,7 +344,7 @@ while [[ $1 ]]; do
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--stats)            MAJOR="stats";;
 		--sucre)            MAJOR="sync"
-			FORCE=1; SYSUPGRADE=1; REFRESH=1; 
+			FORCE=1; SYSUPGRADE=1; REFRESH=2;
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2;;
 		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
@@ -375,7 +375,10 @@ fi
 ((FORCE)) && program_arg $((A_PS | A_M | A_Y)) "--force"
 
 # Refresh
-[[ "$MAJOR" = "sync" ]] && (( REFRESH && ! PRINT )) && pacman_refresh $REFRESH
+[[ "$MAJOR" = "sync" ]] &&
+  (( REFRESH && !PRINT )) &&
+  (( !SYSUPGRADE || DETAILUPGRADE )) &&
+  pacman_refresh $REFRESH
 
 # Action
 case "$MAJOR" in

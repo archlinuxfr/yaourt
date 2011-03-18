@@ -185,6 +185,8 @@ sysupgrade()
 	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFRIM=1; }
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 	if (( ! DETAILUPGRADE )); then
+		(( REFRESH )) && _arg+="y"
+		(( REFRESH>1 )) && _arg+="y"
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
 	else	
 		pacman_parse -Sp --print-format "## %n" \
