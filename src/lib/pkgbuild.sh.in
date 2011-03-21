@@ -188,6 +188,7 @@ edit_pkgbuild ()
 		run_editor PKGBUILD $default_answer
 		local ret=$?
 		(( ret == 2 )) && return 1
+		(( iter++>1 && ret )) && break
 		(( ret )) || (( ! loop )) && iter=0
 		read_pkgbuild || return 1
 		(( check_dep )) && { check_deps; check_conflicts; }
