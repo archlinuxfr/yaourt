@@ -7,10 +7,6 @@ loadlibrary alpm_query
 
 # Global vars:
 # SPLITPKG:	1 if current PKGBUILD describe multiple package
-# PKGBUILD_VARS : important vars in PKGBUILD like pkgbase, pkgname ...
-# PKGBUILD_DEPS : deps not installed or provided
-# PKGBUILD_DEPS_INSTALLED : deps installed or provided
-# PKGBUILD_CONFLICTS : package installed and conflicts
 
 # source makepkg configuration
 source_makepkg_conf ()
@@ -51,6 +47,7 @@ read_pkgbuild ()
 		)
 
 	unset ${vars[*]}
+	local ${vars[*]}
 	local pkgbuild_tmp=$(mktemp --tmpdir=".")
 	echo "yaourt_$$() {"                            > $pkgbuild_tmp
 	cat PKGBUILD                                    >> $pkgbuild_tmp
@@ -92,7 +89,7 @@ check_deps ()
 	local nodisplay=${1:-0} dep
 	eval $PKGBUILD_VARS
 	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" ) )
-	unset PKGBUILD_DEPS_INSTALLED
+	PKGBUILD_DEPS_INSTALLED=()
 	for dep in "${depends[@]}" "${makedepends[@]}"
 	do
 		if ! in_array "$dep" "${PKGBUILD_DEPS[@]}"; then
@@ -122,7 +119,7 @@ check_conflicts ()
 	local nodisplay=${1:-0} cf
 	eval $PKGBUILD_VARS
 	local cfs=( $(pacman_parse -T "${conflicts[@]}") )
-	unset PKGBUILD_CONFLICTS
+	PKGBUILD_CONFLICTS=()
 	if (( ${#cfs[@]} != ${#conflicts[@]} )); then 
 		for cf in "${conflicts[@]}"
 		do
@@ -241,16 +238,16 @@ build_package()
 	# install deps from abs (build or download) as depends
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(_gettext 'Install or build missing dependencies for %s:' "$pkgbase")
-		local _arg="--asdeps" _deps
-		((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
-		$YAOURTBIN -S "${YAOURT_ARG[@]}" $_arg "${PKGBUILD_DEPS[@]}"
-		local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
-		if (( ${#_deps_left[@]} )); then
-			warning $(gettext 'Dependencies have been installed before the failure')
+		if ! SP_ARG="--asdeps" sync_packages "${PKGBUILD_DEPS[@]}"; then
+			local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
+			local _deps_installed=()
 			for _deps in "${PKGBUILD_DEPS[@]}"; do
-				in_array $_deps "${_deps_left[@]}" || \
-				  su_pacman -Rs "${_deps%[<=>]*}"
+				in_array "$_deps" "${_deps_left[@]}" || _deps_installed+=("$_deps")
 			done
+			if [[ $_deps_installed ]]; then
+				warning $(gettext 'Dependencies have been installed before the failure')
+				su_pacman -Rs "${_deps_installed[@]%[<=>]*}"
+			fi
 			return 1
 		fi
 	fi
@@ -314,7 +311,7 @@ install_package()
 	local _arg=""
 	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) && for _file in "$YPKGDEST"/*; do
-		su_pacman -U "${PACMAN_S_ARG[@]}" $_arg $_file || { failed=$?; break; }
+		su_pacman -U $SP_ARG "${PACMAN_S_ARG[@]}" $_arg $_file || { failed=$?; break; }
 	done
 	if (( failed )); then 
 		warning $(_gettext "Your packages are saved in %s" "$YAOURTTMPDIR")
@@ -332,7 +329,7 @@ init_build_dir()
 		rm -rf "$wdir" || { error $(_gettext 'Unable to delete directory %s. Please remove it using root privileges.' "$wdir"); return 1; }
 	fi
 	mkdir -p "$wdir" || { error $(_gettext 'Unable to create directory %s.' "$wdir"); return 1; }
-	cd $wdir
+	cd "$wdir"
 }
 
 custom_pkg ()
@@ -343,27 +340,31 @@ custom_pkg ()
 
 # Call build_package until success or abort
 # on success, call install_package
-# Usage: package_loop ($trust)
+# Usage: package_loop ($pkgname, $trust)
+#   $pkgname: name of package
 #	$trust: 1: default answer for editing: Y (for abs)
 package_loop ()
 {
-	local trust=${1:-0}
+	local pl_pkgname=$1
+	local trust=${2:-0}
 	local default_answer=1
 	local ret=0 failed=0
+	declare -a PKGBUILD_DEPS PKGBUILD_DEPS_INSTALLED \
+	           PKGBUILD_CONFLICTS PKGBUILD_VARS
 	# Customise PKGBUILD
-	custom_pkg "$pkgbase" && customizepkg --modify
+	custom_pkg "$pl_pkgname" && customizepkg --modify
 
-	YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
+	local YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
 		edit_pkgbuild $default_answer 1 || { failed=1; break; }
-		prompt "$(_gettext 'Continue building %s ? ' "$pkgbase")$(yes_no 1)"
+		prompt "$(_gettext 'Continue building %s ? ' "$pl_pkgname")$(yes_no 1)"
 		builduseragrees || { failed=1; break; }
 		build_package
 		ret=$?
 		case "$ret" in
 			0|2) break ;;
-			1)	prompt "$(_gettext 'Restart building %s ? ' "$pkgbase")$(yes_no 2)"
+			1)	prompt "$(_gettext 'Restart building %s ? ' "$pl_pkgname")$(yes_no 2)"
 				builduseragrees "YN" "N" && { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
@@ -371,7 +372,6 @@ package_loop ()
 	done
 	(( ! ret )) && (( ! failed )) && { install_package || failed=1; }
 	rm -r "$YPKGDEST"
-	cd "$YAOURTTMPDIR"
 	return $failed
 }
 

@@ -40,7 +40,7 @@ build_pkg ()
 	local repo pkg=${1#*/}
 	[[ $1 != $pkg ]] && repo=${1%/*} || repo="$(sourcerepository "$pkg")"
 	if [[ $repo = "aur" || $repo = "local" ]]; then
-		install_from_aur "$repo/$pkg"
+		install_from_aur "$pkg"
 	else
 		BUILD=1 install_from_abs "$repo/$pkg"
 	fi
@@ -53,32 +53,34 @@ sync_first ()
 	echo_wrap 4 "$*"
 	prompt "$(gettext 'Do it now ?') $(yes_no 1)"
 	useragrees || return 0
-	ARGS=("$@")
-	sync_packages
+	SP_ARG="" sync_packages "$@"
 	die $?
 }
 
 # Build packages from repos
 install_from_abs(){
-	local repo pkgname pkgver arch package pkgbase
-	while read -u 3 repo pkgname pkgver arch; do
-		local package="$repo/$pkgname"
-		(( ! BUILD )) && ! custom_pkg "$pkgname" && bin_pkgs+=(${package#-/}) && continue
-		msg $(_gettext 'Building %s from sources.' "$pkgname")
-		title $(_gettext 'Install %s from sources' "$pkgname")
-		echo
-		msg $(gettext 'Retrieving PKGBUILD and local sources...')
-		init_build_dir "$YAOURTTMPDIR/abs-$pkgname" || return 1
+	local cwd build_deps
+	declare -a pkginfo=($(pkgquery -1Sif "%r %n %v %a" "$1"))
+	(( ! BUILD )) && ! custom_pkg "${pkginfo[1]}" &&
+	  bin_pkgs+=("${pkginfo[0]}/${pkginfo[1]}") && continue
+	(( BUILD > 1 )) && build_deps=1 || build_deps=0
+	msg $(_gettext 'Building %s from sources.' "${pkginfo[1]}")
+	title $(_gettext 'Install %s from sources' "${pkginfo[1]}")
+	echo
+	msg $(gettext 'Retrieving PKGBUILD and local sources...')
+	cwd=$(pwd)
+	init_build_dir "$YAOURTTMPDIR/abs-${pkginfo[1]}" || return 1
+	# With splitted package, abs folder may not correspond to package name
+	pkginfo[4]=$(get_pkgbase ${pkginfo[1]} ${pkginfo[0]} ${pkginfo[2]})
+	abs_get_pkgbuild ${pkginfo[0]}/${pkginfo[4]} ${pkginfo[3]} ||
+	  { cd "$cwd"; return 1; }
 
-		# With splitted package, abs folder may not correspond to package name
-		pkgbase=$(get_pkgbase $pkgname $repo $pkgver)
-		abs_get_pkgbuild $repo/$pkgbase $arch || return 1
-		[[ "$MAJOR" = "getpkgbuild" ]] && return 0
-
-		# Build, install/export
-		package_loop 1 ||  manage_error $pkgname || continue
-		rm -rf "$YAOURTTMPDIR/abs-$pkgname"
-	done 3< <(pkgquery -1Sif "%r %n %v %a" "$@")
+	# Build, install/export
+	BUILD=$build_deps package_loop ${pkginfo[1]} 1 ||
+	  manage_error ${pkginfo[1]} ||
+	  { cd "$cwd"; return 1; }
+	cd "$cwd"
+	rm -rf "$YAOURTTMPDIR/abs-${pkginfo[1]}"
 }
 
 # Set vars:
@@ -156,9 +158,8 @@ display_update ()
 			V)	showupgradepackage full;;
 			M)	showupgradepackage manual
 				run_editor "$YAOURTTMPDIR/sysuplist" 0
-				ARGS=("$YAOURTTMPDIR/sysuplist")
 				SYSUPGRADE=2
-				sync_packages
+				SP_ARG="" sync_packages "$YAOURTTMPDIR/sysuplist"
 				return 2
 				;;
 			N)	return 1;;
@@ -201,7 +202,7 @@ sysupgrade()
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
 	((AURUPGRADE)) && cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
 	classify_pkg $( ((DETAILUPGRADE<2)) && pacman -Qqm | wc -l)< <(eval $cmd)
-	sync_first "${syncfirstpkgs[@]}"
+	SP_ARG="" sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
 		show_targets 'Source targets' "${srcpkgs[@]#*/}" || return 0
@@ -214,7 +215,9 @@ sysupgrade()
 		show_targets 'AUR targets' "${pkgs[@]#aur/}" || return 0
 	else
 		display_update || return 0
-		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
+		if [[ ${pkgs[*]##aur/*} ]]; then
+			su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
+		fi
 	fi
 	for pkg in ${pkgs[@]}; do
 		[[ ${pkg#aur/} = $pkg ]] && continue
@@ -274,26 +277,27 @@ showupgradepackage()
 	done
 }		
 
+unset SP_ARG
 # Sync packages
 sync_packages()
 {
 	# Install from a list of packages
-	if [[ -f ${ARGS[0]} ]] && file -b "${ARGS[0]}" | grep -qi text ; then
+	if [[ -f $1 ]] && file -b "$1" | grep -qi text ; then
 		if (( ! SYSUPGRADE )); then 
 			title $(gettext 'Installing from a package list')
 			msg $(gettext 'Installing from a package list')
 		fi
 		AURVOTE=0
-		ARGS=( `grep -o '^[^#[:space:]]*' "${ARGS[0]}"` ) 
+		set -- `grep -o '^[^#[:space:]]*' "$1"`
 	fi
-	[[ $ARGS ]] || return 0
+	[[ $1 ]] || return 0
 	# Install from arguments
 	declare -A pkgs_search pkgs_found
 	declare -a repo_pkgs aur_pkgs bin_pkgs
 	local _pkg _arg repo pkg target 
-	for _pkg in "${ARGS[@]}"; do pkgs_search[$_pkg]=1; done
+	for _pkg in "$@"; do pkgs_search[$_pkg]=1; done
 	# Search for exact match, pkg which provides it, then in AUR
-	for _arg in "-1Si" "-S --query-type provides" "-Ai"; do
+	for _arg in "-1Si" "-S --query-type provides" "-1Ai"; do
 		while read repo pkg target; do
 			((pkgs_search[$target])) || continue
 			unset pkgs_search[$target]
@@ -304,9 +308,22 @@ sync_packages()
 		((! ${#pkgs_search[@]})) && break
 	done
 	bin_pkgs=("${!pkgs_search[@]}")
-	[[ $repo_pkgs ]] && install_from_abs "${repo_pkgs[@]}"
-	[[ $bin_pkgs ]] && su_pacman -S "${PACMAN_S_ARG[@]}" "${bin_pkgs[@]}"
-	for _pkg in "${aur_pkgs[@]}"; do install_from_aur "$_pkg"; done
+	for _pkg in "${repo_pkgs[@]}"; do
+		[[ $SP_ARG ]] && pkgquery -Qq "$_pkg" && continue
+		install_from_abs "$_pkg" || return 1
+	done
+	if [[ $bin_pkgs ]]; then
+		if [[ $SP_ARG ]]; then
+			su_pacman -S --asdeps --needed "${PACMAN_S_ARG[@]}" "${bin_pkgs[@]}" || return 1
+		else
+			su_pacman -S "${PACMAN_S_ARG[@]}" "${bin_pkgs[@]}" || return 1
+		fi
+	fi
+	for _pkg in "${aur_pkgs[@]}"; do
+		[[ $SP_ARG ]] && pkgquery -Qq "$_pkg" && continue
+		install_from_aur "$_pkg" || return 1
+	done
+	return 0
 }
 
 # Search to upgrade devel package 

@@ -131,12 +131,11 @@ init_paths()
 # Define programs arguments
 A_PS=1   # pacman sync
 A_M=2    # makepkg
-A_Y=4    # yaourt
-A_PQ=8   # pacman query
-A_PC=16  # pacman conf
-A_PKC=32 # package-query
-A_CC=64  # curl opt
-unset PACMAN_S_ARG MAKEPKG_ARG YAOURT_ARG PACMAN_Q_ARG PACMAN_C_ARG \
+A_PQ=4   # pacman query
+A_PC=8   # pacman conf
+A_PKC=16 # package-query
+A_CC=32  # curl opt
+unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG \
       PKGQUERY_C_ARG CURL_C_ARG
 # Usage: program_arg ($dest, $arg)
 program_arg ()
@@ -144,7 +143,6 @@ program_arg ()
 	local dest=$1; shift
 	(( dest & A_PS ))  && PACMAN_S_ARG+=("$@")
 	(( dest & A_M ))   && MAKEPKG_ARG+=("$@")
-	(( dest & A_Y ))   && YAOURT_ARG+=("$@")
 	(( dest & A_PQ ))  && PACMAN_Q_ARG+=("$@")
 	(( dest & A_PC ))  && PACMAN_C_ARG+=("$@")
 	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")

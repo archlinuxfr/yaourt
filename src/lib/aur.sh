@@ -118,7 +118,7 @@ vote_package(){
 	msg $(_gettext 'Checking vote status for %s' "$1")
 	local pkgvote=`aurvote --id --check "$1/$2"`
 	if [[ "${pkgvote}" = "already voted" ]]; then
-		echo $(_gettext 'You have already voted for %s inclusion/keeping in [community]' "$1")
+		echo "$(_gettext 'You have already voted for %s inclusion/keeping in [community]' "$1")"
 	elif [[ "$pkgvote" = "not voted" ]]; then
 		echo
 		prompt "$(_gettext 'Do you want to vote for %s inclusion/keeping in [community] ? ' "$1")$(yes_no 1)"
@@ -131,29 +131,28 @@ vote_package(){
 
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur(){
-	local pkgname="${1#*/}" aurid version numvotes outofdate pkgurl description
-	title $(_gettext 'Installing %s from AUR' "$pkgname")
-	init_build_dir "$YAOURTTMPDIR/aur-$pkgname" || return 1
-
-	read aurid version numvotes outofdate pkgurl description < \
-	  <(pkgquery -Ai "$pkgname" -f "%i %v %w %o %u %d")
-	[[ "${aurid#-}" ]] || return 1
-	
-	# grab comments and info from aur page
+	local cwd
+	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u" "$1"))
+	[[ "${pkginfo[1]#-}" ]] || return 1
+	title $(_gettext 'Installing %s from AUR' "${pkginfo[0]}")
+	cwd=$(pwd)
+	init_build_dir "$YAOURTTMPDIR/aur-${pkginfo[0]}" || return 1
 	echo
-	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "$pkgname")
-	aur_get_pkgbuild "$pkgname" "$pkgurl" || return 1
-	aurcomments $aurid
-	local len="$pkgname $version : "
-	echo_wrap_next_line "$CBOLD$pkgname $version $C0: " ${#len} "$description"
+	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "${pkginfo[0]}")
+	aur_get_pkgbuild "${pkginfo[0]}" "${pkginfo[5]}" ||
+	  { cd "$cwd"; return 1; }
+	aurcomments ${pkginfo[1]}
+	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0"
 	echo -e "$CBLINK$CRED"$(gettext '( Unsupported package: Potentially dangerous ! )')"$C0"
 
 	# Build, install/export
-	package_loop 0 || manage_error $pkgname || return 1
-	rm -rf "$YAOURTTMPDIR/aur-$pkgname"
+	package_loop ${pkginfo[0]} 0 || manage_error ${pkginfo[0]} ||
+	  { cd "$cwd"; return 1; }
+	cd "$cwd"
+	rm -rf "$YAOURTTMPDIR/aur-${pkginfo[0]}"
 
 	# Check if this package has been voted on AUR, and vote for it
-	(( AURVOTE )) && vote_package "$pkgname" "$aurid"
+	(( AURVOTE )) && vote_package "${pkginfo[0]}" "${pkginfo[1]}"
 	return 0
 }
 

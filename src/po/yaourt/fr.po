@@ -608,7 +608,7 @@ msgstr "Vous avez déjà voté pour inclure/conserver %s dans [community]"
 #: ../../lib/aur.sh:131
 #, sh-format
 msgid "Do you want to vote for %s inclusion/keeping in [community] ? "
-msgstr "Voulez-vous voter pour inclure/conserver  %s dans [community] ? "
+msgstr "Voulez-vous voter pour inclure/conserver %s dans [community] ? "
 
 #: ../../lib/aur.sh:142
 #, sh-format

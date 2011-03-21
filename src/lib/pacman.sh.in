@@ -9,10 +9,12 @@ declare -A P=()
 parse_pacman_conf()
 {
 	# Default pacman configuration
-	P=([dbpath]="@dbpath@" [cachedir]="@cachedir@")
+	P=([dbpath]="@dbpath@"
+	   [lockfile]="@dbpath@/db.lck"
+	   [cachedir]="@cachedir@")
 	# Parse pacman options
 	declare -a PKGS_IGNORED=() 
-	eval $(pacman_parse --debug -Q pacman &> /dev/null |
+	eval $(pacman_parse --debug -T 2>/dev/null |
 	  sed -n -e 's/"/\\"/g' \
              -e 's/debug: config: \([a-zA-Z]\+\): \(.*\)/P[\1]="${P[\1]}\2 "/p' \
              -e 's/debug: config: \([a-zA-Z]\+\)$/P[\1]=1/p' \

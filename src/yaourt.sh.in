@@ -23,7 +23,6 @@ export TEXTDOMAIN=yaourt
 
 NAME='yaourt'
 VERSION='@VERSION@'
-YAOURTBIN=$0
 . '@libdir@/yaourt/util.sh'
 
 ###################################
@@ -142,7 +141,7 @@ yaourt_install_packages ()
 	loadlibrary abs
 	loadlibrary aur
 	prepare_orphan_list
-	sync_packages
+	SP_ARG="" sync_packages "${ARGS[@]}"
 	show_new_orphans
 	#show package which have not been installed
 	if [[ $ERROR_PKGS ]]; then
@@ -304,39 +303,39 @@ while [[ $1 ]]; do
 		--asdeps|--needed)  program_arg $A_PS $1;;
 		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
 		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
-		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_Y | A_PQ)) $1;;
+		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_PQ)) $1;;
 		-e|--explicit)      program_arg $A_PQ $1;;
 		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
 		--noconfirm)        NOCONFIRM=1;;
-		--nodeps)           program_arg $((A_PS | A_M | A_Y)) $1;;
+		--nodeps)           program_arg $((A_PS | A_M )) $1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
 		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
-		--holdver)          program_arg $((A_M | A_Y)) $1;;
-		-A|--ignorearch)    program_arg $((A_M | A_Y)) $1;;
-		--ignore)           program_arg $((A_PS | A_Y)) $1 "$2"; shift; IGNOREPKG+=("$1");;
-		--ignoregroup)      program_arg $((A_PS | A_Y)) $1 "$2"; shift; IGNOREGRP+=("$1");;
+		--holdver)          program_arg $A_M $1;;
+		-A|--ignorearch)    program_arg $A_M $1;;
+		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=("$1");;
+		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=("$1");;
 		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;
-		-b|--build)         BUILD=1; program_arg $A_Y $1;;
+		-b|--build)         ((BUILD++));;
 		-C)                 MAJOR="clean";;
 		--conflicts|--depends|--provides|--replaces) QUERYTYPE=${1:2};;
 		--date)             DATE=1;;
 		--devel)            DEVEL=1;;
-		--export)           EXPORT=1; EXPORTSRC=1; program_arg $A_Y $1 "$2"; shift; EXPORTDIR="$1";;
+		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
 		-f|--force)         FORCE=1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
-		--insecure)         program_arg $((A_Y | A_PKC | A_CC)) $1;;
-		--lightbg)          USECOLOR=2; program_arg $A_Y $1;;
-		--nocolor)          USECOLOR=0; program_arg $A_Y $1;;
+		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
+		--lightbg)          USECOLOR=2;;
+		--nocolor)          USECOLOR=0;;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ;; # --print-format needs --print
@@ -346,9 +345,9 @@ while [[ $1 ]]; do
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=2;
 			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2;;
-		--tmp)              program_arg $A_Y $1 "$2"; shift; TMPDIR="$1";;
+		--tmp)              shift; TMPDIR="$1";;
 		-V|version)         version; exit 0;;
-		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_Y)) $1;;
+		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $A_PS $1;;
 		--)                 shift; ARGS+=("$@"); break;;
 		-*)                 pacman_cmd 0;;
 		*)                  ARGS+=("$1") ;; 
@@ -370,9 +369,9 @@ if (( NOCONFIRM )); then
 	EDITFILES=0
 	BUILD_NOCONFIRM=1
 	AURVOTE=0
-	program_arg $((A_PS | A_M | A_Y)) "--noconfirm"
+	program_arg $((A_PS | A_M)) "--noconfirm"
 fi
-((FORCE)) && program_arg $((A_PS | A_M | A_Y)) "--force"
+((FORCE)) && program_arg $((A_PS | A_M)) "--force"
 
 # Refresh
 [[ "$MAJOR" = "sync" ]] &&
