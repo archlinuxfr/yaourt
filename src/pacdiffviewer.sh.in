@@ -30,7 +30,6 @@ ROOTDIR=
 SAVEDIR='@localstatedir@/lib/yaourt/backupfiles'
 LOCATE=0
 SEARCH_REP=(/etc/ /boot/)
-DIFFEDITCMD="vimdiff"
 QUIET=0
 [[ -d "$SAVEDIR" ]] && MERGE=1 || MERGE=0
 tmp_file=$(mktemp)
@@ -44,6 +43,7 @@ usage()
 	echo -e "\t-b $(gettext 'Save all packages backup files for a later merge')"
 	echo -e "\t-q $(gettext 'Use with backup to not output messages')"
 	echo -e "\t-s $(gettext 'Sequential listing')"
+	echo -e "\t-d $(gettext 'Display diff')"
 	echo -e "\t-h $(gettext 'This help')"
 	echo -e "\t-v $(gettext 'Show version')"
 	exit 0
@@ -160,7 +160,7 @@ suppress()
 		pacfiles+=("${PACNEW[@]}" "${PACSAVE[@]}" "${PACORIG[@]}")
 	(( ! ${#pacfiles[@]} )) && return
 	msg "$(gettext 'The following files have no original version.')"
-	echo_wrap 4 "${pacfiles[@]}" 
+	echo_wrap 4 "${pacfiles[*]}"
 	echo
 	prompt "$(gettext 'Do you want to delete these files ?') $(\
 		yes_no 2) $(gettext '(S: no confirm)')"
@@ -178,17 +178,19 @@ manage_file ()
 	local ext=$1; shift
 	local _time=${1%%  *}
 	local _file="${1#*  }"
+	local same loop=0
 	while true; do
 		local _msg="$ext: ${_file%$ext}"
 		local _prompt="Action: [E]dit, [R]eplace, [S]uppress,"
 		local _prompt_action="ERSCA"
 		diff -abBu "${_file%$ext}" "$_file" &> /dev/null && \
-			_msg+=" $(gettext '**same file**')"
+			_msg+=" $(gettext '**same file**')" && same=1 || same=0
 		if is_mergeable "${_file%$ext}" "$ext"; then
 			_prompt+=" [M]erge,"
 			_prompt_action+="M"
 			_msg+=" $(gettext '**automerge**')"
 		fi
+		((!same && !loop++)) && diff -abBu "${_file%$ext}" "$_file"
 		msg "$_msg"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
@@ -253,10 +255,14 @@ manage()
 
 init_color
 action=""
+explode_args "$@"
+set -- "${OPTS[@]}"
+unset OPTS
 while [[ $1 ]]; do
 	case "$1" in 
 		-q) QUIET=1;;
 		-s) SEQUENTIAL=1;;
+		-d) DIFF=1;;
 		--backup|-b) action=backup;;
 		-c)	action=clean;; 
 		-*) usage $1;;
