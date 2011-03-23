@@ -78,20 +78,30 @@ is_sudo_allowed()
 	return 1
 }
 
+fake_sudo()
+{
+	local errorfile=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
+	local cmd=()
+	while [[ $1 ]]; do
+		printf -varg "%q" "$1"
+		cmd+=("$arg")
+		shift
+	done
+	for i in 1 2 3; do
+		su --shell=$BASH --command "${cmd[*]} || touch $errorfile"
+		(( $? )) && [[ ! -f "$errorfile" ]] && continue
+		[[ -f "$errorfile" ]] && return 1
+		return 0
+	done
+	return 1
+}
 # Run $* as root using sudo or su
 launch_with_su()
 {
 	if is_sudo_allowed "$@"; then
-		sudo "$@" || return 1
+		sudo "$@"
 	else
-		local errorfile=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
-		for i in 1 2 3; do 
-			su --shell=/bin/bash --command "$* || touch $errorfile"
-			(( $? )) && [[ ! -f "$errorfile" ]] && continue
-			[[ -f "$errorfile" ]] && return 1
-			return 0
-		done
-		return 1
+		fake_sudo "$@"
 	fi
 }
 
