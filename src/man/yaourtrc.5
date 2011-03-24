@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: yaourtrc
 .\"    Author: [see the "Authors" section]
-.\" Generator: DocBook XSL Stylesheets v1.76.0 <http://docbook.sf.net/>
-.\"      Date: 2010-11-02
+.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
+.\"      Date: 2011-03-24
 .\"    Manual: Yaourt Manual
-.\"    Source: Yaourt 0.9.5.1
+.\"    Source: Yaourt 0.10
 .\"  Language: English
 .\"
-.TH "YAOURTRC" "5" "2010\-11\-02" "Yaourt 0\&.9\&.5\&.1" "Yaourt Manual"
+.TH "YAOURTRC" "5" "2011\-03\-24" "Yaourt 0\&.10" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -139,6 +139,11 @@ If set to 0, don\(cqt search for packages on AUR Unsupported
 If set to 1, always search for new version of packages installed from AUR Unsupported when upgrading (yaourt \-Su)\&.
 .RE
 .PP
+\fBAURURL="http://aur\&.archlinux\&.org"\fR
+.RS 4
+Specify a custom AUR url\&.
+.RE
+.PP
 \fBAURVOTE=1\fR
 .RS 4
 If set to 0, don\(cqt check the vote status for inclusion/keeping in [community], and it is unable to vote\&.
@@ -149,6 +154,9 @@ If set to 0, don\(cqt check the vote status for inclusion/keeping in [community]
 .RS 4
 Export builded package to $EXPORTDIR or, if not defined to $PKGDEST (see
 \fBmakepkg.conf\fR(5))\&.
+\fIEXPORT=2\fR
+exports all builded packages to pacman cache directory (see
+\fBpacman.conf\fR(5))\&.
 .RE
 .PP
 \fBEXPORTSRC=0\fR
@@ -229,26 +237,8 @@ See the yaourt website at http://archlinux\&.fr/yaourt\-en/ for more info\&.
 http://bugs\&.archlinux\&.fr
 .SH "AUTHORS"
 .sp
+Julien MISCHKOWITZ <wain@archlinux\&.fr>
+.sp
 Current maintainers:
 .sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
-Julien MISCHKOWITZ <wain@archlinux\&.fr>
-.RE
-.sp
-.RS 4
-.ie n \{\
-\h'-04'\(bu\h'+03'\c
-.\}
-.el \{\
-.sp -1
-.IP \(bu 2.3
-.\}
 Tuxce <tuxce\&.net@gmail\&.com>
-.RE
