@@ -160,13 +160,13 @@ install_from_aur(){
 aur_update_exists()
 {
 	if [[ ! ${2#-} ]]; then
-		((DETAILUPGRADE>1)) && echo -e "$1: $CYELLOW"$(gettext 'not found on AUR')"$C0"
+		((DETAILUPGRADE & 6 )) && echo -e "$1: $CYELLOW"$(gettext 'not found on AUR')"$C0"
 		return 1
 	elif is_x_gt_y "$3" "$2"; then
-		((DETAILUPGRADE>1)) && echo -e "$1: (${CRED}local=$3 ${C0}aur=$2)"
+		((DETAILUPGRADE & 6 )) && echo -e "$1: (${CRED}local=$3 ${C0}aur=$2)"
 		return 1
 	elif [[ "$2" = "$3" ]]; then
-		((DETAILUPGRADE>1)) && {
+		((DETAILUPGRADE & 2)) || ((DETAILUPGRADE & 4 && outofdate)) && {
 			echo -en "$1: $(gettext 'up to date ')"
 			(( outofdate )) && echo -e "$CRED($2 "$(gettext 'flagged as out of date')")$C0" || echo
 		}

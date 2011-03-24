@@ -204,7 +204,13 @@ If 0, disable colors\&.
 .PP
 \fBDETAILUPGRADE=1\fR
 .RS 4
-If set to 0, do not detail/parse updates (new version, release, packages)\&. If set to 2, same as 1 + details aur upgrade search\&.
+0 : no detailled ouput and no update classification
+
+1 : no detailled ouput but updates classified
+
+2 : show packages not found on aur / version mismatch / up to date / and those marked as out of date
+
+4 : same as 2 except for up to date packages
 .RE
 .PP
 \fBSHOWORPHANS=1\fR
