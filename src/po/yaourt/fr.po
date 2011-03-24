@@ -1,5 +1,5 @@
 # yaourt default.po file
-# Copyright (C) 2010
+# Copyright (C) 2010-2011
 # This file is distributed under the same license as the yaourt package.
 # Calimero <calimeroteknik@free.fr>
 # Tuxce <tuxce.net@gmail.com>, 2010
