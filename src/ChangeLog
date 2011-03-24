@@ -227,3 +227,22 @@ yaourt 0.9.5
 
 yaourt 0.9.5.1
 - bugfix release
+
+yaourt 0.10
+- pacman 3.5 support
+
+- Configuration variable (yaourtrc)
+  * AURURL: Set a different url for AUR
+
+- New options
+  * --insecure: Allow curl & package-query to perform "insecure" SSL
+                connections
+
+- Behavior changes:
+  * -Sb <repo pkg>: build <pkg> from abs and install its dependencies from 
+                    repository
+  * -Sbb <repo pkg>: build <pkg> and its dependencies from abs/aur
+
+- Don't install Aur dependencies more than once if they appear in two or more
+  packages
+
