@@ -298,7 +298,7 @@ unset OPTS
 while [[ $1 ]]; do
 	case "$1" in
 		-D|--database|-R|--remove|-U|--upgrade|-w|--downloadonly) PACMAN_CMD=1;;
-		-o|--owns|--changelog|--check|-k|--file) PACMAN_CMD=0;;
+		-o|--owns|--changelog|--check|--file) [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
@@ -351,7 +351,7 @@ while [[ $1 ]]; do
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $A_PS $1;;
 		--)                 shift; ARGS+=("$@"); break;;
-		-*)                 PACMAN_CMD=0;;
+		-*)                 [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		*)                  ARGS+=("$1") ;; 
 	esac
 	shift
