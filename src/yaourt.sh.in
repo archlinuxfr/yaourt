@@ -78,9 +78,10 @@ show_new_orphans(){
 	LC_ALL=C comm -2 -3 "$ORPHANS_AFTER.tmp" "$INSTALLED_AFTER.newonly" > $ORPHANS_AFTER
 
 	# show new orphans after removing/upgrading
-	local neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" )
+	local neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" | tr '\n' ' ')
 	if [[ "$neworphans" ]]; then
-		info_list "$(gettext 'Packages no longer required by any installed package:')" "$neworphans"
+		msg "$(gettext 'Packages no longer required by any installed package:')"
+		echo_wrap 4 "$neworphans"
 	fi
 
 	# Test local database
@@ -89,8 +90,8 @@ show_new_orphans(){
 	# save original of backup files (pacnew/pacsave)
 	if [[ "$MAJOR" != "remove" ]] && (( AUTOSAVEBACKUPFILE )) && ! \
 		diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
-		info_progress "$(gettext 'Searching for original config files to save')" \
-		  launch_with_su pacdiffviewer --backup
+		msg "$(gettext 'Searching for original config files to save')"
+		launch_with_su pacdiffviewer --backup
 	fi
 
 }
@@ -276,7 +277,8 @@ yaourt_no_action ()
 unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 	IGNOREGRP IGNOREPKG CHANGELOG LIST INFO DATE UNREQUIRED \
 	FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
-	AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED
+	AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED \
+	PACMAN_CMD
 
 # Grab environement options
 {
@@ -295,8 +297,8 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
-		-D|--database|-R|--remove|-U|--upgrade|-w|--downloadonly) pacman_cmd 1;;
-		-o|--owns|--changelog|--check|-k|--file) pacman_cmd 0;;
+		-D|--database|-R|--remove|-U|--upgrade|-w|--downloadonly) PACMAN_CMD=1;;
+		-o|--owns|--changelog|--check|-k|--file) PACMAN_CMD=0;;
 		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
@@ -349,7 +351,7 @@ while [[ $1 ]]; do
 		-V|version)         version; exit 0;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $A_PS $1;;
 		--)                 shift; ARGS+=("$@"); break;;
-		-*)                 pacman_cmd 0;;
+		-*)                 PACMAN_CMD=0;;
 		*)                  ARGS+=("$1") ;; 
 	esac
 	shift
@@ -360,6 +362,7 @@ init_paths
 [[ -t 1 ]] || { USECOLOR=0; TERMINALTITLE=0; }
 ((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor" 
 init_color
+[[ $PACMAN_CMD ]] && pacman_cmd $PACMAN_CMD
 
 # No options
 [[ -z $MAJOR ]] && yaourt_no_action
