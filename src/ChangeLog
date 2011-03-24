@@ -246,3 +246,6 @@ yaourt 0.10
 - Don't install Aur dependencies more than once if they appear in two or more
   packages
 
+yaourt 0.10.1
+- Add pt_BR locale
+- bugfixes
