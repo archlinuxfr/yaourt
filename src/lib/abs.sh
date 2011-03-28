@@ -263,12 +263,12 @@ showupgradepackage()
 			echo "# ${line[6]}" >> "$YAOURTTMPDIR/sysuplist"
 		else
 			case "${line[0]}" in
-				1) printf "%*s   $CBOLD${line[4]}$C0 -> $CRED${line[5]}$C0" ${longestpkg[1]} "";;
-				2) printf "%*s   -> $CRED${line[4]}$C0" ${longestpkg[1]} "";;
+				1) printf "%*s   $CBOLD%s$C0 -> $CRED%s$C0" ${longestpkg[1]} "" "${line[4]}" "${line[5]}";;
+				2) printf "%*s   -> $CRED%s$C0" ${longestpkg[1]} "" "${line[4]}";;
 				3) requiredbypkg=${line[4]}
-				   printf "%*s   $CRED$(_gettext '(required by %s)' "$requiredbypkg")$C0" ${longestpkg[1]} "";;
+				   printf "%*s   $CRED%s$C0" ${longestpkg[1]} "" "$(_gettext '(required by %s)' "$requiredbypkg")";;
 			esac
-			printf "\r%-*s  $CGREEN${line[3]}$C0" ${longestpkg[0]} ""
+			printf "\r%-*s  $CGREEN%s$C0" ${longestpkg[0]} "" "${line[3]}"
 			echo -e "\r${C[${line[1]}]:-${C[other]}}${line[1]}/$C0${C[pkg]}${line[2]}$C0"
 			if [[ "$1" = "full" ]]; then
 				echo_wrap 4 "${line[6]}"
