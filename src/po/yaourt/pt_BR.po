@@ -862,3 +862,10 @@ msgstr "Pacotes instalados como dependências, mas não são mais necessários p
 msgid "Targets"
 msgstr "Alvos"
 
+#:
+msgid "installed"
+msgstr "instalado"
+
+#:
+msgid "Out of Date"
+msgstr "Desatualizado"

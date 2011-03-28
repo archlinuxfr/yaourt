@@ -858,3 +858,10 @@ msgstr "Pacchetti che non sono richiesti da altri pacchetti installati:"
 msgid "Targets"
 msgstr "Targets"
 
+#:
+msgid "installed"
+msgstr "installato"
+
+#:
+msgid "Out of Date"
+msgstr "Aggiornati"

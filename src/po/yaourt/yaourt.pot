@@ -845,3 +845,11 @@ msgstr ""
 #: ../../lib/abs.sh:342
 msgid "Targets"
 msgstr ""
+
+#:
+msgid "installed"
+msgstr ""
+
+#:
+msgid "Out of Date"
+msgstr ""

@@ -864,3 +864,10 @@ msgstr "Paquets qui ne sont requis par aucun paquet installé:"
 msgid "Targets"
 msgstr "Cibles"
 
+#:
+msgid "installed"
+msgstr "installé"
+
+#:
+msgid "Out of Date"
+msgstr "Périmé"
