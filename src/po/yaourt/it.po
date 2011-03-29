@@ -599,8 +599,8 @@ msgstr "Interrotto..."
 
 #: ../../lib/util.sh.in:187
 #, sh-format
-msgid "Please add \\$EDITOR to your environment variables"
-msgstr "Si prega di aggiungere \\$EDITOR a suoi variabili di ambiente"
+msgid "Please add $EDITOR to your environment variables"
+msgstr "Si prega di aggiungere $EDITOR a suoi variabili di ambiente"
 
 #: ../../lib/util.sh.in:188
 msgid "for example:"

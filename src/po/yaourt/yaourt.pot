@@ -589,7 +589,7 @@ msgstr ""
 
 #: ../../lib/util.sh.in:187
 #, sh-format
-msgid "Please add \\$EDITOR to your environment variables"
+msgid "Please add $EDITOR to your environment variables"
 msgstr ""
 
 #: ../../lib/util.sh.in:188

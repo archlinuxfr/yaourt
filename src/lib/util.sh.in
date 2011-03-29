@@ -184,7 +184,7 @@ run_editor ()
 		[[ "$answer" = "N" ]] && return 1
 	fi
 	if [[ ! "$EDITOR" ]]; then
-		echo -e "$CRED$(gettext 'Please add \$EDITOR to your environment variables')"
+		echo -e "$CRED$(gettext 'Please add $EDITOR to your environment variables')"
 		echo -e "$C0$(gettext 'for example:')"
 		echo -e "${CBLUE}export EDITOR=\"vim\"$C0 $(gettext '(in ~/.bashrc)')"
 		echo "$(gettext '(replace vim with your favorite editor)')"

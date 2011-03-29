@@ -603,8 +603,8 @@ msgstr "Abortado..."
 
 #: ../../lib/util.sh.in:187
 #, sh-format
-msgid "Please add \\$EDITOR to your environment variables"
-msgstr "Por favor adicione \\$EDITOR para suas variáveis de ambiente"
+msgid "Please add $EDITOR to your environment variables"
+msgstr "Por favor adicione $EDITOR para suas variáveis de ambiente"
 
 #: ../../lib/util.sh.in:188
 msgid "for example:"
