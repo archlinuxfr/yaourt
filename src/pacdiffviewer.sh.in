@@ -190,7 +190,7 @@ manage_file ()
 			_prompt_action+="M"
 			_msg+=" $(gettext '**automerge**')"
 		fi
-		((!same && !loop++)) && diff -abBu "${_file%$ext}" "$_file"
+		((DIFF && !same && !loop++)) && diff -abBu "${_file%$ext}" "$_file"
 		msg "$_msg"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 		# gettext "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
