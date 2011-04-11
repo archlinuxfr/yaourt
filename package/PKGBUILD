@@ -3,30 +3,28 @@
 pkgname=yaourt-git
 pkgver=$(date +%Y%m%d_%H%M)
 pkgrel=1
-pkgdesc="A pacman wrapper with extended features and AUR support"
+pkgdesc='A pacman wrapper with extended features and AUR support'
 arch=('any')
-url="http://www.archlinux.fr/yaourt-en/"
-license="GPL"
+url='http://www.archlinux.fr/yaourt-en/'
+license=('GPL')
 depends=('diffutils' 'pacman>=3.5' 'package-query>=0.7')
 makedepends=('git')
-optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
-    'customizepkg: automatically modify PKGBUILD during install/upgrade'
-    'rsync: retrieve PKGBUILD from official repositories'
-    'pacman-color: fully colorized output')
+#optdepends=('aurvote: vote for favorite packages from AUR for inclusion in [community]'
+#    'customizepkg: automatically modify PKGBUILD during install/upgrade'
+#    'rsync: retrieve PKGBUILD from official repositories')
 provides=('yaourt')
 conflicts=('yaourt')
-install=yaourt.install
 backup=('etc/yaourtrc')
 source=()
 
 build() { 
-	cp -r ../../src/ $srcdir/yaourt/
-	cp ../../src/ChangeLog $startdir/
-	cd $srcdir/yaourt/
+	cp -r ../../src/ "$srcdir/yaourt/"
+	cp ../../src/ChangeLog "$startdir/"
+	cd "$srcdir/yaourt/"
 	make PREFIX=/usr sysconfdir=/etc localstatedir=/var 
 }
 
 package() {
-	cd $srcdir/yaourt/
-	make PREFIX=/usr sysconfdir=/etc localstatedir=/var DESTDIR=$pkgdir install
+	cd "$srcdir/yaourt/"
+	make PREFIX=/usr sysconfdir=/etc localstatedir=/var DESTDIR="$pkgdir" install
 }
