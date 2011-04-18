@@ -16,7 +16,7 @@ abs_get_pkgbuild ()
 {
 	local repo=${1%/*} pkg=${1#*/} arch=$2
 	if [[ $RSYNCCMD ]] && in_array "$repo" "${ABS_REPO[@]}"; then
-		[[ $arch ]] || arch=$(pkgquery -Sif "%a" "$repo/$pkg")
+		[[ $arch ]] || arch=$(pkgquery -1Sif "%a" "$repo/$pkg")
 		$RSYNCCMD $RSYNCOPT "$RSYNCSRC/$arch/$repo/$pkg/" . && return 0
 	fi
 	# TODO: store abs archive somewhere else.
@@ -129,7 +129,7 @@ classify_pkg ()
 			# new package (not installed at this time)
 			pkgver=$rversion
 			local requiredbypkg=$(printf "%q" "$(gettext 'not found')")
-			local pkg_dep_on=( $(pkgquery -S --query-type depends -f "%n" "$pkgname") )
+			local pkg_dep_on=( $(pkgquery -1S --qdepends -f "%n" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
 				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
 			done
@@ -297,16 +297,13 @@ sync_packages()
 	local _pkg _arg repo pkg target 
 	for _pkg in "$@"; do pkgs_search[$_pkg]=1; done
 	# Search for exact match, pkg which provides it, then in AUR
-	for _arg in "-1Si" "-S --query-type provides" "-1Ai"; do
-		while read repo pkg target; do
-			((pkgs_search[$target])) || continue
-			unset pkgs_search[$target]
-			((pkgs_found[$pkg])) && continue
-			pkgs_found[$pkg]=1
-			[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
-		done < <(pkgquery -f "%r %n %t" $_arg "${!pkgs_search[@]}")
-		((! ${#pkgs_search[@]})) && break
-	done
+	while read repo pkg target; do
+		((pkgs_search[$target])) || continue
+		unset pkgs_search[$target]
+		((pkgs_found[$pkg])) && continue
+		pkgs_found[$pkg]=1
+		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
+	done < <(pkgquery -f "%r %n %t" -1SAii "${!pkgs_search[@]}")
 	bin_pkgs=("${!pkgs_search[@]}")
 	for _pkg in "${repo_pkgs[@]}"; do
 		[[ $SP_ARG ]] && pkgquery -Qq "$_pkg" && continue

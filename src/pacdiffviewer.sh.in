@@ -53,7 +53,7 @@ usage()
 backup_files()
 {
 	local _file _md5sum _version pkgname pkgver backupdir currentfile
-	pkgquery -Qf "%n - %v"$'\n'"%b" --csep $'\n' |
+	pkgquery -Qf '%n - %v\n%B' --csep '\n' |
 	while read _file _md5sum _version
 	do
 		# no backups

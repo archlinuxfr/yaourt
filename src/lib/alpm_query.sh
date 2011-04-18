@@ -12,7 +12,7 @@ pkgversion()
 # Test if $1 is installed or provided by an installed package
 isavailable()
 {
-	pkgquery -1Siq "$1" || pkgquery -1Sq --query-type provides "$1"
+	pkgquery -1Siiq "$1"
 }
 
 # Return package repository
@@ -25,7 +25,7 @@ sourcerepository()
 get_pkgbase ()
 {
 	local pkgbase pkgname=$1 repo=$2 pkgver=$3
-	[[ -z $repo || -z $pkgver ]] && read repo pkgver < <(pkgquery -Sif '%r %n' $pkgname)
+	[[ -z $repo || -z $pkgver ]] && read repo pkgver < <(pkgquery -1Sif '%r %n' $pkgname)
 	pkgbase=$(bsdtar -xf "${P[dbpath]}/sync/$repo.db" -O - "$pkgname-$pkgver/desc" 2> /dev/null |
 	  sed -n '/%BASE%/,/^$/ { /^[^%]/p}')
 	echo ${pkgbase:-$pkgname}
@@ -42,7 +42,7 @@ searchforpackageswhich(){
 	esac
 	msg $(_gettext "$_msg" "$name")
 	[[ "$MAJOR" = "query" ]] && _opt="-Q" || _opt="-S"
-	pkgquery $_opt --query-type $action "$name"
+	pkgquery $_opt --q$action "$name"
 }
 
 # searching for packages installed as dependecy from another packages, but not required anymore

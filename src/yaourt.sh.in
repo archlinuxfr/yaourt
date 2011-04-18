@@ -156,8 +156,9 @@ yaourt_install_packages ()
 yaourt_sync ()
 {
 	local arg
-	(( PRINT && REFRESH )) && pacman_cmd 1
-	(( PRINT && ! REFRESH )) && pacman_cmd 0
+	(( PRINT>1 && REFRESH )) && pacman_cmd 1
+	(( PRINT>1 && ! REFRESH )) && pacman_cmd 0
+	((PRINT && SYSUPGRADE)) && { pkgquery -AQu; die 0; }
 	if (( GROUP || LIST || SEARCH)); then
 		(( LIST )) && {
 			title $(gettext 'listing all packages in repo(s)')
@@ -340,7 +341,7 @@ while [[ $1 ]]; do
 		--nocolor)          USECOLOR=0;;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
-		--print-format)     ;; # --print-format needs --print
+		--print-format)     ((PRINT++));; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; shift;;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--stats)            MAJOR="stats";;
@@ -379,7 +380,7 @@ fi
 # Refresh
 [[ "$MAJOR" = "sync" ]] &&
   (( REFRESH && !PRINT )) &&
-  (( !SYSUPGRADE || DETAILUPGRADE )) &&
+  (( !SYSUPGRADE || PRINT==1 || DETAILUPGRADE )) &&
   pacman_refresh $REFRESH
 
 # Action
