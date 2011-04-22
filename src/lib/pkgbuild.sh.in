@@ -5,9 +5,6 @@
 
 loadlibrary alpm_query
 
-# Global vars:
-# SPLITPKG:	1 if current PKGBUILD describe multiple package
-
 # source makepkg configuration
 source_makepkg_conf ()
 {
@@ -72,8 +69,7 @@ read_pkgbuild ()
 		echo $(gettext 'Unable to read PKGBUILD')
 		return 1
 	fi
-	(( ${#pkgname[@]} > 1 )) && SPLITPKG=1 || SPLITPKG=0
-	(( SPLITPKG )) && {
+	(( ${#pkgname[@]} > 1 )) && {
 		warning $(gettext 'This PKGBUILD describes a splitted package.')
 		msg $(gettext 'Specific package options are unknown')
 	}
