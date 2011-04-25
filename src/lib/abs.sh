@@ -100,7 +100,7 @@ classify_pkg ()
 	      pkgver lrel rrel lver rver
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
-		if [[ "$repo" = "aur" ]]; then
+		if [[ "$repo" = "aur" && ${lversion#-} ]]; then
 			if ((DETAILUPGRADE<2)); then
 				echo -en "\r"
 				((REFRESH)) && echo -n " "
@@ -183,16 +183,28 @@ show_targets ()
 sysupgrade()
 {
 	local packages pkgs pkg
+	declare -a aur_up pkg_up
+	local pkg_foreign=0
+	if ((AURUPGRADE)); then
+		if [[ $ARGS ]]; then
+			pkg_up=($(pkgquery -1Siif '%n' "${ARGS[@]}"))
+			if (( ${#ARGS[@]} > ${#pkg_up[@]} )); then
+				aur_up=($(pkgquery -1Aiif '%n' "${ARGS[@]}"))
+			fi
+		fi
+	else
+		pkg_up=("${ARGS[@]}")
+	fi
 	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFRIM=1; }
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 	if (( ! DETAILUPGRADE )); then
 		(( REFRESH )) && _arg+="y"
 		(( REFRESH>1 )) && _arg+="y"
-		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
+		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
 	else	
 		pacman_parse -Sp --print-format "## %n" \
 		             --noconfirm $_arg "${PACMAN_S_ARG[@]}" \
-		             "${ARGS[@]}" 1> "$YAOURTTMPDIR/sysupgrade" ||
+		             "${pkg_up[@]}" 1> "$YAOURTTMPDIR/sysupgrade" ||
 			{ grep -v '^## ' "$YAOURTTMPDIR/sysupgrade"; return 1; }
 		packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade"))
 		rm "$YAOURTTMPDIR/sysupgrade"
@@ -200,8 +212,12 @@ sysupgrade()
 	#[[ ! "$packages" ]] && return 0	
 	local cmd="echo -n"
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
-	((AURUPGRADE)) && cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
-	classify_pkg $( ((DETAILUPGRADE<2)) && pacman -Qqm | wc -l)< <(eval $cmd)
+	if ((AURUPGRADE)); then
+		cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
+		[[ $aur_up ]] && cmd+='; pkgquery -Aif "%n %r %v - %o %d" "${aur_up[@]}"'
+		((DETAILUPGRADE<2)) && pkg_foreign=$(pacman_parse -Qqm | wc -l)
+	fi
+	classify_pkg $pkg_foreign < <(eval $cmd)
 	SP_ARG="" sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
@@ -216,7 +232,7 @@ sysupgrade()
 	else
 		display_update || return 0
 		if [[ ${pkgs[*]##aur/*} ]]; then
-			su_pacman -S "${PACMAN_S_ARG[@]}" $_arg || return $?
+			su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
 		fi
 	fi
 	for pkg in ${pkgs[@]}; do
