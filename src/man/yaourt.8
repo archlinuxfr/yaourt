@@ -2,12 +2,12 @@
 .\"     Title: yaourt
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
-.\"      Date: 2011-03-24
+.\"      Date: 2011-05-18
 .\"    Manual: Yaourt Manual
 .\"    Source: Yaourt 0.10
 .\"  Language: English
 .\"
-.TH "YAOURT" "8" "2011\-03\-24" "Yaourt 0\&.10" "Yaourt Manual"
+.TH "YAOURT" "8" "2011\-05\-18" "Yaourt 0\&.10" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -108,11 +108,6 @@ Export builded packages and their sources (\fBmakepkg\fR(8)) to <dir>\&.
 Force installation or updates\&.
 .RE
 .PP
-\fB\-f, \-\-force\fR
-.RS 4
-Force installation or updates\&.
-.RE
-.PP
 \fB\-\-insecure\fR
 .RS 4
 Allow curl & package\-query to perform "insecure" SSL connections
@@ -131,7 +126,7 @@ Don\(cqt ask for confirmation\&.
 \fB\-\-sucre\fR
 .RS 4
 Equivalent to
-\fI\-Sfyyua \-\-devel\fR
+\fI\-Sfyyua \-\-devel \-\-noconfirm\fR
 .RE
 .PP
 \fB\-\-tmp <dir>\fR
