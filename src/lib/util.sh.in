@@ -72,8 +72,8 @@ is_sudo_allowed()
 {
 	if (( SUDOINSTALLED )); then
 		(( SUDONOVERIF )) && return 0
-		sudo -nl "$@" &> /dev/null || \
-			(sudo -v && sudo -l "$@") &>/dev/null && return 0
+		sudo -nl "$@" 2> /dev/null || \
+			(sudo -v && sudo -l "$@") 2>/dev/null && return 0
 	fi
 	return 1
 }
