@@ -30,6 +30,13 @@ VERSION='@VERSION@'
 ###################################
 
 usage(){
+	if ((${#ARGSANS[*]} > 1)); then
+		echo "$(gettext 'Yaourt does not support --help for a particular option.')"
+		echo "$(_gettext 'The following is %s help :' "$PACMAN")"
+		echo
+		pacman_out "${ARGSANS[@]}"
+		return
+	fi
 	echo "$(gettext 'Usage: yaourt <operation> [...]')"
 	echo "$(gettext 'operations:')"
 	echo -e "\t$(gettext 'yaourt (search pattern|package file)')"
