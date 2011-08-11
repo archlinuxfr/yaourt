@@ -311,7 +311,8 @@ while [[ $1 ]]; do
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
 		--asdeps|--needed)  program_arg $A_PS $1;;
-		-c|--clean)         (( CLEAN ++ )); (( CHANGELOG++ ));;
+		--clean)            ((CLEAN++));;
+		-c)                 ((CLEAN++)); ((CHANGELOG++)); program_arg $A_PQ "$1";;
 		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
 		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_PQ)) $1;;
 		-e|--explicit)      program_arg $A_PQ $1;;
