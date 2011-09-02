@@ -6,8 +6,7 @@
 # Global var: P for pacman configuration
 declare -A P=()
 
-parse_pacman_conf()
-{
+parse_pacman_conf() {
 	# Default pacman configuration
 	P=([dbpath]="@dbpath@"
 	   [lockfile]="@dbpath@/db.lck"
@@ -30,8 +29,7 @@ parse_pacman_conf()
 }
 
 # Wait while pacman locks exists
-pacman_queue()
-{
+pacman_queue() {
 	# from nesl247
 	if [[ -f ${P[lockfile]} ]]; then
 		msg $(gettext 'Pacman is currently in use, please wait.')
@@ -40,14 +38,12 @@ pacman_queue()
 }
 
 # launch pacman as root
-su_pacman ()
-{
+su_pacman() {
 	pacman_queue; launch_with_su $PACMAN "${PACMAN_C_ARG[@]}" "$@"
 }
 
 # Launch pacman and exit
-pacman_cmd ()
-{
+pacman_cmd() {
 	(( ! $1 )) && exec $PACMAN "${ARGSANS[@]}"
 	prepare_orphan_list
 	pacman_queue; launch_with_su $PACMAN "${ARGSANS[@]}"  
@@ -57,8 +53,7 @@ pacman_cmd ()
 }
 
 # Refresh pacman database
-pacman_refresh ()
-{
+pacman_refresh() {
 	local _arg
 	title $(gettext 'synchronizing package databases')
 	(( $1 > 1 )) && _arg="-Syy" || _arg="-Sy"
@@ -66,8 +61,7 @@ pacman_refresh ()
 }
 
 
-is_package_ignored ()
-{
+is_package_ignored() {
 	if [[ " ${P[ignorepkg]} " =~ " $1 " ]]; then
 		(($2)) && echo -e "$1: $CRED "$(gettext '(ignoring package upgrade)')"$C0"
 		return 0
@@ -76,8 +70,7 @@ is_package_ignored ()
 }
 
 # is_x_gt_y ($ver1,$ver2)
-is_x_gt_y()
-{
+is_x_gt_y() {
 	[[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]]
 }
 

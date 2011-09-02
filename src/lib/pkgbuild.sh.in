@@ -3,11 +3,10 @@
 # pkgbuild.sh : deals with PKGBUILD, makepkg ...
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-loadlibrary alpm_query
+load_lib alpm_query
 
 # source makepkg configuration
-source_makepkg_conf ()
-{
+source_makepkg_conf() {
 	# From makepkg, try to source the same way
 	MAKEPKG_CONF=${MAKEPKG_CONF:-@sysconfdir@/makepkg.conf}
 	local _PKGDEST=${PKGDEST}
@@ -33,8 +32,7 @@ source_makepkg_conf ()
 # Usage:	read_pkgbuild ($update)
 #	$update: 1: call devel_check & devel_update from makepkg
 # Set PKGBUILD_VARS, exec "eval $PKGBUILD_VARS" to have PKGBUILD content.
-read_pkgbuild ()
-{
+read_pkgbuild() {
 	local update=${1:-0}
 	local vars=(pkgbase pkgname pkgver pkgrel arch pkgdesc provides url \
 		groups license source install md5sums depends makedepends conflicts \
@@ -80,8 +78,7 @@ read_pkgbuild ()
 # call read_pkgbuild() before
 # Usage:	check_deps ($nodisplay)
 #	$nodisplay: 1: don't display depends information
-check_deps ()
-{
+check_deps() {
 	local nodisplay=${1:-0} dep
 	eval $PKGBUILD_VARS
 	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" ) )
@@ -110,8 +107,7 @@ check_deps ()
 # Usage:	check_conflicts ($nodisplay)
 #	$nodisplay: 1: don't display depends information
 # If nodisplay, return 1 if conflicts and 0 if not
-check_conflicts ()
-{
+check_conflicts() {
 	local nodisplay=${1:-0} cf
 	eval $PKGBUILD_VARS
 	local cfs=( $(pacman_parse -T "${conflicts[@]}") )
@@ -146,8 +142,7 @@ check_conflicts ()
 
 # Check if PKGBUILD install a devel version
 # call read_pkgbuild() before
-check_devel ()
-{
+check_devel() {
 	eval $PKGBUILD_VARS
 	if [[ -n "${_svntrunk}" && -n "${_svnmod}" ]] \
 		|| [[ -n "${_cvsroot}" && -n "${_cvsmod}" ]] \
@@ -165,8 +160,7 @@ check_devel ()
 # 	$default_answer: 1 (default): Y 	2: N
 # 	$loop: for PKGBUILD, 1: loop until answer 'no' 	0 (default) : no loop
 # 	$check_dep: 1 (default): check for deps and conflicts
-edit_pkgbuild ()
-{
+edit_pkgbuild() {
 	local default_answer=${1:-1}
 	local loop=${2:-0}
 	local check_dep=${3:-1}
@@ -202,8 +196,7 @@ edit_pkgbuild ()
 # Return 0: on success
 #		 1: on error
 #		 2: if sysupgrade and no update available
-build_package()
-{
+build_package() {
 	eval $PKGBUILD_VARS
 	msg "$(gettext 'Building and installing package')"
 
@@ -265,8 +258,7 @@ build_package()
 
 # Install package after build
 # Usage: install_package ()
-install_package()
-{
+install_package() {
 	local _file failed=0
 	eval $PKGBUILD_VARS
 	# Install, export, copy package after build 
@@ -318,8 +310,7 @@ install_package()
 }
 
 # Initialise build dir ($1)
-init_build_dir()
-{
+init_build_dir() {
 	local wdir="$1"
 	if [[ -d "$wdir" ]]; then
 		rm -rf "$wdir" || { error $(_gettext 'Unable to delete directory %s. Please remove it using root privileges.' "$wdir"); return 1; }
@@ -328,8 +319,7 @@ init_build_dir()
 	cd "$wdir"
 }
 
-custom_pkg ()
-{
+custom_pkg() {
 	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "@sysconfdir@/customizepkg.d/$1" ]] && return 0
 	return 1
 }
@@ -339,8 +329,7 @@ custom_pkg ()
 # Usage: package_loop ($pkgname, $trust)
 #   $pkgname: name of package
 #	$trust: 1: default answer for editing: Y (for abs)
-package_loop ()
-{
+package_loop() {
 	local pl_pkgname=$1
 	local trust=${2:-0}
 	local default_answer=1
@@ -373,8 +362,7 @@ package_loop ()
 
 # sanitize_pkgbuild(pkgbuild)
 # Turn a PKGBUILD into a harmless script (at least try to)
-sanitize_pkgbuild ()
-{
+sanitize_pkgbuild() {
 	sed -n -e '/\$(\|`\|[><](\|[&|]\|;/d' \
 		-e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
@@ -389,19 +377,17 @@ sanitize_pkgbuild ()
 # Source a PKGBUILD and return a declare var list:
 # Call in a sub process:
 # . <(source_pkgbuild file var1 var2)
-source_pkgbuild ()
-{
+source_pkgbuild() {
 	local file="$1"; shift
 	source <(sanitize_pkgbuild "$file") &> /dev/null && declare -p "$@" 2> /dev/null
 }
 
 # get_pkgbuild ($pkgs)
 # Get each package source and decompress into pkg directory
-get_pkgbuild ()
-{
+get_pkgbuild() {
 	local i pkgs repo pkg pkgbase pkgver arch deps cwd=$(pwd)
 	pkgs=("$@")
-	loadlibrary aur abs
+	load_lib aur abs
 	declare -A pkgs_downloaded
 	for ((i=0; i<${#pkgs[@]}; i++)); do
 		cd "$cwd"
@@ -437,5 +423,6 @@ get_pkgbuild ()
 }
 
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
-source_makepkg_conf 
+source_makepkg_conf
+
 # vim: set ts=4 sw=4 noet: 

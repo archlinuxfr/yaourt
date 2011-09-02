@@ -5,7 +5,7 @@
 
 # save alpm database (local directory only) in a tar.bz2 file
 # $1: directory
-save_alpm_db(){
+save_alpm_db() {
 	local savedir="$1" savefile="$1/pacman-$(date +%Y-%m-%d_%Hh%M).tar.bz2"
 	msg $(_gettext 'Saving pacman database in %s' "$savedir")
 	title $(_gettext 'Saving pacman database in %s' "$savedir")
@@ -15,7 +15,7 @@ save_alpm_db(){
 
 # test if file is an alpm database backup
 # $1: file
-is_an_alpm_backup(){
+is_an_alpm_backup() {
 	title $(gettext 'Analysing backup file')
 	msg $(gettext 'Analysing backup file')
 	local backupdb="$YAOURTTMPDIR/backupdb"
@@ -34,7 +34,7 @@ is_an_alpm_backup(){
 
 # restore alpm database from tar.bz2 file
 # $1: file
-restore_alpm_db(){
+restore_alpm_db() {
 	local backupdb="$YAOURTTMPDIR/backupdb"
 	local nowdb="$YAOURTTMPDIR/nowdb"
 	local savedb="$YAOURTTMPDIR/backup/alpmdb$$"
@@ -70,8 +70,7 @@ restore_alpm_db(){
 }
 
 # save ($1 is a dir) or restore ($1 is a file) alpm database
-yaourt_backup()
-{
+yaourt_backup() {
 	local dest="$1"
 	[[ $dest ]] || dest="$(pwd)"
 	if [[ -d "$dest" && -w "$dest" ]]; then
@@ -82,4 +81,5 @@ yaourt_backup()
 		error $(gettext 'wrong argument')
 	fi
 }
+
 # vim: set ts=4 sw=4 noet: 

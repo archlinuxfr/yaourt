@@ -35,8 +35,7 @@ QUIET=0
 tmp_file=$(mktemp)
 CLEANUP+=("rm $tmp_file")
 
-usage()
-{
+usage() {
 	echo "$NAME $VERSION"
 	[[ "$1" = "-v" ]] && exit 0
 	echo -e "\t-c $(gettext 'Delete all *.pac* found')"
@@ -50,8 +49,7 @@ usage()
 }
 
 # Save files marked as backup in packages for a possible later merge
-backup_files()
-{
+backup_files() {
 	local _file _md5sum _version pkgname pkgver backupdir currentfile
 	pkgquery -Qf '%n - %v\n%B' --csep '\n' |
 	while read _file _md5sum _version
@@ -80,8 +78,7 @@ backup_files()
 # PACNEW=()	-> rest of pacnew files
 # PACSAVE=() -> rest of pacsave files
 # PACORIG=() -> pacorig files
-create_db()
-{
+create_db() {
 	unset PACOLD PACNEW PACSAVE
 	local pacfiles _file ext
 	IFS=$'\n'
@@ -111,8 +108,7 @@ create_db()
 # Return previous version file if we had backup it
 # usage: previous_version ($file)
 # return previous file or ""
-previous_version ()
-{
+previous_version() {
 	[[ $1 ]] || return 
 	local file=$1 pkgname pkgver
 	read pkgname pkgver < <(pacman_parse -Qo "$file" |
@@ -137,8 +133,7 @@ previous_version ()
 # Search if we can merge a .pac{save,new} with a current file
 # usage: is_mergeable ($file)
 # return: 0 on success
-is_mergeable()
-{
+is_mergeable() {
 	(( ! MERGE )) && return 1
 	[[ $1 ]] || return 1
 	local file=$1
@@ -153,8 +148,7 @@ is_mergeable()
 
 
 # Remove .pac* files
-suppress()
-{
+suppress() {
 	local pacfiles=(${PACOLD[@]})
 	[[ "$1" = "all" ]] && \
 		pacfiles+=("${PACNEW[@]}" "${PACSAVE[@]}" "${PACORIG[@]}")
@@ -173,8 +167,7 @@ suppress()
 
 # Manage .pac* file
 # Called by manage()
-manage_file ()
-{
+manage_file() {
 	local ext=$1; shift
 	local _time=${1%%  *}
 	local _file="${1#*  }"
@@ -219,8 +212,7 @@ manage_file ()
 }	
 
 # Manage list of .pac* files
-manage()
-{
+manage() {
 	echo
 	local ext=$1; shift
 	[[ $@ ]] || return

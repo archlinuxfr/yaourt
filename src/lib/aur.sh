@@ -5,11 +5,11 @@
 
 AUR_PKG_URL="$AURURL/packages.php?setlang=en&ID="
 
-loadlibrary abs
-loadlibrary pkgbuild
+load_lib abs
+load_lib pkgbuild
+
 # Get sources in current dir
-aur_get_pkgbuild ()
-{
+aur_get_pkgbuild() {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
 	#(( $# > 1 )) && local pkgurl=$2 || \
@@ -23,8 +23,7 @@ aur_get_pkgbuild ()
 	rm "$pkg.tar.gz"
 }
 
-aur_show_info()
-{
+aur_show_info() {
 	local t="$(gettext "$1"): "; shift
 	local len=${#t} str=""
 	[[ $* ]] && str=("$@") || str="None"
@@ -66,7 +65,7 @@ info_from_aur() {
 }
 
 # scrap html page to show user's comments
-aurcomments(){
+aurcomments() {
 	(( ! AURCOMMENT )) && return
 	curl_fetch -s "${AUR_PKG_URL}$1" | awk '
 function striphtml (str)
@@ -112,7 +111,7 @@ END {
 }
 
 # Check if this package has been voted on AUR, and vote for it
-vote_package(){
+vote_package() {
 	(( ! AURVOTEINSTALLED )) && return
 	echo
 	msg $(_gettext 'Checking vote status for %s' "$1")
@@ -130,7 +129,7 @@ vote_package(){
 }
 
 # give to user all info to build and install Unsupported package from AUR
-install_from_aur(){
+install_from_aur() {
 	local cwd
 	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u" "$1"))
 	[[ "${pkginfo[1]#-}" ]] || return 1
@@ -157,8 +156,7 @@ install_from_aur(){
 }
 
 # aur_update_exists ($pkgname,$version,$localversion,outofdate)
-aur_update_exists()
-{
+aur_update_exists() {
 	if [[ ! ${2#-} ]]; then
 		((DETAILUPGRADE & 6 )) && echo -e "$1: $CYELLOW"$(gettext 'not found on AUR')"$C0"
 		return 1

@@ -7,13 +7,12 @@ RSYNCCMD=$(type -p rsync 2> /dev/null)
 RSYNCOPT="-mrtv --no-motd --no-p --no-o --no-g"
 RSYNCSRC="rsync.archlinux.org::abs"
 
-loadlibrary alpm_query
-loadlibrary pkgbuild
+load_lib alpm_query
+load_lib pkgbuild
 
 # Get sources in current dir
 # Usage abs_get_pkgbuild ($repo/$pkg[,$arch])
-abs_get_pkgbuild ()
-{
+abs_get_pkgbuild() {
 	local repo=${1%/*} pkg=${1#*/} arch=$2
 	if [[ $RSYNCCMD ]] && in_array "$repo" "${ABS_REPO[@]}"; then
 		[[ $arch ]] || arch=$(pkgquery -1Sif "%a" "$repo/$pkg")
@@ -34,8 +33,7 @@ abs_get_pkgbuild ()
 }
 	
 # Build from abs or aur
-build_pkg ()
-{
+build_pkg() {
 	[[ $1 ]] || return 1
 	local repo pkg=${1#*/}
 	[[ $1 != $pkg ]] && repo=${1%/*} || repo="$(sourcerepository "$pkg")"
@@ -46,8 +44,7 @@ build_pkg ()
 	fi
 }
 
-sync_first ()
-{
+sync_first() {
 	[[ $* ]] || return 0
 	warning $(gettext 'The following packages should be upgraded first :')
 	echo_wrap 4 "$*"
@@ -58,7 +55,7 @@ sync_first ()
 }
 
 # Build packages from repos
-install_from_abs(){
+install_from_abs() {
 	local cwd build_deps
 	declare -a pkginfo=($(pkgquery -1Sif "%r %n %v %a" "$1"))
 	(( ! BUILD )) && ! custom_pkg "${pkginfo[1]}" &&
@@ -90,8 +87,7 @@ install_from_abs(){
 # pkgs=(others)
 # usage: classify_pkg $pkg_nb < [one pkg / line ] 
 # read from stdin: pkgname repo rversion lversion outofdate pkgdesc
-classify_pkg ()
-{
+classify_pkg() {
 	declare -a newrelease newversion newpkgs
 	unset syncfirstpkgs srcpkgs pkgs
 	longestpkg=(0 0) 
@@ -144,10 +140,9 @@ classify_pkg ()
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 }
 
-display_update ()
-{
+display_update() {
 	# Show result
-	showupgradepackage lite
+	show_upgrades lite
         
 	# Show detail on upgrades
 	while true; do
@@ -156,21 +151,20 @@ display_update ()
 		prompt "$(gettext '[V]iew package detail   [M]anually select packages')"
 		local answer=$(userinput "YNVM" "Y")
 		case "$answer" in
-			V)	showupgradepackage full;;
-			M)	showupgradepackage manual
-				run_editor "$YAOURTTMPDIR/sysuplist" 0
-				SYSUPGRADE=2
-				SP_ARG="" sync_packages "$YAOURTTMPDIR/sysuplist"
-				return 2
-				;;
-			N)	return 1;;
-			*)	break;;
+			V) show_upgrades full;;
+			M) show_upgrades manual
+			   run_editor "$YAOURTTMPDIR/sysuplist" 0
+			   SYSUPGRADE=2
+			   SP_ARG="" sync_packages "$YAOURTTMPDIR/sysuplist"
+			   return 2
+			   ;;
+			N) return 1;;
+			*) break;;
 		esac
 	done
 }
 
-show_targets ()
-{
+show_targets() {
 	local t="$(gettext "$1") "; shift
 	t+="($#): "
 	echo
@@ -181,8 +175,7 @@ show_targets ()
 }	
 
 # Searching for packages to update, buid from sources if necessary
-sysupgrade()
-{
+sysupgrade() {
 	local packages pkgs pkg
 	declare -a aur_up pkg_up
 	local pkg_foreign=0
@@ -244,8 +237,7 @@ sysupgrade()
 
 	
 # Show package to upgrade
-showupgradepackage()
-{
+show_upgrades() {
 	# $1=full or $1=lite or $1=manual
 	if [[ "$1" = "manual" ]]; then
 		> "$YAOURTTMPDIR/sysuplist"
@@ -296,8 +288,7 @@ showupgradepackage()
 
 unset SP_ARG
 # Sync packages
-sync_packages()
-{
+sync_packages() {
 	# Install from a list of packages
 	if [[ -f $1 ]] && file -b "$1" | grep -qi text ; then
 		if (( ! SYSUPGRADE )); then 
@@ -341,7 +332,7 @@ sync_packages()
 }
 
 # Search to upgrade devel package 
-upgrade_devel_package(){
+upgrade_devel_package() {
 	declare -a devel_pkgs
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')

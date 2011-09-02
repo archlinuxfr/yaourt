@@ -3,12 +3,11 @@
 # alpm_stats.sh : collect and show some stats about local database.
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-loadlibrary pkgbuild
+load_lib pkgbuild
 
 # set orphans, repo_packages, pkg_nb*
 # parse pacman conf for ignored/hold packages
-buildpackagelist()
-{
+build_pkgs_list() {
 	repositories=($(pkgquery -L))
 	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 \
 	      f_upgrades=16 f_group=32 	
@@ -31,13 +30,13 @@ buildpackagelist()
 	done < <(pkgquery -Qf "%4 %s %n")
 }
 
-_showpkgs() {
+_show_pkgs() {
 	local str=$1;shift 
 	local p=("$@")
 	echo -e "$CGREEN$str (${#p[*]}) $C0$CYELLOW${p[@]}"
 }
 
-showpackagestats(){
+show_pkgs_stats() {
 	echo_fill "$CBLUE" - "$C0"
 	if [[ -t 1 ]]; then
 		printf "$CBLUE%${COLUMNS}s\r|$C0$CBOLD%*s $CGREEN%s$C0\n" \
@@ -61,7 +60,7 @@ showpackagestats(){
 	echo; echo_fill "$CBLUE" - "$C0"
 }
 
-showrepostats(){
+show_repos_stats(){
 	local strout="" strwrap
 	echo -e "$CGREEN$(gettext 'Number of configured repositories:')  $C0$CYELLOW${#repositories[@]}"
 	echo -e "$CGREEN$(gettext 'Packages by repositories (ordered by pacman''s priority)')$C0:"
@@ -82,8 +81,7 @@ showrepostats(){
 	echo; echo_fill "$CBLUE" - "$C0"
 }
 
-showdiskusage()
-{
+show_disk_usage() {
 	local cachedir size_t=0 size_r=0 i=1 _msg_label _msg_prog srcdestsize
 
 	# Get space used by installed package (from info in alpm db)
@@ -107,13 +105,12 @@ showdiskusage()
 	echo -e "${CGREEN}$(gettext 'Space used by src downloaded in cache:') $CYELLOW $srcdestsize$C0"
 }
 
-yaourt_stats ()
-{
+yaourt_stats() {
 	declare -a repos_packages orphans repositories
 	local pkgs_nb=0 pkgs_nb_d=0 pkgs_nb_e=0 pkgs_nb_dt=0 pkgs_nb_u=0
-	buildpackagelist
-	showpackagestats
-	showrepostats
-	showdiskusage
+	build_pkgs_list
+	show_pkgs_stats
+	show_repos_stats
+	show_disk_usage
 }	
 # vim: set ts=4 sw=4 noet: 

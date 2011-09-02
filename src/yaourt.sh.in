@@ -29,7 +29,7 @@ VERSION='@VERSION@'
 ### General functions           ###
 ###################################
 
-usage(){
+usage() {
 	if ((${#ARGSANS[*]} > 1)); then
 		echo "$(gettext 'Yaourt does not support --help for a particular option.')"
 		echo "$(_gettext 'The following is %s help :' "$PACMAN")"
@@ -51,7 +51,8 @@ usage(){
 	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} [options] <package(s)>')"
 	echo -e "\t$(gettext 'yaourt {--stats}')"
 }
-version(){
+
+version() {
 	echo "yaourt $VERSION"
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
 }
@@ -60,7 +61,7 @@ version(){
 ###################################
 ### Package database functions  ###
 ###################################
-prepare_orphan_list(){
+prepare_orphan_list() {
 	(( ! SHOWORPHANS )) && return
 	# Prepare orphan list before upgrade and remove action
 	mkdir -p "$YAOURTTMPDIR/orphans"
@@ -74,7 +75,8 @@ prepare_orphan_list(){
 	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
 	awk '{print $1}' "$INSTALLED_BEFORE.full"> $INSTALLED_BEFORE
 }
-show_new_orphans(){
+
+show_new_orphans() {
 	(( ! SHOWORPHANS )) && return
 	# search for new orphans after upgrading or after removing (exclude new installed package)
 	pacman_parse -Qdqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
@@ -110,8 +112,7 @@ show_new_orphans(){
 # usage: search ($interactive)
 # interactive:1 -> line number
 # return: global var PKGSFOUND
-search ()
-{
+search() {
 	local interactive=${1:-0}
 	local search_option="${PACMAN_Q_ARG[@]}"
 	if [[ "$MAJOR" = "query" ]]; then
@@ -134,20 +135,18 @@ search ()
 }
 	
 # Handle special query
-yaourt_query_type ()
-{
+yaourt_query_type() {
 	local arg
 	title $(gettext 'query packages')
-	loadlibrary alpm_query
+	load_lib alpm_query
 	for arg in ${ARGS[@]}; do
-		searchforpackageswhich "$QUERYTYPE" "$arg"
+		search_pkgs_which "$QUERYTYPE" "$arg"
 	done
 }
 
-yaourt_install_packages ()
-{
-	loadlibrary abs
-	loadlibrary aur
+yaourt_install_packages() {
+	load_lib abs
+	load_lib aur
 	prepare_orphan_list
 	SP_ARG="" sync_packages "${ARGS[@]}"
 	show_new_orphans
@@ -160,8 +159,7 @@ yaourt_install_packages ()
 }
 	
 # Handle sync
-yaourt_sync ()
-{
+yaourt_sync() {
 	local arg
 	(( PRINT>1 && REFRESH )) && pacman_cmd 1
 	(( PRINT>1 && ! REFRESH )) && pacman_cmd 0
@@ -175,8 +173,8 @@ yaourt_sync ()
 		search 0
 		return
 	elif (( SYSUPGRADE )); then
-		loadlibrary abs
-		loadlibrary aur
+		load_lib abs
+		load_lib aur
 		prepare_orphan_list
 		sysupgrade
 		# Upgrade devel packages
@@ -189,7 +187,7 @@ yaourt_sync ()
 		yaourt_query_type
 		return
 	elif (( INFO )); then
-		loadlibrary aur
+		load_lib aur
 		for arg in ${ARGS[@]}; do
 			title $(_gettext 'Informations for %s' $arg)
 			local _repo="${arg%/*}"
@@ -206,10 +204,9 @@ yaourt_sync ()
 }
 
 # Handle query
-yaourt_query ()
-{
+yaourt_query() {
 	[[ -n $BACKUPFILE ]] && if [[ -r "$BACKUPFILE" ]]; then   # -Q --backupfile
-		loadlibrary alpm_backup 
+		load_lib alpm_backup 
 		is_an_alpm_backup "$BACKUPFILE" || die 1
 		program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
 	else
@@ -221,7 +218,7 @@ yaourt_query ()
 		return $?
 	fi
 	if (( DEPENDS && UNREQUIRED )); then
-		loadlibrary alpm_query
+		load_lib alpm_query
 		search_forgotten_orphans
 	elif [[ $QUERYTYPE ]]; then
 		yaourt_query_type
@@ -233,8 +230,7 @@ yaourt_query ()
 }
 
 # Handle interactive search
-yaourt_interactive ()
-{
+yaourt_interactive() {
 	local line packages
 	SEARCH=1 search 1 
 	[[ $PKGSFOUND ]] || die 0
@@ -258,8 +254,7 @@ yaourt_interactive ()
 }
 
 # No action specified
-yaourt_no_action ()
-{
+yaourt_no_action() {
 	local file
 	declare -a filelist
 	[[ $ARGS ]] || pacman_cmd 0
@@ -283,10 +278,9 @@ yaourt_no_action ()
 # Basic init and librairies
 
 unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
-	IGNOREGRP IGNOREPKG CHANGELOG LIST INFO DATE UNREQUIRED \
-	FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
-	AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED \
-	PACMAN_CMD
+      IGNOREGRP IGNOREPKG CHANGELOG LIST INFO DATE UNREQUIRED \
+      FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
+      AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD
 
 # Grab environement options
 {
@@ -386,6 +380,8 @@ fi
 ((FORCE)) && program_arg $((A_PS | A_M)) "--force"
 
 # Refresh
+# Don't refresh now if yaourt is called with -Syp*
+# or, if DETAILUPGRADE=0, with -Syu*
 [[ "$MAJOR" = "sync" ]] &&
   (( REFRESH && !PRINT )) &&
   (( !SYSUPGRADE || PRINT==1 || DETAILUPGRADE )) &&
@@ -399,18 +395,18 @@ case "$MAJOR" in
 		;;
 
 	stats)
-		loadlibrary alpm_stats
+		load_lib alpm_stats
 		yaourt_stats
 		;;
 
 	getpkgbuild)
 		title "$(gettext 'get PKGBUILD')"
-		loadlibrary pkgbuild
+		load_lib pkgbuild
 		get_pkgbuild "${ARGS[@]}"
 		;;
 
 	backup) 
-		loadlibrary alpm_backup
+		load_lib alpm_backup
 		yaourt_backup "${ARGS[0]}"
 		;;
 	

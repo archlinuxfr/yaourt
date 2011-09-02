@@ -13,10 +13,16 @@ ERROR_PKGS=()
 declare -A LOADEDLIBS=()
 
 type -p sudo &> /dev/null && SUDOINSTALLED=1
-type -t gettext &> /dev/null || { gettext () { echo "$@"; }; }
+type -t gettext &> /dev/null || { gettext() { echo "$@"; }; }
 
-_gettext ()
-{
+
+# Programs arguments
+# pacman -S, makepkg, pacman -Q, pacman, package-query, curl
+A_PS=1 A_M=2 A_PQ=4 A_PC=8 A_PKC=16 A_CC=32
+unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG PKGQUERY_C_ARG \
+      CURL_C_ARG
+
+_gettext() {
 	local str=$1; shift
 	printf "$(gettext "$str")" "$@" 
 }
@@ -25,8 +31,7 @@ die() {	exit ${1:-0}; }
 
 # Called on exit
 # CLEANUP is an array of commands to be run at exit.
-cleanup()
-{
+cleanup() {
 	local line
 	for line in "${CLEANUP[@]}"; do eval $line; done
 }
@@ -35,8 +40,7 @@ trap cleanup 0
 # explode_args ($arg1,...)
 # -ab --long -> -a -b --long
 # set $OPTS
-explode_args()
-{
+explode_args() {
 	unset OPTS
 	local arg=$1
 	while [[ $arg ]]; do
@@ -53,8 +57,7 @@ explode_args()
 manage_error() { ERROR_PKGS+=("$1"); return 1; }
 
 # Load library but never reload twice the same lib
-loadlibrary()
-{
+load_lib() {
 	while [[ $1 ]]; do
 		((LOADEDLIBS[$1])) && return 0
 		if [[ ! -r "@libdir@/yaourt/$1.sh" ]]; then
@@ -68,8 +71,7 @@ loadlibrary()
 }
 
 # Check if sudo is allowed for given command
-is_sudo_allowed()
-{
+is_sudo_allowed() {
 	if (( SUDOINSTALLED )); then
 		(( SUDONOVERIF )) && return 0
 		sudo -nl "$@" 2> /dev/null || \
@@ -78,8 +80,7 @@ is_sudo_allowed()
 	return 1
 }
 
-fake_sudo()
-{
+fake_sudo() {
 	local errorfile=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
 	local cmd=()
 	while [[ $1 ]]; do
@@ -95,9 +96,9 @@ fake_sudo()
 	done
 	return 1
 }
-# Run $* as root using sudo or su
-launch_with_su()
-{
+
+# Run "$@" as root using sudo or su
+launch_with_su() {
 	if is_sudo_allowed "$@"; then
 		sudo "$@"
 	else
@@ -120,8 +121,7 @@ in_array() {
 # Check directory write permissions and set a cannonical name
 # check_dir ($var)
 #   $var : name of variable containing directory
-check_dir()
-{
+check_dir() {
 	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }	
 	[[ ! -w "${!1}" ]] && { error "${!1} $(gettext 'is not writable')"; return 1; }	
 	eval $1'="$(readlink -e "${!1}")"'	# get cannonical name
@@ -129,8 +129,7 @@ check_dir()
 }
 
 # Check/init useful paths
-init_paths()
-{
+init_paths() {
 	check_dir TMPDIR || die 1
 	YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 	mkdir -p "$YAOURTTMPDIR" || check_dir YAOURTTMPDIR || die 1
@@ -138,18 +137,8 @@ init_paths()
 	parse_pacman_conf
 }
 
-# Define programs arguments
-A_PS=1   # pacman sync
-A_M=2    # makepkg
-A_PQ=4   # pacman query
-A_PC=8   # pacman conf
-A_PKC=16 # package-query
-A_CC=32  # curl opt
-unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG \
-      PKGQUERY_C_ARG CURL_C_ARG
 # Usage: program_arg ($dest, $arg)
-program_arg ()
-{
+program_arg() {
 	local dest=$1; shift
 	(( dest & A_PS ))  && PACMAN_S_ARG+=("$@")
 	(( dest & A_M ))   && MAKEPKG_ARG+=("$@")
@@ -160,17 +149,16 @@ program_arg ()
 }
 
 # programs call with command line options
-pacman_parse () { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
-pacman_out () { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
-pkgquery () { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
-curl_fetch () { curl "${CURL_C_ARG[@]}" "$@"; }
+pacman_parse() { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_out()   { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
+pkgquery()     { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
+curl_fetch()   { curl "${CURL_C_ARG[@]}" "$@"; }
 
 # Run editor
 # Usage: run_editor ($file, $default_answer)
 # 	$file: file to edit 
 # 	$default_answer: 0: don't ask	1 (default): Y	2: N
-run_editor ()
-{
+run_editor() {
 	local edit_cmd
 	local file="$1"
 	local default_answer=${2:-1}

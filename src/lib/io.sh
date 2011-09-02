@@ -12,16 +12,14 @@ C0=''
 declare -A C=()
 
 # Fill line ($color_start,$content,$color_end)
-echo_fill ()
-{
+echo_fill() {
 	echo -e "$1${P_INDENT// /$2}$3"
 }
 
 # Wrap string
 # usage: str_wrap ($indent, $str)
 # return: set $strwrap with wrapped content
-str_wrap ()
-{
+str_wrap() {
 	local indent=${1:-0} ; shift
 	(( indent > COLUMNS )) && { strwrap="$*"; return 0; }
 	strwrap="${P_INDENT:0:$indent}$*"
@@ -41,15 +39,13 @@ str_wrap ()
 	strwrap+="${P_INDENT:0:$indent}$strout"
 }
 
-echo_wrap ()
-{
+echo_wrap() {
 	local strwrap
 	str_wrap "$1" "$2"
 	echo -e "$strwrap"
 }
 
-echo_wrap_next_line () 
-{
+echo_wrap_next_line() {
 	echo -en "$1"; shift
 	local len=$1; shift
 	local i=0 strout="" strwrap
@@ -62,19 +58,16 @@ echo_wrap_next_line ()
 }
 
 
-list_select ()
-{
+list_select() {
 	local i=0 _line
 	for _line in "$@"; do
-		(( i++ ))
-		echo -e  "${C[nb]}$i$C0 $_line"
+		echo -e  "${C[nb]}$((++i))$C0 $_line"
 	done
 	echo
 }
 
 # ask 
-userinput() 
-{
+userinput() {
 	local _key=${1:-YN}
 	local default=${2:-Y}
 	local answer
@@ -89,8 +82,7 @@ userinput()
 	[[ "$answer" = "$default" ]]
 }
 
-useragrees()
-{
+useragrees() {
 	userinput "$@" &> /dev/null
 	local ret=$?
 	echo 
@@ -98,11 +90,10 @@ useragrees()
 }
 
 # ask while building
-builduserinput () { NOCONFIRM=$BUILD_NOCONFIRM userinput "$@"; }
-builduseragrees () { NOCONFIRM=$BUILD_NOCONFIRM useragrees "$@"; }
+builduserinput() { NOCONFIRM=$BUILD_NOCONFIRM userinput "$@"; }
+builduseragrees() { NOCONFIRM=$BUILD_NOCONFIRM useragrees "$@"; }
 
-yes_no ()
-{
+yes_no() {
 	case $1 in
 	  1) echo $(gettext "[Y/n]");;
 	  2) echo $(gettext "[y/N]");;
@@ -111,7 +102,7 @@ yes_no ()
 }
 
 # Set teminal title.
-title(){
+title() {
 	(( ! TERMINALTITLE )) || [[ ! $DISPLAY ]] && return 0
 	case $TERM in
 		rxvt*|xterm*|aterm)
@@ -124,8 +115,7 @@ title(){
 # parse_color_var ($1)
 # $1 is a colon-separated list of keys
 # ex: core=1;31:extra=1;32
-parse_color_var ()
-{
+parse_color_var() {
 	local vars="BOLD BLINK RED GREEN YELLOW BLUE PURPLE CYAN"
 	local col key val colors=(${1//:/ })
 	for col in "${colors[@]}"; do
@@ -135,8 +125,7 @@ parse_color_var ()
 	done
 }
 
-init_color ()
-{
+init_color() {
 	((!USECOLOR)) || [[ $COLORMODE = "nocolor" ]] && return
 	C0="\033[0m" 
 	# yaourt colors 
@@ -152,16 +141,17 @@ init_color ()
 }
 
 
-_showmsg() { echo -en "$1==> $2$C0$CBOLD$3$C0" >&2; }
-msg() { _showmsg "$CGREEN" "" "$*\n"; }
-warning() { _showmsg "$CYELLOW" "$(gettext 'WARNING: ')" "$*\n"; }
-prompt() { 
+_show_msg() { echo -en "$1==> $2$C0$CBOLD$3$C0" >&2; }
+msg()       { _show_msg "$CGREEN" "" "$*\n"; }
+warning()   { _show_msg "$CYELLOW" "$(gettext 'WARNING: ')" "$*\n"; }
+prompt()    { 
 	local t="$*"
 	t=${#t}
-	_showmsg "$CYELLOW" "" "$*\n"
-	_showmsg "$CYELLOW" "" "${P_UNDERLINE:4:$t}\n"
-	_showmsg "$CYELLOW"
+	_show_msg "$CYELLOW" "" "$*\n"
+	_show_msg "$CYELLOW" "" "${P_UNDERLINE:4:$t}\n"
+	_show_msg "$CYELLOW"
 }
-prompt2() { _showmsg "$CYELLOW" "" "$* "; }
-error() { _showmsg "$CRED" "$(gettext 'ERROR: ')" "$*\n"; return 1; }
+prompt2()   { _show_msg "$CYELLOW" "" "$* "; }
+error()     { _show_msg "$CRED" "$(gettext 'ERROR: ')" "$*\n"; return 1; }
 
+# vim: set ts=4 sw=4 noet: 
