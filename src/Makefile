@@ -56,6 +56,7 @@ install: $(SCRIPTS)
 	$(INSTALL) -m644 lib/io.sh $(DESTDIR)$(libdir)/yaourt
 	$(INSTALL) -m644 lib/pacman.sh $(DESTDIR)$(libdir)/yaourt
 	$(INSTALL) -m644 lib/pkgbuild.sh $(DESTDIR)$(libdir)/yaourt
+	$(INSTALL) -m644 lib/misc.sh $(DESTDIR)$(libdir)/yaourt
 	# Man
 	$(INSTALL) -m644 man/*.5 $(DESTDIR)$(mandir)/man5
 	$(INSTALL) -m644 man/*.8 $(DESTDIR)$(mandir)/man8

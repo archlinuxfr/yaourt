@@ -59,52 +59,6 @@ version() {
 
 
 ###################################
-### Package database functions  ###
-###################################
-prepare_orphan_list() {
-	(( ! SHOWORPHANS )) && return
-	# Prepare orphan list before upgrade and remove action
-	mkdir -p "$YAOURTTMPDIR/orphans"
-	ORPHANS_BEFORE="$YAOURTTMPDIR/orphans/orphans_before.$$"
-	ORPHANS_AFTER="$YAOURTTMPDIR/orphans/orphans_after.$$"
-	INSTALLED_BEFORE="$YAOURTTMPDIR/orphans/installed_before.$$"
-	INSTALLED_AFTER="$YAOURTTMPDIR/orphans/installed_after.$$"
-	# search orphans before removing or upgrading
-	pacman_parse -Qdqt | LC_ALL=C sort > $ORPHANS_BEFORE
-	# store package list before
-	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_BEFORE.full"
-	awk '{print $1}' "$INSTALLED_BEFORE.full"> $INSTALLED_BEFORE
-}
-
-show_new_orphans() {
-	(( ! SHOWORPHANS )) && return
-	# search for new orphans after upgrading or after removing (exclude new installed package)
-	pacman_parse -Qdqt | LC_ALL=C sort > "$ORPHANS_AFTER.tmp"
-	pacman_parse -Q | LC_ALL=C sort > "$INSTALLED_AFTER.full"
-	awk '{print $1}' "$INSTALLED_AFTER.full" > $INSTALLED_AFTER
-
-	LC_ALL=C comm -1 -3 "$INSTALLED_BEFORE" "$INSTALLED_AFTER" > "$INSTALLED_AFTER.newonly"
-	LC_ALL=C comm -2 -3 "$ORPHANS_AFTER.tmp" "$INSTALLED_AFTER.newonly" > $ORPHANS_AFTER
-
-	# show new orphans after removing/upgrading
-	local neworphans=$(LC_ALL=C comm -1 -3 "$ORPHANS_BEFORE" "$ORPHANS_AFTER" | tr '\n' ' ')
-	if [[ "$neworphans" ]]; then
-		msg "$(gettext 'Packages no longer required by any installed package:')"
-		echo_wrap 4 "$neworphans"
-	fi
-
-	# Test local database
-	testdb 
-
-	# save original of backup files (pacnew/pacsave)
-	if [[ "$MAJOR" != "remove" ]] && (( AUTOSAVEBACKUPFILE )) && ! \
-		diff "$INSTALLED_BEFORE.full" "$INSTALLED_AFTER.full" > /dev/null; then
-		msg "$(gettext 'Searching for original config files to save')"
-		launch_with_su pacdiffviewer --backup
-	fi
-
-}
-###################################
 ### Handle actions              ###
 ###################################
 
@@ -145,11 +99,10 @@ yaourt_query_type() {
 }
 
 yaourt_install_packages() {
-	load_lib abs
-	load_lib aur
-	prepare_orphan_list
+	load_lib abs aur misc
+	prepare_status_list
 	SP_ARG="" sync_packages "${ARGS[@]}"
-	show_new_orphans
+	analyse_status_list
 	#show package which have not been installed
 	if [[ $ERROR_PKGS ]]; then
 		warning "$(gettext 'Following packages have not been installed:')"
@@ -172,13 +125,12 @@ yaourt_sync() {
 		search 0
 		return
 	elif (( SYSUPGRADE )); then
-		load_lib abs
-		load_lib aur
-		prepare_orphan_list
+		load_lib abs aur misc
+		prepare_status_list
 		sysupgrade
 		# Upgrade devel packages
-		(( DEVEL )) && upgrade_devel_package
-		show_new_orphans
+		((DEVEL)) && upgrade_devel_package
+		analyse_status_list
 		return
 	fi
 	[[ ! $ARGS ]] && (( ! REFRESH )) && pacman_cmd 1; 
