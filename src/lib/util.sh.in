@@ -35,6 +35,17 @@ cleanup() {
 	local line
 	for line in "${CLEANUP[@]}"; do eval $line; done
 }
+
+cleanup_add() {
+	local cmd="" arg
+	while [[ $1 ]]; do
+		printf -varg "%q" "$1"
+		cmd+="$arg "
+		shift
+	done
+	CLEANUP+=("$cmd")
+}
+
 trap cleanup 0
 
 # explode_args ($arg1,...)

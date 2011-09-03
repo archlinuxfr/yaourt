@@ -136,8 +136,8 @@ init_color() {
 	export PQ_COLORS+="$pq_colors:$yaourt_colors:$YAOURT_COLORS"
 	((USECOLOR==2)) || [[ $COLORMODE = "lightbg" ]] && PQ_COLORS=${PQ_COLORS//33/36} # lightbg!
 	parse_color_var "$PQ_COLORS"
-	CLEANUP+=("echo -ne '\033[0m'")
-	((TERMINALTITLE)) && [[ $DISPLAY ]] && CLEANUP+=("echo -ne '\033]0;$TERM\007'")
+	cleanup_add echo -ne '\033[0m'
+	((TERMINALTITLE)) && [[ $DISPLAY ]] && cleanup_add echo -ne '\033]0;$TERM\007'
 }
 
 

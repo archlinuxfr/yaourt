@@ -33,7 +33,7 @@ SEARCH_REP=(/etc/ /boot/)
 QUIET=0
 [[ -d "$SAVEDIR" ]] && MERGE=1 || MERGE=0
 tmp_file=$(mktemp)
-CLEANUP+=("rm $tmp_file")
+cleanup_add rm "$tmp_file"
 
 usage() {
 	echo "$NAME $VERSION"
