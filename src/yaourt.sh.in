@@ -117,7 +117,7 @@ search() {
 	local search_option="${PACMAN_Q_ARG[@]}"
 	if [[ "$MAJOR" = "query" ]]; then
 		search_option+=" -Q"
-		((AUR && FOREIGN)) && search_option+=" -A"
+		((AUR)) && ((FOREIGN || UPGRADES)) && search_option+=" -A"
 	else
 		DATE=0
 		search_option+=" -S"
@@ -161,9 +161,8 @@ yaourt_install_packages() {
 # Handle sync
 yaourt_sync() {
 	local arg
-	(( PRINT>1 && REFRESH )) && pacman_cmd 1
-	(( PRINT>1 && ! REFRESH )) && pacman_cmd 0
-	((PRINT && SYSUPGRADE)) && { pkgquery -AQu; die 0; }
+	((PRINT && REFRESH))  && pacman_cmd 1
+	((PRINT && !REFRESH)) && pacman_cmd 0
 	if (( GROUP || LIST || SEARCH)); then
 		(( LIST )) && {
 			title $(gettext 'listing all packages in repo(s)')
@@ -382,10 +381,9 @@ fi
 # Refresh
 # Don't refresh now if yaourt is called with -Syp*
 # or, if DETAILUPGRADE=0, with -Syu*
-[[ "$MAJOR" = "sync" ]] &&
-  (( REFRESH && !PRINT )) &&
-  (( !SYSUPGRADE || PRINT==1 || DETAILUPGRADE )) &&
-  pacman_refresh $REFRESH
+if [[ $MAJOR = "sync" ]] && ((REFRESH)); then
+	((!PRINT))  && ((!SYSUPGRADE || DETAILUPGRADE)) && pacman_refresh $REFRESH
+fi
 
 # Action
 case "$MAJOR" in
