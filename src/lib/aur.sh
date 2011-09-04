@@ -32,9 +32,9 @@ aur_show_info() {
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	local pkgname=$1 id votes outofdate
+	local pkgname=$1 id votes outofdate maintainer
 	title "Searching info on AUR for $pkgname"
-	read id votes outofdate < <(pkgquery -Aif '%i %w %o' "$pkgname")
+	read id votes outofdate maintainer < <(pkgquery -Aif '%i %w %o %m' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	curl_fetch -fis "$AURURL/packages/$pkgname/PKGBUILD" -o "$tmpfile" || \
@@ -57,6 +57,7 @@ info_from_aur() {
 	aur_show_info "Optional Deps  " "${optdepends[@]}"
 	aur_show_info "Conflicts With " "${conflicts[*]}"
 	aur_show_info "Replaces       " "${replaces[*]}"
+	aur_show_info "Maintainer     " "${maintainer}"
 	aur_show_info "Architecture   " "${arch[*]}"
 	aur_show_info "Last update    " "$(date +"%c" --date "$last_mod")"
 	aur_show_info "Description    " "$pkgdesc"
