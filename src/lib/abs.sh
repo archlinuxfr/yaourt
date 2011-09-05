@@ -100,12 +100,13 @@ classify_pkg ()
 	      pkgver lrel rrel lver rver
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
-		if [[ "$repo" = "aur" && ${lversion#-} ]]; then
+		if [[ "$repo" = "aur" && ${lversion#-} ]] || [[ "$repo" = "local" ]]; then
 			if ((DETAILUPGRADE<2)); then
 				echo -en "\r"
 				((REFRESH)) && echo -n " "
 			  	echo -en "$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1"
 			fi
+			[[ "$repo" = "local" ]] && continue
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" \
 				|| continue
 		fi
