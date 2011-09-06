@@ -5,18 +5,44 @@
 
 RSYNCCMD=$(type -p rsync 2> /dev/null)
 RSYNCOPT="-mrtv --no-motd --no-p --no-o --no-g"
-RSYNCSRC="rsync.archlinux.org::abs"
+ABSCONF=0
 
 load_lib alpm_query
 load_lib pkgbuild
 
+# source abs configuration
+source_abs_conf() {
+	((ABSCONF)) && return || ABSCONF=1
+	local vars=()
+	local abs_conf
+	[[ ! $SYNCSERVER ]] && vars+=(SYNCSERVER)
+	[[ ! $REPOS ]] && vars+=(REPOS)
+	if [[ $vars ]]; then
+		abs_conf=$(
+			[[ -r "@sysconfdir@/abs.conf" ]] &&
+			    source  "@sysconfdir@/abs.conf" > /dev/null
+			[[ -r ~/.abs.conf ]] &&
+			    source  ~/.abs.conf > /dev/null
+			declare -p ${vars[*]} 2>/dev/null | tr '\n' ';'
+		)
+		[[ ! $abs_conf ]] && return
+		# Change vars names because "declare" create a local var
+		abs_conf=${abs_conf//SYNCSERVER/_SYNCSERVER}
+		abs_conf=${abs_conf//REPOS/_REPOS}
+		eval "$abs_conf"
+		SYNCSERVER=${SYNCSERVER:-$_SYNCSERVER}
+		[[ ! $REPOS ]] && REPOS=(${_REPOS[@]})
+	fi
+}
+
 # Get sources in current dir
 # Usage abs_get_pkgbuild ($repo/$pkg[,$arch])
 abs_get_pkgbuild() {
+	source_abs_conf
 	local repo=${1%/*} pkg=${1#*/} arch=$2
-	if [[ $RSYNCCMD ]] && in_array "$repo" "${ABS_REPO[@]}"; then
+	if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
 		[[ $arch ]] || arch=$(pkgquery -1Sif "%a" "$repo/$pkg")
-		$RSYNCCMD $RSYNCOPT "$RSYNCSRC/$arch/$repo/$pkg/" . && return 0
+		$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkg/" . && return 0
 	fi
 	# TODO: store abs archive somewhere else.
 	local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
@@ -348,5 +374,6 @@ upgrade_devel_package() {
 		build_pkg "$pkg"
 	done
 }
+
 
 # vim: set ts=4 sw=4 noet: 

@@ -4,9 +4,6 @@
 #   
 #
 
-# ABS_REPO list repositories available on archlinux rsync server
-ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unstable)
-
 # General
 #AUTOSAVEBACKUPFILE=0
 #DEVELBUILDDIR="/var/abs/local/yaourtbuild"
@@ -16,6 +13,11 @@ ABS_REPO=(testing core extra community-testing community gnome-unstable kde-unst
 #FORCE=0
 #TMPDIR="/tmp"
 #SUDONOVERIF=0      # Avoid multiple sudo checks when timestamp_timeout=0
+
+# ABS
+# If the package "abs" is installed, those var are parsed from abs.conf
+#REPOS=()           # REPOS available at $SYNCSERVER
+#SYNCSERVER=""
 
 # AUR 
 #AURCOMMENT=5

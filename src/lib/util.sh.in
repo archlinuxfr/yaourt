@@ -202,14 +202,16 @@ run_editor() {
 . '@libdir@/yaourt/pacman.sh'
 LOADEDLIBS+=([util]=1 [io]=1 [pacman]=1)
 shopt -s extglob
-unset ABS_REPO
 # General
 AUTOSAVEBACKUPFILE=0
 DEVELBUILDDIR='@localstatedir@/abs/local/yaourtbuild'
 DEVEL=0
 FORCEENGLISH=0
 FORCE=0
-SUDONOVERIF=0 
+SUDONOVERIF=0
+# ABS
+REPOS=()
+SYNCSERVER=""
 # AUR
 AURURL='@aururl@'
 AURCOMMENT=5
@@ -246,5 +248,8 @@ PACMAN=${PACMAN:-$PACMANBIN}
 export PACMAN=${PACMAN:-pacman}
 # Add --aur-url option to package-query args
 program_arg $A_PKC --aur-url "$AURURL"
+
+# ABS_REPO is depreceated
+[[ ! $REPOS && $ABS_REPO ]] && REPOS=(${ABS_REPO[@]})
 
 # vim: set ts=4 sw=4 noet: 

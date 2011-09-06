@@ -18,7 +18,8 @@ dbpath        = ${localstatedir}/lib/pacman/
 cachedir      = ${localstatedir}/cache/pacman/pkg/
 aururl        = http://aur.archlinux.org
 
-SCRIPTS = yaourt.sh pacdiffviewer.sh lib/util.sh lib/pkgbuild.sh lib/pacman.sh
+SCRIPTS = yaourt.sh pacdiffviewer.sh lib/util.sh lib/pkgbuild.sh lib/pacman.sh \
+		  lib/abs.sh
 
 all: $(SCRIPTS)
 
