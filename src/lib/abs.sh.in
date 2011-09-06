@@ -147,7 +147,6 @@ classify_pkg() {
 		        # new version
 				newversion+=("2 $repo $pkgname $pkgver $rversion - $pkgdesc")
 			fi
-			(( ${#lversion} > longestpkg[1] )) && longestpkg[1]=${#lversion}
 		else
 			# new package (not installed at this time)
 			pkgver=$rversion
