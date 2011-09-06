@@ -118,9 +118,9 @@ classify_pkg() {
 	unset syncfirstpkgs srcpkgs pkgs
 	longestpkg=(0 0) 
 	local i=0 bar="|/-\\"
-	local pkgname repo rversion lversion outofdate pkgdesc \
+	local pkgname repo rversion lversion outofdate pkgdesc maintainer \
 	      pkgver lrel rrel lver rver
-	while read pkgname repo rversion lversion outofdate pkgdesc; do
+	while read pkgname repo rversion lversion outofdate maintainer pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
 		if [[ "$repo" = "aur" && ${lversion#-} ]] || [[ "$repo" = "local" ]]; then
 			if ((DETAILUPGRADE<2)); then
@@ -129,7 +129,7 @@ classify_pkg() {
 			  	echo -en "$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1"
 			fi
 			[[ "$repo" = "local" ]] && continue
-			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" \
+			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" "$maintainer" \
 				|| continue
 		fi
 		[[ " ${P[SyncFirst]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
@@ -232,10 +232,13 @@ sysupgrade() {
 	fi
 	#[[ ! "$packages" ]] && return 0	
 	local cmd="echo -n"
-	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - %d" "${packages[@]}"'
+	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - - %d" "${packages[@]}"'
 	if ((AURUPGRADE)); then
-		cmd+='; pkgquery -AQmf "%n %r %v %l %o %d"'
-		[[ $aur_up ]] && cmd+='; pkgquery -Aif "%n %r %v - %o %d" "${aur_up[@]}"'
+		# TODO: %m return the maintainer for AUR package and packager for local packages.
+		# AUR username does not contain spaces.
+		# packager does, but for now, local packages are not parsed by classify_pkg()
+		cmd+='; pkgquery -AQmf "%n %r %v %l %o %m %d"'
+		[[ $aur_up ]] && cmd+='; pkgquery -Aif "%n %r %v - %o %m %d" "${aur_up[@]}"'
 		((DETAILUPGRADE<2)) && pkg_foreign=$(pacman_parse -Qqm | wc -l)
 	fi
 	classify_pkg $pkg_foreign < <(eval $cmd)

@@ -156,8 +156,15 @@ install_from_aur() {
 	return 0
 }
 
-# aur_update_exists ($pkgname,$version,$localversion,outofdate)
+# aur_update_exists ($pkgname,$version,$localversion,$outofdate,$maintainer)
 aur_update_exists() {
+	if [[ ! ${5#-} ]]; then
+		if ((DETAILUPGRADE==1)); then
+			tput el1
+			((REFRESH)) && echo -en "\r " || echo -en "\r"
+		fi
+		echo -e "$1: $CRED$(gettext 'Orphan')$C0"
+	fi
 	if [[ ! ${2#-} ]]; then
 		((DETAILUPGRADE & 6 )) && echo -e "$1: $CYELLOW"$(gettext 'not found on AUR')"$C0"
 		return 1
@@ -165,7 +172,7 @@ aur_update_exists() {
 		((DETAILUPGRADE & 6 )) && echo -e "$1: (${CRED}local=$3 ${C0}aur=$2)"
 		return 1
 	elif [[ "$2" = "$3" ]]; then
-		((DETAILUPGRADE & 2)) || ((DETAILUPGRADE & 4 && outofdate)) && {
+		((DETAILUPGRADE & 2)) || ((DETAILUPGRADE & 4 && ${4#-} )) && {
 			echo -en "$1: $(gettext 'up to date ')"
 			(( outofdate )) && echo -e "$CRED($2 "$(gettext 'flagged as out of date')")$C0" || echo
 		}
