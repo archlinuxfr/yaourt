@@ -132,7 +132,7 @@ vote_package() {
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur() {
 	local cwd
-	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u" "$1"))
+	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u %m" "$1"))
 	[[ "${pkginfo[1]#-}" ]] || return 1
 	title $(_gettext 'Installing %s from AUR' "${pkginfo[0]}")
 	cwd=$(pwd)
@@ -143,7 +143,8 @@ install_from_aur() {
 	  { cd "$cwd"; return 1; }
 	aurcomments ${pkginfo[1]}
 	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0"
-	echo -e "$CBLINK$CRED"$(gettext '( Unsupported package: Potentially dangerous ! )')"$C0"
+	[[ ! ${pkginfo[6]#-} ]] && echo -e "$CBLINK$CRED$(gettext 'This package is orphaned')$C0"
+	echo -e "$CBLINK$CRED$(gettext '( Unsupported package: Potentially dangerous ! )')$C0"
 
 	# Build, install/export
 	package_loop ${pkginfo[0]} 0 || manage_error ${pkginfo[0]} ||
