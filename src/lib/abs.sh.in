@@ -151,11 +151,13 @@ classify_pkg() {
 		else
 			# new package (not installed at this time)
 			pkgver=$rversion
-			local requiredbypkg=$(printf "%q" "$(gettext 'not found')")
-			local pkg_dep_on=( $(pkgquery -1S --qdepends -f "%n" "$pkgname") )
+			local requiredbypkg=""
+			local pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
-				in_array "$pkg" "${packages[@]}" &&	requiredbypkg=$pkg && break
+				[[ " ${packages[@]} " =~ " $pkg " ]] &&	requiredbypkg=$pkg && break
 			done
+			[[ ! $requiredbypkg ]] && requiredpkg=$(pkgquery -Sf'%R' "$pkgname")
+			[[ ! ${requiredbypkg#-} ]] && requiredpkg=$(printf "%q" "$(gettext 'not found')")
 			newpkgs+=("3 $repo $pkgname $pkgver $requiredbypkg - $pkgdesc")
 		fi
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
