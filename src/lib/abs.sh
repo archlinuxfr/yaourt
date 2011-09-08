@@ -100,6 +100,7 @@ classify_pkg ()
 	      pkgver lrel rrel lver rver
 	while read pkgname repo rversion lversion outofdate pkgdesc; do
 		printf -v pkgdesc "%q" "$pkgdesc"
+		[[ "$repo" = "local" ]] && continue
 		if [[ "$repo" = "aur" ]]; then
 			if ((DETAILUPGRADE<2)); then
 				echo -en "\r"
