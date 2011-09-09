@@ -132,7 +132,7 @@ vote_package() {
 # give to user all info to build and install Unsupported package from AUR
 install_from_aur() {
 	local cwd
-	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u %m" "$1"))
+	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u %m %l" "$1"))
 	[[ "${pkginfo[1]#-}" ]] || return 1
 	title $(_gettext 'Installing %s from AUR' "${pkginfo[0]}")
 	cwd=$(pwd)
@@ -152,8 +152,10 @@ install_from_aur() {
 	cd "$cwd"
 	rm -rf "$YAOURTTMPDIR/aur-${pkginfo[0]}"
 
-	# Check if this package has been voted on AUR, and vote for it
-	(( AURVOTE )) && vote_package "${pkginfo[0]}" "${pkginfo[1]}"
+	if ((AURVOTE)) && [[ ! "${pkginfo[7]#-}" ]]; then
+		# Check if this package has been voted on AUR, and vote for it
+		vote_package "${pkginfo[0]}" "${pkginfo[1]}"
+	fi
 	return 0
 }
 
