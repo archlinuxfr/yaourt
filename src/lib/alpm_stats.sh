@@ -54,9 +54,9 @@ show_pkgs_stats() {
 		echo -e "$CRED$(_gettext 'Where %s packages seems no more used by any package:' "$pkgs_nb_dt")$C0"
 		echo_wrap 4 "${orphans[*]}"
 	fi
-	_showpkgs "$(gettext 'Hold packages:')" ${P[HoldPkg]}
-	_showpkgs "$(gettext 'Ignored packages:')" ${P[IgnorePkg]}
-	_showpkgs "$(gettext 'Ignored groups:')" ${P[IgnoreGroup]}
+	_show_pkgs "$(gettext 'Hold packages:')" ${P[HoldPkg]}
+	_show_pkgs "$(gettext 'Ignored packages:')" ${P[IgnorePkg]}
+	_show_pkgs "$(gettext 'Ignored groups:')" ${P[IgnoreGroup]}
 	echo; echo_fill "$CBLUE" - "$C0"
 }
 
