@@ -15,9 +15,10 @@ parse_pacman_conf() {
 	declare -a PKGS_IGNORED=() 
 	eval $(pacman_parse --debug -T 2>/dev/null |
 	  sed -n -e 's/"/\\"/g' \
-             -e 's/debug: config: \([a-zA-Z]\+\): \(.*\)/P[\1]="${P[\1]}\2 "/p' \
-             -e 's/debug: config: \([a-zA-Z]\+\)$/P[\1]=1/p' \
-             -e "s/debug: option '\([a-zA-Z]\+\)' = \(.*\)/P[\1]=\"\2\"/p"
+             -e 's/^[\[\]0-9: ]//' \
+             -e 's/^debug: config: \([a-zA-Z]\+\): \(.*\)/P[\1]="${P[\1]}\2 "/p' \
+             -e 's/^debug: config: \([a-zA-Z]\+\)$/P[\1]=1/p' \
+             -e "s/^debug: option '\([a-zA-Z]\+\)' = \(.*\)/P[\1]=\"\2\"/p"
 	)
 	# Add ignored packages from command line options
 	IGNOREPKG+=(${P[IgnorePkg]})
