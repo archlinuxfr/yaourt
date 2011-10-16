@@ -137,7 +137,7 @@ init_color() {
 	((USECOLOR==2)) || [[ $COLORMODE = "lightbg" ]] && PQ_COLORS=${PQ_COLORS//33/36} # lightbg!
 	parse_color_var "$PQ_COLORS"
 	cleanup_add echo -ne '\033[0m'
-	((TERMINALTITLE)) && [[ $DISPLAY ]] && cleanup_add echo -ne '\033]0;$TERM\007'
+	((TERMINALTITLE)) && [[ $DISPLAY ]] && cleanup_add echo -ne "\033]0;$TERM\007"
 }
 
 
