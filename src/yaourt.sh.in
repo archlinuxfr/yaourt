@@ -233,6 +233,9 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
       FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
       AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD
 
+# Disable color if output is not a terminal
+[[ -t 1 ]] || { USECOLOR=0; TERMINALTITLE=0; }
+
 # Grab environement options
 {
 	type -p aurvote && AURVOTEINSTALLED=1
@@ -291,6 +294,7 @@ while [[ $1 ]]; do
 		-h|--help)          usage; exit 0;;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
 		--lightbg)          USECOLOR=2;;
+		--color)            USECOLOR=1; program_arg $A_PQ $1;;
 		--nocolor)          USECOLOR=0;;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
@@ -313,7 +317,6 @@ done
 
 # Init path & colors 
 init_paths
-[[ -t 1 ]] || { USECOLOR=0; TERMINALTITLE=0; }
 ((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor" 
 init_color
 [[ $PACMAN_CMD ]] && pacman_cmd $PACMAN_CMD
