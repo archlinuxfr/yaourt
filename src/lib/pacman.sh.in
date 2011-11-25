@@ -13,7 +13,7 @@ parse_pacman_conf() {
 	   [cachedir]="@cachedir@")
 	# Parse pacman options
 	declare -a PKGS_IGNORED=() 
-	eval $(pacman_parse --debug -T 2>/dev/null |
+	eval $(pacman_parse --debug -T |&
 	  sed -n -e 's/"/\\"/g' \
              -e 's/^[\[\]0-9: ]//' \
              -e 's/^debug: config: \([a-zA-Z]\+\): \(.*\)/P[\1]="${P[\1]}\2 "/p' \
