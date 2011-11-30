@@ -37,13 +37,7 @@ cleanup() {
 }
 
 cleanup_add() {
-	local cmd="" arg
-	while [[ $1 ]]; do
-		printf -varg "%q" "$1"
-		cmd+="$arg "
-		shift
-	done
-	CLEANUP+=("$cmd")
+	CLEANUP+=("$(printf '%q ' "$@")")
 }
 
 trap cleanup 0
@@ -93,14 +87,9 @@ is_sudo_allowed() {
 
 fake_sudo() {
 	local errorfile=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
-	local cmd=()
-	while [[ $1 ]]; do
-		printf -varg "%q" "$1"
-		cmd+=("$arg")
-		shift
-	done
+	local cmd=$(printf '%q ' "$@")
 	for i in 1 2 3; do
-		su --shell=$BASH --command "${cmd[*]} || touch $errorfile"
+		su --shell=$BASH --command "$cmd || touch $errorfile"
 		(( $? )) && [[ ! -f "$errorfile" ]] && continue
 		[[ -f "$errorfile" ]] && return 1
 		return 0
