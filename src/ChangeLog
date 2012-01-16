@@ -249,3 +249,10 @@ yaourt 0.10
 yaourt 0.10.1
 - Add pt_BR locale
 - bugfixes
+
+yaourt 1.0
+- 1.0 to end long version number
+- Pacman 4.x support
+- Add "es" and "ca" locale
+- Bugfixes
+
