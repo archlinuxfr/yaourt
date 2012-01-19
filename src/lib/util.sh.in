@@ -8,6 +8,7 @@
 
 SUDONOVERIF=0
 SUDOINSTALLED=0
+SUDOREDIRECT=1
 CLEANUP=()
 ERROR_PKGS=()
 declare -A LOADEDLIBS=()
@@ -76,11 +77,19 @@ load_lib() {
 }
 
 # Check if sudo is allowed for given command
+_is_sudo_allowed() {
+	sudo -nl "$@" || \
+		(sudo -v && sudo -l "$@") && return 0
+}
+
 is_sudo_allowed() {
 	if (( SUDOINSTALLED )); then
 		(( SUDONOVERIF )) && return 0
-		sudo -nl "$@" 2> /dev/null || \
-			(sudo -v && sudo -l "$@") 2>/dev/null && return 0
+		if (( SUDOREDIRECT )); then
+			_is_sudo_allowed "$@" &> /dev/null && return 0
+		else
+			_is_sudo_allowed "$@" 2> /dev/null && return 0
+		fi
 	fi
 	return 1
 }

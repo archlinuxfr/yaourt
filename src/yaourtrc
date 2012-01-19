@@ -12,7 +12,10 @@
 #FORCEENGLISH=0
 #FORCE=0
 #TMPDIR="/tmp"
+
+# SUDO
 #SUDONOVERIF=0      # Avoid multiple sudo checks when timestamp_timeout=0
+#SUDOREDIRECT=1     # Define to 0 in case you use a fingerprint device
 
 # ABS
 # If the package "abs" is installed, those var are parsed from abs.conf
