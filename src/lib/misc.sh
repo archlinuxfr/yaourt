@@ -21,7 +21,7 @@ prepare_status_list() {
 analyse_status_list() {
 	if ((SHOWORPHANS)); then
 		local neworphans
-		neworphans=$(comm -13 "$Y_PKG_ORPHANS" <(pkgquery -Qdtf '%n' --sort n))
+		neworphans=$(LC_ALL=C comm -13 "$Y_PKG_ORPHANS" <(pkgquery -Qdtf '%n' --sort n))
 		# show new orphans
 		if [[ "$neworphans" ]]; then
 			msg "$(gettext 'Packages no longer required by any installed package:')"
