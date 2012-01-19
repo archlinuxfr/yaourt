@@ -161,26 +161,30 @@ install_from_aur() {
 
 # aur_update_exists ($pkgname,$version,$localversion,$outofdate,$maintainer)
 aur_update_exists() {
+	local ret=0
+	local _msg=""
+	if [[ ! ${2#-} ]]; then
+		((DETAILUPGRADE & 6 )) && _msg+=" $CYELLOW$(gettext 'not found on AUR')$C0"
+		ret=1
+	elif is_x_gt_y "$3" "$2"; then
+		((DETAILUPGRADE & 6 )) && _msg+=" (${CRED}local=$3 ${C0}aur=$2)"
+		ret=1
+	elif [[ "$2" = "$3" ]]; then
+		((DETAILUPGRADE & 2)) || ((DETAILUPGRADE & 4 && ${4#-} )) && {
+			_msg+=" $(gettext 'up to date ')"
+			(( outofdate )) && _msg+=" $CRED($2 "$(gettext 'flagged as out of date')")$C0"
+		}
+		ret=1
+	fi
 	if [[ ! ${5#-} ]]; then
 		if ((DETAILUPGRADE==1)); then
 			tput el1
 			((REFRESH)) && echo -en "\r " || echo -en "\r"
 		fi
-		echo -e "$1: $CRED$(gettext 'Orphan')$C0"
+		_msg=" $CRED$(gettext 'Orphan')$C0 $_msg"
 	fi
-	if [[ ! ${2#-} ]]; then
-		((DETAILUPGRADE & 6 )) && echo -e "$1: $CYELLOW"$(gettext 'not found on AUR')"$C0"
-		return 1
-	elif is_x_gt_y "$3" "$2"; then
-		((DETAILUPGRADE & 6 )) && echo -e "$1: (${CRED}local=$3 ${C0}aur=$2)"
-		return 1
-	elif [[ "$2" = "$3" ]]; then
-		((DETAILUPGRADE & 2)) || ((DETAILUPGRADE & 4 && ${4#-} )) && {
-			echo -en "$1: $(gettext 'up to date ')"
-			(( outofdate )) && echo -e "$CRED($2 "$(gettext 'flagged as out of date')")$C0" || echo
-		}
-		return 1
-	fi
+	[[ $_msg ]] && echo -e "$1 :$_msg"
+	((ret)) && return $ret
 	is_package_ignored "$1" $DETAILUPGRADE && return 1
 	return 0
 }
