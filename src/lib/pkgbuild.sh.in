@@ -9,6 +9,7 @@ load_lib alpm_query
 source_makepkg_conf() {
 	# From makepkg, try to source the same way
 	MAKEPKG_CONF=${MAKEPKG_CONF:-@sysconfdir@/makepkg.conf}
+	local _PKGEXT=${PKGEXT}
 	local _PKGDEST=${PKGDEST}
 	local _SRCDEST=${SRCDEST}
 	local _SRCPKGDEST=${SRCPKGDEST}
@@ -21,10 +22,10 @@ source_makepkg_conf() {
 	# Use $EXPORTDIR if defined in {/etc/,~/.}yaourtrc
 	export PKGDEST=${EXPORTDIR:-$PKGDEST}
 	export SRCDEST=${EXPORTDIR:-$SRCDEST}
-	# Since pacman 3.4, SRCPKGDEST for makepkg --[all]source
 	SRCPKGDEST=${_SRCPKGDEST:-$SRCPKGDEST}
 	SRCPKGDEST=${SRCPKGDEST:-$PKGDEST}
 	export SRCPKGDEST=${EXPORTDIR:-$SRCPKGDEST}
+	export PKGEXT=${_PKGEXT:-$PKGEXT}
 }
 
 # Read PKGBUILD
@@ -278,13 +279,13 @@ install_package() {
 		echo
 		case "$answer" in
 			V)	local i=0
-				for _file in "$YPKGDEST"/*; do
+				for _file in "$YPKGDEST"/*"$PKGEXT"; do
 					(( i++ )) && { prompt2 $(gettext 'Press any key to continue'); read -n 1; }
 					$PACMAN -Qlp "$_file"
 				done
 				;;
 			C)	if type -p namcap &>/dev/null ; then
-					for _file in "$YPKGDEST"/*; do
+					for _file in "$YPKGDEST"/*"$PKGEXT"; do
 						namcap "$_file"
 					done
 				else
@@ -299,9 +300,9 @@ install_package() {
 	local _arg=""
 	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) &&
-		su_pacman -U $SP_ARG "${PACMAN_S_ARG[@]}" $_arg "$YPKGDEST"/* ||
+		su_pacman -U $SP_ARG "${PACMAN_S_ARG[@]}" $_arg "$YPKGDEST"/*"$PKGEXT" ||
 		{ failed=$?; break; }
-	if (( failed )); then 
+	if (( failed )); then
 		warning $(_gettext "Your packages are saved in %s" "$YAOURTTMPDIR")
 		cp -i "$YPKGDEST"/* $YAOURTTMPDIR/ || warning $(_gettext 'Unable to copy packages to %s directory' "$YAOURTTMPDIR")
 	fi
