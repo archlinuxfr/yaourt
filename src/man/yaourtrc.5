@@ -2,12 +2,12 @@
 .\"     Title: yaourtrc
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
-.\"      Date: 2011-03-24
+.\"      Date: 2012-01-20
 .\"    Manual: Yaourt Manual
 .\"    Source: Yaourt 0.10
 .\"  Language: English
 .\"
-.TH "YAOURTRC" "5" "2011\-03\-24" "Yaourt 0\&.10" "Yaourt Manual"
+.TH "YAOURTRC" "5" "2012\-01\-20" "Yaourt 0\&.10" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -112,10 +112,18 @@ If set to 1, always bypass file conflict checks and overwrite conflicting files\
 .RS 4
 Specify the folder to save tempory files (default is /tmp)\&.
 .RE
+.SH "SUDO OPTIONS"
 .PP
 \fBSUDONOVERIF=0\fR
 .RS 4
 If set to 1, yaourt doesn\(cqt do sudo checks\&. (For users with timestamp_timeout=0 in sudoers)
+.RE
+.PP
+\fBSUDOREDIRECT=1\fR
+.RS 4
+If set to 0, yaourt doesn\(cqt redirect
+\fIsudo\fR
+standard output\&. (For users with fingerprint authentification)
 .RE
 .SH "AUR OPTIONS"
 .PP
