@@ -46,8 +46,10 @@ su_pacman() {
 # Launch pacman and exit
 pacman_cmd() {
 	(( ! $1 )) && exec $PACMAN "${ARGSANS[@]}"
-	pacman_queue; launch_with_su $PACMAN "${ARGSANS[@]}"
-	die $?
+	(( $1 == 2 )) && load_lib misc && prepare_status_list
+	pacman_queue; launch_with_su $PACMAN "${ARGSANS[@]}" || die $?
+	(( $1 == 2 )) && analyse_status_list
+	die 0
 }
 
 # Refresh pacman database

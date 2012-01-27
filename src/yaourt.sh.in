@@ -253,7 +253,8 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
-		-D|--database|-R|--remove|-U|--upgrade|-w|--downloadonly) PACMAN_CMD=1;;
+		-D|--database|-w|--downloadonly)      PACMAN_CMD=1;;
+		-R|--remove|-U|--upgrade)             [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
 		-o|--owns|--changelog|--check|--file) [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
