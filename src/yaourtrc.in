@@ -6,7 +6,7 @@
 
 # General
 #AUTOSAVEBACKUPFILE=0
-#DEVELBUILDDIR="/var/abs/local/yaourtbuild"
+#DEVELBUILDDIR="@localstatedir@/abs/local/yaourtbuild"
 #DEVEL=0
 #EDITOR="$EDITOR"
 #FORCEENGLISH=0
@@ -22,7 +22,8 @@
 #REPOS=()           # REPOS available at $SYNCSERVER
 #SYNCSERVER=""
 
-# AUR 
+# AUR
+#AURURL="@aururl@"
 #AURCOMMENT=5
 #AURDEVELONLY=0
 #AURSEARCH=1
