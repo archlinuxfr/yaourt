@@ -83,9 +83,13 @@ search() {
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
 	(( DATE )) && search_option+=" --sort 1"
-	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${ARGS[@]}";return; }
-	(( interactive )) && search_option+=" --number"
-	{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
+	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${ARGS[@]}";return $?; }
+	if (( interactive )); then
+		search_option+=" --number"
+		{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
+	else
+		pkgquery $search_option -- "${ARGS[@]}"
+	fi
 }
 	
 # Handle special query
@@ -123,7 +127,7 @@ yaourt_sync() {
 		}
 		(( GROUP )) && title $(gettext 'show groups')
 		search 0
-		return
+		return $?
 	elif (( SYSUPGRADE )); then
 		load_lib abs aur misc
 		prepare_status_list
