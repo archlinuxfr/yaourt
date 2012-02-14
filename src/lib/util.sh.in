@@ -198,6 +198,7 @@ run_editor() {
 # Main init
 . '@libdir@/yaourt/io.sh'
 . '@libdir@/yaourt/pacman.sh'
+DBPATH='@dbpath@'
 LOADEDLIBS+=([util]=1 [io]=1 [pacman]=1)
 shopt -s extglob
 # General

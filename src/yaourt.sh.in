@@ -260,7 +260,9 @@ while [[ $1 ]]; do
 		-D|--database|-w|--downloadonly)      PACMAN_CMD=1;;
 		-R|--remove|-U|--upgrade)             [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
 		-o|--owns|--changelog|--check|--file) [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
-		--config|--dbpath|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
+		--dbpath)           DBPATH="$2"
+		                    program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
+		--config|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
 		--asdeps|--needed)  program_arg $A_PS $1;;

@@ -7,10 +7,6 @@
 declare -A P=()
 
 parse_pacman_conf() {
-	# Default pacman configuration
-	P=([dbpath]="@dbpath@"
-	   [lockfile]="@dbpath@/db.lck"
-	   [cachedir]="@cachedir@")
 	# Parse pacman options
 	declare -a PKGS_IGNORED=() 
 	eval $(pacman_parse --debug -T |&
@@ -20,6 +16,10 @@ parse_pacman_conf() {
              -e 's/^debug: config: \([a-zA-Z]\+\)$/P[\1]=1/p' \
              -e "s/^debug: option '\([a-zA-Z]\+\)' = \(.*\)/P[\1]=\"\2\"/p"
 	)
+	# Set DB Path, Lock File and Cache Dir
+	[[ ${P[dbpath]} ]] && P[dbpath]=${P[dbpath]% } || P[dbpath]="$DBPATH"
+	P[lockfile]="${P[dbpath]}/db.lck"
+	[[ ${P[cachedir]} ]] || P[cachedir]='@cachedir@'
 	# Add ignored packages from command line options
 	IGNOREPKG+=(${P[IgnorePkg]})
 	PKGS_IGNORED=("${IGNOREPKG[@]}")
