@@ -61,13 +61,16 @@ abs_get_pkgbuild() {
 # Build from abs or aur
 build_pkg() {
 	[[ $1 ]] || return 1
-	local repo pkg=${1#*/}
-	[[ $1 != $pkg ]] && repo=${1%/*} || repo="$(sourcerepository "$pkg")"
-	if [[ $repo = "aur" || $repo = "local" ]]; then
-		install_from_aur "$pkg"
-	else
-		BUILD=1 install_from_abs "$repo/$pkg"
-	fi
+	while [[ $1 ]]; do
+		local repo pkg=${1#*/}
+		[[ $1 != $pkg ]] && repo=${1%/*} || repo="$(sourcerepository "$pkg")"
+		if [[ $repo = "aur" || $repo = "local" ]]; then
+			install_from_aur "$pkg"
+		else
+			BUILD=1 install_from_abs "$repo/$pkg"
+		fi
+		shift;
+	done
 }
 
 sync_first() {
@@ -374,9 +377,7 @@ upgrade_devel_package() {
 		devel_pkgs+=($pkg)
 	done
 	[[ $devel_pkgs ]] || return 0
-	show_targets 'Targets' "${devel_pkgs[@]}" && for pkg in ${devel_pkgs[@]}; do
-		build_pkg "$pkg"
-	done
+	show_targets 'Targets' "${devel_pkgs[@]}" && build_pkg "${devel_pkgs[@]}"
 }
 
 
