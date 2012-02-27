@@ -1,10 +1,9 @@
- yaourt default.po file
+# yaourt default.po file
 # Copyright (C) 2010-2012
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2012
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt 0.10\n"
