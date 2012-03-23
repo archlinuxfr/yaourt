@@ -24,6 +24,7 @@ analyse_status_list() {
 		neworphans=$(LC_ALL=C comm -13 "$Y_PKG_ORPHANS" <(pkgquery -Qdtf '%n' --sort n))
 		# show new orphans
 		if [[ "$neworphans" ]]; then
+			neworphans=$(echo $neworphans)
 			msg "$(gettext 'Packages no longer required by any installed package:')"
 			echo_wrap 4 "$neworphans"
 		fi
