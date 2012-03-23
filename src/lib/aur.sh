@@ -12,9 +12,8 @@ load_lib pkgbuild
 aur_get_pkgbuild() {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
-	#(( $# > 1 )) && local pkgurl=$2 || \
-	#local pkgurl=$(pkgquery -Aif "%u" "$pkg")
-	local pkgurl="$AURURL/packages/$pkg/$pkg.tar.gz"
+	local pkgurl=$2
+	[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
 	if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
 		error $(_gettext '%s not found in AUR.' "$pkg");
 		return 1;
