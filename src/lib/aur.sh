@@ -178,7 +178,7 @@ aur_update_exists() {
 	if [[ ! ${5#-} ]]; then
 		if ((DETAILUPGRADE==1)); then
 			tput el1
-			((REFRESH)) && echo -en "\r " || echo -en "\r"
+			echo -en "$prefix"
 		fi
 		_msg=" $CRED$(gettext 'Orphan')$C0 $_msg"
 	fi

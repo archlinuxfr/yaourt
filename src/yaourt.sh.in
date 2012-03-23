@@ -285,8 +285,8 @@ while [[ $1 ]]; do
 		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
 		--holdver)          program_arg $A_M $1;;
 		-A|--ignorearch)    program_arg $A_M $1;;
-		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=("$1");;
-		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=("$1");;
+		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=(${1//,/ });;
+		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=(${1//,/ });;
 		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;

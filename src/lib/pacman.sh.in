@@ -63,7 +63,13 @@ pacman_refresh() {
 
 is_package_ignored() {
 	if [[ " ${P[ignorepkg]} " =~ " $1 " ]]; then
-		(($2)) && echo -e "$1: $CRED "$(gettext '(ignoring package upgrade)')"$C0"
+		if (($2)); then
+			if (($2 == 1)); then
+				tput el1
+				echo -en "$prefix"
+			fi
+			echo -e "$1: $CRED "$(gettext '(ignoring package upgrade)')"$C0"
+		fi
 		return 0
 	fi
 	return 1
