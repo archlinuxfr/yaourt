@@ -105,7 +105,7 @@ yaourt_query_type() {
 yaourt_install_packages() {
 	load_lib abs aur misc
 	prepare_status_list
-	SP_ARG="" sync_packages "${ARGS[@]}"
+	SP_ARG="" sync_packages "${ARGS[@]}" || return $?
 	analyse_status_list
 	#show package which have not been installed
 	if [[ $ERROR_PKGS ]]; then
