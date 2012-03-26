@@ -279,13 +279,13 @@ install_package() {
 		echo
 		case "$answer" in
 			V)	local i=0
-				for _file in "$YPKGDEST"/*"$PKGEXT"; do
+				for _file in "$YPKGDEST"/!(*.sig); do
 					(( i++ )) && { prompt2 $(gettext 'Press any key to continue'); read -n 1; }
 					$PACMAN -Qlp "$_file"
 				done
 				;;
 			C)	if type -p namcap &>/dev/null ; then
-					for _file in "$YPKGDEST"/*"$PKGEXT"; do
+					for _file in "$YPKGDEST"/!(*.sig); do
 						namcap "$_file"
 					done
 				else
@@ -300,7 +300,7 @@ install_package() {
 	local _arg=""
 	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) &&
-		su_pacman -U $SP_ARG "${PACMAN_S_ARG[@]}" $_arg "$YPKGDEST"/*"$PKGEXT" ||
+		su_pacman -U $SP_ARG "${PACMAN_S_ARG[@]}" $_arg "$YPKGDEST"/!(*.sig) ||
 		{ failed=$?; break; }
 	if (( failed )); then
 		warning $(_gettext "Your packages are saved in %s" "$YAOURTTMPDIR")
