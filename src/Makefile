@@ -4,7 +4,7 @@ VERSION       = $(shell git describe --abbrev=4)
 DESTDIR       =
 PREFIX        = /usr/local
 SHELL         = /bin/bash
-INSTALL       = /bin/install 
+INSTALL       = /usr/bin/env install 
 MSGFMT        = /usr/bin/msgfmt
 SED           = /bin/sed
 bindir        = $(PREFIX)/bin
