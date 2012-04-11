@@ -47,4 +47,5 @@ _yaourt ()
     esac
   fi
 }
+_completion_loader pacman
 complete -o default -F _yaourt yaourt 
