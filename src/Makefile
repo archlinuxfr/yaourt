@@ -24,7 +24,7 @@ SCRIPTS = yaourt.sh pacdiffviewer.sh \
 
 all: $(SCRIPTS)
 
-$(SCRIPTS): ${SCRIPTS:.sh=.sh.in}
+$(SCRIPTS): ${SCRIPTS:=.in}
 	@echo '	GEN' $@
 	@$(SED) -e 's|@VERSION@|$(VERSION)|g' \
 	        -e 's|@localedir@|$(localedir)|g' \
