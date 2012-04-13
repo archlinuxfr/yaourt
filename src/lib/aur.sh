@@ -117,10 +117,10 @@ vote_package() {
 	msg $(_gettext 'Checking vote status for %s' "$1")
 	local pkgvote=`aurvote --id --check "$1/$2"`
 	if [[ "${pkgvote}" = "already voted" ]]; then
-		echo "$(_gettext 'You have already voted for %s inclusion/keeping in [community]' "$1")"
+		echo "$(_gettext 'You have already voted for %s' "$1")"
 	elif [[ "$pkgvote" = "not voted" ]]; then
 		echo
-		prompt "$(_gettext 'Do you want to vote for %s inclusion/keeping in [community] ? ' "$1")$(yes_no 1)"
+		prompt "$(_gettext 'Do you want to vote for %s ? ' "$1")$(yes_no 1)"
 		useragrees || return
 		aurvote --id --vote "$1/$2"
 	else
