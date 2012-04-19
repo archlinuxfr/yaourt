@@ -19,7 +19,6 @@ source=()
 
 build() { 
 	cp -r ../../src/ "$srcdir/yaourt/"
-	cp ../../src/ChangeLog "$startdir/"
 	cd "$srcdir/yaourt/"
 	make PREFIX=/usr sysconfdir=/etc localstatedir=/var 
 }
