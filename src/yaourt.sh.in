@@ -63,11 +63,12 @@ version() {
 ###################################
 
 # Search for packages
-# usage: search ($interactive)
+# usage: search ($interactive, $set_pkgsfound)
 # interactive:1 -> line number
-# return: global var PKGSFOUND
+# set_pkgsfound:1 -> put result in PKGSFOUND
 search() {
 	local interactive=${1:-0}
+	local set_pkgsfound=${2:-$interactive}
 	local search_option="${PACMAN_Q_ARG[@]}"
 	if [[ "$MAJOR" = "query" ]]; then
 		search_option+=" -Q"
@@ -84,8 +85,8 @@ search() {
 	(( AURSEARCH )) && search_option+=" -A"
 	(( DATE )) && search_option+=" --sort 1"
 	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${ARGS[@]}";return $?; }
-	if (( interactive )); then
-		search_option+=" --number"
+	if ((set_pkgsfound)); then
+		((interactive)) && search_option+=" --number"
 		{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
 	else
 		pkgquery $search_option -- "${ARGS[@]}"
