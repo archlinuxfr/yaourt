@@ -72,6 +72,7 @@ function striphtml (str)
 {
 	# strip tags and entities
 	gsub (/<\/*[^>]+>/, "", str)
+	gsub (/&quot;/, "\"", str)
 	gsub (/&[^;]+;/, "", str)
 	gsub (/^[\t ]+/, "", str)
 	return str
