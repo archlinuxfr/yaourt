@@ -266,7 +266,7 @@ while [[ $1 ]]; do
 		--config|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
-		--asdeps|--needed)  program_arg $A_PS $1;;
+		--asexplicit|--asdeps|--needed) program_arg $A_PS $1;;
 		--clean)            ((CLEAN++));;
 		-c)                 ((CLEAN++)); ((CHANGELOG++)); program_arg $A_PQ "$1";;
 		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
