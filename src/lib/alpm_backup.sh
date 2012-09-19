@@ -22,7 +22,8 @@ is_an_alpm_backup() {
 	backupdir="$YAOURTTMPDIR/backup/$(md5sum "$1" | awk '{print $1}')"
 	if [[ ! -d "$backupdir" ]]; then	# decompress backup only once
 		mkdir -p "$backupdir" || return 1
-		tar -xjf "$1" -C "$backupdir/"
+		bsdtar -xjf "$1" -C "$backupdir/"
+		ln -s "${P[dbpath]}/sync" "$backupdir/"
 	fi
 	pacman_parse --dbpath "$backupdir/" --query | LC_ALL=C sort > "$backupdb"
 	if [[ ! -s "$backupdb" ]]; then
