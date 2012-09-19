@@ -371,7 +371,7 @@ upgrade_devel_package() {
 	msg $(gettext 'upgrading SVN/CVS/HG/GIT package')
 	local _arg="-Qq" pkg
 	((AURDEVELONLY)) && _arg+="m"
-	for pkg in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)")
+	for pkg in $(pacman_parse $_arg | grep "\-\(svn\|cvs\|hg\|git\|bzr\|darcs\)$")
 	do
 		is_package_ignored "$pkg" && continue
 		devel_pkgs+=($pkg)
