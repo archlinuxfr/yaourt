@@ -297,10 +297,8 @@ install_package() {
 			*)	break;;
 		esac
 	done
-	local _arg=""
-	((SYSUPGRADE && UP_NOCONFIRM)) && _arg+=" --noconfirm"
 	(( ! failed )) &&
-		su_pacman -U $SP_ARG "${PACMAN_S_ARG[@]}" $_arg "$YPKGDEST"/!(*.sig) ||
+		su_pacman -U $SP_ARG "${PACMAN_U_ARG[@]}" "${PACMAN_S_ARG[@]}" "$YPKGDEST"/!(*.sig) ||
 		{ failed=$?; break; }
 	if (( failed )); then
 		warning $(_gettext "Your packages are saved in %s" "$YAOURTTMPDIR")

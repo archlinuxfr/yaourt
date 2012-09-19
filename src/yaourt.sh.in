@@ -338,6 +338,8 @@ if (( NOCONFIRM )); then
 	BUILD_NOCONFIRM=1
 	AURVOTE=0
 	program_arg $((A_PS | A_M)) "--noconfirm"
+elif ((SYSUPGRADE && UP_NOCONFIRM)) || ((PU_NOCONFIRM)); then
+	program_arg $A_PU "--noconfirm"
 fi
 ((FORCE)) && program_arg $((A_PS | A_M)) "--force"
 

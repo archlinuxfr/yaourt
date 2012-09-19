@@ -40,6 +40,7 @@
 #NOCONFIRM=0
 #UP_NOCONFIRM=0     # No prompt while build upgrades (including -Sbu)
 #BUILD_NOCONFIRM=0  # Only prompt for editing files
+#PU_NOCONFIRM=0     # Add --noconfirm to $PACMAN -U
 #EDITFILES=1
 #NOENTER=1
 

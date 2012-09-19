@@ -18,10 +18,10 @@ type -t gettext &> /dev/null || { gettext() { echo "$@"; }; }
 
 
 # Programs arguments
-# pacman -S, makepkg, pacman -Q, pacman, package-query, curl
-A_PS=1 A_M=2 A_PQ=4 A_PC=8 A_PKC=16 A_CC=32
+# pacman -S, makepkg, pacman -Q, pacman, package-query, curl, pacman -U
+A_PS=1 A_M=2 A_PQ=4 A_PC=8 A_PKC=16 A_CC=32 A_PU=64
 unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG PKGQUERY_C_ARG \
-      CURL_C_ARG
+      CURL_C_ARG PACMAN_U_ARG
 
 _gettext() {
 	local str=$1; shift
@@ -155,6 +155,7 @@ program_arg() {
 	(( dest & A_PC ))  && PACMAN_C_ARG+=("$@")
 	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
 	(( dest & A_CC ))  && CURL_C_ARG+=("$@")
+	(( dest & A_PU ))  && PACMAN_U_ARG+=("$@")
 }
 
 # programs call with command line options
@@ -226,6 +227,7 @@ EXPORTDIR=""
 NOCONFIRM=0
 UP_NOCONFIRM=0
 BUILD_NOCONFIRM=0
+PU_NOCONFIRM=0
 EDITFILES=1
 NOENTER=1
 # OUTPUT
