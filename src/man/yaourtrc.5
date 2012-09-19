@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: yaourtrc
 .\"    Author: [see the "Authors" section]
-.\" Generator: DocBook XSL Stylesheets v1.76.1 <http://docbook.sf.net/>
-.\"      Date: 2012-01-20
+.\" Generator: DocBook XSL Stylesheets v1.77.1 <http://docbook.sf.net/>
+.\"      Date: 2012-09-19
 .\"    Manual: Yaourt Manual
-.\"    Source: Yaourt 0.10
+.\"    Source: Yaourt 1.1
 .\"  Language: English
 .\"
-.TH "YAOURTRC" "5" "2012\-01\-20" "Yaourt 0\&.10" "Yaourt Manual"
+.TH "YAOURTRC" "5" "2012\-09\-19" "Yaourt 1\&.1" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -72,7 +72,7 @@ system\-wide configuration file (/etc/yaourtrc)
 .RE
 .SH "GENERAL OPTIONS"
 .PP
-\fBABS_REPO=()\fR
+\fBREPOS=()\fR
 .RS 4
 List of repositories where PKGBUILD can be retreived by rsync\&. (see /etc/abs\&.conf)
 .RE
@@ -95,12 +95,6 @@ If set to 1, always search for new version of developpement CVS/SVN packages whe
 \fBEDITOR="$EDITOR"\fR
 .RS 4
 Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing\&. Editor should not fork, for gvim: EDITOR="gvim \-\-nofork"
-.RE
-.PP
-\fBFORCEENGLISH=0\fR
-.RS 4
-If set to 1, yaourt set
-\fILC_ALL=C\fR\&.
 .RE
 .PP
 \fBFORCE=0\fR

@@ -240,17 +240,11 @@ DIFFEDITCMD="vimdiff"
 
 [[ -r '@sysconfdir@/yaourtrc' ]] && source '@sysconfdir@/yaourtrc'
 [[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
-(( FORCEENGLISH )) && export LC_ALL=C
 TMPDIR=${TMPDIR:-/tmp}
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
-# PACMANBIN is depreceated
-PACMAN=${PACMAN:-$PACMANBIN}
 export PACMAN=${PACMAN:-pacman}
 # Add --aur-url option to package-query args
 program_arg $A_PKC --aur-url "$AURURL"
-
-# ABS_REPO is depreceated
-[[ ! $REPOS && $ABS_REPO ]] && REPOS=(${ABS_REPO[@]})
 
 # vim: set ts=4 sw=4 noet: 

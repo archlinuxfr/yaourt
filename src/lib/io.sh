@@ -126,7 +126,7 @@ parse_color_var() {
 }
 
 init_color() {
-	((!USECOLOR)) || [[ $COLORMODE = "nocolor" ]] && return
+	((!USECOLOR)) && return
 	C0="\033[0m" 
 	# yaourt colors 
 	local yaourt_colors="BOLD=1:BLINK=5:RED=1;31:GREEN=1;32:YELLOW=1;33:BLUE=1;34:PURPLE=1;35:CYAN=1;36"
@@ -134,7 +134,6 @@ init_color() {
 	local pq_colors="no=0:other=1;35:testing=1;31:core=1;31:extra=1;32:local=1;33:nb=7;33:pkg=1:installed=1;33;7:votes=1;33;7:od=1;33;7"
 	# env COLORS
 	export PQ_COLORS+="$pq_colors:$yaourt_colors:$YAOURT_COLORS"
-	((USECOLOR==2)) || [[ $COLORMODE = "lightbg" ]] && PQ_COLORS=${PQ_COLORS//33/36} # lightbg!
 	parse_color_var "$PQ_COLORS"
 	cleanup_add echo -ne '\033[0m'
 	((TERMINALTITLE)) && [[ $DISPLAY ]] && cleanup_add echo -ne "\033]0;$TERM\007"
