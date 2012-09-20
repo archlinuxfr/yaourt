@@ -315,7 +315,7 @@ while [[ $1 ]]; do
 		--tmp)              shift; TMPDIR="$1";;
 		-V|--version)       version; exit 0;;
 		-v)                 program_arg $((A_PQ | A_PS)) $1;;
-		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $A_PS $1;;
+		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
 		--)                 shift; ARGS+=("$@"); break;;
 		-*)                 [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		*)                  ARGS+=("$1") ;; 
