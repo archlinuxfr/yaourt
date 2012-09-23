@@ -345,6 +345,14 @@ sync_packages() {
 		pkgs_found[$pkg]=1
 		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
 	done < <(pkgquery -f "%r %n %t" -1SAii "${!pkgs_search[@]}")
+	# In case there is a double version check, eg. pkg1>0.1 pkg2<0.3
+	# package-query does only one check, so perform the remaining checks
+	for pkg in "${!pkgs_search[@]}"; do
+		_pkg=${pkg%%[<>=]*}
+		if [[ " ${!pkgs_found[@]} " =~ " $_pkg " ]]; then
+			pkgquery -q -1SAii "$pkg" && unset pkgs_search[$pkg]
+		fi
+	done
 	bin_pkgs=("${!pkgs_search[@]}")
 	for _pkg in "${repo_pkgs[@]}"; do
 		[[ $SP_ARG ]] && pkgquery -Qq "$_pkg" && continue
