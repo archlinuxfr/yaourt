@@ -31,12 +31,13 @@ aur_show_info() {
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	local pkgname=$1 id votes outofdate maintainer
+	local pkgname=$1 id votes outofdate maintainer pkgbuild_url
 	title "Searching info on AUR for $pkgname"
-	read id votes outofdate maintainer < <(pkgquery -Aif '%i %w %o %m' "$pkgname")
+	read id votes outofdate maintainer pkgbuild_url < <(pkgquery -Aif '%i %w %o %m %u' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	curl_fetch -fis "$AURURL/packages/$pkgname/PKGBUILD" -o "$tmpfile" || \
+	pkgbuild_url="${pkgbuild_url%/*}/PKGBUILD"
+	curl_fetch -fis "$pkgbuild_url" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc)
