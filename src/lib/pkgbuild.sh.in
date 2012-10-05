@@ -299,7 +299,7 @@ install_package() {
 	done
 	(( ! failed )) &&
 		su_pacman -U $SP_ARG "${PACMAN_U_ARG[@]}" "${PACMAN_S_ARG[@]}" "$YPKGDEST"/!(*.sig) ||
-		{ failed=$?; break; }
+		failed=$?
 	if (( failed )); then
 		warning $(_gettext "Your packages are saved in %s" "$YAOURTTMPDIR")
 		cp -i "$YPKGDEST"/* $YAOURTTMPDIR/ || warning $(_gettext 'Unable to copy packages to %s directory' "$YAOURTTMPDIR")
