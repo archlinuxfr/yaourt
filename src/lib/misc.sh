@@ -13,7 +13,7 @@ prepare_status_list() {
 		cleanup_add rm "$Y_PKG_ORPHANS"
 	fi
 	if ((AUTOSAVEBACKUPFILE)); then
-		pkgquery -Qf '%n' --sort n > "$Y_PKG_INSTALLED"
+		pkgquery -Qf '%n %v' --sort n > "$Y_PKG_INSTALLED"
 		cleanup_add rm "$Y_PKG_INSTALLED"
 	fi
 }
@@ -32,7 +32,7 @@ analyse_status_list() {
 		testdb
 	fi	
 	if ((AUTOSAVEBACKUPFILE)) && ! \
-		diff "$Y_PKG_INSTALLED" <(pkgquery -Qf '%n' --sort n) &> /dev/null; then
+		diff "$Y_PKG_INSTALLED" <(pkgquery -Qf '%n %v' --sort n) &> /dev/null; then
 		# save original of backup files (pacnew/pacsave)
 		msg "$(gettext 'Searching for original config files to save')"
 		launch_with_su pacdiffviewer --backup
