@@ -392,21 +392,21 @@ get_pkgbuild() {
 		cd "$cwd"
 		read repo pkg arch pkgver < <(pkgquery -1ASif '%r %n %a %v' "${pkgs[$i]}")
 		[[ ! $pkg ]] && continue
-		pkg=$(get_pkgbase $pkg $repo $pkgver)
-		[[ ${pkgs_downloaded[$pkg]} ]] && continue
+		[[ $repo = "aur" ]] && pkgbase=$pkg || pkgbase=$(get_pkgbase $pkg $repo $pkgver)
+		[[ ${pkgs_downloaded[$pkgbase]} ]] && continue
 		pkgs_downloaded[${pkg}]=1
-		if [[ -d $pkg ]]; then
-			prompt2 "$(_gettext '%s directory already exist. Replace ?' "$pkg") $(yes_no 1)"
+		if [[ -d $pkgbase ]]; then
+			prompt2 "$(_gettext '%s directory already exist. Replace ?' "$pkgbase") $(yes_no 1)"
 			useragrees || continue
 		else
-			mkdir "$pkg" 
+			mkdir "$pkgbase"
 		fi
-		cd "$pkg" || continue
-		msg "$(_gettext 'Download %s sources' "$pkg")"
+		cd "$pkgbase" || continue
+		msg "$(_gettext 'Download %s sources' "$pkgbase")"
 		if [[ $repo = "aur" ]]; then
 			aur_get_pkgbuild "$pkg"
 		else
-			abs_get_pkgbuild "$repo/$pkg" "${arch#-}"
+			abs_get_pkgbuild "$repo/$pkg" "${arch#-}" "$pkgbase"
 		fi
 		(($?)) && continue
 		if ((DEPENDS)); then

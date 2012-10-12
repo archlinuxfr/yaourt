@@ -36,13 +36,16 @@ source_abs_conf() {
 }
 
 # Get sources in current dir
-# Usage abs_get_pkgbuild ($repo/$pkg[,$arch])
+# Usage abs_get_pkgbuild ($repo/$pkg[,$arch,[$pkgbase]])
 abs_get_pkgbuild() {
 	source_abs_conf
-	local repo=${1%/*} pkg=${1#*/} arch=$2
+	local repo=${1%/*} pkg=${1#*/} arch=$2 pkgbase=$3 pkgver=
+	if [[ ! $arch || ! $pkgbase ]]; then
+		read arch pkgver < <(pkgquery -1Sif '%a %v' "$repo/$pkg")
+		pkgbase=$(get_pkgbase $pkg $repo $pkgver)
+	fi
 	if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
-		[[ $arch ]] || arch=$(pkgquery -1Sif "%a" "$repo/$pkg")
-		$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkg/" . && return 0
+		$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkgbase/" . && return 0
 	fi
 	# TODO: store abs archive somewhere else.
 	local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
@@ -52,10 +55,10 @@ abs_get_pkgbuild() {
 	if [[ ! $abs_repo_date ]] || (( ${abs_repo_date%.*} < ${repo_date%.*} )); then
 		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
 		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
-		msg "$1: $(gettext 'Download abs archive')"
+		msg "$repo/$pkgbase: $(gettext 'Download abs archive')"
 		curl_fetch -f -# "$abs_url" -o "$abs_tar" || return 1
 	fi
-	bsdtar --strip-components 2 -xvf "$abs_tar" "$repo/$pkg"
+	bsdtar --strip-components 2 -xvf "$abs_tar" "$repo/$pkgbase"
 }
 	
 # Build from abs or aur
@@ -96,9 +99,7 @@ install_from_abs() {
 	msg $(gettext 'Retrieving PKGBUILD and local sources...')
 	cwd=$(pwd)
 	init_build_dir "$YAOURTTMPDIR/abs-${pkginfo[1]}" || return 1
-	# With splitted package, abs folder may not correspond to package name
-	pkginfo[4]=$(get_pkgbase ${pkginfo[1]} ${pkginfo[0]} ${pkginfo[2]})
-	abs_get_pkgbuild ${pkginfo[0]}/${pkginfo[4]} ${pkginfo[3]} ||
+	abs_get_pkgbuild ${pkginfo[0]}/${pkginfo[1]} ${pkginfo[3]} ||
 	  { cd "$cwd"; return 1; }
 
 	# Build, install/export
