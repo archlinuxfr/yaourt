@@ -16,7 +16,7 @@ localstatedir = $(PREFIX)/var
 mandir        = $(PREFIX)/share/man
 dbpath        = ${localstatedir}/lib/pacman/
 cachedir      = ${localstatedir}/cache/pacman/pkg/
-aururl        = http://aur.archlinux.org
+aururl        = https://aur.archlinux.org
 
 SCRIPTS = yaourt.sh pacdiffviewer.sh \
 		  yaourtrc \
