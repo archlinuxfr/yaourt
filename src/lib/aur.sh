@@ -117,14 +117,14 @@ vote_package() {
 	(( ! AURVOTEINSTALLED )) && return
 	echo
 	msg $(_gettext 'Checking vote status for %s' "$1")
-	local pkgvote=`aurvote --id --check "$1/$2"`
+	local pkgvote=$(aurvote --check "$1")
 	if [[ "${pkgvote}" = "already voted" ]]; then
 		echo "$(_gettext 'You have already voted for %s' "$1")"
 	elif [[ "$pkgvote" = "not voted" ]]; then
 		echo
 		prompt "$(_gettext 'Do you want to vote for %s ? ' "$1")$(yes_no 1)"
 		useragrees || return
-		aurvote --id --vote "$1/$2"
+		aurvote --vote "$1"
 	else
 		echo $pkgvote
 	fi
@@ -155,7 +155,7 @@ install_from_aur() {
 
 	if ((AURVOTE)) && [[ ! "${pkginfo[7]#-}" ]]; then
 		# Check if this package has been voted on AUR, and vote for it
-		vote_package "${pkginfo[0]}" "${pkginfo[1]}"
+		vote_package "${pkginfo[0]}"
 	fi
 	return 0
 }
