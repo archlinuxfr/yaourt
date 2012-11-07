@@ -76,39 +76,58 @@ function striphtml (str)
 	gsub (/&quot;/, "\"", str)
 	gsub (/&[^;]+;/, "", str)
 	gsub (/^[\t ]+/, "", str)
+	gsub (/[\t ]+$/, "", str)
 	return str
 }
 BEGIN {
 	max='$AURCOMMENT'
 	i=0
 	comment=0
-}
-/<div class="comment-header">/ {
-	line="\n'$CYELLOW'"striphtml($0)"'$C0'"
-}
-/<\/blockquote>/ {
-	comment=0
-	com[i++]=line
+	comment_content=0
+	div_news=0
 }
 {
-	if (comment==1)
+	if (comment_content==1)
 	{
 		str=striphtml($0)
 		if (str!="")
-		line=line"\n"str
+			line=line"\n"str
 	}
 }
-/<blockquote class="comment-body">/ {
+/^[\t ]*<p>$/ {
+	if (comment==1) {
+		comment_content=1
+	}
+}
+/^[\t ]*<p class="timestamp">/ {
+	if (comment==1) {
+		gsub (/[\t ]*<\/*p[^>]*>/, "", $0)
+		line=line" ("$0")"
+	}
+}
+
+/<\/h4>$/ {
+	if (comment==1) {
+		line="'$CYELLOW'"striphtml($0)"'$C0' "
+	}
+}
+/^[\t ]*<\/div>$/ {
+	if (comment==1) {
+		comment=0
+		comment_content=0
+		com[i++]=line
+	}
+}
+/^[\t ]*<h4>$/ {
 	comment=1
 }
-/[ \t]+First Submitted/ {
-	first=striphtml($0)
+/^<div id="news">$/ {
+	div_news=!div_news;
 }
 END {
 	if (i>max) i=max
-	for (j=i;j>=0;j--)
-		print com[j]
-	print "\n"first
+	for (j=i-1;j>=0;j--)
+		print com[j]"\n"
 }'
 }
 
