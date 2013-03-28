@@ -70,6 +70,7 @@ search() {
 	local interactive=${1:-0}
 	local set_pkgsfound=${2:-$interactive}
 	local search_option="${PACMAN_Q_ARG[@]//-q/}"
+	local pager_out=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
 	if [[ "$MAJOR" = "query" ]]; then
 		search_option+=" -Q"
 		((AUR)) && ((FOREIGN || UPGRADES)) && search_option+=" -A"
@@ -87,9 +88,21 @@ search() {
 	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${ARGS[@]}";return $?; }
 	if ((set_pkgsfound)); then
 		((interactive)) && search_option+=" --number"
-		{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
+		if ((USEPAGER)); then
+			{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2> "$pager_out"
+		else
+			{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
+		fi
 	else
-		pkgquery $search_option -- "${ARGS[@]}"
+		if ((USEPAGER)); then
+			pkgquery $search_option -- "${ARGS[@]}" > "$pager_out"
+		else
+			pkgquery $search_option -- "${ARGS[@]}"
+		fi
+	fi
+	if ((USEPAGER)); then
+		[[ -s "$pager_out" ]] && ${PAGER:-cat} "$pager_out"
+		[[ -f "$pager_out" ]] && rm "$pager_out"
 	fi
 }
 	
@@ -239,7 +252,7 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
       AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD
 
 # Disable color if output is not a terminal
-[[ -t 1 ]] || { USECOLOR=0; TERMINALTITLE=0; }
+[[ -t 1 ]] || { USECOLOR=0; USEPAGER=0; TERMINALTITLE=0; }
 
 # Grab environement options
 {
@@ -301,8 +314,9 @@ while [[ $1 ]]; do
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
-		--color)            USECOLOR=1; program_arg $A_PQ $1;;
+		--color)            USECOLOR=2;;
 		--nocolor)          USECOLOR=0;;
+		--pager)            USEPAGER=1;;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ((PRINT++));; # --print-format needs --print
@@ -325,7 +339,8 @@ done
 
 # Init path & colors 
 init_paths
-((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor" 
+((USECOLOR==2)) && program_arg $((A_PKC)) "--color"
+((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor"
 init_color
 [[ $PACMAN_CMD ]] && pacman_cmd $PACMAN_CMD
 
