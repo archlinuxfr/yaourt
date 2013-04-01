@@ -310,7 +310,7 @@ while [[ $1 ]]; do
 		--date)             DATE=1;;
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
-		-f|--force)         FORCE=1;;
+		--force)            FORCE=1;;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
