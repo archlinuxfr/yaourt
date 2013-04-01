@@ -76,16 +76,6 @@ build_pkg() {
 	done
 }
 
-sync_first() {
-	[[ $* ]] || return 0
-	warning $(gettext 'The following packages should be upgraded first :')
-	echo_wrap 4 "$*"
-	prompt "$(gettext 'Do it now ?') $(yes_no 1)"
-	useragrees || return 0
-	SP_ARG="" sync_packages "$@"
-	die $?
-}
-
 # Build packages from repos
 install_from_abs() {
 	local cwd build_deps
@@ -112,14 +102,13 @@ install_from_abs() {
 
 # Set vars:
 # upgrade_details=(new release, new version then new pkgs)
-# syncfirstpkgs=(pkgs in SyncFirst from pacman.conf)
 # srcpkgs=(pkgs with a custom pkgbuild)
 # pkgs=(others)
 # usage: classify_pkg $pkg_nb < [one pkg / line ] 
 # read from stdin: pkgname repo rversion lversion outofdate pkgdesc
 classify_pkg() {
 	declare -a newrelease newversion newpkgs
-	unset syncfirstpkgs srcpkgs pkgs
+	unset srcpkgs pkgs
 	longestpkg=(0 0) 
 	local i=0 bar="|/-\\"
 	local pkgname repo rversion lversion outofdate pkgdesc maintainer \
@@ -136,7 +125,6 @@ classify_pkg() {
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" "$maintainer" \
 				|| continue
 		fi
-		[[ " ${P[SyncFirst]} " =~ " $pkgname " ]] && syncfirstpkgs+=("$pkgname")
 		custom_pkg "$pkgname" && srcpkgs+=("$repo/$pkgname") || pkgs+=("$repo/$pkgname")
 		if [[ "$lversion" != "-" ]]; then
 			pkgver=$lversion
@@ -246,7 +234,6 @@ sysupgrade() {
 		((DETAILUPGRADE<2)) && pkg_foreign=$(pacman_parse -Qqm | wc -l)
 	fi
 	classify_pkg $pkg_foreign < <(eval $cmd)
-	SP_ARG="" sync_first "${syncfirstpkgs[@]}"
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
 	if [[ $srcpkgs ]]; then 
 		show_targets 'Source targets' "${srcpkgs[@]#*/}" || return 0
