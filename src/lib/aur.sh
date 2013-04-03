@@ -3,7 +3,7 @@
 # aur.sh : deals with AUR
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
-AUR_PKG_URL="$AURURL/packages.php?setlang=en&ID="
+AUR_PKG_URL="$AURURL/packages/"
 
 load_lib abs
 load_lib pkgbuild
@@ -47,7 +47,7 @@ info_from_aur() {
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
 	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
 	aur_show_info "URL            " "$CCYAN$url$C0"
-	aur_show_info "AUR URL        " "$CCYAN${AURURL}/packages.php?ID=$id$C0"
+	aur_show_info "AUR URL        " "$CCYAN${AURURL}/packages/$pkgname$C0"
 	aur_show_info "Licenses       " "${license[*]}"
 	aur_show_info "Votes          " "$votes"
 	aur_show_info "Out Of Date    " "$outofdate"
@@ -161,7 +161,7 @@ install_from_aur() {
 	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "${pkginfo[0]}")
 	aur_get_pkgbuild "${pkginfo[0]}" "${pkginfo[5]}" ||
 	  { cd "$cwd"; return 1; }
-	aurcomments ${pkginfo[1]}
+	aurcomments ${pkginfo[0]}
 	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0 ($(date -d "@${pkginfo[8]}"))"
 	[[ ! ${pkginfo[6]#-} ]] && echo -e "$CBLINK$CRED$(gettext 'This package is orphaned')$C0"
 	echo -e "$CBLINK$CRED$(gettext '( Unsupported package: Potentially dangerous ! )')$C0"
