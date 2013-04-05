@@ -18,10 +18,11 @@ type -t gettext &> /dev/null || { gettext() { echo "$@"; }; }
 
 
 # Programs arguments
-# pacman -S, makepkg, pacman -Q, pacman, package-query, curl, pacman -U
-A_PS=1 A_M=2 A_PQ=4 A_PC=8 A_PKC=16 A_CC=32 A_PU=64
+# pacman -S, makepkg, pacman -Q, pacman, package-query, curl, pacman -U,
+# pacman_out
+A_PS=1 A_M=2 A_PQ=4 A_PC=8 A_PKC=16 A_CC=32 A_PU=64 A_PO=128
 unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG PKGQUERY_C_ARG \
-      CURL_C_ARG PACMAN_U_ARG
+      CURL_C_ARG PACMAN_U_ARG PACMAN_O_ARG
 
 _gettext() {
 	local str=$1; shift
@@ -156,11 +157,12 @@ program_arg() {
 	(( dest & A_PKC )) && PKGQUERY_C_ARG+=("$@")
 	(( dest & A_CC ))  && CURL_C_ARG+=("$@")
 	(( dest & A_PU ))  && PACMAN_U_ARG+=("$@")
+	(( dest & A_PO ))  && PACMAN_O_ARG+=("$@")
 }
 
 # programs call with command line options
-pacman_parse() { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" "$@"; }
-pacman_out()   { $PACMAN "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_parse() { LC_ALL=C pacman --color never "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_out()   { $PACMAN "${PACMAN_C_ARG[@]}" "${PACMAN_O_ARG[@]}" "$@"; }
 pkgquery()     { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
 curl_fetch()   { curl "${CURL_C_ARG[@]}" "$@"; }
 

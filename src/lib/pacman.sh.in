@@ -40,7 +40,7 @@ pacman_queue() {
 
 # launch pacman as root
 su_pacman() {
-	pacman_queue; launch_with_su $PACMAN "${PACMAN_C_ARG[@]}" "$@"
+	pacman_queue; launch_with_su $PACMAN "${PACMAN_C_ARG[@]}" "${PACMAN_O_ARG[@]}" "$@"
 }
 
 # Launch pacman and exit

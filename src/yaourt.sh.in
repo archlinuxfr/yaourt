@@ -339,8 +339,6 @@ done
 
 # Init path & colors 
 init_paths
-((USECOLOR==2)) && program_arg $((A_PKC)) "--color"
-((!USECOLOR)) && program_arg $((A_M | A_PKC)) "--nocolor"
 init_color
 [[ $PACMAN_CMD ]] && pacman_cmd $PACMAN_CMD
 

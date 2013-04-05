@@ -126,7 +126,17 @@ parse_color_var() {
 }
 
 init_color() {
-	((!USECOLOR)) && return
+	if ((!USECOLOR)); then
+		program_arg $((A_M | A_PKC)) --nocolor
+		program_arg $((A_PO)) --color never
+		return
+	fi
+	if ((USECOLOR==2)); then
+		program_arg $((A_PKC)) --color
+		program_arg $((A_PO)) --color always
+	else
+		program_arg $((A_PO)) --color auto
+	fi
 	C0="\033[0m" 
 	# yaourt colors 
 	local yaourt_colors="BOLD=1:BLINK=5:RED=1;31:GREEN=1;32:YELLOW=1;33:BLUE=1;34:PURPLE=1;35:CYAN=1;36"
