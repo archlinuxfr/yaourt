@@ -30,8 +30,6 @@ source_makepkg_conf() {
 
 # Read PKGBUILD
 # PKGBUILD must be in current directory
-# Usage:	read_pkgbuild ($update)
-#	$update: 1: call devel_check & devel_update from makepkg
 # Set PKGBUILD_VARS, exec "eval $PKGBUILD_VARS" to have PKGBUILD content.
 read_pkgbuild() {
 	local update=${1:-0}
@@ -40,6 +38,7 @@ read_pkgbuild() {
 		replaces \
 		_svntrunk _svnmod _cvsroot_cvsmod _hgroot _hgrepo \
 		_darcsmod _darcstrunk _bzrtrunk _bzrmod _gitroot _gitname \
+		YPKGVER_FUNC
 		)
 
 	unset ${vars[*]}
@@ -48,11 +47,8 @@ read_pkgbuild() {
 	echo "yaourt_$$() {"                            > $pkgbuild_tmp
 	cat PKGBUILD                                    >> $pkgbuild_tmp
 	echo                                            >> $pkgbuild_tmp
-	if (( update )); then
-		# YPARSE=1 to disable the double check when
-		# update_pkgver() source PKGBUILD
-		echo "((YPARSE)) || YPARSE=1 update_pkgver" >> $pkgbuild_tmp
-	fi
+	echo "YPKGVER_FUNC=0"                           >> $pkgbuild_tmp
+	echo "declare -f pkgver && YPKGVER_FUNC=1"      >> $pkgbuild_tmp
 	echo "declare -p ${vars[*]} 2>/dev/null >&3"    >> $pkgbuild_tmp
 	echo "return 0"                                 >> $pkgbuild_tmp
 	echo "}"                                        >> $pkgbuild_tmp
@@ -149,7 +145,8 @@ check_devel() {
 		|| [[ -n "${_hgroot}" && -n "${_hgrepo}" ]] \
 		|| [[ -n "${_darcsmod}" && -n "${_darcstrunk}" ]] \
 		|| [[ -n "${_bzrtrunk}" && -n "${_bzrmod}" ]] \
-		|| [[ -n "${_gitroot}" && -n "${_gitname}" ]]; then
+		|| [[ -n "${_gitroot}" && -n "${_gitname}" ]] \
+		|| [[ $pkgname =~ -(bzr|git|hg|svn)$ ]]; then
 		return 0
 	fi
 	return 1
@@ -214,9 +211,12 @@ build_package() {
 				warning $(_gettext 'Unable to write in %s directory. Using /tmp directory' "$wdirDEVEL")
 		fi
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
-			# re-read PKGBUILD to update version
-			read_pkgbuild 1 || return 1
-			eval $PKGBUILD_VARS
+			if ((YPKGVER_FUNC)); then
+				makepkg "${MAKEPKG_ARG[@]}" -o -p ./PKGBUILD
+				# re-read PKGBUILD to update version
+				read_pkgbuild || return 1
+				eval $PKGBUILD_VARS
+			fi
 			if ! is_x_gt_y "$pkgver-$pkgrel" $(pkgversion $pkgbase); then
 				msg $(_gettext '%s is already up to date.' "$pkgbase")
 				return 2
