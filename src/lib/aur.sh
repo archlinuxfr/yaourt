@@ -66,7 +66,7 @@ info_from_aur() {
 }
 
 # scrap html page to show user's comments
-aurcomments() {
+aur_comments() {
 	(( ! AURCOMMENT )) && return
 	curl_fetch -s "${AUR_PKG_URL}$1" | awk '
 function striphtml (str)
@@ -161,7 +161,7 @@ install_from_aur() {
 	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "${pkginfo[0]}")
 	aur_get_pkgbuild "${pkginfo[0]}" "${pkginfo[5]}" ||
 	  { cd "$cwd"; return 1; }
-	aurcomments ${pkginfo[0]}
+	aur_comments ${pkginfo[0]}
 	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0 ($(date -d "@${pkginfo[8]}"))"
 	[[ ! ${pkginfo[6]#-} ]] && echo -e "$CBLINK$CRED$(gettext 'This package is orphaned')$C0"
 	echo -e "$CBLINK$CRED$(gettext '( Unsupported package: Potentially dangerous ! )')$C0"
