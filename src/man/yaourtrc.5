@@ -1,13 +1,13 @@
 '\" t
 .\"     Title: yaourtrc
 .\"    Author: [see the "Authors" section]
-.\" Generator: DocBook XSL Stylesheets v1.77.1 <http://docbook.sf.net/>
-.\"      Date: 2012-09-19
+.\" Generator: DocBook XSL Stylesheets v1.78.0 <http://docbook.sf.net/>
+.\"      Date: 2013-04-10
 .\"    Manual: Yaourt Manual
-.\"    Source: Yaourt 1.1
+.\"    Source: Yaourt 1.3
 .\"  Language: English
 .\"
-.TH "YAOURTRC" "5" "2012\-09\-19" "Yaourt 1\&.1" "Yaourt Manual"
+.TH "YAOURTRC" "5" "2013\-04\-10" "Yaourt 1\&.3" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -201,7 +201,18 @@ If set to 0, user needs to press Enter for each "yes/no" question\&.
 .PP
 \fBUSECOLOR=1\fR
 .RS 4
-If 0, disable colors\&.
+0 : disable colors
+
+1 : enable colors (disabled if output is not a tty)
+
+2 : force colored output
+.RE
+.PP
+\fBUSEPAGER=0\fR
+.RS 4
+1 : enable pager (use
+\fI$PAGER\fR
+variable)
 .RE
 .PP
 \fBDETAILUPGRADE=1\fR
@@ -217,7 +228,7 @@ If 0, disable colors\&.
 .PP
 \fBSHOWORPHANS=1\fR
 .RS 4
-If set to 0, don\(cqt search for orphans
+If set to 0, search for orphans and pacman local db test are not performed\&.
 .RE
 .PP
 \fBTERMINALTITLE=1\fR
