@@ -360,7 +360,7 @@ fi
 # Don't refresh now if yaourt is called with -Syp*
 # or, if DETAILUPGRADE=0, with -Syu*
 if [[ $MAJOR = "sync" ]] && ((REFRESH)); then
-	((!PRINT))  && ((!SYSUPGRADE || DETAILUPGRADE)) && pacman_refresh $REFRESH
+	((!PRINT && !SYSUPGRADE)) && pacman_refresh $REFRESH
 fi
 
 # Action

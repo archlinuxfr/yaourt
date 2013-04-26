@@ -210,17 +210,23 @@ sysupgrade() {
 	fi
 	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFRIM=1; }
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
+
+	if ((DETAILUPGRADE)); then
+		((REFRESH)) && pacman_refresh $REFRESH
+		if pacman_parse -Sp --print-format "## %n" \
+		             --noconfirm $_arg "${PACMAN_S_ARG[@]}" \
+		             "${pkg_up[@]}" 1> "$YAOURTTMPDIR/sysupgrade"; then
+			packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade"))
+			rm "$YAOURTTMPDIR/sysupgrade"
+		else
+			REFRESH=0
+			DETAILUPGRADE=0
+		fi
+	fi
 	if (( ! DETAILUPGRADE )); then
 		(( REFRESH )) && _arg+="y"
 		(( REFRESH>1 )) && _arg+="y"
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
-	else	
-		pacman_parse -Sp --print-format "## %n" \
-		             --noconfirm $_arg "${PACMAN_S_ARG[@]}" \
-		             "${pkg_up[@]}" 1> "$YAOURTTMPDIR/sysupgrade" ||
-			{ grep -v '^## ' "$YAOURTTMPDIR/sysupgrade"; return 1; }
-		packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade"))
-		rm "$YAOURTTMPDIR/sysupgrade"
 	fi
 	#[[ ! "$packages" ]] && return 0	
 	local cmd="echo -n"
