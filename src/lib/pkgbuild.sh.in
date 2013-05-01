@@ -358,9 +358,10 @@ package_loop() {
 	return $failed
 }
 
-# sanitize_pkgbuild(pkgbuild)
+# sanitize_pkgbuild(pkgbuild, vars)
 # Turn a PKGBUILD into a harmless script (at least try to)
 sanitize_pkgbuild() {
+	local file="$1"; shift; local vars=$*
 	sed -n -e '/\$(\|`\|[><](\|[&|]\|;/d' \
 		-e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
 		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
@@ -368,8 +369,8 @@ sanitize_pkgbuild() {
 		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
 		-e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
 		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/declare last_mod="\1"/p }' \
-		-e '/ *build *( *)/q' \
-		-e 'd' "$1"
+		-e '/ *[a-zA-Z0-9_\-]\+ *( *)/q' \
+		-e 'd' "$file" | grep -E "declare (${vars// /|})"
 }
 
 # Source a PKGBUILD and return a declare var list:
@@ -377,7 +378,7 @@ sanitize_pkgbuild() {
 # . <(source_pkgbuild file var1 var2)
 source_pkgbuild() {
 	local file="$1"; shift
-	source <(sanitize_pkgbuild "$file") &> /dev/null && declare -p "$@" 2> /dev/null
+	source <(sanitize_pkgbuild "$file" "$@") &> /dev/null && declare -p "$@" 2> /dev/null
 }
 
 # get_pkgbuild ($pkgs)
