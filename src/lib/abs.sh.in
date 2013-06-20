@@ -56,7 +56,7 @@ abs_get_pkgbuild() {
 		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
 		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
 		msg "$repo/$pkgbase: $(gettext 'Download abs archive')"
-		curl_fetch -f -# "$abs_url" -o "$abs_tar" || return 1
+		curl_fetch -L -f -# "$abs_url" -o "$abs_tar" || return 1
 	fi
 	bsdtar --strip-components 2 -xvf "$abs_tar" "$repo/$pkgbase"
 }
