@@ -6,7 +6,7 @@
 
 # General
 #AUTOSAVEBACKUPFILE=0
-#DEVELBUILDDIR="@localstatedir@/abs/local/yaourtbuild"
+#DEVELSRCDIR=""
 #DEVEL=0
 #EDITOR="$EDITOR"
 #FORCEENGLISH=0

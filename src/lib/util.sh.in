@@ -206,7 +206,8 @@ LOADEDLIBS+=([util]=1 [io]=1 [pacman]=1)
 shopt -s extglob
 # General
 AUTOSAVEBACKUPFILE=0
-DEVELBUILDDIR='@localstatedir@/abs/local/yaourtbuild'
+DEVELBUILDDIR=''
+DEVELSRCDIR=''
 DEVEL=0
 FORCEENGLISH=0
 FORCE=0
@@ -250,4 +251,6 @@ export PACMAN=${PACMAN:-pacman}
 # Add --aur-url option to package-query args
 program_arg $A_PKC --aur-url "$AURURL"
 
+# DEVELBUILDDIR is depreceated
+DEVELSRCDIR=${DEVELSRCDIR:-$DEVELBUILDDIR}
 # vim: set ts=4 sw=4 noet: 
