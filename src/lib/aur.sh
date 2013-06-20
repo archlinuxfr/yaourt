@@ -42,6 +42,7 @@ info_from_aur() {
 	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
 		conflicts replaces arch last_mod pkgdesc)
 	unset ${vars[*]}
+	local ${vars[*]}
 	. <( source_pkgbuild "$tmpfile" ${vars[*]} )
 	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"

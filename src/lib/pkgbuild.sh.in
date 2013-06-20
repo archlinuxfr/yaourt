@@ -358,27 +358,27 @@ package_loop() {
 	return $failed
 }
 
-# sanitize_pkgbuild(pkgbuild, vars)
+# sanitize_pkgbuild(pkgbuild)
 # Turn a PKGBUILD into a harmless script (at least try to)
 sanitize_pkgbuild() {
-	local file="$1"; shift; local vars=$*
-	sed -n -e '/\$(\|`\|[><](\|[&|]\|;/d' \
-		-e 's/^ *[a-zA-Z0-9_]\+=/declare &/' \
-		-e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
-		-e '/^declare *[a-zA-Z0-9_]\+=(.*$/,/.*) *\(#.*\|$\)/{p;d}' \
-		-e '/^declare *[a-zA-Z0-9_]\+=.*\\$/,/.*[^\\]$/p' \
-		-e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/p' \
-		-e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/declare last_mod="\1"/p }' \
-		-e '/ *[a-zA-Z0-9_\-]\+ *( *)/q' \
-		-e 'd' "$file" | grep -E "declare (${vars// /|})"
+	local file="$1"
+	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
+	sed -n -e '/\$(\|`\|[><](\|[&|]\|;/d' -e '/ *[a-zA-Z0-9_\-]\+ *( *)/q' -e 's/^ *[a-zA-Z0-9_]\+=/declare &/' -e 'p' "$file" > "$tmpfile"
+	sed -n -e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/declare last_mod="\1"/p;d }' \
+	       -e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
+	       -e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/{p;d}' "$tmpfile"
+	sed -n -e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/d' \
+	       -e '/^declare *[a-zA-Z0-9_]\+=(.*$/ {:a;N;$bb;/.*) *\(#.*\|$\)/!ba;s/\n/ /g;p;d;:b}' "$tmpfile"
+	sed -n -e '/^declare *[a-zA-Z0-9_]\+=.*\\$/ {:a;N;$bb;/.*[^\\]$/!ba;s/\n/ /g;p;d;:b}' "$tmpfile"
+	rm "$tmpfile"
 }
 
 # Source a PKGBUILD and return a declare var list:
 # Call in a sub process:
 # . <(source_pkgbuild file var1 var2)
 source_pkgbuild() {
-	local file="$1"; shift
-	source <(sanitize_pkgbuild "$file" "$@") &> /dev/null && declare -p "$@" 2> /dev/null
+	local file="$1"; shift; local vars=$*
+	{ sanitize_pkgbuild "$file" | grep -E "declare (${vars// /|})"; } 2> /dev/null
 }
 
 # get_pkgbuild ($pkgs)
