@@ -75,7 +75,6 @@ search() {
 		search_option+=" -Q"
 		((AUR)) && ((FOREIGN || UPGRADES)) && search_option+=" -A"
 	else
-		DATE=0
 		search_option+=" -S"
 	fi
 	if (( SEARCH )); then
@@ -84,7 +83,8 @@ search() {
 		[[ $ARGS ]] && (( ! GROUP )) && search_option+=" -i"
 	fi
 	(( AURSEARCH )) && search_option+=" -A"
-	(( DATE )) && search_option+=" --sort 1"
+	[[ $SORT ]] && search_option+=" --sort $SORT"
+	[[ $RSORT ]] && search_option+=" --rsort $RSORT"
 	(( QUIET )) && { pkgquery $search_option -f "%n" -- "${ARGS[@]}";return $?; }
 	if ((set_pkgsfound)); then
 		((interactive)) && search_option+=" --number"
@@ -247,7 +247,7 @@ yaourt_no_action() {
 # Basic init and librairies
 
 unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
-      IGNOREGRP IGNOREPKG CHANGELOG LIST INFO DATE UNREQUIRED \
+      IGNOREGRP IGNOREPKG CHANGELOG LIST INFO RSORT SORT UNREQUIRED \
       FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
       AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD
 
@@ -307,7 +307,7 @@ while [[ $1 ]]; do
 		-b|--build)         ((BUILD++));;
 		-C)                 MAJOR="clean";;
 		--conflicts|--depends|--provides|--replaces) QUERYTYPE=${1:2};;
-		--date)             DATE=1;;
+		--date)             SORT=1;;
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
 		--force)            FORCE=1;;
@@ -322,6 +322,8 @@ while [[ $1 ]]; do
 		--print-format)     ((PRINT++));; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; shift;;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
+		--rsort)            RSORT=$2; shift;;
+		--sort)             SORT=$2; shift;;
 		--stats)            MAJOR="stats";;
 		--sucre)            MAJOR="sync"
 			FORCE=1; SYSUPGRADE=1; REFRESH=2;
