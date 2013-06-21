@@ -249,7 +249,8 @@ yaourt_no_action() {
 unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
       IGNOREGRP IGNOREPKG CHANGELOG LIST INFO RSORT SORT UNREQUIRED \
       FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
-      AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD
+      AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD \
+	  NEEDED
 
 # Disable color if output is not a terminal
 [[ -t 1 ]] || { USECOLOR=0; USEPAGER=0; TERMINALTITLE=0; }
@@ -279,7 +280,8 @@ while [[ $1 ]]; do
 		--config|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
-		--asexplicit|--asdeps|--needed) program_arg $A_PS $1;;
+		--asexplicit|--asdeps) program_arg $A_PS $1;;
+		--needed)           NEEDED=1; program_arg $A_PS $1;;
 		--clean)            ((CLEAN++));;
 		-c)                 ((CLEAN++)); ((CHANGELOG++)); program_arg $A_PQ "$1";;
 		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;

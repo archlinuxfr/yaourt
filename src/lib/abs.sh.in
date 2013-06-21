@@ -360,7 +360,7 @@ sync_packages() {
 		fi
 	fi
 	for _pkg in "${aur_pkgs[@]}"; do
-		[[ $SP_ARG ]] && pkgquery -Qq "$_pkg" && continue
+		[[ $SP_ARG || $NEEDED ]] && pkgquery -Qq "$_pkg" && continue
 		install_from_aur "$_pkg" || return 1
 	done
 	return 0
