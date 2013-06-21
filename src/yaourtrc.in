@@ -54,3 +54,8 @@
 # Command
 #PACMAN="pacman"
 #DIFFEDITCMD="vimdiff"
+
+# pacdiffviewer
+#P_LOCATE=0         # Use locate instead of find
+#P_SEARCHDIR=(/etc/ /boot/)
+#P_SAVEDIR='@localstatedir@/lib/yaourt/backupfiles'

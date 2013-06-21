@@ -24,14 +24,15 @@ export TEXTDOMAIN=yaourt
 NAME='pacdiffviewer'
 VERSION='@VERSION@'
 
+P_LOCATE=0
+P_SEARCHDIR=(/etc/ /boot/)
+P_SAVEDIR='@localstatedir@/lib/yaourt/backupfiles'
+
 . '@libdir@/yaourt/util.sh'
 
 ROOTDIR=
-SAVEDIR='@localstatedir@/lib/yaourt/backupfiles'
-LOCATE=0
-SEARCH_REP=(/etc/ /boot/)
 QUIET=0
-[[ -d "$SAVEDIR" ]] && MERGE=1 || MERGE=0
+[[ -d "$P_SAVEDIR" ]] && MERGE=1 || MERGE=0
 tmp_file=$(mktemp)
 cleanup_add rm "$tmp_file"
 
@@ -60,7 +61,7 @@ backup_files() {
 		[[ "$_md5sum" = "-" ]] && pkgname="$_file" && pkgver="$_version" &&\
 			 continue
 		[[ ! -f "$ROOTDIR/$_file" ]] && continue
-		backupdir="$SAVEDIR/$pkgname/$pkgname-$pkgver"
+		backupdir="$P_SAVEDIR/$pkgname/$pkgname-$pkgver"
 		[[ -f "$backupdir/$_file" ]] && continue
 		currentfile="$_file.pacnew"
 		[[ -f "$ROOTDIR/$currentfile" ]] || currentfile="$_file"
@@ -82,10 +83,10 @@ create_db() {
 	unset PACOLD PACNEW PACSAVE
 	local pacfiles _file ext
 	IFS=$'\n'
-	if (( LOCATE )); then
+	if (( P_LOCATE )); then
 		pacfiles=($(locate -eb "*.pacorig" "*.pacsave" "*.pacnew"))
 	else
-		pacfiles=($(find "${SEARCH_REP[@]}" \( -name "*.pacorig" \
+		pacfiles=($(find "${P_SEARCHDIR[@]}" \( -name "*.pacorig" \
 			-o -name "*.pacsave" -o -name "*.pacnew" \)))
 	fi
 	unset IFS
@@ -114,8 +115,8 @@ previous_version() {
 	read pkgname pkgver < <(pacman_parse -Qo "$file" |
 		awk '{print $(NF-1)" "$NF}' 2>/dev/null)
 	[[ $pkgname ]] || return 
-	[[ -d "$SAVEDIR/$pkgname/" ]] || return 
-	pushd "$SAVEDIR/$pkgname/" &> /dev/null
+	[[ -d "$P_SAVEDIR/$pkgname/" ]] || return
+	pushd "$P_SAVEDIR/$pkgname/" &> /dev/null
 	local pkgver_prev="" _rep
 	for _rep in $(ls -Ad *-*); do
 		[[ "$_rep" = "$pkgname-$pkgver" || ! -f "${_rep}${file}" ||
@@ -127,7 +128,7 @@ previous_version() {
 	done
 	popd &> /dev/null
 	[[ ! "$pkgver_prev" ]] && return 
-	echo "$SAVEDIR/$pkgname/$pkgname-$pkgver_prev/$file"
+	echo "$P_SAVEDIR/$pkgname/$pkgname-$pkgver_prev/$file"
 }
 
 # Search if we can merge a .pac{save,new} with a current file
