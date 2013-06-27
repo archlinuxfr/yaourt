@@ -198,7 +198,7 @@ aur_update_exists() {
 		ret=1
 	fi
 	if [[ ! ${5#-} ]]; then
-		if ((DETAILUPGRADE==1)); then
+		if ((DETAILUPGRADE<2)); then
 			tput el1
 			echo -en "$prefix"
 		fi
