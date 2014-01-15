@@ -1,0 +1,109 @@
+=head1 NAME
+
+yaourt - more than a frontend to pacman
+
+=head1 SYNOPSIS
+
+Usage:
+
+  yaourt <operation> [options] [packages]
+
+  yaourt <search pattern|package file>
+
+=head1 DESCRIPTION
+
+Yaourt is a pacman frontend with a lot of features.
+
+AUR/ABS support, colorized output, interactive search/install, save/restore
+Alpm database, orphans detection, manage .pac* files, ...
+
+=head1 OPERATIONS
+
+Since the majority of those options are same as pacman's ones (https://www.archlinux.org/pacman/pacman.8.html), this manual page will focus on the specific ones.
+
+=over 4
+
+=item B<-B, --backup>
+
+Backup or restore alpm local database.
+
+=item B<-C>
+
+Manage .pac* files.
+
+=item B<-G, --getpkgbuild E<lt>packageE<gt>>
+
+Get PKGBUILD for ABS or AUR.
+
+=item B<-Q, --query>
+
+Query local database + Can sort packages by installation date, possibility to delete orphans.
+
+=item B<-R, --remove>
+
+Remove package(s) from the system.
+
+=item B<-U, --upgrade>
+
+Upgrade or add package(s) to the system.
+
+=item B<-S, --sync>
+
+Synchronize packages + AUR support, building from sources.
+
+=item B<--stats>
+
+Show some statistics about your packages.
+
+=item B<-V, --version>
+
+Display version and exit.
+
+=item B<-h, --help>
+
+Display a short help.
+
+=back
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<--color>
+
+Force color.
+
+=item B<--export E<lt>dirE<gt>>
+
+Export built packages and their sources to I<E<lt>dirE<gt>>.
+
+=item B<--force>
+
+Force installation or updates.
+
+=item B<--insecure>
+
+Allow curl & package-query to perform "insecure" SSL connections
+
+=item B<--nocolor>
+
+Disable color.
+
+=item B<--noconfirm>
+
+Don't ask for confirmation.
+
+=item B<--pager>
+
+Use I<$PAGER> to show search results.
+
+=item B<--tmp E<lt>dirE<gt>>
+
+Use E<lt>dirE<gt> as temporary folder. default to '/tmp' 
+
+=back
+
+=head1 MORE
+
+See I<man yaourt>
+
