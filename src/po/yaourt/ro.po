@@ -1,0 +1,813 @@
+# yaourt default.po file
+# Copyright (C) 2010-2012
+# This file is distributed under the same license as the yaourt package.
+# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# 
+# Translators:
+# Ayceman <alexandru.ianu@gmail.com>, 2013
+msgid ""
+msgstr ""
+"Project-Id-Version: yaourt\n"
+"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
+"POT-Creation-Date: 2010-04-09 15:19+0200\n"
+"PO-Revision-Date: 2013-11-20 09:32+0000\n"
+"Last-Translator: Ayceman <alexandru.ianu@gmail.com>\n"
+"Language-Team: Romanian (http://www.transifex.com/projects/p/yaourt/language/ro/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ro\n"
+"Plural-Forms: nplurals=3; plural=(n==1?0:(((n%100>19)||((n%100==0)&&(n!=0)))?2:1));\n"
+
+#: ../../pacdiffviewer.sh.in:41
+msgid "Delete all *.pac* found"
+msgstr "Șterge toate *.pac* găsite"
+
+#: ../../pacdiffviewer.sh.in:42
+msgid "Save all packages backup files for a later merge"
+msgstr "Salvează toate rezervele fișierelor pachetelor pentru o fuzionare ulterioară"
+
+#: ../../pacdiffviewer.sh.in:43
+msgid "Use with backup to not output messages"
+msgstr "Utilizează cu rezerva pentru a nu apărea mesaje"
+
+#: ../../pacdiffviewer.sh.in:44
+msgid "Sequential listing"
+msgstr "Listare secvențială"
+
+#: ../../pacdiffviewer.sh.in:45
+msgid "Display diff"
+msgstr "Arată diff"
+
+#: ../../pacdiffviewer.sh.in:46
+msgid "This help"
+msgstr "Acest ajutor"
+
+#: ../../pacdiffviewer.sh.in:47
+msgid "Show version"
+msgstr "Arată versiunea"
+
+#: ../../pacdiffviewer.sh.in:69
+msgid "saving"
+msgstr "se salvează"
+
+#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
+#: ../../pacdiffviewer.sh.in:103
+msgid "found"
+msgstr "găsit(e)"
+
+#: ../../pacdiffviewer.sh.in:104
+msgid "files are orphans"
+msgstr "fișiere sunt orfane"
+
+#: ../../pacdiffviewer.sh.in:156
+msgid "The following files have no original version."
+msgstr "Următoarele fișiere nu au o versiune originală:"
+
+#: ../../pacdiffviewer.sh.in:159
+msgid "Do you want to delete these files ?"
+msgstr "Doriți să ștergeți aceste fișiere?"
+
+#: ../../pacdiffviewer.sh.in:160
+msgid "(S: no confirm)"
+msgstr "(S: fără confirmare)"
+
+#: ../../pacdiffviewer.sh.in:161
+msgid "YNS"
+msgstr "DNS"
+
+#: ../../pacdiffviewer.sh.in:180
+msgid "**same file**"
+msgstr "**același fișier**"
+
+#: ../../pacdiffviewer.sh.in:184
+msgid "**automerge**"
+msgstr "**autofuzionare**"
+
+#: ../../pacdiffviewer.sh:192
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr "Acțiune: [E]ditare, Î[n]locuire, [S]uprimare, [C]ontinuare (implicit), [R]enunțare?"
+
+#: ../../pacdiffviewer.sh:192
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
+msgstr "Acțiune: [E]ditare, Î[n]locuire, [S]uprimare, [F]uziune, [C]ontinuare (implicit), [R]enunțare?"
+
+# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
+#: ../../pacdiffviewer.sh:193
+msgid "ERSCA"
+msgstr "ENSCR"
+
+# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
+# [A]bort ?
+#: ../../pacdiffviewer.sh:193
+msgid "ERSCAM"
+msgstr "ENSCRF"
+
+#: ../../pacdiffviewer.sh.in:201
+msgid "Patch: "
+msgstr "Petic:"
+
+#: ../../pacdiffviewer.sh.in:204
+msgid "Apply ?"
+msgstr "Aplicați?"
+
+#: ../../pacdiffviewer.sh.in:207
+msgid "patch returned an error!"
+msgstr "peticul a returna o eroare!"
+
+#: ../../pacdiffviewer.sh.in:227
+msgid "Enter n° : "
+msgstr "Precizați nr.:"
+
+#: ../../yaourt.sh.in:34
+msgid "Yaourt does not support --help for a particular option."
+msgstr "Yaourt nu suportă --help pentru o opțiune anume."
+
+#: ../../yaourt.sh.in:35
+msgid "The following is %s help :"
+msgstr "Următorul e ajutor %s:"
+
+#: ../../yaourt.sh.in:40
+msgid "Usage: yaourt <operation> [...]"
+msgstr "Folosire: yaourt <operațiune> [...]"
+
+#: ../../yaourt.sh.in:41
+msgid "operations:"
+msgstr "operații:"
+
+#: ../../yaourt.sh.in:42
+msgid "yaourt (search pattern|package file)"
+msgstr "yaourt (șablon de căutare|fișier de pachet)"
+
+#: ../../yaourt.sh.in:43
+msgid "yaourt {-h --help}"
+msgstr "yaourt {-h --help}"
+
+#: ../../yaourt.sh.in:44
+msgid "yaourt {-V --version}"
+msgstr "yaourt {-V --version}"
+
+#: ../../yaourt.sh.in:45
+msgid "yaourt {-Q --query}       [options] [package(s)]"
+msgstr "yaourt {-Q --query} [opțiuni] [packet(e)]"
+
+#: ../../yaourt.sh.in:46
+msgid "yaourt {-R --remove}      [options] <package(s)>"
+msgstr "yaourt {-R --remove} [opțiuni] <pachet(e)>"
+
+#: ../../yaourt.sh.in:47
+msgid "yaourt {-S --sync}        [options] [package(s)]"
+msgstr "yaourt {-S --sync} [opțiuni] [pachet(e)]"
+
+#: ../../yaourt.sh.in:48
+msgid "yaourt {-U --upgrade}     [options] <package(s)>"
+msgstr "yaourt {-U --upgrade} [opțiuni] <pachet(e)>"
+
+#: ../../yaourt.sh.in:49
+msgid "yaourt {-C --clean}       [options]"
+msgstr "yaourt {-C --clean} [opțiuni]"
+
+#: ../../yaourt.sh.in:50
+msgid "yaourt {-B --backup}      [save directory|restore file]"
+msgstr "yaourt {-B --backup} [director de salvare|fișier de restaurat]"
+
+#: ../../yaourt.sh.in:51
+msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
+msgstr "yaourt {-G --getpkgbuild} [opțiuni] <pachet(e)>"
+
+#: ../../yaourt.sh.in:52
+msgid "yaourt {--stats}"
+msgstr "yaout {--stats}"
+
+#: ../../yaourt.sh.in:57
+msgid "homepage: http://archlinux.fr/yaourt-en"
+msgstr "pagina principală: http://archlinux.fr/yaourt-en"
+
+#: ../../yaourt.sh.in:98
+msgid "query packages"
+msgstr "interogare pachete"
+
+#: ../../yaourt.sh.in:112
+msgid "Following packages have not been installed:"
+msgstr "Următoarele pachete nu au fost instalate:"
+
+#: ../../yaourt.sh.in:125
+msgid "listing all packages in repo(s)"
+msgstr "se listează toate pachetele din depozit(e)"
+
+#: ../../yaourt.sh.in:126
+msgid "Listing all packages in repo(s)"
+msgstr "Se listează toate pachetele din depozit(e)"
+
+#: ../../yaourt.sh.in:128
+msgid "show groups"
+msgstr "arată grupele"
+
+#: ../../yaourt.sh.in:147
+msgid "Informations for %s"
+msgstr "Informații pentru %s"
+
+#: ../../yaourt.sh.in:168
+msgid "Unable to read %s file"
+msgstr "Nu se poate citi fișierul %s"
+
+#: ../../yaourt.sh.in:192
+msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
+msgstr "Precizați nr. pachetelor de instalat (ex.: 1 2 3 sau 1-3)"
+
+#: ../../yaourt.sh.in:363
+msgid "get PKGBUILD"
+msgstr "obține PKGBUILD"
+
+#: ../../lib/abs.sh.in:55
+msgid "Download abs archive"
+msgstr "Descarcă arhiva abs"
+
+#: ../../lib/abs.sh.in:78
+msgid "The following packages should be upgraded first :"
+msgstr "Următoarele pachete ar trebui actualizate primele:"
+
+#: ../../lib/abs.sh.in:80
+msgid "Do it now ?"
+msgstr "Acum?"
+
+#: ../../lib/abs.sh.in:93
+msgid "Building %s from sources."
+msgstr "Se construiește %s de la surse."
+
+#: ../../lib/abs.sh.in:94
+msgid "Install %s from sources"
+msgstr "Se instalează %s de la surse"
+
+#: ../../lib/abs.sh.in:96
+msgid "Retrieving PKGBUILD and local sources..."
+msgstr "Se obțin PKGBUILD și sursele locale..."
+
+#: ../../lib/abs.sh.in:133
+msgid "Foreign packages: "
+msgstr "Pachete străine:"
+
+#: ../../lib/abs.sh.in:162
+msgid "not found"
+msgstr "nu se găsesc"
+
+#: ../../lib/abs.sh.in:180
+msgid "Continue upgrade ?"
+msgstr "Continuați actualizarea?"
+
+#: ../../lib/abs.sh.in:181
+msgid "[V]iew package detail   [M]anually select packages"
+msgstr "[V]edere detalii ale pachetelor - Selectare [M]anuală a pachetelor"
+
+#: ../../lib/abs.sh.in:182
+msgid "YNVM"
+msgstr "YNVM"
+
+#: ../../lib/abs.sh.in:203
+msgid "Proceed with upgrade? "
+msgstr "Continuați actualizarea?"
+
+#: ../../lib/abs.sh.in:251
+msgid "Source targets"
+msgstr "Ținte sursă"
+
+#: ../../lib/abs.sh.in:258
+msgid "AUR targets"
+msgstr "ținte AUR"
+
+#: ../../lib/abs.sh.in:267
+msgid "unable to update %s"
+msgstr "nu se poate actualiza %s"
+
+#: ../../lib/abs.sh.in:285
+msgid "Package upgrade only (new release):"
+msgstr "Doar actualizarea pachetelor (nouă lansare):"
+
+#: ../../lib/abs.sh.in:286
+msgid "Software upgrade (new version) :"
+msgstr "Înnoire soft (nouă versiune):"
+
+#: ../../lib/abs.sh.in:287
+msgid "New package :"
+msgstr "Noi pachete:"
+
+#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+msgid "(required by %s)"
+msgstr "(cerut de %s)"
+
+#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+msgid "Installing from a package list"
+msgstr "Se instalează dintr-o listă de pachete"
+
+#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+msgid "upgrading SVN/CVS/HG/GIT package"
+msgstr "se actualizează pachet SVN/CVS/HG/GIT"
+
+#: ../../lib/abs.sh.in:380
+msgid "Targets"
+msgstr "Ținte"
+
+#: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
+msgid "Saving pacman database in %s"
+msgstr "Se salvează baza de date pacman în %s"
+
+#: ../../lib/alpm_backup.sh:13
+msgid "Pacman database successfully saved in %s"
+msgstr "Baza de date pacman a fost salvată cu succes în %s"
+
+#: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
+msgid "Analysing backup file"
+msgstr "Se analizează fișierul de rezervă"
+
+#: ../../lib/alpm_backup.sh:29
+msgid "%s is not a valid alpm database backup"
+msgstr "%s nu e o rezervă de bază de date alpm validă"
+
+#: ../../lib/alpm_backup.sh:44
+msgid "New packages installed since backup:"
+msgstr "Pachete instalate mai noi decât în copia de rezervă:"
+
+#: ../../lib/alpm_backup.sh:47
+msgid "Packages removed or ugpraded since backup:"
+msgstr "Pachete șterse sau actualizare de la copierea de rezervă:"
+
+#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+msgid "Warning! Do you want to restore this backup ?"
+msgstr "Atenție! Doriți să restaurați această copie de rezervă?"
+
+#: ../../lib/alpm_backup.sh:52
+msgid "(local db will be saved in %s)"
+msgstr "(bd locală va fi salvată în %s)"
+
+#: ../../lib/alpm_backup.sh:53
+msgid "If you want to restore this backup, type \"yes\""
+msgstr "Dacă doriți să restaurați această copie de rezervă, scrieți „da”"
+
+#: ../../lib/alpm_backup.sh:55
+msgid "yes"
+msgstr "da"
+
+#: ../../lib/alpm_backup.sh:56
+msgid "Deleting pacman DB"
+msgstr "Se șterge BD pacman"
+
+#: ../../lib/alpm_backup.sh:58
+msgid "Copying backup"
+msgstr "Se copiază rezerva"
+
+#: ../../lib/alpm_backup.sh:61
+msgid "Testing the new database"
+msgstr "Se testează noua bază de date"
+
+#: ../../lib/alpm_backup.sh:64
+msgid "Your backup is not successfully restored"
+msgstr "Copia de rezervă nu a fost restaurată cu succes"
+
+#: ../../lib/alpm_backup.sh:66
+msgid "Your backup has been successfully restored"
+msgstr "Copia de rezervă a fost restaurată cu succes"
+
+#: ../../lib/alpm_backup.sh:67
+msgid "packages found"
+msgstr "pachete găsite"
+
+#: ../../lib/alpm_backup.sh:69
+msgid "(old database is saved in %s)"
+msgstr "(baza de date veche e salvată în %s)"
+
+#: ../../lib/alpm_backup.sh:81
+msgid "wrong argument"
+msgstr "argument greșit"
+
+#: ../../lib/alpm_query.sh:34
+msgid "Packages which depend on %s:"
+msgstr "Pachete ce depind de %s:"
+
+#: ../../lib/alpm_query.sh:35
+msgid "Packages which conflicts with %s:"
+msgstr "Pachete ce sunt în conflict cu %s:"
+
+#: ../../lib/alpm_query.sh:46
+msgid "Packages which replace %s:"
+msgstr "Pachete ce înlocuiesc %s:"
+
+#: ../../lib/alpm_query.sh:47
+msgid "Packages which provide %s:"
+msgstr "Pachete de furnizează %s:"
+
+#: ../../lib/alpm_query.sh:48
+msgid "Do you want to remove these packages (with -Rcs options) ? "
+msgstr "Vreți să ștergeți aceste pachete (cu opțiuni -Rcs)?"
+
+#: ../../lib/alpm_query.sh:49
+msgid "YN"
+msgstr "DN"
+
+#: ../../lib/alpm_stats.sh:49
+msgid "Total installed packages:"
+msgstr "Toate pachetele instalate:"
+
+#: ../../lib/alpm_stats.sh:50
+msgid "Explicitly installed packages:"
+msgstr "Pachete instalate explicit:"
+
+#: ../../lib/alpm_stats.sh:51
+msgid "Packages installed as dependencies to run other packages:"
+msgstr "Pachete instalate ca dependențe pentru a rula alte pachete:"
+
+#: ../../lib/alpm_stats.sh:52
+msgid "Packages out of date:"
+msgstr "Pachete învechite:"
+
+#: ../../lib/alpm_stats.sh:54
+msgid "Where %s packages seems no more used by any package:"
+msgstr "Unde %s pachete nu par a mai fi folosite de oricare alte pachete:"
+
+#: ../../lib/alpm_stats.sh:57
+msgid "Hold packages:"
+msgstr "Ține pachetele:"
+
+#: ../../lib/alpm_stats.sh:58
+msgid "Ignored packages:"
+msgstr "Pachete ignorate:"
+
+#: ../../lib/alpm_stats.sh:59
+msgid "Ignored groups:"
+msgstr "Grupuri ignorate:"
+
+#: ../../lib/alpm_stats.sh:65
+msgid "Number of configured repositories:"
+msgstr "Numărul depozitelor configurate:"
+
+#: ../../lib/alpm_stats.sh:66
+msgid "Packages by repositories (ordered by pacmans priority)"
+msgstr "Pachete ordonate după depozite (prioritate pacman)"
+
+#: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
+msgid "others"
+msgstr "altele"
+
+#: ../../lib/alpm_stats.sh:80
+msgid "are packages from local build or AUR Unsupported"
+msgstr "sunt pachete locale sau AUR fără suport"
+
+#: ../../lib/alpm_stats.sh:88
+msgid "Theorical - Real space used by packages:"
+msgstr "Spațiu Teoretic - Real folosit de pachete:"
+
+#: ../../lib/alpm_stats.sh:89
+msgid "progression:"
+msgstr "progresie:"
+
+#: ../../lib/alpm_stats.sh:98
+msgid "Theorical space used by packages:"
+msgstr "Spațiu teoretic utilizat de pachete:"
+
+#: ../../lib/alpm_stats.sh:99
+msgid "Real space used by packages:"
+msgstr "Spațiu real folosit de pachete:"
+
+#: ../../lib/alpm_stats.sh:103
+msgid "Space used by pkg downloaded in cache (cachedir):"
+msgstr "Spațiu utilizat de pkg descărcate în prestocare (cachedir):"
+
+#: ../../lib/alpm_stats.sh:105
+msgid "Space used by src downloaded in cache:"
+msgstr "Spațiu utilizat de src descărcate în prestocare:"
+
+#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+msgid "%s not found in AUR."
+msgstr "%s nu se găsește în AUR"
+
+#: ../../lib/aur.sh:37
+msgid "Yes"
+msgstr "Da"
+
+#: ../../lib/aur.sh:37
+msgid "No"
+msgstr "Nu"
+
+#: ../../lib/aur.sh:45
+msgid "Repository     "
+msgstr "Depozit"
+
+#: ../../lib/aur.sh:46
+msgid "Name           "
+msgstr "Nume"
+
+#: ../../lib/aur.sh:47
+msgid "Version        "
+msgstr "Versiune"
+
+#: ../../lib/aur.sh:48
+msgid "URL            "
+msgstr "URL"
+
+#: ../../lib/aur.sh:49
+msgid "AUR URL        "
+msgstr "URL AUR"
+
+#: ../../lib/aur.sh:50
+msgid "Licenses       "
+msgstr "Licențe"
+
+#: ../../lib/aur.sh:51
+msgid "Votes          "
+msgstr "Voturi"
+
+#: ../../lib/aur.sh:52
+msgid "Out Of Date    "
+msgstr "Învechit"
+
+#: ../../lib/aur.sh:53
+msgid "Groups         "
+msgstr "Grupe"
+
+#: ../../lib/aur.sh:54
+msgid "Provides       "
+msgstr "Furnizează"
+
+#: ../../lib/aur.sh:55
+msgid "Depends On     "
+msgstr "Depinde de"
+
+#: ../../lib/aur.sh:56
+msgid "Optional Deps  "
+msgstr "Dependințe Opționale"
+
+#: ../../lib/aur.sh:57
+msgid "Conflicts With "
+msgstr "Conflict cu"
+
+#: ../../lib/aur.sh:58
+msgid "Replaces       "
+msgstr "Înlocuiește"
+
+#: ../../lib/aur.sh:59
+msgid "Maintainer     "
+msgstr "Responsabil"
+
+#: ../../lib/aur.sh:60
+msgid "Architecture   "
+msgstr "Arhitectură"
+
+#: ../../lib/aur.sh:61
+msgid "Last update    "
+msgstr "Ultima actualizare"
+
+#: ../../lib/aur.sh:62
+msgid "Description    "
+msgstr "Descriere"
+
+#: ../../lib/aur.sh:117
+msgid "Checking vote status for %s"
+msgstr "Se verifică statutul de vot pentru %s"
+
+#: ../../lib/aur.sh:120
+msgid "You have already voted for %s"
+msgstr "Ați votat deja pentru %s"
+
+#: ../../lib/aur.sh:123
+msgid "Do you want to vote for %s ? "
+msgstr "Doriți să votați pentru %s?"
+
+#: ../../lib/aur.sh:136
+msgid "Installing %s from AUR"
+msgstr "Se instalează %s din AUR"
+
+#: ../../lib/aur.sh:140
+msgid "Downloading %s PKGBUILD from AUR..."
+msgstr "Se descarcă PKGBUILD pentru %s din AUR..."
+
+#: ../../lib/aur.sh:145
+msgid "This package is orphaned"
+msgstr "Acest pachet a devenit orfan"
+
+#: ../../lib/aur.sh:146
+msgid "( Unsupported package: Potentially dangerous ! )"
+msgstr "(Pachet fără suport: Potențial periculos!)"
+
+#: ../../lib/aur.sh:166
+msgid "not found on AUR"
+msgstr "nu se găsește în AUR"
+
+#: ../../lib/aur.sh:173
+msgid "up to date "
+msgstr "la zi"
+
+#: ../../lib/aur.sh:174
+msgid "flagged as out of date"
+msgstr "marcat ca învechit"
+
+#: ../../lib/aur.sh:183
+msgid "Orphan"
+msgstr "Orfan"
+
+#: ../../lib/io.sh:98
+msgid "[Y/n]"
+msgstr "[D/n]"
+
+#: ../../lib/io.sh:99
+msgid "[y/N]"
+msgstr "[d/N]"
+
+#: ../../lib/io.sh:100
+msgid "[y/n]"
+msgstr "[d/n]"
+
+#: ../../lib/io.sh:146
+msgid "WARNING: "
+msgstr "ATENȚIE:"
+
+#: ../../lib/io.sh:155
+msgid "ERROR: "
+msgstr "EROARE:"
+
+#: ../../lib/misc.sh:28
+msgid "Packages no longer required by any installed package:"
+msgstr "Pachete ce nu mai sunt cerute de niciun alt pachet instalat:"
+
+#: ../../lib/misc.sh:37
+msgid "Searching for original config files to save"
+msgstr "Se caută configurațiile originale pentru salvare"
+
+#: ../../lib/pacman.sh.in:36
+msgid "Pacman is currently in use, please wait."
+msgstr "Pacman este în curs de utilizare; așteptați."
+
+#: ../../lib/pacman.sh.in:58
+msgid "synchronizing package databases"
+msgstr "se sincronizează bazele de date ale pachetelor"
+
+#: ../../lib/pacman.sh.in:71
+msgid "(ignoring package upgrade)"
+msgstr "(se ignoră actualizarea pachetului)"
+
+#: ../../lib/pkgbuild.sh.in:68
+msgid "Unable to read PKGBUILD"
+msgstr "Nu se poate citi PKGBUILD"
+
+#: ../../lib/pkgbuild.sh.in:72
+msgid "This PKGBUILD describes a splitted package."
+msgstr "Acest PKGBUILD descrie un pachet împărțit."
+
+#: ../../lib/pkgbuild.sh.in:73
+msgid "Specific package options are unknown"
+msgstr "Opțiunile specific pachetului sunt necunoscute"
+
+#: ../../lib/pkgbuild.sh.in:94
+msgid "%s dependencies:"
+msgstr "%s dependențe:"
+
+#: ../../lib/pkgbuild.sh.in:96
+msgid "(already installed)"
+msgstr "(deja instalat)"
+
+#: ../../lib/pkgbuild.sh.in:99
+msgid "(package found)"
+msgstr "(pachet găsit)"
+
+#: ../../lib/pkgbuild.sh.in:100
+msgid "(building from AUR)"
+msgstr "(se compilează din AUR)"
+
+#: ../../lib/pkgbuild.sh.in:135
+msgid "%s conflicts:"
+msgstr "%s e în conflict cu:"
+
+#: ../../lib/pkgbuild.sh.in:202
+msgid "Building and installing package"
+msgstr "Se construiește și instalează pachetul"
+
+#: ../../lib/pkgbuild.sh.in:209
+msgid "The sources of %s were kept last time. Use them ?"
+msgstr "Sursele pentru %s au fost păstrate ultima oară. Le folosiți?"
+
+#: ../../lib/pkgbuild.sh.in:215
+msgid "Unable to write in %s directory. Using /tmp directory"
+msgstr "Nu se poate scrie ăn dosarul %s. Se folosește dosarul /tmp"
+
+#: ../../lib/pkgbuild.sh.in:222
+msgid "%s is already up to date."
+msgstr "%s este deja la zi"
+
+#: ../../lib/pkgbuild.sh.in:230
+msgid "Install or build missing dependencies for %s:"
+msgstr "Instalează sau construiește dependențe lipsă pentru %s"
+
+#: ../../lib/pkgbuild.sh.in:238
+msgid "Dependencies have been installed before the failure"
+msgstr "Dependențele au fost instalate înainte de eșec"
+
+#: ../../lib/pkgbuild.sh.in:247
+msgid ""
+"Building package as root is dangerous.\\n Please run yaourt as a non-"
+"privileged user."
+msgstr "Construirea pachetelor ca administrator este periculoasă.\\n Rulați yaourt ca utilizator neprivilegiat."
+
+#: ../../lib/pkgbuild.sh.in:253
+msgid "Makepkg was unable to build %s."
+msgstr "Makepkg nu a putut construi %s."
+
+#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+msgid "Exporting %s to %s directory"
+msgstr "Se exportă %s în dosarul %s"
+
+#: ../../lib/pkgbuild.sh.in:276
+msgid "Continue installing %s ?"
+msgstr "Continuați instalarea %s?"
+
+#: ../../lib/pkgbuild.sh.in:277
+msgid "[v]iew package contents   [c]heck package with namcap"
+msgstr "[v]edere detalii ale pachetelor - verificare [p]achet cu namcap"
+
+#: ../../lib/pkgbuild.sh.in:278
+msgid "YNVC"
+msgstr "DNVP"
+
+#: ../../lib/pkgbuild.sh.in:283
+msgid "Press any key to continue"
+msgstr "Apăsați orice tastă pentru a continua"
+
+#: ../../lib/pkgbuild.sh.in:292
+msgid "namcap is not installed"
+msgstr "namcap nu este instalat"
+
+#: ../../lib/pkgbuild.sh.in:306
+msgid "Your packages are saved in %s"
+msgstr "Pachetele v-au fost salvate în %s"
+
+#: ../../lib/pkgbuild.sh.in:307
+msgid "Unable to copy packages to %s directory"
+msgstr "Nu se pot copia pachetele în dosarul %s"
+
+#: ../../lib/pkgbuild.sh.in:317
+msgid "Unable to delete directory %s. Please remove it using root privileges."
+msgstr "Nu se poate șterge dosarul %s. Ștergeți-l folosind privilegii de administrator."
+
+#: ../../lib/pkgbuild.sh.in:319
+msgid "Unable to create directory %s."
+msgstr "Nu se poate crea dosarul %s."
+
+#: ../../lib/pkgbuild.sh.in:347
+msgid "Continue building %s ? "
+msgstr "Continuați construirea %s?"
+
+#: ../../lib/pkgbuild.sh.in:353
+msgid "Restart building %s ? "
+msgstr "Reporniți construirea %s?"
+
+#: ../../lib/pkgbuild.sh.in:401
+msgid "%s directory already exist. Replace ?"
+msgstr "dosarul %s există deja. Înlocuiți?"
+
+#: ../../lib/pkgbuild.sh.in:407
+msgid "Download %s sources"
+msgstr "Descarcă sursele %s"
+
+#: ../../lib/util.sh.in:134
+msgid "is not a directory"
+msgstr "nu este un dosar"
+
+#: ../../lib/util.sh.in:135
+msgid "is not writable"
+msgstr "nu este inscripționabil"
+
+#: ../../lib/util.sh.in:177
+msgid "Edit %s ?"
+msgstr "Editați %s?"
+
+#: ../../lib/util.sh.in:177
+msgid "(\"A\" to abort)"
+msgstr "(„R” pentru renunțare)"
+
+#: ../../lib/util.sh.in:178
+msgid "YNA"
+msgstr "DNR"
+
+#: ../../lib/util.sh.in:180
+msgid "Aborted..."
+msgstr "Renunțat..."
+
+#: ../../lib/util.sh.in:184
+#, sh-format
+msgid "Please add $EDITOR to your environment variables"
+msgstr "Adăugați $EDITOR la variabilele de mediu"
+
+#: ../../lib/util.sh.in:185
+msgid "for example:"
+msgstr "de exemplu:"
+
+#: ../../lib/util.sh.in:186
+msgid "(in ~/.bashrc)"
+msgstr "(în ~/.bachrc)"
+
+#: ../../lib/util.sh.in:187
+msgid "(replace vim with your favorite editor)"
+msgstr "(înlocuiți vim cu editorul favorit)"
+
+#: ../../lib/util.sh.in:189
+msgid "Edit %s with: "
+msgstr "Editați %s cu:"
