@@ -253,7 +253,7 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 	  NEEDED
 
 # Disable color if output is not a terminal
-[[ -t 1 ]] || { USECOLOR=0; USEPAGER=0; TERMINALTITLE=0; }
+[[ -t 1 ]] || { ((USECOLOR!=2)) && USECOLOR=0; USEPAGER=0; TERMINALTITLE=0; }
 
 # Grab environement options
 {
