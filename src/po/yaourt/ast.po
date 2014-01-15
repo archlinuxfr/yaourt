@@ -1,0 +1,813 @@
+# yaourt default.po file
+# Copyright (C) 2010-2012
+# This file is distributed under the same license as the yaourt package.
+# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# 
+# Translators:
+# Tornes Llume <l.lumex03.tornes@gmail.com>, 2013-2014
+msgid ""
+msgstr ""
+"Project-Id-Version: yaourt\n"
+"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
+"POT-Creation-Date: 2010-04-09 15:19+0200\n"
+"PO-Revision-Date: 2014-01-06 23:27+0000\n"
+"Last-Translator: Tornes Llume <l.lumex03.tornes@gmail.com>\n"
+"Language-Team: Asturian (http://www.transifex.com/projects/p/yaourt/language/ast/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ast\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../../pacdiffviewer.sh.in:41
+msgid "Delete all *.pac* found"
+msgstr "Esniciar tolos *.pac* alcontraos"
+
+#: ../../pacdiffviewer.sh.in:42
+msgid "Save all packages backup files for a later merge"
+msgstr "Atroxar tolos paquetes copia p'amestalos sero"
+
+#: ../../pacdiffviewer.sh.in:43
+msgid "Use with backup to not output messages"
+msgstr "Usar con copia de seguranza pa nun emitir mensaxes"
+
+#: ../../pacdiffviewer.sh.in:44
+msgid "Sequential listing"
+msgstr "Llistáu secuencial"
+
+#: ../../pacdiffviewer.sh.in:45
+msgid "Display diff"
+msgstr "Amosar diferencies"
+
+#: ../../pacdiffviewer.sh.in:46
+msgid "This help"
+msgstr "Esta aida"
+
+#: ../../pacdiffviewer.sh.in:47
+msgid "Show version"
+msgstr "Amosar versión"
+
+#: ../../pacdiffviewer.sh.in:69
+msgid "saving"
+msgstr "n'atroxando"
+
+#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
+#: ../../pacdiffviewer.sh.in:103
+msgid "found"
+msgstr "alcontrao"
+
+#: ../../pacdiffviewer.sh.in:104
+msgid "files are orphans"
+msgstr "ficheros güerfanos"
+
+#: ../../pacdiffviewer.sh.in:156
+msgid "The following files have no original version."
+msgstr "Los paquetes d'arréu nun tienen versión orixinal."
+
+#: ../../pacdiffviewer.sh.in:159
+msgid "Do you want to delete these files ?"
+msgstr "¿Quies esniciar estos ficheros?"
+
+#: ../../pacdiffviewer.sh.in:160
+msgid "(S: no confirm)"
+msgstr "(T: toos, ensin confirmar)"
+
+#: ../../pacdiffviewer.sh.in:161
+msgid "YNS"
+msgstr "SNT"
+
+#: ../../pacdiffviewer.sh.in:180
+msgid "**same file**"
+msgstr "**mesmu ficheru**"
+
+#: ../../pacdiffviewer.sh.in:184
+msgid "**automerge**"
+msgstr "**autoamestar**"
+
+#: ../../pacdiffviewer.sh:192
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr "Aición: [E]ditar, [R]eemplazar, [E]sniciar, [S]iguir (per defeutu), [A]lbortar ?"
+
+#: ../../pacdiffviewer.sh:192
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
+msgstr "Aición: [E]ditar, [R]eemplazar, [E]sniciar, [A]mestar, [S]iguir (per defeutu), [A]lbortar ?"
+
+# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
+#: ../../pacdiffviewer.sh:193
+msgid "ERSCA"
+msgstr "ERESA"
+
+# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
+# [A]bort ?
+#: ../../pacdiffviewer.sh:193
+msgid "ERSCAM"
+msgstr "ERESAA"
+
+#: ../../pacdiffviewer.sh.in:201
+msgid "Patch: "
+msgstr "Parche:"
+
+#: ../../pacdiffviewer.sh.in:204
+msgid "Apply ?"
+msgstr "¿Aplicar?"
+
+#: ../../pacdiffviewer.sh.in:207
+msgid "patch returned an error!"
+msgstr "¡el parche devolvió un erru!"
+
+#: ../../pacdiffviewer.sh.in:227
+msgid "Enter n° : "
+msgstr "Introducir númberu:"
+
+#: ../../yaourt.sh.in:34
+msgid "Yaourt does not support --help for a particular option."
+msgstr "Yaourt nun sofita --help pa una opción particular."
+
+#: ../../yaourt.sh.in:35
+msgid "The following is %s help :"
+msgstr "Lo d'arréu ye l'aida de %s:"
+
+#: ../../yaourt.sh.in:40
+msgid "Usage: yaourt <operation> [...]"
+msgstr "Usu: yaourt <operación> [...]"
+
+#: ../../yaourt.sh.in:41
+msgid "operations:"
+msgstr "operaciones:"
+
+#: ../../yaourt.sh.in:42
+msgid "yaourt (search pattern|package file)"
+msgstr "yaourt (patrón de gueta|paquete)"
+
+#: ../../yaourt.sh.in:43
+msgid "yaourt {-h --help}"
+msgstr "yaourt {-h --help}"
+
+#: ../../yaourt.sh.in:44
+msgid "yaourt {-V --version}"
+msgstr "yaourt {-V --version}"
+
+#: ../../yaourt.sh.in:45
+msgid "yaourt {-Q --query}       [options] [package(s)]"
+msgstr "yaourt {-Q --query} [opciones] [paquete(s)]"
+
+#: ../../yaourt.sh.in:46
+msgid "yaourt {-R --remove}      [options] <package(s)>"
+msgstr "yaourt {-R --remove} [opciones] <paquete(s)>"
+
+#: ../../yaourt.sh.in:47
+msgid "yaourt {-S --sync}        [options] [package(s)]"
+msgstr "yaourt {-S --sync} [opciones] [paquete(s)]"
+
+#: ../../yaourt.sh.in:48
+msgid "yaourt {-U --upgrade}     [options] <package(s)>"
+msgstr "yaourt {-U --upgrade} [opciones] <paquete(s)>"
+
+#: ../../yaourt.sh.in:49
+msgid "yaourt {-C --clean}       [options]"
+msgstr "yaourt {-C --clean} [opciones]"
+
+#: ../../yaourt.sh.in:50
+msgid "yaourt {-B --backup}      [save directory|restore file]"
+msgstr "yaourt {-B --backup}      [direutoriu de guardáu|ficheru de restauración]"
+
+#: ../../yaourt.sh.in:51
+msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
+msgstr "yaourt {-G --getpkgbuild} [opciones] <paquete(s)>"
+
+#: ../../yaourt.sh.in:52
+msgid "yaourt {--stats}"
+msgstr "yaourt {--stats}"
+
+#: ../../yaourt.sh.in:57
+msgid "homepage: http://archlinux.fr/yaourt-en"
+msgstr "páxina web: http://archlinux.fr/yaourt-en"
+
+#: ../../yaourt.sh.in:98
+msgid "query packages"
+msgstr "paquetes de consulta"
+
+#: ../../yaourt.sh.in:112
+msgid "Following packages have not been installed:"
+msgstr "El paquete d'arréu nun ta instaláu:"
+
+#: ../../yaourt.sh.in:125
+msgid "listing all packages in repo(s)"
+msgstr "en llistando tolos paquetes nel/nos repo(s)"
+
+#: ../../yaourt.sh.in:126
+msgid "Listing all packages in repo(s)"
+msgstr "En llistando tolos paquetes nel/nos repo(s)"
+
+#: ../../yaourt.sh.in:128
+msgid "show groups"
+msgstr "amosar grupos"
+
+#: ../../yaourt.sh.in:147
+msgid "Informations for %s"
+msgstr "Informaciones pa %s"
+
+#: ../../yaourt.sh.in:168
+msgid "Unable to read %s file"
+msgstr "Nun pue lleese'l ficheru %s"
+
+#: ../../yaourt.sh.in:192
+msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
+msgstr "Introduz un númberu de paquetes pa instalar (exem: 1 2 3 o 1-3)"
+
+#: ../../yaourt.sh.in:363
+msgid "get PKGBUILD"
+msgstr "En consiguiendo PKGBUILD"
+
+#: ../../lib/abs.sh.in:55
+msgid "Download abs archive"
+msgstr "Baxar archivu abs"
+
+#: ../../lib/abs.sh.in:78
+msgid "The following packages should be upgraded first :"
+msgstr "Los paquetes d'arréu deberíen anovase primero :"
+
+#: ../../lib/abs.sh.in:80
+msgid "Do it now ?"
+msgstr "¿Facelo agora?"
+
+#: ../../lib/abs.sh.in:93
+msgid "Building %s from sources."
+msgstr "En construyendo %s dende les fontes."
+
+#: ../../lib/abs.sh.in:94
+msgid "Install %s from sources"
+msgstr "Instalar %s dende les fontes"
+
+#: ../../lib/abs.sh.in:96
+msgid "Retrieving PKGBUILD and local sources..."
+msgstr "En recibiendo PKGBUILD ya fontes llocales..."
+
+#: ../../lib/abs.sh.in:133
+msgid "Foreign packages: "
+msgstr "Paquetes foriatos:"
+
+#: ../../lib/abs.sh.in:162
+msgid "not found"
+msgstr "nun s'alcontró"
+
+#: ../../lib/abs.sh.in:180
+msgid "Continue upgrade ?"
+msgstr "¿Siguir n'anovando?"
+
+#: ../../lib/abs.sh.in:181
+msgid "[V]iew package detail   [M]anually select packages"
+msgstr "[V]er detalles del paquete [M]anualmente esbillar paquetes"
+
+#: ../../lib/abs.sh.in:182
+msgid "YNVM"
+msgstr "SNVM"
+
+#: ../../lib/abs.sh.in:203
+msgid "Proceed with upgrade? "
+msgstr "¿Siguir cola anovación?"
+
+#: ../../lib/abs.sh.in:251
+msgid "Source targets"
+msgstr "Oxetivos fonte"
+
+#: ../../lib/abs.sh.in:258
+msgid "AUR targets"
+msgstr "Oxetivos AUR"
+
+#: ../../lib/abs.sh.in:267
+msgid "unable to update %s"
+msgstr "nun pue anovase %s"
+
+#: ../../lib/abs.sh.in:285
+msgid "Package upgrade only (new release):"
+msgstr "Solo anovación de paquete (llanzamientu nuevu):"
+
+#: ../../lib/abs.sh.in:286
+msgid "Software upgrade (new version) :"
+msgstr "Anovación del programa (versión nueva):"
+
+#: ../../lib/abs.sh.in:287
+msgid "New package :"
+msgstr "Paquete nuevu :"
+
+#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+msgid "(required by %s)"
+msgstr "(requeríu por %s)"
+
+#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+msgid "Installing from a package list"
+msgstr "N'instalando dende una llista paquetes"
+
+#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+msgid "upgrading SVN/CVS/HG/GIT package"
+msgstr "n'anovando paquete SVN/CVS/HG/GIT"
+
+#: ../../lib/abs.sh.in:380
+msgid "Targets"
+msgstr "Oxetivos"
+
+#: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
+msgid "Saving pacman database in %s"
+msgstr "N'atroxando bas de datos pacman en %s"
+
+#: ../../lib/alpm_backup.sh:13
+msgid "Pacman database successfully saved in %s"
+msgstr "Bas de datos pacman atroxada con exitu en %s"
+
+#: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
+msgid "Analysing backup file"
+msgstr "N'analizando copia de seguranza"
+
+#: ../../lib/alpm_backup.sh:29
+msgid "%s is not a valid alpm database backup"
+msgstr "%s nun ye un una copia de seguranza de bas de datos alpm válida"
+
+#: ../../lib/alpm_backup.sh:44
+msgid "New packages installed since backup:"
+msgstr "Paquetes nuevos instalaos dende la copia de seguranza:"
+
+#: ../../lib/alpm_backup.sh:47
+msgid "Packages removed or ugpraded since backup:"
+msgstr "Paquetes esniciaos o anovaos desde la copia de seguranza:"
+
+#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+msgid "Warning! Do you want to restore this backup ?"
+msgstr "¡CUDIÁU! ¿Quies restaurar esta copia de seguranza?"
+
+#: ../../lib/alpm_backup.sh:52
+msgid "(local db will be saved in %s)"
+msgstr "(la db llocal atroxaráse en %s)"
+
+#: ../../lib/alpm_backup.sh:53
+msgid "If you want to restore this backup, type \"yes\""
+msgstr "Si quies restaurar esta copia de seguranza, escribi \"sí\""
+
+#: ../../lib/alpm_backup.sh:55
+msgid "yes"
+msgstr "sí"
+
+#: ../../lib/alpm_backup.sh:56
+msgid "Deleting pacman DB"
+msgstr "N'esniciando bas de datos pacman"
+
+#: ../../lib/alpm_backup.sh:58
+msgid "Copying backup"
+msgstr "En copiando copia de seguranza"
+
+#: ../../lib/alpm_backup.sh:61
+msgid "Testing the new database"
+msgstr "En comprobando la bas de datos nueva"
+
+#: ../../lib/alpm_backup.sh:64
+msgid "Your backup is not successfully restored"
+msgstr "La to copia seguranza nun se restauró con ésitu"
+
+#: ../../lib/alpm_backup.sh:66
+msgid "Your backup has been successfully restored"
+msgstr "La to copia seguranza restauróse con ésitu"
+
+#: ../../lib/alpm_backup.sh:67
+msgid "packages found"
+msgstr "paquetes alcontraos"
+
+#: ../../lib/alpm_backup.sh:69
+msgid "(old database is saved in %s)"
+msgstr "(la bas de datos vieya ta atroxada en %s)"
+
+#: ../../lib/alpm_backup.sh:81
+msgid "wrong argument"
+msgstr "argumentu enquivocáu"
+
+#: ../../lib/alpm_query.sh:34
+msgid "Packages which depend on %s:"
+msgstr "Paquetes que tan arreyaos a %s:"
+
+#: ../../lib/alpm_query.sh:35
+msgid "Packages which conflicts with %s:"
+msgstr "Paquetes que tienen conflictu con %s:"
+
+#: ../../lib/alpm_query.sh:46
+msgid "Packages which replace %s:"
+msgstr "Paquetes que reemplacen a %s:"
+
+#: ../../lib/alpm_query.sh:47
+msgid "Packages which provide %s:"
+msgstr "Paquetes qu'ufren %s:"
+
+#: ../../lib/alpm_query.sh:48
+msgid "Do you want to remove these packages (with -Rcs options) ? "
+msgstr "¿Quies esniciar estos paquetes (coles opciones -Rcs)?"
+
+#: ../../lib/alpm_query.sh:49
+msgid "YN"
+msgstr "SN"
+
+#: ../../lib/alpm_stats.sh:49
+msgid "Total installed packages:"
+msgstr "Paquetes totales instalaos:"
+
+#: ../../lib/alpm_stats.sh:50
+msgid "Explicitly installed packages:"
+msgstr "Paquetes instalaos esplícitamente:"
+
+#: ../../lib/alpm_stats.sh:51
+msgid "Packages installed as dependencies to run other packages:"
+msgstr "Paquetes instalaos como dependencies pa executar otros paquetes:"
+
+#: ../../lib/alpm_stats.sh:52
+msgid "Packages out of date:"
+msgstr "Paquetes ensin anovar:"
+
+#: ../../lib/alpm_stats.sh:54
+msgid "Where %s packages seems no more used by any package:"
+msgstr "U %s paquetes paecen nun usase más por dengún paquete:"
+
+#: ../../lib/alpm_stats.sh:57
+msgid "Hold packages:"
+msgstr "Paquetes pa caltener:"
+
+#: ../../lib/alpm_stats.sh:58
+msgid "Ignored packages:"
+msgstr "Paquetes inoraos:"
+
+#: ../../lib/alpm_stats.sh:59
+msgid "Ignored groups:"
+msgstr "Grupos inoraos:"
+
+#: ../../lib/alpm_stats.sh:65
+msgid "Number of configured repositories:"
+msgstr "Númberos de repositorios configuraos:"
+
+#: ../../lib/alpm_stats.sh:66
+msgid "Packages by repositories (ordered by pacmans priority)"
+msgstr "Paquetes polos repositorios (ordenaos per prioridá de pacman)"
+
+#: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
+msgid "others"
+msgstr "otros"
+
+#: ../../lib/alpm_stats.sh:80
+msgid "are packages from local build or AUR Unsupported"
+msgstr "son paquetes de construcción llocal o non sofitaos por AUR"
+
+#: ../../lib/alpm_stats.sh:88
+msgid "Theorical - Real space used by packages:"
+msgstr "Teórico - Espaciu real usáu polos paquetes:"
+
+#: ../../lib/alpm_stats.sh:89
+msgid "progression:"
+msgstr "progresión:"
+
+#: ../../lib/alpm_stats.sh:98
+msgid "Theorical space used by packages:"
+msgstr "Espaciu teóricu usáu polos paquetes:"
+
+#: ../../lib/alpm_stats.sh:99
+msgid "Real space used by packages:"
+msgstr "Espaciu real usáu polos paquetes:"
+
+#: ../../lib/alpm_stats.sh:103
+msgid "Space used by pkg downloaded in cache (cachedir):"
+msgstr "Espaciu usáu polos paquetes baxaos en caché (cachedir):"
+
+#: ../../lib/alpm_stats.sh:105
+msgid "Space used by src downloaded in cache:"
+msgstr "Espaciu usáu poles fontes baxaes en caché:"
+
+#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+msgid "%s not found in AUR."
+msgstr "%s nun s'alcontró n'AUR."
+
+#: ../../lib/aur.sh:37
+msgid "Yes"
+msgstr "Sí"
+
+#: ../../lib/aur.sh:37
+msgid "No"
+msgstr "Non"
+
+#: ../../lib/aur.sh:45
+msgid "Repository     "
+msgstr "Repositoriu"
+
+#: ../../lib/aur.sh:46
+msgid "Name           "
+msgstr "Nome"
+
+#: ../../lib/aur.sh:47
+msgid "Version        "
+msgstr "Versión"
+
+#: ../../lib/aur.sh:48
+msgid "URL            "
+msgstr "Enllaz"
+
+#: ../../lib/aur.sh:49
+msgid "AUR URL        "
+msgstr "Enllaz AUR"
+
+#: ../../lib/aur.sh:50
+msgid "Licenses       "
+msgstr "Llicencies"
+
+#: ../../lib/aur.sh:51
+msgid "Votes          "
+msgstr "Votos"
+
+#: ../../lib/aur.sh:52
+msgid "Out Of Date    "
+msgstr "Ensin anovar"
+
+#: ../../lib/aur.sh:53
+msgid "Groups         "
+msgstr "Grupos"
+
+#: ../../lib/aur.sh:54
+msgid "Provides       "
+msgstr "Ufre"
+
+#: ../../lib/aur.sh:55
+msgid "Depends On     "
+msgstr "Ta arreyáu a"
+
+#: ../../lib/aur.sh:56
+msgid "Optional Deps  "
+msgstr "Dependencies opcionales"
+
+#: ../../lib/aur.sh:57
+msgid "Conflicts With "
+msgstr "En conflictu con"
+
+#: ../../lib/aur.sh:58
+msgid "Replaces       "
+msgstr "Reemplaza"
+
+#: ../../lib/aur.sh:59
+msgid "Maintainer     "
+msgstr "Caltenedor"
+
+#: ../../lib/aur.sh:60
+msgid "Architecture   "
+msgstr "Arquitectura"
+
+#: ../../lib/aur.sh:61
+msgid "Last update    "
+msgstr "Cabera anovación"
+
+#: ../../lib/aur.sh:62
+msgid "Description    "
+msgstr "Descripción"
+
+#: ../../lib/aur.sh:117
+msgid "Checking vote status for %s"
+msgstr "En comprobando estáu de votu pa %s"
+
+#: ../../lib/aur.sh:120
+msgid "You have already voted for %s"
+msgstr "Votiesti xá por %s"
+
+#: ../../lib/aur.sh:123
+msgid "Do you want to vote for %s ? "
+msgstr "¿Quies votar por %s?"
+
+#: ../../lib/aur.sh:136
+msgid "Installing %s from AUR"
+msgstr "N'instalando %s dende AUR"
+
+#: ../../lib/aur.sh:140
+msgid "Downloading %s PKGBUILD from AUR..."
+msgstr "En baxando %s PKGBUILD dende AUR..."
+
+#: ../../lib/aur.sh:145
+msgid "This package is orphaned"
+msgstr "Esti paquete ta güerfanu"
+
+#: ../../lib/aur.sh:146
+msgid "( Unsupported package: Potentially dangerous ! )"
+msgstr "(Paquete non sofitáu: ¡Potencialmente peligrosu!)"
+
+#: ../../lib/aur.sh:166
+msgid "not found on AUR"
+msgstr "nun s'alcontró n'AUR"
+
+#: ../../lib/aur.sh:173
+msgid "up to date "
+msgstr "anováu"
+
+#: ../../lib/aur.sh:174
+msgid "flagged as out of date"
+msgstr "conseñáu como ensin anovar"
+
+#: ../../lib/aur.sh:183
+msgid "Orphan"
+msgstr "Güerfanu"
+
+#: ../../lib/io.sh:98
+msgid "[Y/n]"
+msgstr "[S/n]"
+
+#: ../../lib/io.sh:99
+msgid "[y/N]"
+msgstr "[s/N]"
+
+#: ../../lib/io.sh:100
+msgid "[y/n]"
+msgstr "[s/n]"
+
+#: ../../lib/io.sh:146
+msgid "WARNING: "
+msgstr "CUDIÁU:"
+
+#: ../../lib/io.sh:155
+msgid "ERROR: "
+msgstr "ERRU:"
+
+#: ../../lib/misc.sh:28
+msgid "Packages no longer required by any installed package:"
+msgstr "Los paquetes nun se requieren más pa cualaquier paquete instaláu:"
+
+#: ../../lib/misc.sh:37
+msgid "Searching for original config files to save"
+msgstr "En guetando ficheros de confguración orixinales p'atroxar"
+
+#: ../../lib/pacman.sh.in:36
+msgid "Pacman is currently in use, please wait."
+msgstr "Pacman ta n'usu anguaño, aspera por favor."
+
+#: ../../lib/pacman.sh.in:58
+msgid "synchronizing package databases"
+msgstr "en sincronizando bases de datos de paquetes"
+
+#: ../../lib/pacman.sh.in:71
+msgid "(ignoring package upgrade)"
+msgstr "(n'inorando anovación de paquete)"
+
+#: ../../lib/pkgbuild.sh.in:68
+msgid "Unable to read PKGBUILD"
+msgstr "Nun pue lleese'l PKGBUILD"
+
+#: ../../lib/pkgbuild.sh.in:72
+msgid "This PKGBUILD describes a splitted package."
+msgstr "Esti PKGBUILD describe un paquete frañíu."
+
+#: ../../lib/pkgbuild.sh.in:73
+msgid "Specific package options are unknown"
+msgstr "Les opciones específiques del paquete son desconocíes"
+
+#: ../../lib/pkgbuild.sh.in:94
+msgid "%s dependencies:"
+msgstr "%s dependencies:"
+
+#: ../../lib/pkgbuild.sh.in:96
+msgid "(already installed)"
+msgstr "(xá instaláu)"
+
+#: ../../lib/pkgbuild.sh.in:99
+msgid "(package found)"
+msgstr "(paquete alcontráu)"
+
+#: ../../lib/pkgbuild.sh.in:100
+msgid "(building from AUR)"
+msgstr "(en construyendo dende AUR)"
+
+#: ../../lib/pkgbuild.sh.in:135
+msgid "%s conflicts:"
+msgstr "%s conflictos:"
+
+#: ../../lib/pkgbuild.sh.in:202
+msgid "Building and installing package"
+msgstr "En construyendo ya n'instalando'l paquete"
+
+#: ../../lib/pkgbuild.sh.in:209
+msgid "The sources of %s were kept last time. Use them ?"
+msgstr "Les fontes de %s caltuviéronse la cabera vegada. ¿Usales?"
+
+#: ../../lib/pkgbuild.sh.in:215
+msgid "Unable to write in %s directory. Using /tmp directory"
+msgstr "Nun pue escribise nel direutoriu %s. N'usando'l direutoriu /tmp"
+
+#: ../../lib/pkgbuild.sh.in:222
+msgid "%s is already up to date."
+msgstr "%s xá ta anováu."
+
+#: ../../lib/pkgbuild.sh.in:230
+msgid "Install or build missing dependencies for %s:"
+msgstr "Instalar o construyir dependencies pa %s:"
+
+#: ../../lib/pkgbuild.sh.in:238
+msgid "Dependencies have been installed before the failure"
+msgstr "Les depedencies instaláronse enantes d'esti fallu"
+
+#: ../../lib/pkgbuild.sh.in:247
+msgid ""
+"Building package as root is dangerous.\\n Please run yaourt as a non-"
+"privileged user."
+msgstr "Construyir un paquete como root ye peligroso.\\n Por favor, executa yaourt como usuariu normal."
+
+#: ../../lib/pkgbuild.sh.in:253
+msgid "Makepkg was unable to build %s."
+msgstr "Makepkg nun pudo construyir %s."
+
+#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+msgid "Exporting %s to %s directory"
+msgstr "N'esportando %s al direutoriu %s"
+
+#: ../../lib/pkgbuild.sh.in:276
+msgid "Continue installing %s ?"
+msgstr "¿Siguir n'instalando %s ?"
+
+#: ../../lib/pkgbuild.sh.in:277
+msgid "[v]iew package contents   [c]heck package with namcap"
+msgstr "[v]er conteníu'l paquete [c]omprobar paquete con namcap"
+
+#: ../../lib/pkgbuild.sh.in:278
+msgid "YNVC"
+msgstr "SNVC"
+
+#: ../../lib/pkgbuild.sh.in:283
+msgid "Press any key to continue"
+msgstr "Primi cualaquier tecla pa siguir"
+
+#: ../../lib/pkgbuild.sh.in:292
+msgid "namcap is not installed"
+msgstr "namcap nun ta instaláu"
+
+#: ../../lib/pkgbuild.sh.in:306
+msgid "Your packages are saved in %s"
+msgstr "Los paquetes tos atroxáronse en %s"
+
+#: ../../lib/pkgbuild.sh.in:307
+msgid "Unable to copy packages to %s directory"
+msgstr "Nun puen copiase los paquetes al direutoriu %s"
+
+#: ../../lib/pkgbuild.sh.in:317
+msgid "Unable to delete directory %s. Please remove it using root privileges."
+msgstr "Nun pue esniciase'l direutoriu %s. Por favor esnicialu n'usando privilexos root."
+
+#: ../../lib/pkgbuild.sh.in:319
+msgid "Unable to create directory %s."
+msgstr "Nun pue criase'l direutoriu %s."
+
+#: ../../lib/pkgbuild.sh.in:347
+msgid "Continue building %s ? "
+msgstr "¿Siguir en construyendo %s?"
+
+#: ../../lib/pkgbuild.sh.in:353
+msgid "Restart building %s ? "
+msgstr "¿Reaniciar construcción de &s?"
+
+#: ../../lib/pkgbuild.sh.in:401
+msgid "%s directory already exist. Replace ?"
+msgstr "El direutoriu %s xá esiste. ¿Reemplazar?"
+
+#: ../../lib/pkgbuild.sh.in:407
+msgid "Download %s sources"
+msgstr "En baxando les fontes %s"
+
+#: ../../lib/util.sh.in:134
+msgid "is not a directory"
+msgstr "nun ye un direutoriu"
+
+#: ../../lib/util.sh.in:135
+msgid "is not writable"
+msgstr "nun ye d'escritura"
+
+#: ../../lib/util.sh.in:177
+msgid "Edit %s ?"
+msgstr "¿Editar %s ?"
+
+#: ../../lib/util.sh.in:177
+msgid "(\"A\" to abort)"
+msgstr "(\"A\" p'albortar)"
+
+#: ../../lib/util.sh.in:178
+msgid "YNA"
+msgstr "SNA"
+
+#: ../../lib/util.sh.in:180
+msgid "Aborted..."
+msgstr "Albortao..."
+
+#: ../../lib/util.sh.in:184
+#, sh-format
+msgid "Please add $EDITOR to your environment variables"
+msgstr "Por favor amiesta $EDITOR al to entornu de variables"
+
+#: ../../lib/util.sh.in:185
+msgid "for example:"
+msgstr "por exemplu:"
+
+#: ../../lib/util.sh.in:186
+msgid "(in ~/.bashrc)"
+msgstr "(en ~/.bashrc)"
+
+#: ../../lib/util.sh.in:187
+msgid "(replace vim with your favorite editor)"
+msgstr "(reemplaza vim pol to editor de testu favoritu)"
+
+#: ../../lib/util.sh.in:189
+msgid "Edit %s with: "
+msgstr "Editar %s con:"
