@@ -337,7 +337,13 @@ sync_packages() {
 		unset pkgs_search[$target]
 		((pkgs_found[$pkg])) && continue
 		pkgs_found[$pkg]=1
-		[[ "${repo}" != "aur" ]] && repo_pkgs+=("${repo}/${pkg}") || aur_pkgs+=("$pkg")
+		if [[ "${repo}" != "aur" ]]; then
+			[[ $SP_ARG ]] && pkgquery -Qq "$target" && continue
+			repo_pkgs+=("${repo}/${pkg}")
+		else
+			[[  $SP_ARG || $NEEDED ]] && pkgquery -Qq "$_pkg" && continue
+			aur_pkgs+=("$pkg")
+		fi
 	done < <(pkgquery -f "%r %n %t" -1SAii "${!pkgs_search[@]}")
 	# In case there is a double version check, eg. pkg1>0.1 pkg2<0.3
 	# package-query does only one check, so perform the remaining checks
@@ -349,7 +355,6 @@ sync_packages() {
 	done
 	bin_pkgs=("${!pkgs_search[@]}")
 	for _pkg in "${repo_pkgs[@]}"; do
-		[[ $SP_ARG ]] && pkgquery -Qq "$_pkg" && continue
 		install_from_abs "$_pkg" || return 1
 	done
 	if [[ $bin_pkgs ]]; then
@@ -360,7 +365,6 @@ sync_packages() {
 		fi
 	fi
 	for _pkg in "${aur_pkgs[@]}"; do
-		[[ $SP_ARG || $NEEDED ]] && pkgquery -Qq "$_pkg" && continue
 		install_from_aur "$_pkg" || return 1
 	done
 	return 0
