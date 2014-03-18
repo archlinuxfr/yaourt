@@ -317,6 +317,7 @@ while [[ $1 ]]; do
 		-h|--help)          usage; exit 0;;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
 		--color)            USECOLOR=2;;
+		--m-arg)            program_arg $((A_M)) $2; shift;;
 		--nocolor)          USECOLOR=0;;
 		--pager)            USEPAGER=1;;
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
