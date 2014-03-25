@@ -148,7 +148,7 @@ check_devel() {
 		|| [[ -n "${_darcsmod}" && -n "${_darcstrunk}" ]] \
 		|| [[ -n "${_bzrtrunk}" && -n "${_bzrmod}" ]] \
 		|| [[ -n "${_gitroot}" && -n "${_gitname}" ]] \
-		|| [[ $pkgname =~ -(bzr|git|hg|svn)$ ]]; then
+		|| [[ $pkgbase =~ -(bzr|git|hg|svn)$ ]]; then
 		return 0
 	fi
 	return 1
