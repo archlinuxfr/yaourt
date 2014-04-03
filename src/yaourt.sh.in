@@ -71,6 +71,7 @@ search() {
 	local set_pkgsfound=${2:-$interactive}
 	local search_option="${PACMAN_Q_ARG[@]//-q/}"
 	local pager_out=$(mktemp -u --tmpdir="$YAOURTTMPDIR")
+	local ret=0
 	if [[ "$MAJOR" = "query" ]]; then
 		search_option+=" -Q"
 		((AUR)) && ((FOREIGN || UPGRADES)) && search_option+=" -A"
@@ -93,17 +94,20 @@ search() {
 		else
 			{ readarray -t PKGSFOUND < <(pkgquery --get-res $search_option -- "${ARGS[@]}" 3>&1 1>&2 ); } 2>&1
 		fi
+		[[ $PKGSFOUND ]] || ret=1
 	else
 		if ((USEPAGER)); then
 			pkgquery $search_option -- "${ARGS[@]}" > "$pager_out"
 		else
 			pkgquery $search_option -- "${ARGS[@]}"
 		fi
+		ret=$?
 	fi
 	if ((USEPAGER)); then
 		[[ -s "$pager_out" ]] && ${PAGER:-cat} "$pager_out"
 		[[ -f "$pager_out" ]] && rm "$pager_out"
 	fi
+	return $ret
 }
 	
 # Handle special query
