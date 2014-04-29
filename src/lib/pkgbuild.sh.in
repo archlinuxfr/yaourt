@@ -273,13 +273,13 @@ install_package() {
 		echo
 		case "$answer" in
 			V)	local i=0
-				for _file in "$YPKGDEST"/!(*.sig|*-debug-*); do
+				for _file in "$YPKGDEST"/!(*.sig); do
 					(( i++ )) && { prompt2 $(gettext 'Press any key to continue'); read -n 1; }
 					$PACMAN -Qlp "$_file"
 				done
 				;;
 			C)	if type -p namcap &>/dev/null ; then
-					for _file in "$YPKGDEST"/!(*.sig|*-debug-*); do
+					for _file in "$YPKGDEST"/!(*.sig); do
 						namcap "$_file"
 					done
 				else
