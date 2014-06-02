@@ -266,7 +266,11 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 } &> /dev/null
 
 # makepkg check root
-(( ! UID )) && program_arg $A_M "--asroot"
+if (( ! UID )); then
+	warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
+	sleep 2
+	program_arg $A_M "--asroot"
+fi
 
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")

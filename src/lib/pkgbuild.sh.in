@@ -237,10 +237,6 @@ build_package() {
 	fi
 	
 	# Build 
-	if (( ! UID )); then
-		warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
-		sleep 2
-	fi
 	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
 
 	if (( $? )); then
