@@ -453,16 +453,16 @@ msgid "are packages from local build or AUR Unsupported"
 msgstr "はローカルや AUR からビルドしたサポートのないパッケージです"
 
 #: ../../lib/alpm_stats.sh:88
-msgid "Theorical - Real space used by packages:"
-msgstr "Theorical - Real space used by packages:"
+msgid "Theoretical - Real space used by packages:"
+msgstr "Theoretical - Real space used by packages:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
 msgstr "progression:"
 
 #: ../../lib/alpm_stats.sh:98
-msgid "Theorical space used by packages:"
-msgstr "Theorical space used by packages:"
+msgid "Theoretical space used by packages:"
+msgstr "Theoretical space used by packages:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"

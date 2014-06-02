@@ -448,7 +448,7 @@ msgid "are packages from local build or AUR Unsupported"
 msgstr "为本地编译或者是 AUR Unsupported 中的软件包"
 
 #: ../../lib/alpm_stats.sh:88
-msgid "Theorical - Real space used by packages:"
+msgid "Theoretical - Real space used by packages:"
 msgstr "软件包理论上 - 实际上占用空间"
 
 #: ../../lib/alpm_stats.sh:89
@@ -456,7 +456,7 @@ msgid "progression:"
 msgstr "进展："
 
 #: ../../lib/alpm_stats.sh:98
-msgid "Theorical space used by packages:"
+msgid "Theoretical space used by packages:"
 msgstr "软件包理论上占用的空间："
 
 #: ../../lib/alpm_stats.sh:99

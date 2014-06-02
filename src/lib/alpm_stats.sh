@@ -85,7 +85,7 @@ show_disk_usage() {
 	local cachedir size_t=0 size_r=0 i=1 _msg_label _msg_prog srcdestsize
 
 	# Get space used by installed package (from info in alpm db)
-	_msg_label=$(gettext 'Theorical - Real space used by packages:')
+	_msg_label=$(gettext 'Theoretical - Real space used by packages:')
 	_msg_prog=$(gettext 'progression:')
 	local s_t s_r
 	while read s_t s_r; do
@@ -95,7 +95,7 @@ show_disk_usage() {
 			echo -ne "\r$CGREEN $_msg_label $CYELLOW$(($size_t/1048576))M -  $(($size_r/1048576))M $_msg_prog $((i++))/$pkgs_nb"
 	done < <(pkgquery -Qf "%2 %3")
 	[[ -t 1 ]] && { echo -en "\r"  ; echo_fill "" " " ""; }
-	echo -e "$CGREEN$(gettext 'Theorical space used by packages:') $CYELLOW$(($size_t/1048576))M"
+	echo -e "$CGREEN$(gettext 'Theoretical space used by packages:') $CYELLOW$(($size_t/1048576))M"
 	echo -e "$CGREEN$(gettext 'Real space used by packages:') $CYELLOW$(($size_r/1048576))M"	
 	# Get cachedir
 	cachedir=(`pacman_parse --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)

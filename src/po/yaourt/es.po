@@ -458,7 +458,7 @@ msgid "are packages from local build or AUR Unsupported"
 msgstr "son paquetes de una compilación local o de AUR, sin soporte"
 
 #: ../../lib/alpm_stats.sh:88
-msgid "Theorical - Real space used by packages:"
+msgid "Theoretical - Real space used by packages:"
 msgstr "Espacio teórico - real que utilizan los paquetes:"
 
 #: ../../lib/alpm_stats.sh:89
@@ -466,7 +466,7 @@ msgid "progression:"
 msgstr "progreso:"
 
 #: ../../lib/alpm_stats.sh:98
-msgid "Theorical space used by packages:"
+msgid "Theoretical space used by packages:"
 msgstr "Espacio teórico que utilizan los paquetes:"
 
 #: ../../lib/alpm_stats.sh:99

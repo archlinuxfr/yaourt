@@ -454,7 +454,7 @@ msgid "are packages from local build or AUR Unsupported"
 msgstr "чи пакунки створені локально чи з непідтримуваних AUR"
 
 #: ../../lib/alpm_stats.sh:88
-msgid "Theorical - Real space used by packages:"
+msgid "Theoretical - Real space used by packages:"
 msgstr "Теоретичний - Справжній об’єм пакунків:"
 
 #: ../../lib/alpm_stats.sh:89
@@ -462,7 +462,7 @@ msgid "progression:"
 msgstr "поступ:"
 
 #: ../../lib/alpm_stats.sh:98
-msgid "Theorical space used by packages:"
+msgid "Theoretical space used by packages:"
 msgstr "Теоретичний об’єм використаний пакунками:"
 
 #: ../../lib/alpm_stats.sh:99

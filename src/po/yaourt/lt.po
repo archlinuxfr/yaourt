@@ -454,7 +454,7 @@ msgid "are packages from local build or AUR Unsupported"
 msgstr "yra paketai iš vietinio kūrimo ar nepalaikomi AUR"
 
 #: ../../lib/alpm_stats.sh:88
-msgid "Theorical - Real space used by packages:"
+msgid "Theoretical - Real space used by packages:"
 msgstr "Teorinė - Reali paketų užimama vieta:"
 
 #: ../../lib/alpm_stats.sh:89
@@ -462,7 +462,7 @@ msgid "progression:"
 msgstr "progresas:"
 
 #: ../../lib/alpm_stats.sh:98
-msgid "Theorical space used by packages:"
+msgid "Theoretical space used by packages:"
 msgstr "Teoriškai paketų užimama vieta:"
 
 #: ../../lib/alpm_stats.sh:99
