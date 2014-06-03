@@ -155,14 +155,13 @@ check_devel() {
 }
 
 # Edit PKGBUILD and install files
-# Usage:	edit_pkgbuild ($default_answer, $loop, $check_dep)
+# Usage:	edit_pkgbuild ($default_answer, $check_dep)
 # 	$default_answer: 1 (default): Y 	2: N
-# 	$loop: for PKGBUILD, 1: loop until answer 'no' 	0 (default) : no loop
 # 	$check_dep: 1 (default): check for deps and conflicts
 edit_pkgbuild() {
 	local default_answer=${1:-1}
-	local loop=${2:-0}
-	local check_dep=${3:-1}
+	local check_dep=${2:-1}
+	local sum loop=1
 	(( ! EDITFILES )) && { 
 		read_pkgbuild || return 1
 		(( check_dep )) && { check_deps; check_conflicts; }
@@ -170,12 +169,13 @@ edit_pkgbuild() {
 	}
 	local iter=1
 
-	while (( iter )); do
+	while (( loop )); do
+		read sum < <(md5sum PKGBUILD)
 		run_editor PKGBUILD $default_answer
 		local ret=$?
+		md5sum --status -c <<< "$sum"; loop=$?
 		(( ret == 2 )) && return 1
 		(( iter++>1 && ret )) && break
-		(( ret )) || (( ! loop )) && iter=0
 		read_pkgbuild || return 1
 		(( check_dep )) && { check_deps; check_conflicts; }
 	done
@@ -331,7 +331,7 @@ package_loop() {
 	local YPKGDEST=$(mktemp -d --tmpdir="$YAOURTTMPDIR" PKGDEST.XXX)
 	(( trust )) && default_answer=2
 	while true; do
-		edit_pkgbuild $default_answer 1 || { failed=1; break; }
+		edit_pkgbuild $default_answer || { failed=1; break; }
 		prompt "$(_gettext 'Continue building %s ? ' "$pl_pkgname")$(yes_no 1)"
 		builduseragrees || { failed=1; break; }
 		build_package
