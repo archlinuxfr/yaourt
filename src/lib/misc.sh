@@ -35,7 +35,7 @@ analyse_status_list() {
 		diff "$Y_PKG_INSTALLED" <(pkgquery -Qf '%n %v' --sort n) &> /dev/null; then
 		# save original of backup files (pacnew/pacsave)
 		msg "$(gettext 'Searching for original config files to save')"
-		launch_with_su pacdiffviewer --backup
+		launch_with_su pacdiffviewer --backup -q
 	fi
 }
 
