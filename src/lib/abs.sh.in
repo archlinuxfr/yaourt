@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# abs.sh 
+# abs.sh
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 RSYNCCMD=$(type -p rsync 2> /dev/null)
@@ -44,23 +44,31 @@ abs_get_pkgbuild() {
 		read arch pkgver < <(pkgquery -1Sif '%a %v' "$repo/$pkg")
 		pkgbase=$(get_pkgbase $pkg $repo $pkgver)
 	fi
-	if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
-		$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkgbase/" . && return 0
+	if [[ $USE_GIT -eq 1 ]]; then
+        if [[ $repo = "core" || $repo = "extra" ]]; then
+            curl_fetch -L -f "https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz" -o - | tar -zxvf - --strip=3 packages/$pkgbase/trunk
+        else
+            curl_fetch -L -f "https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz" -o - | tar -zxvf - --strip=3 community-packages/$pkgbase/trunk
+        fi
+    else
+		if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
+			$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkgbase/" . && return 0
+		fi
+		# TODO: store abs archive somewhere else.
+		local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
+		local abs_url
+		local repo_date=$(stat -c "%Z" "${P[dbpath]}/sync/$repo.db")
+		local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
+		if [[ ! $abs_repo_date ]] || (( ${abs_repo_date%.*} < ${repo_date%.*} )); then
+			abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
+			abs_url="${abs_url%/*}/$repo.abs.tar.gz"
+			msg "$repo/$pkgbase: $(gettext 'Download abs archive')"
+			curl_fetch -L -f -# "$abs_url" -o "$abs_tar" || return 1
+		fi
+		bsdtar --strip-components 2 -xvf "$abs_tar" "$repo/$pkgbase"
 	fi
-	# TODO: store abs archive somewhere else.
-	local abs_tar="$YAOURTTMPDIR/$repo.abs.tar.gz"
-	local abs_url 
-	local repo_date=$(stat -c "%Z" "${P[dbpath]}/sync/$repo.db")
-	local abs_repo_date=$(stat -c "%Z" "$abs_tar" 2> /dev/null)
-	if [[ ! $abs_repo_date ]] || (( ${abs_repo_date%.*} < ${repo_date%.*} )); then
-		abs_url=$(pkgquery -1Sif "%u" "$repo/$pkg")
-		abs_url="${abs_url%/*}/$repo.abs.tar.gz"
-		msg "$repo/$pkgbase: $(gettext 'Download abs archive')"
-		curl_fetch -L -f -# "$abs_url" -o "$abs_tar" || return 1
-	fi
-	bsdtar --strip-components 2 -xvf "$abs_tar" "$repo/$pkgbase"
 }
-	
+
 # Build from abs or aur
 build_pkg() {
 	[[ $1 ]] || return 1
@@ -104,12 +112,12 @@ install_from_abs() {
 # upgrade_details=(new release, new version then new pkgs)
 # srcpkgs=(pkgs with a custom pkgbuild)
 # pkgs=(others)
-# usage: classify_pkg $pkg_nb < [one pkg / line ] 
+# usage: classify_pkg $pkg_nb < [one pkg / line ]
 # read from stdin: pkgname repo rversion lversion outofdate pkgdesc
 classify_pkg() {
 	declare -a newrelease newversion newpkgs
 	unset srcpkgs pkgs
-	longestpkg=(0 0) 
+	longestpkg=(0 0)
 	local i=0 bar="|/-\\"
 	local pkgname repo rversion lversion outofdate pkgdesc maintainer \
 	      pkgver lrel rrel lver rver
@@ -153,7 +161,7 @@ classify_pkg() {
 		fi
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
-	done 
+	done
 	((DETAILUPGRADE<2)) && echo
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
@@ -162,7 +170,7 @@ classify_pkg() {
 display_update() {
 	# Show result
 	show_upgrades lite
-        
+
 	# Show detail on upgrades
 	while true; do
 		echo
@@ -187,11 +195,11 @@ show_targets() {
 	local t="$(gettext "$1") "; shift
 	t+="($#): "
 	echo
-	echo_wrap_next_line "$CYELLOW$t$C0" ${#t} "$*" 
+	echo_wrap_next_line "$CYELLOW$t$C0" ${#t} "$*"
 	echo
 	prompt "$(gettext 'Proceed with upgrade? ') $(yes_no 1)"
-	useragrees 
-}	
+	useragrees
+}
 
 # Searching for packages to update, buid from sources if necessary
 sysupgrade() {
@@ -228,7 +236,7 @@ sysupgrade() {
 		(( REFRESH>1 )) && _arg+="y"
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
 	fi
-	#[[ ! "$packages" ]] && return 0	
+	#[[ ! "$packages" ]] && return 0
 	local cmd="echo -n"
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - - %d" "${packages[@]}"'
 	if ((AURUPGRADE)); then
@@ -241,9 +249,9 @@ sysupgrade() {
 	fi
 	classify_pkg $pkg_foreign < <(eval $cmd)
 	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
-	if [[ $srcpkgs ]]; then 
+	if [[ $srcpkgs ]]; then
 		show_targets 'Source targets' "${srcpkgs[@]#*/}" || return 0
-		build_pkg "${srcpkgs[@]}" 
+		build_pkg "${srcpkgs[@]}"
 		local ret=$?
 		[[ $pkgs ]] || return $ret
 	fi
@@ -262,7 +270,7 @@ sysupgrade() {
 	done
 }
 
-	
+
 # Show package to upgrade
 show_upgrades() {
 	# $1=full or $1=lite or $1=manual
@@ -270,7 +278,7 @@ show_upgrades() {
 		> "$YAOURTTMPDIR/sysuplist"
 		local separator=$(echo_fill "" "#" "")
 	fi
-	
+
 	local exuptype=0 line _msg requiredbypkg
 	for line in "${upgrade_details[@]}"; do
 		eval line=($line)
@@ -311,14 +319,14 @@ show_upgrades() {
 			fi
 		fi
 	done
-}		
+}
 
 unset SP_ARG
 # Sync packages
 sync_packages() {
 	# Install from a list of packages
 	if [[ -f $1 ]] && file -b "$1" | grep -qi text ; then
-		if (( ! SYSUPGRADE )); then 
+		if (( ! SYSUPGRADE )); then
 			title $(gettext 'Installing from a package list')
 			msg $(gettext 'Installing from a package list')
 		fi
@@ -329,7 +337,7 @@ sync_packages() {
 	# Install from arguments
 	declare -A pkgs_search pkgs_found
 	declare -a repo_pkgs aur_pkgs bin_pkgs
-	local _pkg _arg repo pkg target 
+	local _pkg _arg repo pkg target
 	for _pkg in "$@"; do pkgs_search[$_pkg]=1; done
 	# Search for exact match, pkg which provides it, then in AUR
 	while read repo pkg target; do
@@ -370,7 +378,7 @@ sync_packages() {
 	return 0
 }
 
-# Search to upgrade devel package 
+# Search to upgrade devel package
 upgrade_devel_package() {
 	declare -a devel_pkgs
 	title $(gettext 'upgrading SVN/CVS/HG/GIT package')
@@ -387,4 +395,4 @@ upgrade_devel_package() {
 }
 
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:
