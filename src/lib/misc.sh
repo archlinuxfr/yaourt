@@ -29,7 +29,7 @@ analyse_status_list() {
 			echo_wrap 4 "$neworphans"
 		fi
 		# Test local database
-		testdb
+		if [[ ! "$NO_TESTDB" ]]; then testdb; fi
 	fi	
 	if ((AUTOSAVEBACKUPFILE)) && ! \
 		diff "$Y_PKG_INSTALLED" <(pkgquery -Qf '%n %v' --sort n) &> /dev/null; then
