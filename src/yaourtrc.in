@@ -12,6 +12,7 @@
 #FORCEENGLISH=0
 #FORCE=0
 #TMPDIR="/tmp"
+#NO_TESTDB=0
 
 # SUDO
 #SUDONOVERIF=0      # Avoid multiple sudo checks when timestamp_timeout=0

@@ -28,9 +28,9 @@ analyse_status_list() {
 			msg "$(gettext 'Packages no longer required by any installed package:')"
 			echo_wrap 4 "$neworphans"
 		fi
-		# Test local database
-		if [[ ! "$NO_TESTDB" ]]; then testdb; fi
 	fi	
+	# Test local database
+	if [[ ! "$NO_TESTDB" ]]; then testdb; fi
 	if ((AUTOSAVEBACKUPFILE)) && ! \
 		diff "$Y_PKG_INSTALLED" <(pkgquery -Qf '%n %v' --sort n) &> /dev/null; then
 		# save original of backup files (pacnew/pacsave)
