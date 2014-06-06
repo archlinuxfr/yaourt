@@ -5,6 +5,7 @@
 
 RSYNCCMD=$(type -p rsync 2> /dev/null)
 RSYNCOPT="-mrtv --no-motd --no-p --no-o --no-g"
+
 ABSCONF=0
 
 load_lib alpm_query
@@ -44,12 +45,14 @@ abs_get_pkgbuild() {
 		read arch pkgver < <(pkgquery -1Sif '%a %v' "$repo/$pkg")
 		pkgbase=$(get_pkgbase $pkg $repo $pkgver)
 	fi
-	if [[ $USE_GIT -eq 1 ]]; then
+	if ((USE_GIT)) && [[ " ${REPOS[*]} " =~ " $repo " ]]; then
+		local url
         if [[ $repo = "core" || $repo = "extra" ]]; then
-            curl_fetch -L -f "https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz" -o - | tar -zxvf - --strip=3 packages/$pkgbase/trunk
+            url="https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz"
         else
-            curl_fetch -L -f "https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz" -o - | tar -zxvf - --strip=3 community-packages/$pkgbase/trunk
+            url="https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz"
         fi
+		curl_fetch -L -f "$url" -o - | bsdtar --strip-components 3 --include="*/$pkgbase/trunk/" -xvf -
     else
 		if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
 			$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkgbase/" . && return 0
