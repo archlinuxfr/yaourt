@@ -247,7 +247,7 @@ sysupgrade() {
 		# AUR username does not contain spaces.
 		# packager does, but for now, local packages are not parsed by classify_pkg()
 		cmd+='; pkgquery -AQmf "%n %r %v %l %o %m %d"'
-		[[ $aur_up ]] && cmd+='; pkgquery -Aif "%n %r %v - %o %m %d" "${aur_up[@]}"'
+		[[ $aur_up ]] && cmd+='; pkgquery --pkgbase -Aif "%n %r %v - %o %m %d" "${aur_up[@]}"'
 		((DETAILUPGRADE<2)) && pkg_foreign=$(pacman_parse -Qqm | wc -l)
 	fi
 	classify_pkg $pkg_foreign < <(eval $cmd)
