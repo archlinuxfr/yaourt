@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
 "PO-Revision-Date: 2013-12-30 13:39+0800\n"
-"Last-Translator: 杜宏羽 <dongfengweixiao@gmail.com>\n"
+"Last-Translator: StarBrilliant <m13253@hotmail.com>\n"
 "Language-Team: https://www.transifex.net/projects/p/yaourt/\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,7 @@ msgstr "删除所有找到的 *.pac* 文件"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Save all packages backup files for a later merge"
-msgstr ""
+msgstr "保存软件包备份文件以供将来合并"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Use with backup to not output messages"
@@ -59,7 +59,7 @@ msgstr "文件是孤包"
 
 #: ../../pacdiffviewer.sh.in:156
 msgid "The following files have no original version."
-msgstr ""
+msgstr "以下行没有原始版本"
 
 #: ../../pacdiffviewer.sh.in:159
 msgid "Do you want to delete these files ?"
@@ -83,11 +83,11 @@ msgstr "** 自动合并 **"
 
 #: ../../pacdiffviewer.sh:192
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "操作：[E]编辑，[R]替换，[S]忽略，[C]继续（默认），[A]中断？"
 
 #: ../../pacdiffviewer.sh:192
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "操作：[E]编辑，[R]替换，[S]忽略，[M]合并，[C]继续（默认），[A]中断？"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
 #: ../../pacdiffviewer.sh:193
@@ -117,15 +117,15 @@ msgstr "输入 n°："
 
 #: ../../yaourt.sh.in:34
 msgid "Yaourt does not support --help for a particular option."
-msgstr ""
+msgstr "Yaourt 不支持针对特定选项的 --help。"
 
 #: ../../yaourt.sh.in:35
 msgid "The following is %s help :"
-msgstr ""
+msgstr "以下是 %s 的帮助："
 
 #: ../../yaourt.sh.in:40
 msgid "Usage: yaourt &lt;operation&gt; [...]"
-msgstr ""
+msgstr "用法：yaourt &lt;操作&gt; [...]"
 
 #: ../../yaourt.sh.in:41
 msgid "operations:"
@@ -185,7 +185,7 @@ msgstr "查询包"
 
 #: ../../yaourt.sh.in:112
 msgid "Following packages have not been installed:"
-msgstr ""
+msgstr "以下软件包未被安装："
 
 #: ../../yaourt.sh.in:125
 msgid "listing all packages in repo(s)"
@@ -221,7 +221,7 @@ msgstr "正在下载 ABS 文件"
 
 #: ../../lib/abs.sh.in:78
 msgid "The following packages should be upgraded first :"
-msgstr ""
+msgstr "以下软件包需要先升级："
 
 #: ../../lib/abs.sh.in:80
 msgid "Do it now ?"
@@ -241,7 +241,7 @@ msgstr "恢复 PKGBUILD 和本地源文件"
 
 #: ../../lib/abs.sh.in:133
 msgid "Foreign packages: "
-msgstr ""
+msgstr "远程包："
 
 #: ../../lib/abs.sh.in:162
 msgid "not found"
@@ -253,7 +253,7 @@ msgstr "继续升级？"
 
 #: ../../lib/abs.sh.in:181
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr ""
+msgstr "[V]查看详细内容 [M]手动选择软件包"
 
 #: ../../lib/abs.sh.in:182
 msgid "YNVM"
@@ -289,7 +289,7 @@ msgstr "新的软件包："
 
 #: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
 msgid "(required by %s)"
-msgstr "%s 需要："
+msgstr "（被 %s 依赖）"
 
 #: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
 msgid "Installing from a package list"
@@ -317,7 +317,7 @@ msgstr "分析备份文件"
 
 #: ../../lib/alpm_backup.sh:29
 msgid "%s is not a valid alpm database backup"
-msgstr ""
+msgstr "%s 不是合法的 alpm 数据库备份"
 
 #: ../../lib/alpm_backup.sh:44
 msgid "New packages installed since backup:"
@@ -333,7 +333,7 @@ msgstr "警告！确定要恢复这一备份？"
 
 #: ../../lib/alpm_backup.sh:52
 msgid "(local db will be saved in %s)"
-msgstr "（本地备份将会保存到 %s）"
+msgstr "（本地数据库备份将会保存到 %s）"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "If you want to restore this backup, type \"yes\""
@@ -421,7 +421,7 @@ msgstr "以下的软件包似乎不被任何软件包需要："
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr ""
+msgstr "保持的软件包："
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
@@ -433,11 +433,11 @@ msgstr "忽略的组："
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
-msgstr ""
+msgstr "已配置软件源的数目："
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr ""
+msgstr "按源分类的软件包（以 pacman 优先级为序）"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
@@ -485,19 +485,19 @@ msgstr "否"
 
 #: ../../lib/aur.sh:45
 msgid "Repository     "
-msgstr "源"
+msgstr "源             "
 
 #: ../../lib/aur.sh:46
 msgid "Name           "
-msgstr "名称"
+msgstr "名称           "
 
 #: ../../lib/aur.sh:47
 msgid "Version        "
-msgstr "版本"
+msgstr "版本           "
 
 #: ../../lib/aur.sh:48
 msgid "URL            "
-msgstr "URL"
+msgstr "URL            "
 
 #: ../../lib/aur.sh:49
 msgid "AUR URL        "
@@ -505,55 +505,55 @@ msgstr "AUR URL        "
 
 #: ../../lib/aur.sh:50
 msgid "Licenses       "
-msgstr "许可"
+msgstr "许可证         "
 
 #: ../../lib/aur.sh:51
 msgid "Votes          "
-msgstr "投票"
+msgstr "投票           "
 
 #: ../../lib/aur.sh:52
 msgid "Out Of Date    "
-msgstr "过时"
+msgstr "过时           "
 
 #: ../../lib/aur.sh:53
 msgid "Groups         "
-msgstr "软件组"
+msgstr "软件组         "
 
 #: ../../lib/aur.sh:54
 msgid "Provides       "
-msgstr "提供"
+msgstr "提供           "
 
 #: ../../lib/aur.sh:55
 msgid "Depends On     "
-msgstr "依赖于"
+msgstr "依赖于         "
 
 #: ../../lib/aur.sh:56
 msgid "Optional Deps  "
-msgstr "可选依赖"
+msgstr "可选依赖       "
 
 #: ../../lib/aur.sh:57
 msgid "Conflicts With "
-msgstr "冲突"
+msgstr "冲突           "
 
 #: ../../lib/aur.sh:58
 msgid "Replaces       "
-msgstr "取代"
+msgstr "取代           "
 
 #: ../../lib/aur.sh:59
 msgid "Maintainer     "
-msgstr "维护者"
+msgstr "维护者         "
 
 #: ../../lib/aur.sh:60
 msgid "Architecture   "
-msgstr "架构"
+msgstr "架构           "
 
 #: ../../lib/aur.sh:61
 msgid "Last update    "
-msgstr "上次更新"
+msgstr "上次更新       "
 
 #: ../../lib/aur.sh:62
 msgid "Description    "
-msgstr "描述"
+msgstr "描述           "
 
 #: ../../lib/aur.sh:117
 msgid "Checking vote status for %s"
@@ -629,7 +629,7 @@ msgstr "搜索和保存原始配置文件"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman 正在使用，请稍后。"
+msgstr "Pacman 正在使用，请稍候。"
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
