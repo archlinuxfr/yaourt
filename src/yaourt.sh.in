@@ -336,9 +336,6 @@ while [[ $1 ]]; do
 		--rsort)            RSORT=$2; shift;;
 		--sort)             SORT=$2; shift;;
 		--stats)            MAJOR="stats";;
-		--sucre)            MAJOR="sync"
-			FORCE=1; SYSUPGRADE=1; REFRESH=2;
-			AURUPGRADE=1; DEVEL=1; NOCONFIRM=2;;
 		--tmp)              shift; TMPDIR="$1";;
 		-V|--version)       version; exit 0;;
 		-v)                 program_arg $((A_PQ | A_PS)) $1;;
