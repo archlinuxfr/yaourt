@@ -220,9 +220,8 @@ manage() {
 	readarray -t pacdata < <(stat -c "%Y %n" "$@" |
 		sort |
 		awk '{printf ("%s %s\n", strftime("%x %X",$1), substr ($0, length($1)+1))}')
-	readarray -t pacfiles < <(stat -c "%Y %n" "$@" |
-		sort |
-		awk '{printf ("%s\n", substr ($0, length($1)+2))}')
+	readarray -t pacfiles < <(stat -c "%Y %n" "$@" | sort)
+	pacfiles=("${pacfiles[@]#* }")
 	if (( ! SEQUENTIAL )); then
 		while true; do
 			echo
@@ -233,8 +232,8 @@ manage() {
 			(( --i>=0 && i < ${#pacdata[@]} )) || continue
 			manage_file "$ext" "${pacfiles[$i]}"
 			if (( $? )); then
-				unset pacdata[$i]
-				pacdata=("${pacdata[@]}")
+				unset pacdata[$i]; pacdata=("${pacdata[@]}")
+				unset pacfiles[$i]; pacfiles=("${pacfiles[@]}")
 				(( ${#pacdata[@]} )) || break;
 			fi
 		done
