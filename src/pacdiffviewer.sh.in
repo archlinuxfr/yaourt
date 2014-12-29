@@ -170,8 +170,7 @@ suppress() {
 # Called by manage()
 manage_file() {
 	local ext=$1; shift
-	local _time=${1%%  *}
-	local _file="${1#*  }"
+	local _file=$1
 	local same loop=0
 	while true; do
 		local _msg="$ext: ${_file%$ext}"
@@ -217,31 +216,34 @@ manage() {
 	echo
 	local ext=$1; shift
 	[[ $@ ]] || return
-	local pacfiles i _line
-	readarray -t pacfiles < <(stat -c "%Y %n" "$@" |
+	local pacdata pacfiles i _line
+	readarray -t pacdata < <(stat -c "%Y %n" "$@" |
 		sort |
 		awk '{printf ("%s %s\n", strftime("%x %X",$1), substr ($0, length($1)+1))}')
+	readarray -t pacfiles < <(stat -c "%Y %n" "$@" |
+		sort |
+		awk '{printf ("%s\n", substr ($0, length($1)+2))}')
 	if (( ! SEQUENTIAL )); then
 		while true; do
 			echo
-			list_select "${pacfiles[@]}"
+			list_select "${pacdata[@]}"
 			prompt2 "$(gettext 'Enter n° : ')"
 			read -e i
 			(( ! i )) && break
-			(( --i>=0 && i < ${#pacfiles[@]} )) || continue
+			(( --i>=0 && i < ${#pacdata[@]} )) || continue
 			manage_file "$ext" "${pacfiles[$i]}"
 			if (( $? )); then
-				unset pacfiles[$i]
-				pacfiles=("${pacfiles[@]}")
-				(( ${#pacfiles[@]} )) || break;
+				unset pacdata[$i]
+				pacdata=("${pacdata[@]}")
+				(( ${#pacdata[@]} )) || break;
 			fi
 		done
 	else
 		i=0
-		for _line in "${pacfiles[@]}"; do
+		for _line in "${pacdata[@]}"; do
 			(( i++ ))
-			msg "$i/${#pacfiles[@]}:"
-			manage_file "$ext" "$_line"
+			msg "$i/${#pacdata[@]}:"
+			manage_file "$ext" "${pacfiles[$i-1]}"
 		done
 	fi
 }
