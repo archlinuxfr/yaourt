@@ -1,15 +1,15 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: yaourt 1.0.1\n"
+"Project-Id-Version: yaourt 1.5\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2012-04-12 12:24+0200\n"
+"PO-Revision-Date: 2014-12-29 20:28+0200\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: https://www.transifex.net/projects/p/yaourt/\n"
 "MIME-Version: 1.0\n"
@@ -697,9 +697,8 @@ msgstr ""
 msgid "Dependencies have been installed before the failure"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
+#: ../../lib/pkgbuild.sh.in:416
+msgid "makepkg dropped --asroot support, please run yaourt as a non-"
 "privileged user."
 msgstr ""
 

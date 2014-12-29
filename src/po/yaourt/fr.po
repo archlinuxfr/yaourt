@@ -702,11 +702,10 @@ msgstr "Installation/compilation des dépendances manquantes pour %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Des dépendances ont été installées avant l'échec"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
+#: ../../lib/pkgbuild.sh.in:416
+msgid "makepkg dropped --asroot support, please run yaourt as a non-"
 "privileged user."
-msgstr "Construire un paquet en root est dangereux.\\n Lancez plutôt yaourt en utilisateur non privilégié."
+msgstr "makepkg ne supporte plus l'option --asroot, lancez plutôt yaourt en utilisateur non privilégié."
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."

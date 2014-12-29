@@ -3,7 +3,7 @@
 # Yaourt (Yet Another Outil Utilisateur): More than a Pacman frontend
 #
 # Copyright (c) 2008-2010 Julien MISCHKOWITZ <wain@archlinux.fr>
-# Copyright (c) 2010-2012 tuxce <tuxce.net@gmail.com>
+# Copyright (c) 2010-2015 tuxce <tuxce.net@gmail.com>
 #
 # This program is free software; you can redistribute it and/or modify it
 # under the terms of the GNU Library General Public License as published
@@ -264,13 +264,6 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 	type -p aurvote && AURVOTEINSTALLED=1
 	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
 } &> /dev/null
-
-# makepkg check root
-if (( ! UID )); then
-	warning $(gettext 'Building package as root is dangerous.\n Please run yaourt as a non-privileged user.')
-	sleep 2
-	program_arg $A_M "--asroot"
-fi
 
 # Explode arguments (-Su -> -S -u)
 ARGSANS=("$@")
