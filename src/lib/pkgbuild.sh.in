@@ -235,9 +235,19 @@ build_package() {
 			return 1
 		fi
 	fi
-	
+
+	local TARGET_PACKAGE
+	[[ ${#pkgname[@]} > 1 ]] && {
+		echo -e "\n"
+		msg $(_gettext 'This PKGBUILD provided « %b »' "${pkgname[*]}")
+		prompt  $(_gettext 'Installed only %s ?' "${pl_pkgname}") $(yes_no 1)
+		local reponse=$(userinput "YN" 'Y')
+
+		[[ $reponse = 'Y' ]] && TARGET_PACKAGE="--pkg ${pl_pkgname}"
+	}
+
 	# Build 
-	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
+	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" makepkg "${MAKEPKG_ARG[@]}" -s ${TARGET_PACKAGE} -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(_gettext 'Makepkg was unable to build %s.' "$pkgbase")
