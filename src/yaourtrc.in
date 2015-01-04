@@ -55,6 +55,7 @@
 
 # Command
 #PACMAN="pacman"
+#MAKEPKG="makepkg"
 #DIFFEDITCMD="vimdiff"
 
 # pacdiffviewer

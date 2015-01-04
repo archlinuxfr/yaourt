@@ -56,7 +56,7 @@ read_pkgbuild() {
 	echo "}"                                        >> $pkgbuild_tmp
 	echo "( yaourt_$$ ) || exit 1"                  >> $pkgbuild_tmp
 	echo "exit 0"                                   >> $pkgbuild_tmp
-	PKGBUILD_VARS="$(makepkg "${MAKEPKG_ARG[@]}" -p "$pkgbuild_tmp" 3>&1 1>/dev/null | tr '\n' ';')"
+	PKGBUILD_VARS="$(y_makepkg -p "$pkgbuild_tmp" 3>&1 1>/dev/null | tr '\n' ';')"
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
 	pkgbase=${pkgbase:-${pkgname[0]}}
@@ -207,7 +207,7 @@ build_package() {
 		fi
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
 			if ((YPKGVER_FUNC)); then
-				SRCDEST="$YSRCDEST" makepkg "${MAKEPKG_ARG[@]}" -o -p ./PKGBUILD
+				SRCDEST="$YSRCDEST" y_makepkg -o -p ./PKGBUILD
 				# re-read PKGBUILD to update version
 				read_pkgbuild || return 1
 				eval $PKGBUILD_VARS
@@ -237,13 +237,13 @@ build_package() {
 	fi
 	
 	# Build 
-	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" makepkg "${MAKEPKG_ARG[@]}" -s -f -p ./PKGBUILD
+	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" y_makepkg -s -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(_gettext 'Makepkg was unable to build %s.' "$pkgbase")
 		return 1
 	fi
-	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && SRCDEST="$YSRCDEST" makepkg --allsource -p ./PKGBUILD
+	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && SRCDEST="$YSRCDEST" y_makepkg --allsource -p ./PKGBUILD
 	return 0
 }
 
@@ -411,12 +411,6 @@ get_pkgbuild() {
 	done
 	cd "$cwd"
 }
-
-# makepkg check root
-if (( ! UID )); then
-	warning $(gettext 'makepkg dropped --asroot support, please run yaourt as a non-privileged user.')
-	exit 1
-fi
 
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
 source_makepkg_conf

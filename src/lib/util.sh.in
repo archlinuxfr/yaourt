@@ -164,6 +164,7 @@ program_arg() {
 pacman_parse() { LC_ALL=C pacman --color never "${PACMAN_C_ARG[@]}" "$@"; }
 pacman_out()   { $PACMAN "${PACMAN_C_ARG[@]}" "${PACMAN_O_ARG[@]}" "$@"; }
 pkgquery()     { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
+y_makepkg() { $MAKEPKG "${MAKEPKG_ARG[@]}" "$@"; }
 curl_fetch()   { curl "${CURL_C_ARG[@]}" "$@"; }
 
 # Run editor
@@ -250,6 +251,7 @@ TMPDIR=${TMPDIR:-/tmp}
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 export PACMAN=${PACMAN:-pacman}
+export MAKEPKG=${MAKEPKG:-makepkg}
 # Add --aur-url option to package-query args
 program_arg $A_PKC --aur-url "$AURURL"
 
