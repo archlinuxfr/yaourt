@@ -646,7 +646,7 @@ msgid "Unable to read PKGBUILD"
 msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
+msgid "This PKGBUILD describes a split package."
 msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:73
@@ -695,6 +695,14 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:238
 msgid "Dependencies have been installed before the failure"
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
 msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:416

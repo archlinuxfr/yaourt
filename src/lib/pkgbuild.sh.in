@@ -237,13 +237,10 @@ build_package() {
 	fi
 
 	local TARGET_PACKAGE
-	[[ ${#pkgname[@]} > 1 ]] && {
-		echo -e "\n"
+	[[ ! $SPLITOPT && ${#pkgname[@]} > 1 ]] && {
 		msg $(_gettext 'This PKGBUILD provides " %b "' "${pkgname[*]}")
 		prompt  $(_gettext 'Install only %s ?' "${pl_pkgname}") $(yes_no 1)
-		local answer=$(userinput "YN" 'Y')
-
-		[[ $answer = 'Y' ]] && TARGET_PACKAGE="--pkg ${pl_pkgname}"
+		builduseragrees && TARGET_PACKAGE="--pkg ${pl_pkgname}"
 	}
 
 	# Build 
