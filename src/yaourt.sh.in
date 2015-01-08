@@ -305,6 +305,7 @@ while [[ $1 ]]; do
 		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=(${1//,/ });;
 		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=(${1//,/ });;
 		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
+		--aur-url)          AURURL="$2"; shift;;
 		-B|--backup)        MAJOR="backup";;
 		--backupfile)       shift; BACKUPFILE="$1";;
 		-b|--build)         ((BUILD++));;
@@ -339,6 +340,9 @@ while [[ $1 ]]; do
 	esac
 	shift
 done
+
+# Add --aur-url option to package-query args
+program_arg $A_PKC --aur-url "$AURURL"
 
 # Init path & colors 
 init_paths

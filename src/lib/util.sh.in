@@ -252,8 +252,6 @@ check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"
 export PACMAN=${PACMAN:-pacman}
 export MAKEPKG=${MAKEPKG:-makepkg}
-# Add --aur-url option to package-query args
-program_arg $A_PKC --aur-url "$AURURL"
 
 # DEVELBUILDDIR is depreceated
 DEVELSRCDIR=${DEVELSRCDIR:-$DEVELBUILDDIR}
