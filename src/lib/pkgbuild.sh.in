@@ -382,7 +382,7 @@ source_pkgbuild() {
 # get_pkgbuild ($pkgs)
 # Get each package source and decompress into pkg directory
 get_pkgbuild() {
-	local i pkgs repo pkg pkgbase pkgver arch deps cwd=$(pwd)
+	local i pkgs repo pkg pkgbase pkgver arch deps cwd=$(pwd) pkgdir
 	pkgs=("$@")
 	load_lib aur abs
 	declare -A pkgs_downloaded
@@ -393,13 +393,16 @@ get_pkgbuild() {
 		[[ $repo = "aur" ]] && pkgbase=$pkg || pkgbase=$(get_pkgbase $pkg $repo $pkgver)
 		[[ ${pkgs_downloaded[$pkgbase]} ]] && continue
 		pkgs_downloaded[${pkg}]=1
-		if [[ -d $pkgbase ]]; then
-			prompt2 "$(_gettext '%s directory already exist. Replace ?' "$pkgbase") $(yes_no 1)"
-			useragrees || continue
-		else
-			mkdir "$pkgbase"
+		pkgdir=$pkgbase
+		if [[ -d $pkgdir ]]; then
+			local newdir=$(mktemp --dry-run --tmpdir="." "$pkgdir.XXX")
+			prompt2 "$(_gettext '%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?' "$pkgdir" "$newdir")"
+			local answer=$(userinput "RCS" "R")
+			[[ $answer = "S" ]] && continue
+			[[ $answer = "C" ]] && pkgdir=$newdir
 		fi
-		cd "$pkgbase" || continue
+		mkdir -p "$pkgdir"
+		cd "$pkgdir" || continue
 		msg "$(_gettext 'Download %s sources' "$pkgbase")"
 		if [[ $repo = "aur" ]]; then
 			aur_get_pkgbuild "$pkg"

@@ -767,9 +767,13 @@ msgstr "Lancer la compilation de %s ? "
 msgid "Restart building %s ? "
 msgstr "Relancer la compilation de %s ? "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "Le dossier %s existe déjà. Remplacer ?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr "Le dossier %s existe déjà. [R]emplacer, [C]hange en %s, [I]gnorer ?"
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr "RCI"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"
