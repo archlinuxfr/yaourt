@@ -705,11 +705,6 @@ msgstr ""
 msgid "Install only %s ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:416
-msgid "makepkg dropped --asroot support, please run yaourt as a non-"
-"privileged user."
-msgstr ""
-
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
 msgstr ""

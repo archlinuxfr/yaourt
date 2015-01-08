@@ -710,11 +710,6 @@ msgstr "Ce PKGBUILD fournit \" %b \""
 msgid "Install only %s ?"
 msgstr "Installer seulement %s ?"
 
-#: ../../lib/pkgbuild.sh.in:416
-msgid "makepkg dropped --asroot support, please run yaourt as a non-"
-"privileged user."
-msgstr "makepkg ne supporte plus l'option --asroot, lancez plutôt yaourt en utilisateur non privilégié."
-
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
 msgstr "Makepkg n'a pas pu construire %s."
