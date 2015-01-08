@@ -4,6 +4,7 @@
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 load_lib alpm_query
+Y_MAKEPKG_CHECKDEP=0
 
 # source makepkg configuration
 source_makepkg_conf() {
@@ -16,6 +17,7 @@ source_makepkg_conf() {
 	local _SRCPKGDEST=${SRCPKGDEST}
 	[[ -r $MAKEPKG_CONF ]] && source "$MAKEPKG_CONF" || return 1
 	[[ -r ~/.makepkg.conf ]] && source ~/.makepkg.conf
+	[[ " ${BUILDENV[*]} " =~ ' check ' ]] && Y_MAKEPKG_CHECKDEP=1
 	# Preserve environment variable
 	# else left empty (do not set to $PWD)
 	export BUILDDIR=${_BUILDDIR:-$BUILDDIR}
@@ -36,11 +38,11 @@ source_makepkg_conf() {
 read_pkgbuild() {
 	local update=${1:-0}
 	local vars=(pkgbase pkgname pkgver pkgrel arch pkgdesc provides url \
-		groups license source install md5sums depends makedepends conflicts \
+		groups license source install md5sums depends checkdepends makedepends conflicts \
 		replaces \
 		_svntrunk _svnmod _cvsroot_cvsmod _hgroot _hgrepo \
 		_darcsmod _darcstrunk _bzrtrunk _bzrmod _gitroot _gitname \
-		YPKGVER_FUNC
+		YPKGVER_FUNC YCHECK_FUNC
 		)
 
 	unset ${vars[*]}
@@ -50,7 +52,9 @@ read_pkgbuild() {
 	cat PKGBUILD                                    >> $pkgbuild_tmp
 	echo                                            >> $pkgbuild_tmp
 	echo "YPKGVER_FUNC=0"                           >> $pkgbuild_tmp
+	echo "YCHECK_FUNC=0"                            >> $pkgbuild_tmp
 	echo "declare -f pkgver && YPKGVER_FUNC=1"      >> $pkgbuild_tmp
+	echo "declare -f check && YCHECK_FUNC=1"        >> $pkgbuild_tmp
 	echo "declare -p ${vars[*]} 2>/dev/null >&3"    >> $pkgbuild_tmp
 	echo "return 0"                                 >> $pkgbuild_tmp
 	echo "}"                                        >> $pkgbuild_tmp
@@ -60,6 +64,7 @@ read_pkgbuild() {
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
 	pkgbase=${pkgbase:-${pkgname[0]}}
+	((!Y_MAKEPKG_CHECKDEP)) || ((!YCHECK_FUNC)) && unset checkdepends
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
 	if [[ ! "$pkgbase" ]]; then
 		echo $(gettext 'Unable to read PKGBUILD')
@@ -79,9 +84,9 @@ read_pkgbuild() {
 check_deps() {
 	local nodisplay=${1:-0} dep
 	eval $PKGBUILD_VARS
-	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" ) )
+	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}") )
 	PKGBUILD_DEPS_INSTALLED=()
-	for dep in "${depends[@]}" "${makedepends[@]}"
+	for dep in "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}"
 	do
 		if ! in_array "$dep" "${PKGBUILD_DEPS[@]}"; then
 			PKGBUILD_DEPS_INSTALLED+=("$dep")
@@ -412,8 +417,8 @@ get_pkgbuild() {
 		(($?)) && continue
 		if ((DEPENDS)); then
 			unset depends makedepends
-			. <( source_pkgbuild PKGBUILD depends makedepends ) || continue
-			deps=("${depends[@]}" "${makedepends[@]}")
+			. <( source_pkgbuild PKGBUILD depends makedepends checkdepends) || continue
+			deps=("${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}")
 			((DEPENDS>1)) || deps=($(pacman_parse -T "${deps[@]}"))
 			[[ $deps ]] || continue
 			pkgs+=($(pkgquery -Aif '%n' "${deps[@]}"))
