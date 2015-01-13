@@ -4,6 +4,7 @@
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 AUR_PKG_URL="$AURURL/packages/"
+AUR_INSTALLED_PKGS=()
 
 load_lib abs
 load_lib pkgbuild
@@ -155,6 +156,7 @@ install_from_aur() {
 	local cwd
 	declare -a pkginfo=($(pkgquery -1Aif "%n %i %v %w %o %u %m %l %L" "$1"))
 	[[ "${pkginfo[1]#-}" ]] || return 1
+	in_array ${pkginfo[0]} "${AUR_INSTALLED_PKGS[@]}" && return 0
 	title $(_gettext 'Installing %s from AUR' "${pkginfo[0]}")
 	cwd=$(pwd)
 	init_build_dir "$YAOURTTMPDIR/aur-${pkginfo[0]}" || return 1
@@ -177,6 +179,7 @@ install_from_aur() {
 		# Check if this package has been voted on AUR, and vote for it
 		vote_package "${pkginfo[0]}"
 	fi
+	AUR_INSTALLED_PKGS+=("${pkginfo[0]}")
 	return 0
 }
 
