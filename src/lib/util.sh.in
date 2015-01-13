@@ -200,6 +200,7 @@ run_editor() {
 }
 
 # Main init
+umask 0022
 . '@libdir@/yaourt/io.sh'
 . '@libdir@/yaourt/pacman.sh'
 DBPATH='@dbpath@'
