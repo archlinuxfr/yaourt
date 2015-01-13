@@ -176,6 +176,21 @@ yaourt_sync() {
 	yaourt_install_packages
 }
 
+# Handle -U,--upgrade
+yaourt_upgrade () {
+	[[ $ARGS ]] || pacman_cmd 2
+	local depends=( $(pkgquery -Qpif '%D' "${ARGS[@]}") )
+	depends=( $(pacman_parse -T "${depends[@]}") )
+	load_lib abs aur
+	[[ $depends ]] && SP_ARG="--asdeps" sync_packages "${depends[@]}"
+	su_pacman -U "${ARGS[@]}"; ret=$?
+	if ((ret)); then
+		depends=( $(pkgquery -Qiif '%n' "${depends[@]}") )
+		su_pacman -Rsn "${depends[@]}"
+	fi
+	((!ret))
+}
+
 # Handle query
 yaourt_query() {
 	[[ -n $BACKUPFILE ]] && if [[ -r "$BACKUPFILE" ]]; then   # -Q --backupfile
@@ -237,7 +252,7 @@ yaourt_no_action() {
 	done
 	if [[ $filelist ]]; then
 		ARGS=( "${filelist[@]}" )
-		su_pacman -U "${ARGS[@]}"
+		yaourt_upgrade
 		die $?
 	else
 		# Interactive search else.
@@ -274,7 +289,7 @@ unset OPTS
 while [[ $1 ]]; do
 	case "$1" in
 		-D|--database|-w|--downloadonly)      PACMAN_CMD=1;;
-		-R|--remove|-U|--upgrade)             [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
+		-R|--remove)        [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
 		-o|--owns|--changelog|--check|--file) [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		--dbpath)           DBPATH="$2"
 		                    program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
@@ -300,6 +315,7 @@ while [[ $1 ]]; do
 		-S|--sync)          MAJOR="sync";;
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
 		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
+		-U|--upgrade)       MAJOR="upgrade";;
 		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
 		--holdver)          program_arg $A_M $1;;
 		-A|--ignorearch)    program_arg $A_M $1;;
@@ -394,6 +410,7 @@ case "$MAJOR" in
 		yaourt_backup "${ARGS[0]}"
 		;;
 	
+	upgrade) yaourt_upgrade ;;
 	sync) yaourt_sync ;;
 	query) yaourt_query ;;
 	interactivesearch) yaourt_interactive ;;

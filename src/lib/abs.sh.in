@@ -340,8 +340,9 @@ sync_packages() {
 	# Install from arguments
 	declare -A pkgs_search pkgs_found
 	declare -a repo_pkgs aur_pkgs bin_pkgs
-	local _pkg _arg repo pkg target
-	for _pkg in "$@"; do pkgs_search[$_pkg]=1; done
+	local _arg=("$@") _pkg repo pkg target
+	[[ $SP_ARG ]] && _arg=($(pacman_parse -T "${_arg[@]}"))
+	for _pkg in "${_arg[@]}"; do pkgs_search[$_pkg]=1; done
 	# Search for exact match, pkg which provides it, then in AUR
 	while read repo pkg target; do
 		((pkgs_search[$target])) || continue
@@ -349,10 +350,9 @@ sync_packages() {
 		((pkgs_found[$pkg])) && continue
 		pkgs_found[$pkg]=1
 		if [[ "${repo}" != "aur" ]]; then
-			[[ $SP_ARG ]] && pkgquery -Qq "$target" && continue
 			repo_pkgs+=("${repo}/${pkg}")
 		else
-			[[  $SP_ARG || $NEEDED ]] && pkgquery -Qq "$target" && continue
+			((NEEDED)) && pkgquery -Qqii "$target" && continue
 			aur_pkgs+=("$pkg")
 		fi
 	done < <(pkgquery -f "%r %n %t" -1SAii "${!pkgs_search[@]}")
