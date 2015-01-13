@@ -66,12 +66,12 @@ list_select() {
 	echo
 }
 
-# ask 
+# ask
 userinput() {
 	local _key=${1:-YN}
 	local default=${2:-Y}
 	local answer
-	if (( NOCONFIRM ));then 
+	if (( NOCONFIRM ));then
 		answer=$default
 	else
 		read -en $NOENTER
@@ -85,7 +85,7 @@ userinput() {
 useragrees() {
 	userinput "$@" &> /dev/null
 	local ret=$?
-	echo 
+	echo
 	return $ret
 }
 
@@ -137,8 +137,8 @@ init_color() {
 	else
 		program_arg $((A_PO)) --color auto
 	fi
-	C0="\033[0m" 
-	# yaourt colors 
+	C0="\033[0m"
+	# yaourt colors
 	local yaourt_colors="BOLD=1:BLINK=5:RED=1;31:GREEN=1;32:YELLOW=1;33:BLUE=1;34:PURPLE=1;35:CYAN=1;36"
 	# package-query colors (packages listing)
 	local pq_colors="no=0:other=1;35:testing=1;31:core=1;31:extra=1;32:local=1;33:nb=7;33:pkg=1:installed=1;33;7:votes=1;33;7:od=1;33;7"
@@ -153,7 +153,7 @@ init_color() {
 _show_msg() { echo -en "$1==> $2$C0$CBOLD$3$C0" >&2; }
 msg()       { _show_msg "$CGREEN" "" "$*\n"; }
 warning()   { _show_msg "$CYELLOW" "$(gettext 'WARNING: ')" "$*\n"; }
-prompt()    { 
+prompt()    {
 	local t="$*"
 	t=${#t}
 	_show_msg "$CYELLOW" "" "$*\n"
@@ -163,4 +163,4 @@ prompt()    {
 prompt2()   { _show_msg "$CYELLOW" "" "$* "; }
 error()     { _show_msg "$CRED" "$(gettext 'ERROR: ')" "$*\n"; return 1; }
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

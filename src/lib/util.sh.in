@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# util.sh: common functions 
+# util.sh: common functions
 # This file is part of Yaourt (http://archlinux.fr/yaourt-en)
 
 # Since we use some associated arrays, this file should be included from
@@ -26,7 +26,7 @@ unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG PKGQUERY_C_ARG \
 
 _gettext() {
 	local str=$1; shift
-	printf "$(gettext "$str")" "$@" 
+	printf "$(gettext "$str")" "$@"
 }
 
 die() {	exit ${1:-0}; }
@@ -132,8 +132,8 @@ in_array() {
 # check_dir ($var)
 #   $var : name of variable containing directory
 check_dir() {
-	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }	
-	[[ ! -w "${!1}" ]] && { error "${!1} $(gettext 'is not writable')"; return 1; }	
+	[[ ! -d "${!1}" ]] && { error "${!1} $(gettext 'is not a directory')"; return 1; }
+	[[ ! -w "${!1}" ]] && { error "${!1} $(gettext 'is not writable')"; return 1; }
 	eval $1'="$(readlink -e "${!1}")"'	# get cannonical name
 	return 0
 }
@@ -169,7 +169,7 @@ curl_fetch()   { curl "${CURL_C_ARG[@]}" "$@"; }
 
 # Run editor
 # Usage: run_editor ($file, $default_answer)
-# 	$file: file to edit 
+# 	$file: file to edit
 # 	$default_answer: 0: don't ask	1 (default): Y	2: N
 run_editor() {
 	local edit_cmd
@@ -255,4 +255,4 @@ export MAKEPKG=${MAKEPKG:-makepkg}
 
 # DEVELBUILDDIR is depreceated
 DEVELSRCDIR=${DEVELSRCDIR:-$DEVELBUILDDIR}
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

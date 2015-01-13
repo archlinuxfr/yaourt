@@ -109,7 +109,7 @@ search() {
 	fi
 	return $ret
 }
-	
+
 # Handle special query
 yaourt_query_type() {
 	local arg
@@ -132,7 +132,7 @@ yaourt_install_packages() {
 		return 1
 	fi
 }
-	
+
 # Handle sync
 yaourt_sync() {
 	local arg
@@ -155,7 +155,7 @@ yaourt_sync() {
 		analyse_status_list
 		return
 	fi
-	[[ ! $ARGS ]] && (( ! REFRESH )) && pacman_cmd 1; 
+	[[ ! $ARGS ]] && (( ! REFRESH )) && pacman_cmd 1;
 	if [[ $QUERYTYPE ]]; then
 		yaourt_query_type
 		return
@@ -179,7 +179,7 @@ yaourt_sync() {
 # Handle query
 yaourt_query() {
 	[[ -n $BACKUPFILE ]] && if [[ -r "$BACKUPFILE" ]]; then   # -Q --backupfile
-		load_lib alpm_backup 
+		load_lib alpm_backup
 		is_an_alpm_backup "$BACKUPFILE" || die 1
 		program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
 	else
@@ -205,13 +205,13 @@ yaourt_query() {
 # Handle interactive search
 yaourt_interactive() {
 	local line packages
-	SEARCH=1 search 1 
+	SEARCH=1 search 1
 	[[ $PKGSFOUND ]] || die 0
 	prompt $(gettext 'Enter n° of packages to be installed (ex: 1 2 3 or 1-3)')
 	read -ea packagesnum
 	[[ $packagesnum ]] || die 0
 	for line in ${packagesnum[@]/,/ }; do
-		(( line )) || die 1	# not a number, range neither 
+		(( line )) || die 1	# not a number, range neither
 		(( ${line%-*}-1 < ${#PKGSFOUND[@]} )) || die 1	# > no package corresponds
 		if [[ ${line/-/} != $line ]]; then
 			for ((i=${line%-*}-1; i<${line#*-}; i++)); do
@@ -221,7 +221,7 @@ yaourt_interactive() {
 			packages+=(${PKGSFOUND[$((line - 1))]})
 		fi
 	done
-	echo 
+	echo
 	ARGS=("${packages[@]}")
 	yaourt_install_packages
 }
@@ -336,7 +336,7 @@ while [[ $1 ]]; do
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
 		--)                 shift; ARGS+=("$@"); break;;
 		-*)                 [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
-		*)                  ARGS+=("$1") ;; 
+		*)                  ARGS+=("$1") ;;
 	esac
 	shift
 done
@@ -344,7 +344,7 @@ done
 # Add --aur-url option to package-query args
 program_arg $A_PKC --aur-url "$AURURL"
 
-# Init path & colors 
+# Init path & colors
 init_paths
 init_color
 [[ $PACMAN_CMD ]] && pacman_cmd $PACMAN_CMD
@@ -388,16 +388,16 @@ case "$MAJOR" in
 		get_pkgbuild "${ARGS[@]}"
 		;;
 
-	backup) 
+	backup)
 		load_lib alpm_backup
 		yaourt_backup "${ARGS[0]}"
 		;;
-	
+
 	sync) yaourt_sync ;;
 	query) yaourt_query ;;
 	interactivesearch) yaourt_interactive ;;
-		
+
 	*) pacman_cmd 0 ;;
 esac
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

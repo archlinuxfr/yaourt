@@ -77,7 +77,7 @@ read_pkgbuild() {
 	return 0
 }
 
-# Check PKGBUILD dependances 
+# Check PKGBUILD dependances
 # call read_pkgbuild() before
 # Usage:	check_deps ($nodisplay)
 #	$nodisplay: 1: don't display depends information
@@ -99,10 +99,10 @@ check_deps() {
 	done
 	for dep in "${PKGBUILD_DEPS[@]}"; do
 		isavailable $dep && echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
-		echo -e " - $CYELLOW$dep$C0" $(gettext '(building from AUR)') 
+		echo -e " - $CYELLOW$dep$C0" $(gettext '(building from AUR)')
 	done
 	echo
-	return 0 
+	return 0
 }
 
 # Check if PKGBUILD conflicts with an installed package
@@ -115,15 +115,15 @@ check_conflicts() {
 	eval $PKGBUILD_VARS
 	local cfs=( $(pacman_parse -T "${conflicts[@]}") )
 	PKGBUILD_CONFLICTS=()
-	if (( ${#cfs[@]} != ${#conflicts[@]} )); then 
+	if (( ${#cfs[@]} != ${#conflicts[@]} )); then
 		for cf in "${conflicts[@]}"
 		do
 			if ! in_array "$cf" "${cfs[@]}"; then
 				PKGBUILD_CONFLICTS+=("$cf")
 			fi
 		done
-		# Workaround to disable self detection 
-		# If package is installed and provides that 
+		# Workaround to disable self detection
+		# If package is installed and provides that
 		# which conflict with.
 		local i=0
 		for cf in "${PKGBUILD_CONFLICTS[@]}"; do
@@ -133,7 +133,7 @@ check_conflicts() {
 		[[ "$PKGBUILD_CONFLICTS" ]] && (( nodisplay )) && return 1
 	fi
 	(( nodisplay )) && return 0
-	if [[ "$PKGBUILD_CONFLICTS" ]]; then 
+	if [[ "$PKGBUILD_CONFLICTS" ]]; then
 		msg "$(_gettext '%s conflicts:' "$pkgbase")"
 		for cf in $(pkgquery -Qif "%n-%v" "${PKGBUILD_CONFLICTS[@]%[<=>]*}"); do
 			echo -e " - $CBOLD$cf$C0"
@@ -167,7 +167,7 @@ edit_pkgbuild() {
 	local default_answer=${1:-1}
 	local check_dep=${2:-1}
 	local sum loop=1
-	(( ! EDITFILES )) && { 
+	(( ! EDITFILES )) && {
 		read_pkgbuild || return 1
 		(( check_dep )) && { check_deps; check_conflicts; }
 		return 0
@@ -184,12 +184,12 @@ edit_pkgbuild() {
 		read_pkgbuild || return 1
 		(( check_dep )) && { check_deps; check_conflicts; }
 	done
-	
+
 	eval $PKGBUILD_VARS
 	local installfile
 	for installfile in "${install[@]}"; do
 		[[ "$installfile" ]] || continue
-		run_editor "$installfile" $default_answer 
+		run_editor "$installfile" $default_answer
 		(( $? == 2 )) && return 1
 	done
 	return 0
@@ -248,7 +248,7 @@ build_package() {
 		builduseragrees && TARGET_PACKAGE="--pkg ${pl_pkgname}"
 	}
 
-	# Build 
+	# Build
 	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" y_makepkg -s ${TARGET_PACKAGE} -f -p ./PKGBUILD
 
 	if (( $? )); then
@@ -264,13 +264,13 @@ build_package() {
 install_package() {
 	local _file failed=0
 	eval $PKGBUILD_VARS
-	# Install, export, copy package after build 
+	# Install, export, copy package after build
 	if (( EXPORT==2 )); then
 		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "${P[cachedir]}")
-		launch_with_su cp -vf "$YPKGDEST/"* "${P[cachedir]}/" 
+		launch_with_su cp -vf "$YPKGDEST/"* "${P[cachedir]}/"
 	elif (( EXPORT )) && [[ $PKGDEST ]]; then
 		msg $(_gettext 'Exporting %s to %s directory' "$pkgbase" "$PKGDEST")
-		cp -vfp "$YPKGDEST/"* "$PKGDEST/" 
+		cp -vfp "$YPKGDEST/"* "$PKGDEST/"
 	fi
 
 	while true; do
@@ -430,4 +430,4 @@ get_pkgbuild() {
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
 source_makepkg_conf
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

@@ -21,9 +21,9 @@ _yaourt ()
   cur=$(_get_cword)
   if ((COMP_CWORD == 1)); then
     if [[ $cur != -* ]]; then
-      _pacman_file; return 0; 
+      _pacman_file; return 0;
     else
-      _pacman &> /dev/null 
+      _pacman &> /dev/null
       _arch_compgen "${COMPREPLY[@]}" "-B --backup -C -G --getpkgbuild --stats"
       return 0
     fi
@@ -32,12 +32,12 @@ _yaourt ()
     _arch_incomp "$o" && break
   done
   (($?)) && op="" || op="${o% *}"
-  _arch_incomp 'backupfile' || [[ $op == "B" ]] || _pacman &> /dev/null 
+  _arch_incomp 'backupfile' || [[ $op == "B" ]] || _pacman &> /dev/null
   if [[ "$cur" == -* ]]; then
     case "$op" in
       C) _arch_compgen "-c --clean";;
       Q) _arch_compgen  "${COMPREPLY[@]}" "--backupfile --date";;
-      S) _arch_compgen  "${COMPREPLY[@]}" "-b --build -a --aur --devel --holdver";; 
+      S) _arch_compgen  "${COMPREPLY[@]}" "-b --build -a --aur --devel --holdver";;
     esac
   else
     case "$op" in
@@ -48,4 +48,4 @@ _yaourt ()
   fi
 }
 _completion_loader pacman
-complete -o default -F _yaourt yaourt 
+complete -o default -F _yaourt yaourt

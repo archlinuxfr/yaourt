@@ -63,7 +63,7 @@ info_from_aur() {
 	aur_show_info "Last update    " "$(date +"%c" --date "$last_mod")"
 	aur_show_info "Description    " "$pkgdesc"
 	echo
-	rm "$tmpfile" 
+	rm "$tmpfile"
 }
 
 # scrap html page to show user's comments
@@ -210,4 +210,4 @@ aur_update_exists() {
 	return 0
 }
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:
