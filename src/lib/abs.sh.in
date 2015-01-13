@@ -352,7 +352,7 @@ sync_packages() {
 			[[ $SP_ARG ]] && pkgquery -Qq "$target" && continue
 			repo_pkgs+=("${repo}/${pkg}")
 		else
-			[[  $SP_ARG || $NEEDED ]] && pkgquery -Qq "$_pkg" && continue
+			[[  $SP_ARG || $NEEDED ]] && pkgquery -Qq "$target" && continue
 			aur_pkgs+=("$pkg")
 		fi
 	done < <(pkgquery -f "%r %n %t" -1SAii "${!pkgs_search[@]}")
