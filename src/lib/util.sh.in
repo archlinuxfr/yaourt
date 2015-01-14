@@ -200,6 +200,7 @@ run_editor() {
 }
 
 # Main init
+umask 0022
 . '@libdir@/yaourt/io.sh'
 . '@libdir@/yaourt/pacman.sh'
 DBPATH='@dbpath@'
@@ -246,7 +247,12 @@ TERMINALTITLE=1
 DIFFEDITCMD="vimdiff"
 
 [[ -r '@sysconfdir@/yaourtrc' ]] && source '@sysconfdir@/yaourtrc'
-[[ -r ~/.yaourtrc ]] && source ~/.yaourtrc
+XDG_YAOURT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/yaourt"
+if [[ -r $XDG_YAOURT_DIR/yaourtrc ]]; then
+	source "$XDG_YAOURT_DIR/yaourtrc"
+elif [[ -r ~/.yaourtrc ]]; then
+	source ~/.yaourtrc
+fi
 TMPDIR=${TMPDIR:-/tmp}
 check_dir TMPDIR || die 1
 YAOURTTMPDIR="$TMPDIR/yaourt-tmp-$(id -un)"

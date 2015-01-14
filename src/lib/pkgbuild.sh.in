@@ -16,7 +16,12 @@ source_makepkg_conf() {
 	local _SRCDEST=${SRCDEST}
 	local _SRCPKGDEST=${SRCPKGDEST}
 	[[ -r $MAKEPKG_CONF ]] && source "$MAKEPKG_CONF" || return 1
-	[[ -r ~/.makepkg.conf ]] && source ~/.makepkg.conf
+	XDG_PACMAN_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/pacman"
+	if [[ -r $XDG_PACMAN_DIR/makepkg.conf ]]; then
+		source "$XDG_PACMAN_DIR/makepkg.conf"
+	elif [[ -r ~/.makepkg.conf ]]; then
+		source ~/.makepkg.conf
+	fi
 	[[ " ${BUILDENV[*]} " =~ ' check ' ]] && Y_MAKEPKG_CHECKDEP=1
 	# Preserve environment variable
 	# else left empty (do not set to $PWD)
