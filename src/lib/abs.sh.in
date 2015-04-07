@@ -241,6 +241,7 @@ sysupgrade() {
 	fi
 	#[[ ! "$packages" ]] && return 0
 	local cmd="echo -n"
+	readarray -t packages < <(for a in "${packages[@]}"; do echo "$a"; done | sort)
 	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - - %d" "${packages[@]}"'
 	if ((AURUPGRADE)); then
 		# TODO: %m return the maintainer for AUR package and packager for local packages.
