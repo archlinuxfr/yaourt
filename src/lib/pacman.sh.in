@@ -8,7 +8,7 @@ declare -A P=()
 
 parse_pacman_conf() {
 	# Parse pacman options
-	declare -a PKGS_IGNORED=() 
+	declare -a PKGS_IGNORED=()
 	eval $(pacman_parse --debug -T |&
 	  sed -n -e 's/"/\\"/g' \
              -e 's/^[\[\]0-9: ]//' \
@@ -80,4 +80,4 @@ is_x_gt_y() {
 	[[ $(vercmp "$1" "$2" 2> /dev/null) -gt 0 ]]
 }
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

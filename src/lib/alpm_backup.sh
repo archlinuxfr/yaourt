@@ -43,22 +43,22 @@ restore_alpm_db() {
 	is_an_alpm_backup "$1" || return 1
 	pacman_parse --query | LC_ALL=C sort > "$nowdb"
 	msg $(gettext 'New packages installed since backup:')
-	LC_ALL=C comm -13 "$backupdb" "$nowdb" 
+	LC_ALL=C comm -13 "$backupdb" "$nowdb"
 	echo
 	msg $(gettext 'Packages removed or ugpraded since backup:')
-	LC_ALL=C comm -23 "$backupdb" "$nowdb" 
+	LC_ALL=C comm -23 "$backupdb" "$nowdb"
 	echo
 	title "$(gettext 'Warning! Do you want to restore this backup ?')"
 	msg "$(gettext 'Warning! Do you want to restore this backup ?')"
 	msg "$(_gettext '(local db will be saved in %s)' "$savedb")"
 	prompt $(gettext 'If you want to restore this backup, type "yes"')
-	read -e 
+	read -e
 	[[ "$REPLY" != "$(gettext 'yes')" ]] && return 0
 	msg $(gettext 'Deleting pacman DB')
 	launch_with_su mv "${P[dbpath]}/local/" "$savedb"
 	msg $(gettext 'Copying backup')
 	launch_with_su mv "$backupdir/local/" "${P[dbpath]}/local" && \
-		launch_with_su rm -rf  "$backupdir" 
+		launch_with_su rm -rf  "$backupdir"
 	msg $(gettext 'Testing the new database')
 	pacman_parse --query | LC_ALL=C sort > "$nowdb"
 	if ! diff "$backupdb" "$nowdb" &> /dev/null; then
@@ -83,4 +83,4 @@ yaourt_backup() {
 	fi
 }
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

@@ -28,7 +28,7 @@ analyse_status_list() {
 			msg "$(gettext 'Packages no longer required by any installed package:')"
 			echo_wrap 4 "$neworphans"
 		fi
-	fi	
+	fi
 	# Test local database
 	if [[ ! "$NO_TESTDB" ]]; then testdb; fi
 	if ((AUTOSAVEBACKUPFILE)) && ! \
@@ -39,4 +39,4 @@ analyse_status_list() {
 	fi
 }
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

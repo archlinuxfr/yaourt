@@ -4,7 +4,7 @@ VERSION       = $(shell git describe --abbrev=4)
 DESTDIR       =
 PREFIX        = /usr/local
 SHELL         = /bin/bash
-INSTALL       = /usr/bin/env install 
+INSTALL       = /usr/bin/env install
 MSGFMT        = /usr/bin/msgfmt
 SED           = /bin/sed
 bindir        = $(PREFIX)/bin
@@ -72,7 +72,7 @@ install: $(SCRIPTS)
 	done
 
 dist:
-	mkdir yaourt-$(VERSION) 
+	mkdir yaourt-$(VERSION)
 	cp -a AUTHORS INSTALL COPYING Makefile pacdiffviewer.sh.in yaourt.sh.in yaourtrc.in \
 	  bashcompletion lib man po yaourt-$(VERSION)
 	$(SED) -i -e 's|^VERSION.*|VERSION=$(VERSION)|g' yaourt-$(VERSION)/Makefile

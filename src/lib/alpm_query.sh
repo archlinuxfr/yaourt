@@ -15,7 +15,7 @@ isavailable() {
 
 # Return package repository
 sourcerepository() {
-	pkgquery -1SQif "%r" "$1" 
+	pkgquery -1SQif "%r" "$1"
 }
 
 # Get pkgbase
@@ -49,4 +49,4 @@ search_forgotten_orphans() {
 	useragrees "YN" "N" || su_pacman -Rcs "${PKGSFOUND[@]#*/}"
 }
 
-# vim: set ts=4 sw=4 noet: 
+# vim: set ts=4 sw=4 noet:

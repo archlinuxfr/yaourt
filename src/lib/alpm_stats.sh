@@ -10,7 +10,7 @@ load_lib pkgbuild
 build_pkgs_list() {
 	repositories=($(pkgquery -L))
 	local f_foreign=1 f_explicit=2 f_deps=4 f_unrequired=8 \
-	      f_upgrades=16 f_group=32 	
+	      f_upgrades=16 f_group=32
 	local pkgstate pkgrepo pkgname
 	while read pkgstate pkgrepo pkgname; do
 		(( pkgs_nb++ ))
@@ -31,7 +31,7 @@ build_pkgs_list() {
 }
 
 _show_pkgs() {
-	local str=$1;shift 
+	local str=$1;shift
 	local p=("$@")
 	echo -e "$CGREEN$str (${#p[*]}) $C0$CYELLOW${p[@]}"
 }
@@ -46,10 +46,10 @@ show_pkgs_stats() {
 	fi
 	echo_fill "$CBLUE" - "$C0"
 	echo; echo_fill "$CBLUE" - "$C0"
-	echo -e "$CGREEN$(gettext 'Total installed packages:')  $CYELLOW$pkgs_nb"	
-	echo -e "$CGREEN$(gettext 'Explicitly installed packages:')  $C0$CYELLOW$pkgs_nb_e"	
-	echo -e "$CGREEN$(gettext 'Packages installed as dependencies to run other packages:')  ${CYELLOW}$pkgs_nb_d"   
-	echo -e "$CGREEN$(gettext 'Packages out of date:')  $CYELLOW$pkgs_nb_u"   
+	echo -e "$CGREEN$(gettext 'Total installed packages:')  $CYELLOW$pkgs_nb"
+	echo -e "$CGREEN$(gettext 'Explicitly installed packages:')  $C0$CYELLOW$pkgs_nb_e"
+	echo -e "$CGREEN$(gettext 'Packages installed as dependencies to run other packages:')  ${CYELLOW}$pkgs_nb_d"
+	echo -e "$CGREEN$(gettext 'Packages out of date:')  $CYELLOW$pkgs_nb_u"
 	if (( pkgs_nb_dt )); then
 		echo -e "$CRED$(_gettext 'Where %s packages seems no more used by any package:' "$pkgs_nb_dt")$C0"
 		echo_wrap 4 "${orphans[*]}"
@@ -96,7 +96,7 @@ show_disk_usage() {
 	done < <(pkgquery -Qf "%2 %3")
 	[[ -t 1 ]] && { echo -en "\r"  ; echo_fill "" " " ""; }
 	echo -e "$CGREEN$(gettext 'Theoretical space used by packages:') $CYELLOW$(($size_t/1048576))M"
-	echo -e "$CGREEN$(gettext 'Real space used by packages:') $CYELLOW$(($size_r/1048576))M"	
+	echo -e "$CGREEN$(gettext 'Real space used by packages:') $CYELLOW$(($size_r/1048576))M"
 	# Get cachedir
 	cachedir=(`pacman_parse --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
 	# space used by download packages or sources in cache
@@ -112,5 +112,5 @@ yaourt_stats() {
 	show_pkgs_stats
 	show_repos_stats
 	show_disk_usage
-}	
-# vim: set ts=4 sw=4 noet: 
+}
+# vim: set ts=4 sw=4 noet:
