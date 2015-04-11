@@ -793,8 +793,8 @@ msgstr "Albortao..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Por favor amiesta $EDITOR al to entornu de variables"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Por favor amiesta $VISUAL al to entornu de variables"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

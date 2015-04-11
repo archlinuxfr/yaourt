@@ -794,8 +794,8 @@ msgstr "S'ha interromput..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Afegiu $EDITOR a les variables de l'entorn"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Afegiu $VISUAL a les variables de l'entorn"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

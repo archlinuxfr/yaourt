@@ -792,8 +792,8 @@ msgstr "中止..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "$EDITOR を環境変数に追加してください"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "$VISUAL を環境変数に追加してください"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

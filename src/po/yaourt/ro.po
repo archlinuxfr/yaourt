@@ -793,8 +793,8 @@ msgstr "Renunțat..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Adăugați $EDITOR la variabilele de mediu"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Adăugați $VISUAL la variabilele de mediu"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

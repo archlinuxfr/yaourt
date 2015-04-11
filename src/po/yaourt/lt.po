@@ -793,8 +793,8 @@ msgstr "Nutraukta..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Į savo aplinkos kintamuosius pridėkite $EDITOR"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Į savo aplinkos kintamuosius pridėkite $VISUAL"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

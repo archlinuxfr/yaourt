@@ -795,7 +795,7 @@ msgstr ""
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
+msgid "Please add $VISUAL to your environment variables"
 msgstr ""
 
 #: ../../lib/util.sh.in:185
