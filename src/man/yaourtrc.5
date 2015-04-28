@@ -81,7 +81,7 @@ List of repositories where PKGBUILD can be retrieved by rsync\&. (see /etc/abs\&
 .PP
 \fBAUTOSAVEBACKUPFILE=0\fR
 .RS 4
-If set to 1, after each install, yaourt search for config files to backup (\&.pacnew files)\&. It store all files in /var/lib/yaourt/\&. These files will be used later with yaourt \-C to automerge current config files with new config files (\&.pacnew)\&. This option requires root password or sudo configured to allow running /usr/bin/pacdiffviewer without password\&.
+If set to 1, yaourt will search for config files to back up (\&.pacnew files)\& after each install. All backed up files are stored in /var/lib/yaourt/\&. These files will be used later with yaourt \-C to automerge current config files with new config files (\&.pacnew)\&. This option requires root password or sudo configured to allow running /usr/bin/pacdiffviewer without password\&.
 .RE
 .PP
 \fBDEVELSRCDIR=""\fR
