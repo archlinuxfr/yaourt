@@ -2,12 +2,12 @@
 .\"     Title: yaourtrc
 .\"    Author: [see the "Authors" section]
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 2014-06-06
+.\"      Date: 2015-04-28
 .\"    Manual: Yaourt Manual
 .\"    Source: Yaourt 1.5
 .\"  Language: English
 .\"
-.TH "YAOURTRC" "5" "2014\-06\-06" "Yaourt 1\&.4" "Yaourt Manual"
+.TH "YAOURTRC" "5" "2015\-04\-28" "Yaourt 1\&.5" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -76,27 +76,27 @@ system\-wide configuration file (/etc/yaourtrc)
 .PP
 \fBREPOS=()\fR
 .RS 4
-List of repositories where PKGBUILD can be retreived by rsync\&. (see /etc/abs\&.conf)
+List of repositories where PKGBUILD can be retrieved by rsync\&. (see /etc/abs\&.conf)
 .RE
 .PP
 \fBAUTOSAVEBACKUPFILE=0\fR
 .RS 4
-If set to 1, after each install, yaourt search for config files to backup (\&.pacnew files)\&. It store all files in /var/lib/yaourt/\&. These files will be used later with yaourt \-C to automerge current config files with new config files (\&.pacnew)\&. This option requires root password or sudo configured to allow runing /usr/bin/pacdiffviewer without password\&.
+If set to 1, yaourt will search for config files to back up (\&.pacnew files)\& after each install. All backed up files are stored in /var/lib/yaourt/\&. These files will be used later with yaourt \-C to automerge current config files with new config files (\&.pacnew)\&. This option requires root password or sudo configured to allow running /usr/bin/pacdiffviewer without password\&.
 .RE
 .PP
 \fBDEVELSRCDIR=""\fR
 .RS 4
-Specify directory where to keep devel packages sources\&.
+Specify directory where to keep sources for devel packages\&.
 .RE
 .PP
 \fBDEVEL=0\fR
 .RS 4
-If set to 1, always search for new version of developpement CVS/SVN packages when upgrading (yaourt \-Su)\&.
+If set to 1, always search for new version of development (CVS/SVN/Git/Mercurial/other VCS) packages when upgrading (yaourt \-Su)\&.
 .RE
 .PP
 \fBEDITOR="$EDITOR"\fR
 .RS 4
-Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing\&. Editor should not fork, for gvim: EDITOR="gvim \-\-nofork"
+Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing\&. Editor should not fork; ex. for gvim: EDITOR="gvim \-\-nofork"
 .RE
 .PP
 \fBFORCE=0\fR
@@ -124,7 +124,7 @@ If set to 1, yaourt doesn\(cqt do sudo checks\&. (For users with timestamp_timeo
 .RS 4
 If set to 0, yaourt doesn\(cqt redirect
 \fIsudo\fR
-standard output\&. (For users with fingerprint authentification)
+standard output\&. (For users with fingerprint authentication)
 .RE
 .SH "AUR OPTIONS"
 .PP
@@ -135,12 +135,12 @@ Show X last comments for packages built from AUR Unsupported\&. 0 to disable com
 .PP
 \fBAURDEVELONLY=0\fR
 .RS 4
-If set to 1, search only for new version of foreign developpement CVS/SVN packages when upgrading (yaourt \-Su \-\-devel)\&.
+If set to 1, search only for new version of development (CVS/SVN/Git/Mercurial/other VCS) packages when upgrading (yaourt \-Su \-\-devel)\&.
 .RE
 .PP
 \fBAURSEARCH=1\fR
 .RS 4
-If set to 0, don\(cqt search for packages on AUR Unsupported
+If set to 0, don\(cqt search for packages on AUR Unsupported\&.
 .RE
 .PP
 \fBAURUPGRADE=0\fR
@@ -176,7 +176,7 @@ Export sources to $EXPORTDIR or, if not defined to $SRCPKGDEST or $PKGDEST (see
 .PP
 \fBEXPORTDIR=""\fR
 .RS 4
-Specify the folder where yaourt export built packages + sources\&.
+Specify the folder where yaourt exports built packages + sources\&.
 .RE
 .SH "PROMPT OPTIONS"
 .PP
