@@ -1,24 +1,25 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-#   <friusriu@gmail.com>, 2012.
-# Julien MISCHKOWITZ <wain@archlinux.fr>, 2010.
+# Ferran Rius Riu <friusriu@gmail.com>, 2014
+# Ferran Rius Riu <friusriu@gmail.com>, 2012
+# Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/?project=3\n"
+"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2012-04-15 14:47+0000\n"
-"Last-Translator: friusriu <friusriu@gmail.com>\n"
-"Language-Team: Catalan (http://www.transifex.net/projects/p/yaourt/language/ca/)\n"
+"PO-Revision-Date: 2015-01-09 09:50+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
+"Language-Team: Catalan (http://www.transifex.com/projects/p/yaourt/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ca\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../pacdiffviewer.sh.in:41
 msgid "Delete all *.pac* found"
@@ -651,8 +652,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "No s'ha pogut llegir el PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "Aquest PKGBUILD descriu un paquet dividit."
+msgid "This PKGBUILD describes a split package."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -702,11 +703,13 @@ msgstr "Instal·la o compila les dependències que manquen per a %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "S'ha instal·lat les dependències abans de la fallada"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Compilar un paquet com a usuari primari és perillós.\\n Executeu el yaourt com a usuari normal."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -760,9 +763,13 @@ msgstr "S'ha de continuar compilant %s?"
 msgid "Restart building %s ? "
 msgstr "S'ha de reiniciar la compilació de %s?"
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "La carpeta %s ja existeix. Voleu reemplaçar-la?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

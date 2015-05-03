@@ -1,7 +1,7 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
 # Joop Kiefte <ikojba@gmail.com>, 2014
@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2014-01-15 17:33+0000\n"
-"Last-Translator: Joop Kiefte <ikojba@gmail.com>\n"
+"PO-Revision-Date: 2015-01-09 09:50+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Esperanto (http://www.transifex.com/projects/p/yaourt/language/eo/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -455,7 +455,7 @@ msgstr "estas pakaĵoj loke konstruitaj aŭ nesubtenataj de AUR"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Teoria - Reala spaco uzata de pakaĵoj:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -463,7 +463,7 @@ msgstr "progreso:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Teoria spaco uzata de pakaĵoj:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -650,8 +650,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "Ne eblas legi PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "Ĉi tiu PKGBUILD priskribas disan pakaĵon."
+msgid "This PKGBUILD describes a split package."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -701,11 +701,13 @@ msgstr "Instali aŭ konstrui mankantaj dependaĵoj por %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Dependaĵoj instaliĝis antaŭ la fiasko."
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Konstrui pakaĵon kiel root estas danĝera.\\n Bonvolu ruligi yaourt kiel neprivileĝa uzanto."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -759,9 +761,13 @@ msgstr "Ĉu plukonstrui %s?"
 msgid "Restart building %s ? "
 msgstr "Ĉu rekomenci konstruadon de %s?"
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "dosierujo %s jam ekzistas. Ĉu anstataŭigi?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

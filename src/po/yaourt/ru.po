@@ -1,24 +1,26 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
+# 
+# Translators:
+# Artem Vorotnikov <artem@vorotnikov.me>, 2014
+# Dmitry Korzhevin <dkorzhevin@lsupport.net>, 2012
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
-#
-#Translators:
-#Petr Zhizhin <piter.zh@gmail.com>, 2014
+# Petr Zhizhin <piter.zh@gmail.com>, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: yaourt 1.0.1\n"
+"Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2012-04-12 12:24+0200\n"
-"Last-Translator: Petr Zhizhin <piter.zh@gmail.com>\n"
-"Language-Team: https://www.transifex.net/projects/p/yaourt/\n"
+"PO-Revision-Date: 2015-01-09 09:50+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/projects/p/yaourt/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ru\n"
-
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #: ../../pacdiffviewer.sh.in:41
 msgid "Delete all *.pac* found"
@@ -91,8 +93,8 @@ msgstr "Действия: [E]редактировать, [R]заменить, [S
 
 #: ../../pacdiffviewer.sh:192
 msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]"
-"bort ?"
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
 msgstr "Действия: [E]редактировать, [R]заменить, [S]подавить, [M]слить, [C]продолжить (по умолчанию), [A]отменить ?"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
@@ -100,7 +102,8 @@ msgstr "Действия: [E]редактировать, [R]заменить, [S
 msgid "ERSCA"
 msgstr "ERSCA"
 
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?
+# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
+# [A]bort ?
 #: ../../pacdiffviewer.sh:193
 msgid "ERSCAM"
 msgstr "ERSCAM"
@@ -650,8 +653,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "Невозможно прочитать PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "Этот PKGBUILD описывает разделённый пакет."
+msgid "This PKGBUILD describes a split package."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -701,11 +704,13 @@ msgstr "Установить или собрать отсутствующие з
 msgid "Dependencies have been installed before the failure"
 msgstr "Зависимости были установлены до сбоя"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Сборка от root опасна.\\n Пожалуйста, запускайте yaourt как непривилегировнный пользователь."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -759,9 +764,13 @@ msgstr "Продолжить сборку %s ? "
 msgid "Restart building %s ? "
 msgstr "Перезапустить сборку %s ? "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "Директория %s уже существует. Заменить ?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

@@ -1,19 +1,19 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# online <ekindursun@gmail.com>, 2013
-# online <ekindursun@gmail.com>, 2012
-# ozgursarier <ozgursarier1011601115@gmail.com>, 2013
+# Ekin Dursun <ekindursun@gmail.com>, 2013
+# Ekin Dursun <ekindursun@gmail.com>, 2012
+# Özgür Sarıer <ozgursarier1011601115@gmail.com>, 2013
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/?project=3\n"
+"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2013-06-08 20:25+0000\n"
-"Last-Translator: online <ekindursun@gmail.com>\n"
+"PO-Revision-Date: 2015-01-09 09:50+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/projects/p/yaourt/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -457,7 +457,7 @@ msgstr "desteklenmeyen yerel inşa veya AUR paketleridir."
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Paketler tarafından kullanılan kuramsal - gerçek alan:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -465,7 +465,7 @@ msgstr "ilerleme:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Paketler tarafından kullanılan teorik alan:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -652,8 +652,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "PKGBUILD okunamadı"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "Bu PKGBUILD parçalı bir paket yapısı tanımlıyor."
+msgid "This PKGBUILD describes a split package."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -703,11 +703,13 @@ msgstr "%s için kayıp bağımlılıkları yükle veya inşa et:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Bağımlılıklar aksaklıktan önce yüklendi"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Kök kullanıcı olarak paket inşa etmek tehlikelidir.\\n Lütfen yaourt'u ayrıcalıksız bir kullanıcı olarak çalıştırın."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -761,9 +763,13 @@ msgstr "%s inşa edilsin mi ? "
 msgid "Restart building %s ? "
 msgstr "%s yeniden inşa edilsin mi ? "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "%s adlı dizin zaten var. Değiştirilsin mi?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

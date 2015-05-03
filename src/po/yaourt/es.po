@@ -1,21 +1,22 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# friusriu <friusriu@gmail.com>, 2012
-# friusriu <friusriu@gmail.com>, 2012
+# Ferran Rius Riu <friusriu@gmail.com>, 2012
+# Ferran Rius Riu <friusriu@gmail.com>, 2012
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
-# Pablo Lezaeta <prflr88@gmail.com>, 2012-2013
-# Pablo Lezaeta <prflr88@gmail.com>, 2013
+# Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2012-2013
+# Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>, 2013
+# Pedro Román <roizheim@gmail.com>, 2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2014-01-03 18:41+0000\n"
-"Last-Translator: Roizheim <roizheim@gmail.com>\n"
+"PO-Revision-Date: 2015-01-09 18:39+0000\n"
+"Last-Translator: Pedro Román <roizheim@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/projects/p/yaourt/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -459,7 +460,7 @@ msgstr "son paquetes de una compilación local o de AUR, sin soporte"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Espacio teórico - real que utilizan los paquetes:"
+msgstr "Espacio teórico-real que ocupan los paquetes:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -467,7 +468,7 @@ msgstr "progreso:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Espacio teórico que utilizan los paquetes:"
+msgstr "Espacio teórico que ocupan los paquetes:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -654,7 +655,7 @@ msgid "Unable to read PKGBUILD"
 msgstr "No se puede leer PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
+msgid "This PKGBUILD describes a split package."
 msgstr "Este PKGBUILD describe un paquete dividido."
 
 #: ../../lib/pkgbuild.sh.in:73
@@ -705,11 +706,13 @@ msgstr "Instalar o compilar las dependencias que faltan para %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Las dependencias se instalaron antes del fallo"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Compilar un paquete como administrador (root) es peligroso.\\n Ejecute yaourt como usuario normal."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr "Este PKGBUILD proporciona «%b»"
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr "¿Instalar únicamente %s ?"
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -763,9 +766,13 @@ msgstr "Continuar compilando %s? "
 msgid "Restart building %s ? "
 msgstr "¿Reiniciar la compilación de %s? "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "El directorio %s ya existe. ¿Remplazarlo?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr "El directorio %s ya existe. ¿[R]emplazar, [C]ambiar a %s, [S]altar ?"
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

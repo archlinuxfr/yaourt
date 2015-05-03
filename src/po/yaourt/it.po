@@ -1,24 +1,24 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Vincenzo Reale <smart2128@baslug.org>, 2009, 2010.
-# Vincenzo Reale <vinx.reale@gmail.com>, 2012.
+# Vincenzo Reale <smart2128@baslug.org>, 2009, 2010
+# Vincenzo Reale <vinx.reale@gmail.com>, 2012,2014-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/?project=3\n"
+"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2012-04-13 16:19+0000\n"
+"PO-Revision-Date: 2015-01-09 22:52+0000\n"
 "Last-Translator: Vincenzo Reale <vinx.reale@gmail.com>\n"
-"Language-Team: Italian (http://www.transifex.net/projects/p/yaourt/language/it/)\n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/yaourt/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../pacdiffviewer.sh.in:41
 msgid "Delete all *.pac* found"
@@ -228,7 +228,7 @@ msgstr "Scaricare l'archivio abs"
 
 #: ../../lib/abs.sh.in:78
 msgid "The following packages should be upgraded first :"
-msgstr "Questi pachetti dovrebbero essere aggiornati prima :"
+msgstr "Questi pacchetti dovrebbero essere aggiornati prima :"
 
 #: ../../lib/abs.sh.in:80
 msgid "Do it now ?"
@@ -276,7 +276,7 @@ msgstr "Oggetti da compilare"
 
 #: ../../lib/abs.sh.in:258
 msgid "AUR targets"
-msgstr "Targets AUR"
+msgstr "Oggetti AUR"
 
 #: ../../lib/abs.sh.in:267
 msgid "unable to update %s"
@@ -308,7 +308,7 @@ msgstr "aggiornamento di un pacchetto SVN/CVS/HG/GIT"
 
 #: ../../lib/abs.sh.in:380
 msgid "Targets"
-msgstr "Targets"
+msgstr "Oggetti"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -456,7 +456,7 @@ msgstr "sono pacchetti compilati localmente o non supportati da AUR"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Spazio teorico - effettivo occupato dai pacchetti:"
+msgstr "Spazio teorico - effettivo utilizzato dai pacchetti:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -464,7 +464,7 @@ msgstr "avanzamento:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Spazio teorico occupato dai pacchetti:"
+msgstr "Spazio teorico utilizzato dai pacchetti:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -651,7 +651,7 @@ msgid "Unable to read PKGBUILD"
 msgstr "Impossibile leggere il PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
+msgid "This PKGBUILD describes a split package."
 msgstr "Questo PKGBUILD indica un pacchetto suddiviso."
 
 #: ../../lib/pkgbuild.sh.in:73
@@ -702,11 +702,13 @@ msgstr "Installa o compila le dipendenze mancanti per %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Alcune dipendenze sono state installate prima del problema"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Compilare pacchetti con privilegi di root è pericoloso. \\nEsegui yaourt come utente non privilegiato."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr "Questo PKGBUILD fornisce \"%b\""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr "Vuoi installare solo %s?"
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -760,9 +762,13 @@ msgstr "Continuare la compilazione di %s "
 msgid "Restart building %s ? "
 msgstr "Riavviare la compilazione di %s "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "La cartella %s esiste già. Sostituirlo?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr "La cartella %s esiste già. S[o]stituire, [C]ambiare in %s, [S]altare?"
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

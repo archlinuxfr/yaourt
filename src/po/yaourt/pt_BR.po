@@ -1,35 +1,35 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Rafael Ferreira <rafael.f.f1@gmail.com>, 2011, 2012.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2011-2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/?project=3\n"
+"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2012-04-13 16:32+0000\n"
+"PO-Revision-Date: 2015-01-09 13:19+0000\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.net/projects/p/yaourt/language/pt_BR/)\n"
+"Language-Team: Portuguese (Brazil) (http://www.transifex.com/projects/p/yaourt/language/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../../pacdiffviewer.sh.in:41
 msgid "Delete all *.pac* found"
-msgstr "Excluir todos *.pac* encontrados"
+msgstr "Exclui todos *.pac* encontrados"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Save all packages backup files for a later merge"
-msgstr "salvar todos arquivos backup de pacotes para posterior mesclagem"
+msgstr "Salva todos arquivos backup de pacotes para posterior mesclagem"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Use with backup to not output messages"
-msgstr "usa com backup para não exibir mensages"
+msgstr "Usa com backup para não exibir mensages"
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Sequential listing"
@@ -37,15 +37,15 @@ msgstr "Listagem sequencial"
 
 #: ../../pacdiffviewer.sh.in:45
 msgid "Display diff"
-msgstr "Mostrar diff"
+msgstr "Mostra diff"
 
 #: ../../pacdiffviewer.sh.in:46
 msgid "This help"
-msgstr "essa ajuda"
+msgstr "Essa ajuda"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "Show version"
-msgstr "exibe versão"
+msgstr "Exibe versão"
 
 #: ../../pacdiffviewer.sh.in:69
 msgid "saving"
@@ -70,11 +70,11 @@ msgstr "Você deseja excluir esses arquivos ?"
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "(S: no confirm)"
-msgstr "(S: não confirmar)"
+msgstr "(I: ignorar, não confirmar)"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "YNS"
-msgstr "SNS"
+msgstr "SNI"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -82,7 +82,7 @@ msgstr "**mesmo arquivo**"
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
-msgstr "**auto-mesclar**"
+msgstr "**automesclar**"
 
 #: ../../pacdiffviewer.sh:192
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
@@ -123,7 +123,7 @@ msgstr "Digite o n° : "
 
 #: ../../yaourt.sh.in:34
 msgid "Yaourt does not support --help for a particular option."
-msgstr "Yaourt não suporta --help para a opção em particular."
+msgstr "Yaourt não suporta --help para uma opção em particular."
 
 #: ../../yaourt.sh.in:35
 msgid "The following is %s help :"
@@ -411,7 +411,7 @@ msgstr "Total de pacotes instalados:"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Pacotes explicitamente instalados:"
+msgstr "Pacotes instalados explicitamente:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
@@ -427,7 +427,7 @@ msgstr "Onde os pacotes %s parecem não estar sendo usados por nenhum outro paco
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Dep. Opcionais      "
+msgstr "Dep. opcionais      "
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
@@ -451,7 +451,7 @@ msgstr "outros"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr "são pacotes de compilação local ou do AUR Unsupported"
+msgstr "são pacotes de compilação local ou do AUR Sem Suporte"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
@@ -535,7 +535,7 @@ msgstr "Depende de         "
 
 #: ../../lib/aur.sh:56
 msgid "Optional Deps  "
-msgstr "Dep. Opcionais      "
+msgstr "Dep. opcionais      "
 
 #: ../../lib/aur.sh:57
 msgid "Conflicts With "
@@ -547,7 +547,7 @@ msgstr "Substitui          "
 
 #: ../../lib/aur.sh:59
 msgid "Maintainer     "
-msgstr "Maintainer         "
+msgstr "Mantenedor     "
 
 #: ../../lib/aur.sh:60
 msgid "Architecture   "
@@ -627,7 +627,7 @@ msgstr "ERRO: "
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Os pacotes não são mais necessários por nenhum dos pacotes instalados:"
+msgstr "Pacotes que não são mais necessários para nenhum dos pacotes instalados:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
@@ -650,8 +650,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "Não foi possível ler o PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "Esse PKGBUILD descreve um pacote dividido."
+msgid "This PKGBUILD describes a split package."
+msgstr "Esse PKGBUILD descreve um pacote separado."
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -701,11 +701,13 @@ msgstr "Instalar ou compilar dependências que faltam para %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Dependências foram instaladas antes da falha"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "Compilar pacotes como root é perigoso.\\n Por favor execute yaourt como um usuário não privilegiado."
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr "Esse PKGBUILD fornece \" %b \""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr "Instalar apenas %s ?"
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -759,9 +761,13 @@ msgstr "Continuar a compilação de %s ? "
 msgid "Restart building %s ? "
 msgstr "Reiniciar a compilação de %s ? "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "O diretório %s já existe. Substituir ?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr "O diretório %s já existe. [S]ubstituir, [A]lterar para %s, [I]gnorar ?"
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr "SAI"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

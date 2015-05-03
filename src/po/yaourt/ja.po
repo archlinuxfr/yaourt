@@ -1,16 +1,17 @@
 # yaourt default.po file
-# Copyright (C) 2010-2012
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce <tuxce.net@gmail.com>, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# kusakata <shohei@kusakata.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2013-11-20 09:32+0000\n"
-"Last-Translator: kusakata <shohei@kusakata.com>\n"
+"PO-Revision-Date: 2015-01-09 09:50+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Japanese (http://www.transifex.com/projects/p/yaourt/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -649,8 +650,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "PKGBUILD を読み込めません"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "This PKGBUILD describes a splitted package."
+msgid "This PKGBUILD describes a split package."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -700,11 +701,13 @@ msgstr "Install or build missing dependencies for %s:"
 msgid "Dependencies have been installed before the failure"
 msgstr "Dependencies have been installed before the failure"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n Please run yaourt as a non-"
-"privileged user."
-msgstr "root でパッケージをビルドするのは危険です。\\n yaourt は特権のないユーザーで実行して下さい。"
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -758,9 +761,13 @@ msgstr "%s のビルドを続行しますか ? "
 msgid "Restart building %s ? "
 msgstr "%s のビルドを再開しますか ? "
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "%s ディレクトリはすでに存在します。置き換えますか ?"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr ""
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"

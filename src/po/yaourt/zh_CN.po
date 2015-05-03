@@ -1,20 +1,26 @@
-# Copyright (C) 2010-2012
+# yaourt default.po file
+# Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
-# Tuxce &lt;tuxce.net@gmail.com&gt;, 2010-2012
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
+# 
+# Translators:
+# dongfengweixiao <dongfengweixiao@gmail.com>, 2014-2015
 # Julien MISCHKOWITZ &lt;wain@archlinux.fr&gt;, 2010
-#
+# 张海, 2014
+# 张海, 2014
 msgid ""
 msgstr ""
-"Project-Id-Version: yaourt 1.0.1\n"
+"Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2013-12-30 13:39+0800\n"
-"Last-Translator: StarBrilliant <m13253@hotmail.com>\n"
-"Language-Team: https://www.transifex.net/projects/p/yaourt/\n"
+"PO-Revision-Date: 2015-05-03 15:27+0000\n"
+"Last-Translator: dongfengweixiao <dongfengweixiao@gmail.com>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/projects/p/yaourt/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.7\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: ../../pacdiffviewer.sh.in:41
 msgid "Delete all *.pac* found"
@@ -26,7 +32,7 @@ msgstr "保存软件包备份文件以供将来合并"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Use with backup to not output messages"
-msgstr ""
+msgstr "备份时处于安静模式"
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Sequential listing"
@@ -86,7 +92,9 @@ msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 msgstr "操作：[E]编辑，[R]替换，[S]忽略，[C]继续（默认），[A]中断？"
 
 #: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?"
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
 msgstr "操作：[E]编辑，[R]替换，[S]忽略，[M]合并，[C]继续（默认），[A]中断？"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
@@ -94,7 +102,8 @@ msgstr "操作：[E]编辑，[R]替换，[S]忽略，[M]合并，[C]继续（默
 msgid "ERSCA"
 msgstr "ERSCA"
 
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), [A]bort ?
+# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
+# [A]bort ?
 #: ../../pacdiffviewer.sh:193
 msgid "ERSCAM"
 msgstr "ERSCAM"
@@ -124,8 +133,8 @@ msgid "The following is %s help :"
 msgstr "以下是 %s 的帮助："
 
 #: ../../yaourt.sh.in:40
-msgid "Usage: yaourt &lt;operation&gt; [...]"
-msgstr "用法：yaourt &lt;操作&gt; [...]"
+msgid "Usage: yaourt <operation> [...]"
+msgstr "用法：yaourt <操作> [...]"
 
 #: ../../yaourt.sh.in:41
 msgid "operations:"
@@ -148,16 +157,16 @@ msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query}       [选项] [软件包]"
 
 #: ../../yaourt.sh.in:46
-msgid "yaourt {-R --remove}      [options] &lt;package(s)&gt;"
-msgstr "yaourt {-R --remove}      [选项] &lt; 软件包 &gt;"
+msgid "yaourt {-R --remove}      [options] <package(s)>"
+msgstr "yaourt {-R --remove} [选项] <软件包>"
 
 #: ../../yaourt.sh.in:47
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync}        [选项] [软件包]"
 
 #: ../../yaourt.sh.in:48
-msgid "yaourt {-U --upgrade}     [options] &lt;package(s)&gt;"
-msgstr "yaourt {-U --upgrade}     [选项] &lt; 软件包 &gt;"
+msgid "yaourt {-U --upgrade}     [options] <package(s)>"
+msgstr "yaourt {-U --upgrade} [选项] <软件包>"
 
 #: ../../yaourt.sh.in:49
 msgid "yaourt {-C --clean}       [options]"
@@ -168,8 +177,8 @@ msgid "yaourt {-B --backup}      [save directory|restore file]"
 msgstr "yaourt {-B --backup}      [保存路径|恢复文件]"
 
 #: ../../yaourt.sh.in:51
-msgid "yaourt {-G --getpkgbuild} [options] &lt;package(s)&gt;"
-msgstr "yaourt {-G --getpkgbuild} [选项] &lt; 软件包 &gt;"
+msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
+msgstr "yaourt {-G --getpkgbuild} [选项] <软件包>"
 
 #: ../../yaourt.sh.in:52
 msgid "yaourt {--stats}"
@@ -644,8 +653,8 @@ msgid "Unable to read PKGBUILD"
 msgstr "无法读取 PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
-msgid "This PKGBUILD describes a splitted package."
-msgstr "本 PKGBUILD 描述了支持拆分的包。"
+msgid "This PKGBUILD describes a split package."
+msgstr "此 PKGBUILD 为分包描述。"
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -695,13 +704,13 @@ msgstr "为 %s 安装或者是构建缺失的依赖关系："
 msgid "Dependencies have been installed before the failure"
 msgstr "出现故障前依赖已经安装"
 
-#: ../../lib/pkgbuild.sh.in:247
-msgid ""
-"Building package as root is dangerous.\\n"
-" Please run yaourt as a non-privileged user."
-msgstr ""
-"使用 root 用户构建软件包存在风险。\\n"
-"请使用非特权用户运行 yaourt 。"
+#: ../../lib/pkgbuild.sh.in:242
+msgid "This PKGBUILD provides \" %b \""
+msgstr "此 PKGBUILD 提供了 \" %b \""
+
+#: ../../lib/pkgbuild.sh.in:243
+msgid "Install only %s ?"
+msgstr "仅安装 %s ？"
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -755,9 +764,13 @@ msgstr "继续构建 %s ？"
 msgid "Restart building %s ? "
 msgstr "重新构建 %s ?"
 
-#: ../../lib/pkgbuild.sh.in:401
-msgid "%s directory already exist. Replace ?"
-msgstr "文件夹 %s 已经存在。覆盖？"
+#: ../../lib/pkgbuild.sh.in:399
+msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
+msgstr "文件夹 %s 已经存在。 [R]覆盖，[C]更改为 %s，[S]跳过？"
+
+#: ../../lib/pkgbuild.sh.in:400
+msgid "RCS"
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"
@@ -807,4 +820,3 @@ msgstr "（使用你喜欢的文本编辑器替换 vim）"
 #: ../../lib/util.sh.in:189
 msgid "Edit %s with: "
 msgstr "编辑 %s 的软件："
-
