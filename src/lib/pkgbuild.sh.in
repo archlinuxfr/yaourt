@@ -44,6 +44,7 @@ read_pkgbuild() {
 	local update=${1:-0}
 	local vars=(pkgbase pkgname pkgver pkgrel arch pkgdesc provides url \
 		groups license source install md5sums depends checkdepends makedepends conflicts \
+		depends_${CARCH} checkdepends_${CARCH} makedepends_${CARCH} \
 		replaces \
 		_svntrunk _svnmod _cvsroot_cvsmod _hgroot _hgrepo \
 		_darcsmod _darcstrunk _bzrtrunk _bzrmod _gitroot _gitname \
@@ -69,7 +70,8 @@ read_pkgbuild() {
 	rm "$pkgbuild_tmp"
 	eval $PKGBUILD_VARS
 	pkgbase=${pkgbase:-${pkgname[0]}}
-	((!Y_MAKEPKG_CHECKDEP)) || ((!YCHECK_FUNC)) && unset checkdepends
+
+	((!Y_MAKEPKG_CHECKDEP)) || ((!YCHECK_FUNC)) && unset checkdepends checkdepends_${CARCH}
 	PKGBUILD_VARS="$(declare -p ${vars[*]} 2>/dev/null | tr '\n' ';')"
 	if [[ ! "$pkgbase" ]]; then
 		echo $(gettext 'Unable to read PKGBUILD')
@@ -89,6 +91,12 @@ read_pkgbuild() {
 check_deps() {
 	local nodisplay=${1:-0} dep
 	eval $PKGBUILD_VARS
+
+	# Merge generic dependencies with architecture specific dependencies
+	eval depends+=(\"\${depends_${CARCH}[@]}\")
+	eval makedepends+=(\"\${makedepends_${CARCH}[@]}\")
+	eval checkdepends+=(\"\${checkdepends_${CARCH}[@]}\")
+
 	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}") )
 	PKGBUILD_DEPS_INSTALLED=()
 	for dep in "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}"
@@ -420,8 +428,16 @@ get_pkgbuild() {
 		fi
 		(($?)) && continue
 		if ((DEPENDS)); then
-			unset depends makedepends
-			. <( source_pkgbuild PKGBUILD depends makedepends checkdepends) || continue
+			unset depends makedepends checkdepends \
+			      depends_${CARCH} makedepends_${CARCH} checkdepends_${CARCH}
+			. <( source_pkgbuild PKGBUILD depends makedepends checkdepends \
+					depends_${CARCH} makedepends_${CARCH} checkdepends_${CARCH}) || continue
+
+			# Merge generic dependencies with architecture specific dependencies
+			eval depends+=(\"\${depends_${CARCH}[@]}\")
+			eval makedepends+=(\"\${makedepends_${CARCH}[@]}\")
+			eval checkdepends+=(\"\${checkdepends_${CARCH}[@]}\")
+
 			deps=("${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}")
 			((DEPENDS>1)) || deps=($(pacman_parse -T "${deps[@]}"))
 			[[ $deps ]] || continue
