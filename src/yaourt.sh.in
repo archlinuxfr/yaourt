@@ -416,7 +416,7 @@ case "$MAJOR" in
 		load_lib alpm_backup
 		yaourt_backup "${ARGS[0]}"
 		;;
-	
+
 	upgrade) yaourt_upgrade ;;
 	sync) yaourt_sync ;;
 	query) yaourt_query ;;
