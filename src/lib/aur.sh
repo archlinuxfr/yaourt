@@ -41,10 +41,16 @@ info_from_aur() {
 	curl_fetch -fis "$pkgbuild_url" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
+		depends_${CARCH} optdepends_${CARCH} \
 		conflicts replaces arch last_mod pkgdesc)
 	unset ${vars[*]}
 	local ${vars[*]}
 	. <( source_pkgbuild "$tmpfile" ${vars[*]} )
+
+	# Merge generic dependencies with architecture specific dependencies
+	eval depends+=(\"\${depends_${CARCH}[@]}\")
+	eval optdepends+=(\"\${optdepends_${CARCH}[@]}\")
+
 	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
 	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
