@@ -799,8 +799,8 @@ msgstr "Перервано..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "удь ласка, додайте $EDITOR до Ваших змінних середовища"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "удь ласка, додайте $VISUAL до Ваших змінних середовища"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

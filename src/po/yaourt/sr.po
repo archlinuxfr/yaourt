@@ -799,8 +799,8 @@ msgstr "Прекинуто…"
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Молимо додајте $EDITOR у ваше променљиве окружења"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Молимо додајте $VISUAL у ваше променљиве окружења"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

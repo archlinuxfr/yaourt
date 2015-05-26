@@ -804,8 +804,8 @@ msgstr "Anulada..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Añada $EDITOR a sus variables de entorno"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Añada $VISUAL a sus variables de entorno"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

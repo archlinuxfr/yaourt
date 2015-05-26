@@ -800,8 +800,8 @@ msgstr "Annulé..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Veuillez ajouter $EDITOR à vos variables d'environnement"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Veuillez ajouter $VISUAL à vos variables d'environnement"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

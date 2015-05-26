@@ -802,8 +802,8 @@ msgstr "放弃"
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "请将 $EDITOR 添加到环境变量"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "请将 $VISUAL 添加到环境变量"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

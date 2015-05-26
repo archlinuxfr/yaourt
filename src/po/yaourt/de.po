@@ -801,8 +801,8 @@ msgstr "Abgebrochen..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Bitte fügen Sie $EDITOR zu Ihren Umgebungsvariablen hinzu"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Bitte fügen Sie $VISUAL zu Ihren Umgebungsvariablen hinzu"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

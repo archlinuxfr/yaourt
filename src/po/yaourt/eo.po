@@ -799,8 +799,8 @@ msgstr "Interrompita..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Bonvolu aldoni $EDITOR al viaj ĉirkaŭaĵaj variabloj"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Bonvolu aldoni $VISUAL al viaj ĉirkaŭaĵaj variabloj"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

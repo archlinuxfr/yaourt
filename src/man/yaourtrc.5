@@ -59,7 +59,7 @@ command\-line options
 .sp -1
 .IP "  2." 4.2
 .\}
-user\(cqs configuration file ($XDG_CONFIG_HOME/yaourt/yaourtrc takes precedence)
+environment variables
 .RE
 .sp
 .RS 4
@@ -69,6 +69,17 @@ user\(cqs configuration file ($XDG_CONFIG_HOME/yaourt/yaourtrc takes precedence)
 .el \{\
 .sp -1
 .IP "  3." 4.2
+.\}
+user\(cqs configuration file ($XDG_CONFIG_HOME/yaourt/yaourtrc takes precedence)
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04' 4.\h'+01'\c
+.\}
+.el \{\
+.sp -1
+.IP "  4." 4.2
 .\}
 system\-wide configuration file (/etc/yaourtrc)
 .RE
@@ -94,9 +105,14 @@ Specify directory where to keep sources for devel packages\&.
 If set to 1, always search for new version of development (CVS/SVN/Git/Mercurial/other VCS) packages when upgrading (yaourt \-Su)\&.
 .RE
 .PP
+\fBVISUAL="$VISUAL"\fR
+.RS 4
+Define the editor to use (if the environment variable $VISUAL is not set) for PKGBUILD editing\&. Editor should not fork, for gvim: VISUAL="gvim \-\-nofork". Preferred over EDITOR.
+.RE
+.PP
 \fBEDITOR="$EDITOR"\fR
 .RS 4
-Define the editor to use (if the environment variable $EDITOR is not set) for PKGBUILD editing\&. Editor should not fork; ex. for gvim: EDITOR="gvim \-\-nofork"
+Define the editor to use (if the environment variables $VISUAL and $EDITOR and the yaourtrc option $VISUAL are not set) for PKGBUILD editing\&. Editor should not fork, for gvim: EDITOR="gvim \-\-nofork". Fallback option for VISUAL.
 .RE
 .PP
 \fBFORCE=0\fR
@@ -241,6 +257,19 @@ If set to 0, search for orphans\&.
 \fBTERMINALTITLE=1\fR
 .RS 4
 If set to 0, don\(cqt show the current yaourt\(cqs action in terminal title\&. By default, yaourt show messages like "Installing xxx from AUR"\&.
+.RE
+.SH "ENVIRONMENT VARIABLES"
+.PP
+Environment variables take precedence over any options in yaourtrc files.
+.PP
+\fBVISUAL\fR
+.RS 4
+Define the editor to use (if the environment variable $VISUAL is not set) for PKGBUILD editing. Editor should not fork, for gvim: VISUAL="gvim --nofork". Preferred over EDITOR.
+.RE
+.PP
+\fBEDITOR\fR
+.RS 4
+Define the editor to use (if the environment variable $VISUAL and the yaourtrc option $VISUAL are not set) for PKGBUILD editing. Editor should not fork, for gvim: EDITOR="gvim --nofork". Fallback option for VISUAL.
 .RE
 .SH "COMMAND OPTIONS"
 .PP
