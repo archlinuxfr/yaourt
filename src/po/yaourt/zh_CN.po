@@ -425,7 +425,7 @@ msgid "Packages out of date:"
 msgstr "过时的软件包："
 
 #: ../../lib/alpm_stats.sh:54
-msgid "Where %s packages seems no more used by any package:"
+msgid "Where %s packages seem to no longer be in use by any package:"
 msgstr "以下的软件包似乎不被任何软件包需要："
 
 #: ../../lib/alpm_stats.sh:57
