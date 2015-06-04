@@ -422,7 +422,7 @@ msgid "Packages out of date:"
 msgstr "Неажурни пакети:"
 
 #: ../../lib/alpm_stats.sh:54
-msgid "Where %s packages seems no more used by any package:"
+msgid "Where %s packages seem to no longer be in use by any package:"
 msgstr "Чини се да %s пакета више не користи ни један пакет:"
 
 #: ../../lib/alpm_stats.sh:57
