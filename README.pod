@@ -107,3 +107,6 @@ Use E<lt>dirE<gt> as temporary folder. default to '/tmp'
 
 See I<man yaourt>
 
+=head1 TRANSLATIONS
+
+Translations are handle on L<Transifex|https://www.transifex.com/projects/p/yaourt/>

@@ -7,7 +7,7 @@
 .\"    Source: Yaourt 1.5
 .\"  Language: English
 .\"
-.TH "YAOURT" "8" "2015\-04\-28" "Yaourt 1\&.6" "Yaourt Manual"
+.TH "YAOURT" "8" "2015\-04\-28" "Yaourt 1\&.5" "Yaourt Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -205,7 +205,7 @@ to ignore \fBPKGBUILD\fR(5) \fIarch\fR field\&.
 .PP
 \fB\-\-aur\-url <AUR url>\fR
 .RS 4
-Specify a custom AUR url (default to https://aur.archlinux.org)\&.
+Specify a custom AUR url (default to http://aur.archlinux.org)\&.
 .RE
 .PP
 \fB\-\-conflicts\fR
@@ -295,7 +295,7 @@ Set a user defined colors\&. (see
 See the yaourt website at http://archlinux\&.fr/yaourt\-en/ for more info\&.
 .SH "BUGS"
 .sp
-https://github\&.com/archlinuxfr/yaourt
+http://bugs\&.archlinux\&.fr
 .SH "AUTHORS"
 .sp
 Julien MISCHKOWITZ <wain@archlinux\&.fr>
@@ -303,5 +303,3 @@ Julien MISCHKOWITZ <wain@archlinux\&.fr>
 Current maintainers:
 .sp
 Tuxce <tuxce\&.net@gmail\&.com>
-.sp
-Skunnyk <skunnyk@archlinux\&.fr>

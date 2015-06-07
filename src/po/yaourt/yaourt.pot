@@ -6,8 +6,8 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: yaourt 1.5\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
+"Project-Id-Version: yaourt 1.6\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
 "PO-Revision-Date: 2014-12-29 20:28+0200\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
