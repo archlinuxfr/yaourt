@@ -219,7 +219,7 @@ sysupgrade() {
 	else
 		pkg_up=("${ARGS[@]}")
 	fi
-	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFRIM=1; }
+	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFIRM=1; }
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 
 	if ((DETAILUPGRADE)); then
