@@ -37,7 +37,7 @@ info_from_aur() {
 	read id votes outofdate maintainer pkgbuild_url < <(pkgquery -Aif '%i %w %o %m %u' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
-	pkgbuild_url="${pkgbuild_url%/*}/PKGBUILD"
+	pkgbuild_url="${pkgbuild_url%/snapshot/*}/plain/PKGBUILD?h=$pkgname"
 	curl_fetch -fis "$pkgbuild_url" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
