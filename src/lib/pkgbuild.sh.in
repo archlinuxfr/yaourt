@@ -108,11 +108,24 @@ check_deps() {
 	(( nodisplay )) && return 0
 	msg "$(_gettext '%s dependencies:' "$pkgbase")"
 	for dep in "${PKGBUILD_DEPS_INSTALLED[@]}"; do
-		echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
+		if $(in_array "$dep" "${makedepends[@]}"); then
+                    echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)') [make]"
+                else
+                    echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
+                fi
 	done
 	for dep in "${PKGBUILD_DEPS[@]}"; do
-		isavailable $dep && echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
-		echo -e " - $CYELLOW$dep$C0" $(gettext '(building from AUR)')
+		if isavailable $dep; then
+                    if $(in_array "$dep" "${makedepends[@]}"); then
+                        echo -e " - $CBLUE$dep$C0 $(gettext '(package found)') [make]" && continue
+                    else
+                        echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
+                    fi
+                elif $(in_array "$dep" "${makedepends[@]}"); then
+                    echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)') [make]"
+                else
+                    echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)')"
+                fi
 	done
 	echo
 	return 0
