@@ -14,7 +14,14 @@ aur_get_pkgbuild() {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
 	local pkgurl=$2
-	if ((AURUSEGIT)); then
+	local local_aurusegit=AURUSEGIT
+
+	if ((AURUSEGIT)) && [[ ! $(which git >& /dev/null) ]]; then
+		warning $(_gettext 'AURUSEGIT is set but git command is not found. Falling back to tarballs.')
+		local_aurusegit=0
+	fi
+
+	if ((local_aurusegit)); then
 		local git_repo_url=$(pkgquery -Aif "%g" "$pkg")
 		# We're already in "$pkg"/ here, so clone to the current directory
 		git clone "$git_repo_url" . || return 1
