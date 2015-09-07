@@ -22,7 +22,7 @@ aur_get_pkgbuild() {
 	fi
 
 	if ((local_aurusegit)); then
-		local git_repo_url=$(pkgquery -Aif "%g" "$pkg")
+		local git_repo_url=$(pkgquery -Aif "%G" "$pkg")
 		# We're already in "$pkg"/ here, so clone to the current directory
 		git clone "$git_repo_url" . || return 1
 	else
