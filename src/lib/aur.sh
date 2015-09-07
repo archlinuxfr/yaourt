@@ -17,7 +17,7 @@ aur_get_pkgbuild() {
 	if ((AURUSEGIT)); then
 		local git_repo_url=$(pkgquery -Aif "%g" "$pkg")
 		# We're already in "$pkg"/ here, so clone to the current directory
-		git clone "$git_repo_url" .
+		git clone "$git_repo_url" . || return 1
 	else
 		[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
 		if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
