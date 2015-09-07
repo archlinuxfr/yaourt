@@ -14,13 +14,26 @@ aur_get_pkgbuild() {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
 	local pkgurl=$2
-	[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
-	if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
-		error $(_gettext '%s not found in AUR.' "$pkg");
-		return 1;
+	local local_aurusegit=AURUSEGIT
+
+	if ((AURUSEGIT)) && [[ ! $(which git >& /dev/null) ]]; then
+		warning $(_gettext 'AURUSEGIT is set but git command is not found. Falling back to tarballs.')
+		local_aurusegit=0
 	fi
-	bsdtar --strip-components 1 -xvf "$pkg.tar.gz"
-	rm "$pkg.tar.gz"
+
+	if ((local_aurusegit)); then
+		local git_repo_url=$(pkgquery -Aif "%g" "$pkg")
+		# We're already in "$pkg"/ here, so clone to the current directory
+		git clone "$git_repo_url" . || return 1
+	else
+		[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
+		if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
+			error $(_gettext '%s not found in AUR.' "$pkg");
+			return 1;
+		fi
+		bsdtar --strip-components 1 -xvf "$pkg.tar.gz"
+		rm "$pkg.tar.gz"
+	fi
 }
 
 aur_show_info() {
