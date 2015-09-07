@@ -13,26 +13,20 @@ load_lib pkgbuild
 aur_get_pkgbuild() {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
+	local pkgurl=$2
 	if ((AURUSEGIT)); then
 		local git_repo_url=$(pkgquery -Aif "%g" "$pkg")
 		# We're already in "$pkg"/ here, so clone to the current directory
 		git clone "$git_repo_url" .
 	else
-		aur_get_pkgbuild_from_tarball "$pkg"
+		[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
+		if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
+			error $(_gettext '%s not found in AUR.' "$pkg");
+			return 1;
+		fi
+		bsdtar --strip-components 1 -xvf "$pkg.tar.gz"
+		rm "$pkg.tar.gz"
 	fi
-}
-
-aur_get_pkgbuild_from_tarball() {
-	[[ $1 ]] || return 1
-	local pkg=${1#*/}
-	local pkgurl=$2
-	[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
-	if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
-		error $(_gettext '%s not found in AUR.' "$pkg");
-		return 1;
-	fi
-	bsdtar --strip-components 1 -xvf "$pkg.tar.gz"
-	rm "$pkg.tar.gz"
 }
 
 aur_show_info() {
@@ -180,7 +174,7 @@ install_from_aur() {
 	init_build_dir "$YAOURTTMPDIR/aur-${pkginfo[0]}" || return 1
 	echo
 	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "${pkginfo[0]}")
-	aur_get_pkgbuild_from_tarball "${pkginfo[0]}" "${pkginfo[5]}" ||
+	aur_get_pkgbuild "${pkginfo[0]}" "${pkginfo[5]}" ||
 	  { cd "$cwd"; return 1; }
 	aur_comments ${pkginfo[0]}
 	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0 ($(date -u -d "@${pkginfo[8]}" "+%F %H:%M"))"
