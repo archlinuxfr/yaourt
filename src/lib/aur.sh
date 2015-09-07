@@ -14,9 +14,9 @@ aur_get_pkgbuild() {
 	[[ $1 ]] || return 1
 	local pkg=${1#*/}
 	local pkgurl=$2
-	local local_aurusegit=AURUSEGIT
+	local local_aurusegit=$AURUSEGIT
 
-	if ((AURUSEGIT)) && [[ ! $(which git >& /dev/null) ]]; then
+	if ((AURUSEGIT)) && ! command -v git >/dev/null 2>&1; then
 		warning $(_gettext 'AURUSEGIT is set but git command is not found. Falling back to tarballs.')
 		local_aurusegit=0
 	fi
