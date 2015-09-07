@@ -13,9 +13,9 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-10 03:58+0000\n"
+"PO-Revision-Date: 2015-06-09 19:47+0000\n"
 "Last-Translator: Pablo Roberto Francisco Lezaeta Reyes <prflr88@gmail.com>\n"
-"Language-Team: Spanish (Latin America) (http://www.transifex.com/projects/p/yaourt/language/es_419/)\n"
+"Language-Team: Spanish (Latin America) (http://www.transifex.com/archlinuxfr/yaourt/language/es_419/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -28,7 +28,7 @@ msgstr "Eliminar todos los archivos *.pac* que se encuentren"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Save all packages backup files for a later merge"
-msgstr "Guardar todas las copias de respaldo de los paquetes para una futura unión"
+msgstr "Guardar todas las copias de seguridad de los paquetes para una futura unión"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Use with backup to not output messages"
@@ -194,15 +194,15 @@ msgstr "consultar los paquetes"
 
 #: ../../yaourt.sh.in:112
 msgid "Following packages have not been installed:"
-msgstr "No se han instalado los paquetes siguientes:"
+msgstr "No se han instalado los siguientes paquetes:"
 
 #: ../../yaourt.sh.in:125
 msgid "listing all packages in repo(s)"
-msgstr "listado de todos los paquetes en lo(s) repositorio(s)"
+msgstr "listado de todos los paquetes en el/los repositorio(s)"
 
 #: ../../yaourt.sh.in:126
 msgid "Listing all packages in repo(s)"
-msgstr "Listado de todos los paquetes en lo(s) repositorio(s)"
+msgstr "Listado de todos los paquetes en el/los repositorio(s)"
 
 #: ../../yaourt.sh.in:128
 msgid "show groups"
@@ -218,7 +218,7 @@ msgstr "No se puede leer el archivo %s"
 
 #: ../../yaourt.sh.in:192
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Introduzca el número de los paquetes desea instalar (ejemplos: 1 2 3 ó 1-3)"
+msgstr "Introduzca el número de los paquetes desea instalar (ejemplos: 1 2 3 o 1-3)"
 
 #: ../../yaourt.sh.in:363
 msgid "get PKGBUILD"
@@ -314,27 +314,27 @@ msgstr "Objetivos"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Guardando la base de datos de «pacman» en %s"
+msgstr "Guardando la base de datos de pacman en %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "Base de datos de «pacman» guardada con éxito en %s"
+msgstr "Base de datos de pacman guardada con éxito en %s"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Analizando la copia de respaldo"
+msgstr "Analizando la copia de seguridad"
 
 #: ../../lib/alpm_backup.sh:29
 msgid "%s is not a valid alpm database backup"
-msgstr "%s no es una copia de respaldo de base de datos «ALPM» válida"
+msgstr "%s no es una copia de seguridad de la base de datos ALPM válida"
 
 #: ../../lib/alpm_backup.sh:44
 msgid "New packages installed since backup:"
-msgstr "Paquetes nuevos instalados desde la copia de respaldo:"
+msgstr "Paquetes nuevos instalados desde la última copia de seguridad:"
 
 #: ../../lib/alpm_backup.sh:47
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Paquetes eliminados o actualizados desde la copia de respaldo:"
+msgstr "Paquetes eliminados o actualizados desde la última copia de seguridad:"
 
 #: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
 msgid "Warning! Do you want to restore this backup ?"
@@ -346,7 +346,7 @@ msgstr "(se guardará la base de datos local en %s)"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Si quiere restaurar esta copia de respaldo teclee «sí»"
+msgstr "Si quiere restaurar esta copia de seguridad teclee «sí»"
 
 #: ../../lib/alpm_backup.sh:55
 msgid "yes"
@@ -354,11 +354,11 @@ msgstr "sí"
 
 #: ../../lib/alpm_backup.sh:56
 msgid "Deleting pacman DB"
-msgstr "Eliminando la base de datos de «pacman»"
+msgstr "Eliminando la base de datos de pacman"
 
 #: ../../lib/alpm_backup.sh:58
 msgid "Copying backup"
-msgstr "Copiando la copia de respaldo"
+msgstr "Copiando la copia de seguridad"
 
 #: ../../lib/alpm_backup.sh:61
 msgid "Testing the new database"
@@ -425,7 +425,7 @@ msgid "Packages out of date:"
 msgstr "Paquetes desactualizados:"
 
 #: ../../lib/alpm_stats.sh:54
-msgid "Where %s packages seem to no longer be in use by any package:"
+msgid "Where %s packages seems no more used by any package:"
 msgstr "Hay %s paquete(s) que no parece(n) ser usado(s) por otro(s) paquete(s):"
 
 #: ../../lib/alpm_stats.sh:57
@@ -446,7 +446,7 @@ msgstr "Número de repositorios configurados:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Paquetes por repositorio (ordenados por prioridad de «pacman»)"
+msgstr "Paquetes por repositorio (ordenados por prioridad de pacman)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
@@ -454,7 +454,7 @@ msgstr "otros"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr "son paquetes de una compilación local o del «AUR», sin soporte"
+msgstr "son paquetes de una compilación local o del AUR, sin soporte"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
@@ -482,7 +482,7 @@ msgstr "Espacio utilizado en la caché por las fuentes descargadas:"
 
 #: ../../lib/aur.sh:18 ../../lib/aur.sh:40
 msgid "%s not found in AUR."
-msgstr "No se encuentra %s en «AUR»"
+msgstr "No se encuentra %s en AUR"
 
 #: ../../lib/aur.sh:37
 msgid "Yes"
@@ -510,7 +510,7 @@ msgstr "Dirección URL"
 
 #: ../../lib/aur.sh:49
 msgid "AUR URL        "
-msgstr "Dirección URL en el «AUR»"
+msgstr "Dirección URL en el AUR"
 
 #: ../../lib/aur.sh:50
 msgid "Licenses       "
@@ -578,7 +578,7 @@ msgstr "¿Quiere votar por %s? "
 
 #: ../../lib/aur.sh:136
 msgid "Installing %s from AUR"
-msgstr "Instalando %s desde el «AUR»"
+msgstr "Instalando %s desde el AUR"
 
 #: ../../lib/aur.sh:140
 msgid "Downloading %s PKGBUILD from AUR..."
@@ -594,7 +594,7 @@ msgstr "(Paquete sin soporte: ¡podría ser peligroso!)"
 
 #: ../../lib/aur.sh:166
 msgid "not found on AUR"
-msgstr "no se encuentra en «AUR»"
+msgstr "no se encuentra en AUR"
 
 #: ../../lib/aur.sh:173
 msgid "up to date "
@@ -630,7 +630,7 @@ msgstr "ERROR: "
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Paquetes que ya no los requiere ningún paquete instalado:"
+msgstr "Paquetes que ya no son requeridos por ningún otro paquete instalado:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
@@ -638,7 +638,7 @@ msgstr "Buscando los archivos de configuración originales para guardar"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "«Pacman» está en uso, espere por favor."
+msgstr "Pacman está en uso, espere por favor."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
@@ -674,7 +674,7 @@ msgstr "(paquete encontrado)"
 
 #: ../../lib/pkgbuild.sh.in:100
 msgid "(building from AUR)"
-msgstr "(compilando desde el «AUR»)"
+msgstr "(compilando desde el AUR)"
 
 #: ../../lib/pkgbuild.sh.in:135
 msgid "%s conflicts:"
@@ -710,11 +710,11 @@ msgstr "Este .PKGBUILD provee «%b»"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Install only %s ?"
-msgstr "¿Solo instalar %s?"
+msgstr "¿Solamente instalar %s?"
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
-msgstr "«Makepkg» no ha podido compilar %s."
+msgstr "Makepkg no ha podido compilar %s."
 
 #: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
 msgid "Exporting %s to %s directory"
@@ -738,7 +738,7 @@ msgstr "Pulse cualquier tecla para continuar"
 
 #: ../../lib/pkgbuild.sh.in:292
 msgid "namcap is not installed"
-msgstr "«namcap» no está instalado"
+msgstr "Namcap no está instalado"
 
 #: ../../lib/pkgbuild.sh.in:306
 msgid "Your packages are saved in %s"
@@ -758,7 +758,7 @@ msgstr "No se puede crear el directorio %s."
 
 #: ../../lib/pkgbuild.sh.in:347
 msgid "Continue building %s ? "
-msgstr "Continuar compilando %s? "
+msgstr "¿Continuar compilando %s? "
 
 #: ../../lib/pkgbuild.sh.in:353
 msgid "Restart building %s ? "

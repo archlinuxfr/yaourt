@@ -12,9 +12,9 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-09 13:11+0000\n"
+"PO-Revision-Date: 2015-07-12 23:22+0000\n"
 "Last-Translator: J5lx <j5lx@fmail.co.uk>\n"
-"Language-Team: German (http://www.transifex.com/projects/p/yaourt/language/de/)\n"
+"Language-Team: German (http://www.transifex.com/archlinuxfr/yaourt/language/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -23,19 +23,19 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:41
 msgid "Delete all *.pac* found"
-msgstr "Lösche alle gefundenen *.pac*-Dateien"
+msgstr "Entferntt alle gefundenen *.pac*-Dateien"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Save all packages backup files for a later merge"
-msgstr "Speichere alle Sicherungsdateien von Paketen für eine spätere Zusammenführung"
+msgstr "Speichert Sicherungsdateien aller Pakete für eine spätere Zusammenführung"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Use with backup to not output messages"
-msgstr "Benutzung mit Sicherungen, um keine Nachrichten auszugeben"
+msgstr "Bei Sicherung benutzen, um keine Meldungen auszugeben"
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Sequential listing"
-msgstr "Aufeinanderfolgende Auflistung"
+msgstr "Fortlaufendes Auflisten"
 
 #: ../../pacdiffviewer.sh.in:45
 msgid "Display diff"
@@ -47,7 +47,7 @@ msgstr "Diese Hilfe"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "Show version"
-msgstr "Zeige die Version an"
+msgstr "Zeigt die Version an"
 
 #: ../../pacdiffviewer.sh.in:69
 msgid "saving"
@@ -68,15 +68,15 @@ msgstr "Für die folgenden Dateien existiert keine Originalversion."
 
 #: ../../pacdiffviewer.sh.in:159
 msgid "Do you want to delete these files ?"
-msgstr "Möchten Sie diese Dateien löschen?"
+msgstr "Möchten Sie diese Dateien entfernen?"
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "(S: no confirm)"
-msgstr "(A: keine Bestätigung)"
+msgstr "(S: keine Bestätigung)"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "YNS"
-msgstr "JNA"
+msgstr "JNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -88,28 +88,28 @@ msgstr "**automatische Zusammenführung**"
 
 #: ../../pacdiffviewer.sh:192
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Maßnahme: [B]earbeiten, [E]rsetzen, [U]nterdrücken, [F]ortfahren (Standard), [A]bbrechen?"
+msgstr "Aktion: [B]earbeiten, [E]rsetzen, [I]gnorieren, [F]ortfahren (Standard), [A]bbrechen?"
 
 #: ../../pacdiffviewer.sh:192
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr "Maßnahme: [B]earbeiten, [E]rsetzen, [U]nterdrücken, [Z]usammenführen, [F]ortfahren (Standard), [A]bbrechen?"
+msgstr "Aktion: [B]earbeiten, [E]rsetzen, [I]gnorieren, [Z]usammenführen, [F]ortfahren (Standard), [A]bbrechen?"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
 #: ../../pacdiffviewer.sh:193
 msgid "ERSCA"
-msgstr "BEUFA"
+msgstr "BEIFA"
 
 # Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
 # [A]bort ?
 #: ../../pacdiffviewer.sh:193
 msgid "ERSCAM"
-msgstr "BEUFAZ"
+msgstr "BEIFAZ"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
-msgstr "Ausbesserung:"
+msgstr "Patch:"
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
@@ -117,7 +117,7 @@ msgstr "Anwenden?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr "Ausbesserung gab einen Fehler zurück!"
+msgstr "patch gab einen Fehler zurück!"
 
 #: ../../pacdiffviewer.sh.in:227
 msgid "Enter n° : "
@@ -129,7 +129,7 @@ msgstr "Yaourt unterstützt --help nicht für bestimmte Optionen."
 
 #: ../../yaourt.sh.in:35
 msgid "The following is %s help :"
-msgstr "Folgendes ist die %s-Hilfe:"
+msgstr "Es folgt die Hilfe von %s:"
 
 #: ../../yaourt.sh.in:40
 msgid "Usage: yaourt <operation> [...]"
@@ -141,7 +141,7 @@ msgstr "Operationen:"
 
 #: ../../yaourt.sh.in:42
 msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (Suchmuster | Paketdatei)"
+msgstr "yaourt (Suchmuster|Paketdatei)"
 
 #: ../../yaourt.sh.in:43
 msgid "yaourt {-h --help}"
@@ -245,7 +245,7 @@ msgstr "Installiere %s aus den Quellen"
 
 #: ../../lib/abs.sh.in:96
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "Erhalte PKGBUILD und lokale Quellen"
+msgstr "Empfange PKGBUILD und lokale Quellen..."
 
 #: ../../lib/abs.sh.in:133
 msgid "Foreign packages: "
@@ -261,11 +261,11 @@ msgstr "Mit Aktualisierung fortfahren?"
 
 #: ../../lib/abs.sh.in:181
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr "[D]etails betrachten [M]anuell Pakete auswählen"
+msgstr "[P]aketdetails anzeigen [M]anuell Pakete auswählen"
 
 #: ../../lib/abs.sh.in:182
 msgid "YNVM"
-msgstr "JNDM"
+msgstr "JNPM"
 
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
@@ -273,7 +273,7 @@ msgstr "Mit Aktualisierung fortfahren?"
 
 #: ../../lib/abs.sh.in:251
 msgid "Source targets"
-msgstr "Ziele der Quellen"
+msgstr "Aus Quellen erstellte Ziele"
 
 #: ../../lib/abs.sh.in:258
 msgid "AUR targets"
@@ -309,7 +309,7 @@ msgstr "Aktualisiere SVN-/CVS-/HG-/GIT-Paket"
 
 #: ../../lib/abs.sh.in:380
 msgid "Targets"
-msgstr "Ziele:"
+msgstr "Ziele"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -345,11 +345,11 @@ msgstr "(lokale Datenbank wird in %s gespeichert)"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Wenn Sie diese Sicherung wiederherstellen möchten, tippen Sie „Ja“"
+msgstr "Wenn Sie diese Sicherung wiederherstellen möchten, tippen Sie „ja“"
 
 #: ../../lib/alpm_backup.sh:55
 msgid "yes"
-msgstr "Ja"
+msgstr "ja"
 
 #: ../../lib/alpm_backup.sh:56
 msgid "Deleting pacman DB"
@@ -365,7 +365,7 @@ msgstr "Teste die neue Datenbank"
 
 #: ../../lib/alpm_backup.sh:64
 msgid "Your backup is not successfully restored"
-msgstr "Ihre Sicherung konnte nicht erfolgreich wiederhergestellt werden"
+msgstr "Ihre Sicherung wurde nicht erfolgreich wiederhergestellt"
 
 #: ../../lib/alpm_backup.sh:66
 msgid "Your backup has been successfully restored"
@@ -377,7 +377,7 @@ msgstr "Pakete gefunden"
 
 #: ../../lib/alpm_backup.sh:69
 msgid "(old database is saved in %s)"
-msgstr "(alte Datenbank gespeichert in %s)"
+msgstr "(alte Datenbank wurde gespeichert in %s)"
 
 #: ../../lib/alpm_backup.sh:81
 msgid "wrong argument"
@@ -401,7 +401,7 @@ msgstr "%s bereitstellende Pakete:"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "Möchten Sie diese Pakete entfernen (mit -Rcs Option)?"
+msgstr "Möchten Sie diese Pakete entfernen (mit den Optionen -Rcs)?"
 
 #: ../../lib/alpm_query.sh:49
 msgid "YN"
@@ -413,7 +413,7 @@ msgstr "Insgesamt installierte Pakete:"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Explizit installierte Pakete:"
+msgstr "Ausdrücklich installierte Pakete:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
@@ -424,12 +424,12 @@ msgid "Packages out of date:"
 msgstr "Veraltete Pakete:"
 
 #: ../../lib/alpm_stats.sh:54
-msgid "Where %s packages seem to no longer be in use by any package:"
+msgid "Where %s packages seems no more used by any package:"
 msgstr "Wovon %s Pakete von keinem anderen mehr benötigt zu sein scheinen:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Gehaltene Pakete:"
+msgstr "Zurückgehaltene Pakete:"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
@@ -445,11 +445,11 @@ msgstr "Anzahl konfigurierter Repositories:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Pakete in den Repositories (geordnet nach Pacmans Ordnung)"
+msgstr "Pakete nach Repositories (geordnet nach Pacmans Ordnung)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr "Andere"
+msgstr "andere"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
@@ -469,15 +469,15 @@ msgstr "Von Paketen benutzter theoretischer Speicherplatz:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr "Real von Paketen verbrauchter Speicherplatz:"
+msgstr "Tatsächlich von Paketen verbrauchter Speicherplatz:"
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr "Von in den Zwischenspeicher heruntergeladenen Paketen verbrauchter Speicherplatz (Zwischenspeicherverzeichnis):"
+msgstr "Von in den Paketpuffer (CacheDir) heruntergeladenen Paketen verbrauchter Speicherplatz:"
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr "Von in den Zwischenspeicher heruntergeladenen Quellen verbrauchter Speicherplatz:"
+msgstr "Von in den Paketpuffer heruntergeladenen Quellen verbrauchter Speicherplatz:"
 
 #: ../../lib/aur.sh:18 ../../lib/aur.sh:40
 msgid "%s not found in AUR."
@@ -509,7 +509,7 @@ msgstr "URL"
 
 #: ../../lib/aur.sh:49
 msgid "AUR URL        "
-msgstr "AUR URL"
+msgstr "AUR-URL"
 
 #: ../../lib/aur.sh:50
 msgid "Licenses       "
@@ -541,7 +541,7 @@ msgstr "Optionale Abhängigkeiten"
 
 #: ../../lib/aur.sh:57
 msgid "Conflicts With "
-msgstr "Konflikt mit"
+msgstr "In Konflikt mit"
 
 #: ../../lib/aur.sh:58
 msgid "Replaces       "
@@ -581,7 +581,7 @@ msgstr "Installiere %s aus dem AUR"
 
 #: ../../lib/aur.sh:140
 msgid "Downloading %s PKGBUILD from AUR..."
-msgstr "Lade %s-PKGBUILD aus dem AUR herunter..."
+msgstr "Lade PKGBUILD von %s aus dem AUR herunter..."
 
 #: ../../lib/aur.sh:145
 msgid "This package is orphaned"
@@ -637,7 +637,7 @@ msgstr "Suche nach Original-Konfigurationsdateien zum Speichern"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman läuft bereits, bitte warten Sie."
+msgstr "Pacman ist zur Zeit in Verwendung, bitte warten Sie."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
@@ -705,7 +705,7 @@ msgstr "Vor dem Fehlschlag wurden Abhängigkeiten installiert"
 
 #: ../../lib/pkgbuild.sh.in:242
 msgid "This PKGBUILD provides \" %b \""
-msgstr "Dieses PKGBUILD stellt \" %b \" bereit"
+msgstr "Dieses PKGBUILD stellt \"%b\" bereit"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Install only %s ?"
@@ -725,7 +725,7 @@ msgstr "Mit Installation von %s fortfahren?"
 
 #: ../../lib/pkgbuild.sh.in:277
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr "[I]nhalte des Pakets ansehen [P]rüfen des Pakets mit Namcap"
+msgstr "[I]nhalte des Pakets ansehen [P]aket mit Namcap überprüfen"
 
 #: ../../lib/pkgbuild.sh.in:278
 msgid "YNVC"
@@ -741,7 +741,7 @@ msgstr "Namcap ist nicht installiert"
 
 #: ../../lib/pkgbuild.sh.in:306
 msgid "Your packages are saved in %s"
-msgstr "Ihre Pakete wurden gespeichert in %s"
+msgstr "Ihre Pakete wurden in %s gespeichert"
 
 #: ../../lib/pkgbuild.sh.in:307
 msgid "Unable to copy packages to %s directory"
@@ -749,7 +749,7 @@ msgstr "Konnte Pakete nicht nach Verzeichnis %s kopieren"
 
 #: ../../lib/pkgbuild.sh.in:317
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "Konnte Verzeichnis %s nicht löschen. Bitte entfernen Sie es mittels Root-Rechten."
+msgstr "Konnte Verzeichnis %s nicht entfernen. Bitte entfernen Sie es mithilfe von root-Rechten."
 
 #: ../../lib/pkgbuild.sh.in:319
 msgid "Unable to create directory %s."
@@ -765,15 +765,15 @@ msgstr "Erstellen von %s neu starten?"
 
 #: ../../lib/pkgbuild.sh.in:399
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "Verzeichnis %s existiert bereits. [E]rsetzen, [A]bändern zu %s, A[u]slassen?"
+msgstr "Verzeichnis %s existiert bereits. [E]rsetzen, [Z]u %s abändern, [A]uslassen?"
 
 #: ../../lib/pkgbuild.sh.in:400
 msgid "RCS"
-msgstr "EAU"
+msgstr "EZA"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"
-msgstr "Lade %s-Quellen herunter"
+msgstr "Lade Quellen von %s herunter"
 
 #: ../../lib/util.sh.in:134
 msgid "is not a directory"
@@ -801,8 +801,8 @@ msgstr "Abgebrochen..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $VISUAL to your environment variables"
-msgstr "Bitte fügen Sie $VISUAL zu Ihren Umgebungsvariablen hinzu"
+msgid "Please add $EDITOR to your environment variables"
+msgstr "Bitte fügen Sie $EDITOR zu Ihren Umgebungsvariablen hinzu"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"

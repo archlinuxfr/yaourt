@@ -8,14 +8,15 @@
 # Dmitry Korzhevin <dkorzhevin@lsupport.net>, 2012
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
 # Petr Zhizhin <piter.zh@gmail.com>, 2014
+# Vladislav <nuklea@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
 "POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-09 09:50+0000\n"
-"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/projects/p/yaourt/language/ru/)\n"
+"PO-Revision-Date: 2015-06-24 08:20+0000\n"
+"Last-Translator: Vladislav <nuklea@gmail.com>\n"
+"Language-Team: Russian (http://www.transifex.com/archlinuxfr/yaourt/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -382,7 +383,7 @@ msgstr "(старая база данных сохранена в %s)"
 
 #: ../../lib/alpm_backup.sh:81
 msgid "wrong argument"
-msgstr "неверный аргемент"
+msgstr "неверный аргумент"
 
 #: ../../lib/alpm_query.sh:34
 msgid "Packages which depend on %s:"
@@ -425,7 +426,7 @@ msgid "Packages out of date:"
 msgstr "Пакеты, требующие обновления:"
 
 #: ../../lib/alpm_stats.sh:54
-msgid "Where %s packages seem to no longer be in use by any package:"
+msgid "Where %s packages seems no more used by any package:"
 msgstr "Где, вероятно, %s пакетов не используется более ни одним пакетом:"
 
 #: ../../lib/alpm_stats.sh:57
@@ -606,7 +607,7 @@ msgstr "помечен как требующий обновления"
 
 #: ../../lib/aur.sh:183
 msgid "Orphan"
-msgstr "Возможно не нужен"
+msgstr "Нет ответственного"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
@@ -638,7 +639,7 @@ msgstr "Поиск оригинального файла конфигураци�
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman используется в данный момент, пожалуйста подождите."
+msgstr "Pacman используется в данный момент, пожалуйста, подождите."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
@@ -654,7 +655,7 @@ msgstr "Невозможно прочитать PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:72
 msgid "This PKGBUILD describes a split package."
-msgstr ""
+msgstr "Данный PKGBUILD описывает разделенный пакет."
 
 #: ../../lib/pkgbuild.sh.in:73
 msgid "Specific package options are unknown"
@@ -662,7 +663,7 @@ msgstr "Неизвестные специфические параметры п�
 
 #: ../../lib/pkgbuild.sh.in:94
 msgid "%s dependencies:"
-msgstr "завистмости %s:"
+msgstr "зависимости %s:"
 
 #: ../../lib/pkgbuild.sh.in:96
 msgid "(already installed)"
@@ -706,11 +707,11 @@ msgstr "Зависимости были установлены до сбоя"
 
 #: ../../lib/pkgbuild.sh.in:242
 msgid "This PKGBUILD provides \" %b \""
-msgstr ""
+msgstr "Данный PKGBUILD обеспечивает  \" %b \""
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Install only %s ?"
-msgstr ""
+msgstr "Установить только %s ?"
 
 #: ../../lib/pkgbuild.sh.in:253
 msgid "Makepkg was unable to build %s."
@@ -750,7 +751,7 @@ msgstr "Невозможно скопировать пакеты в директ
 
 #: ../../lib/pkgbuild.sh.in:317
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "Невозможно удалить директорию %s. Пожалуйста удалите её, используя привилегии root"
+msgstr "Невозможно удалить директорию %s. Пожалуйста, удалите её, используя привилегии root"
 
 #: ../../lib/pkgbuild.sh.in:319
 msgid "Unable to create directory %s."
@@ -766,11 +767,11 @@ msgstr "Перезапустить сборку %s ? "
 
 #: ../../lib/pkgbuild.sh.in:399
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr ""
+msgstr "Директория %s уже существует. [R]заменить, [C]изменить на %s, [S]пропустить ?"
 
 #: ../../lib/pkgbuild.sh.in:400
 msgid "RCS"
-msgstr ""
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:407
 msgid "Download %s sources"
@@ -802,8 +803,8 @@ msgstr "Отменено..."
 
 #: ../../lib/util.sh.in:184
 #, sh-format
-msgid "Please add $VISUAL to your environment variables"
-msgstr "Пожалуйста добавьте $VISUAL к переменным окружения"
+msgid "Please add $EDITOR to your environment variables"
+msgstr "Пожалуйста, добавьте $EDITOR к переменным окружения"
 
 #: ../../lib/util.sh.in:185
 msgid "for example:"
