@@ -408,6 +408,7 @@ case "$MAJOR" in
 		title "$(gettext 'get PKGBUILD')"
 		load_lib pkgbuild
 		get_pkgbuild "${ARGS[@]}"
+		if [[ $? -ne 0 ]]; then exit 1; fi
 		;;
 
 	backup)
