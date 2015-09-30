@@ -419,7 +419,7 @@ get_pkgbuild() {
 	for ((i=0; i<${#pkgs[@]}; i++)); do
 		cd "$cwd"
 		read repo pkg arch pkgver < <(pkgquery -1ASif '%r %n %a %v' "${pkgs[$i]}")
-		if [[ $? -ne 0 ]]; then return 1; fi
+		[[ $? -ne 0 ]] && return 1
 		[[ ! $pkg ]] && continue
 		[[ $repo = "aur" ]] && pkgbase=$pkg || pkgbase=$(get_pkgbase $pkg $repo $pkgver)
 		[[ ${pkgs_downloaded[$pkgbase]} ]] && continue
