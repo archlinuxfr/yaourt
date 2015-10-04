@@ -139,7 +139,7 @@ BEGIN {
 		com[i++]=line
 	}
 }
-/^[\t ]*<h4>$/ {
+/^[\t ]*<h4 id="comment-/ {
 	comment=1
 }
 /^<div id="news">$/ {
