@@ -109,23 +109,23 @@ check_deps() {
 	msg "$(_gettext '%s dependencies:' "$pkgbase")"
 	for dep in "${PKGBUILD_DEPS_INSTALLED[@]}"; do
 		if $(in_array "$dep" "${makedepends[@]}"); then
-                    echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)') [make]"
+                    echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)') [makedepend]"
                 else
                     echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
                 fi
 	done
 	for dep in "${PKGBUILD_DEPS[@]}"; do
 		if isavailable $dep; then
-                    if $(in_array "$dep" "${makedepends[@]}"); then
-                        echo -e " - $CBLUE$dep$C0 $(gettext '(package found)') [make]" && continue
-                    else
-                        echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
-                    fi
-                elif $(in_array "$dep" "${makedepends[@]}"); then
-                    echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)') [make]"
-                else
-                    echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)')"
-                fi
+            if $(in_array "$dep" "${makedepends[@]}"); then
+                echo -e " - $CBLUE$dep$C0 $(gettext '(package found)') [makedepend]" && continue
+            else
+                echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
+            fi
+        elif $(in_array "$dep" "${makedepends[@]}"); then
+            echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)') [makedepend]"
+        else
+            echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)')"
+        fi
 	done
 	echo
 	return 0
