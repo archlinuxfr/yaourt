@@ -238,7 +238,7 @@ build_package() {
 		fi
 		if (( SYSUPGRADE )) && (( DEVEL )) && (( ! FORCE )); then
 			if ((YPKGVER_FUNC)); then
-				SRCDEST="$YSRCDEST" y_makepkg -o -p ./PKGBUILD
+				SRCDEST="$YSRCDEST" y_makepkg -d -o -p ./PKGBUILD
 				# re-read PKGBUILD to update version
 				read_pkgbuild || return 1
 				eval $PKGBUILD_VARS
