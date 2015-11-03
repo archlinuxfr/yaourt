@@ -158,6 +158,16 @@ classify_pkg() {
 			for pkg in ${pkg_dep_on[@]}; do
 				[[ " ${packages[@]} " =~ " $pkg " ]] &&	requiredbypkg=$pkg && break
 			done
+			# query the provided packages as dependencies
+			local pkg_provided=""
+			[[ ! $requiredbypkg ]] && pkg_provided=( $(pkgquery -S -f "%P" "$pkgname") )
+			for pkg_prov in ${pkg_provided[@]}; do
+				pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkg_prov") )
+				for pkg in ${pkg_dep_on[@]}; do
+					[[ " ${packages[@]} " =~ " $pkg " ]] &&	requiredbypkg=$pkg && break
+				done
+				[[ requiredbypkg ]] && break
+			done
 			[[ ! $requiredbypkg ]] && requiredpkg=$(pkgquery -Sf'%R' "$pkgname")
 			[[ ! ${requiredbypkg#-} ]] && requiredpkg=$(printf "%q" "$(gettext 'not found')")
 			newpkgs+=("3 $repo $pkgname $pkgver $requiredbypkg - $pkgdesc")
