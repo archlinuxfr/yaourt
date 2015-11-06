@@ -185,13 +185,13 @@ yaourt_upgrade () {
 	if [[ $depends ]]; then
 		load_lib abs aur
 		SP_ARG="--asdeps" sync_packages "${depends[@]}"
-		su_pacman -U "${ARGS[@]}"; ret=$?
+		su_pacman -U "${PACMAN_S_ARG[@]}" "${ARGS[@]}"; ret=$?
 		if ((ret)); then
 			depends=( $(pkgquery -Qiif '%n' "${depends[@]}") )
 			su_pacman -Rsn "${depends[@]}"
 		fi
 	else
-		su_pacman -U "${ARGS[@]}"; ret=$?
+		su_pacman -U "${PACMAN_S_ARG[@]}" "${ARGS[@]}"; ret=$?
 	fi
 	((!ret))
 }
