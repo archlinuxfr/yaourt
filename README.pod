@@ -99,7 +99,7 @@ Use I<$PAGER> to show search results.
 
 =item B<--tmp E<lt>dirE<gt>>
 
-Use E<lt>dirE<gt> as temporary folder. default to '/tmp' 
+Use E<lt>dirE<gt> as temporary folder. default to '/tmp'
 
 =back
 

@@ -84,7 +84,7 @@ read_pkgbuild() {
 	return 0
 }
 
-# Check PKGBUILD dependances
+# Check PKGBUILD dependencies
 # call read_pkgbuild() before
 # Usage:	check_deps ($nodisplay)
 #	$nodisplay: 1: don't display depends information
