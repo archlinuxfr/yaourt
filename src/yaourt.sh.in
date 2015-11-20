@@ -50,7 +50,7 @@ usage() {
 	echo -e "\t$(gettext 'yaourt {-C --clean}       [options]')"
 	echo -e "\t$(gettext 'yaourt {-B --backup}      [save directory|restore file]')"
 	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} [options] <package(s)>')"
-	echo -e "\t$(gettext 'yaourt {-P --pkgbuild} [-i --install] <directory>')"
+	echo -e "\t$(gettext 'yaourt {-P --pkgbuild}    [-i --install] <directory>')"
 	echo -e "\t$(gettext 'yaourt {--stats}')"
 }
 
@@ -370,10 +370,10 @@ while [[ $1 ]]; do
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ((PRINT++));; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; SPLITOPT=1; shift;;
-		-P|--pkgbuild)		MAJOR="pkgbuild"; shift; YPKGBUILDDIR="$1"
-							if [[ $1 == "-i" ]] || [[ $1 == "--install" ]]; then
-								YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"
-							fi;;
+		-P|--pkgbuild)      MAJOR="pkgbuild"; shift; YPKGBUILDDIR="$1"
+		                    if [[ $1 == "-i" ]] || [[ $1 == "--install" ]]; then
+		                        YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"
+		                    fi;;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--rsort)            RSORT=$2; shift;;
 		--sort)             SORT=$2; shift;;
