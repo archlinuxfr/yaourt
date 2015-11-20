@@ -50,6 +50,7 @@ usage() {
 	echo -e "\t$(gettext 'yaourt {-C --clean}       [options]')"
 	echo -e "\t$(gettext 'yaourt {-B --backup}      [save directory|restore file]')"
 	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} [options] <package(s)>')"
+	echo -e "\t$(gettext 'yaourt {-P --pkgbuild} [-i --install] <directory>')"
 	echo -e "\t$(gettext 'yaourt {--stats}')"
 }
 
@@ -222,6 +223,27 @@ yaourt_query() {
 	fi
 }
 
+# Handle building from local PKGBUILD
+yaourt_pkgbuild() {
+	! [ -d "$YPKGBUILDDIR" ] && {
+		msg $(gettext 'You have to provide a valid directory after --pkgbuild')
+		return 1
+	}
+	! [ -e "$YPKGBUILDDIR"/PKGBUILD ] && {
+		msg $(gettext 'Your directory after --pkgbuild does not contain a PKGBUILD')
+		return 1
+	}
+
+	source "$YPKGBUILDDIR/PKGBUILD"
+	local pkg="$pkgname $pkgver"
+	msg $(_gettext 'Installing %s from local PKGBUILD' "$pkg")
+
+	cd "$YPKGBUILDDIR"
+	YPKGBUILDDIR="$(pwd)"
+	package_pkgbuild_only "$pkgname"
+	return $?
+}
+
 # Handle interactive search
 yaourt_interactive() {
 	local line packages
@@ -348,6 +370,10 @@ while [[ $1 ]]; do
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ((PRINT++));; # --print-format needs --print
 		--pkg)              program_arg $((A_M)) $1 "$2"; SPLITOPT=1; shift;;
+		-P|--pkgbuild)		MAJOR="pkgbuild"; shift; YPKGBUILDDIR="$1"
+							if [[ $1 == "-i" ]] || [[ $1 == "--install" ]]; then
+								YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"
+							fi;;
 		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
 		--rsort)            RSORT=$2; shift;;
 		--sort)             SORT=$2; shift;;
@@ -417,6 +443,10 @@ case "$MAJOR" in
 		yaourt_backup "${ARGS[0]}"
 		;;
 
+	pkgbuild)
+		load_lib pkgbuild util misc
+		yaourt_pkgbuild
+		;;
 	upgrade) yaourt_upgrade ;;
 	sync) yaourt_sync ;;
 	query) yaourt_query ;;

@@ -382,7 +382,11 @@ package_loop() {
 			*) return 99 ;; # should never execute
 		esac
 	done
-	(( ! ret )) && (( ! failed )) && { install_package || failed=1; }
+	(( ! ret )) && (( ! failed )) &&
+	  ( [[ $MAJOR == "pkgbuild" ]] && (( YPKGBUILD_INSTALL )) || ! [[ $MAJOR == "pkgbuild" ]] ) &&
+	    { install_package || failed=1; }
+
+	[[ $MAJOR == "pkgbuild" ]] && (( ! YPKGBUILD_INSTALL )) && cp -v "$YPKGDEST/"*.pkg.* $YPKGBUILDDIR
 	rm -r "$YPKGDEST"
 	return $failed
 }
@@ -459,6 +463,38 @@ get_pkgbuild() {
 		fi
 	done
 	cd "$cwd"
+}
+
+
+# Call package_pkgbuild_only for building a PKGBUILD in the current directory until success or abort
+# on success, call install_package, if YPKGBUILD_INSTALL was specified with -i
+# Usage: package_pkgbuild_only ($pkgname)
+#   $pkgname: name of package
+package_pkgbuild_only() {
+	local YTMPDIR="$YAOURTTMPDIR/aur-$pkgname"
+	local YPKG=$1
+	(( trust )) && default_answer=2
+
+	init_build_dir "$YTMPDIR" || return 1
+
+	# Glob files from YPKGBUILDDIR and copy them to $YTMPDIR
+	local YFILES="$YPKGBUILDDIR/PKGBUILD"
+	local add_files="$(find "$YPKGBUILDDIR/"*.install -type f 2>>/dev/null)"
+	[[ $? ]] && YFILES+=" $add_files"
+	unset add_files
+	local add_files="$(find "$YPKGBUILDDIR/"*.patch -type f 2>>/dev/null)"
+	[[ $? ]] && YFILES+=" $add_files"
+
+	msg $(_gettext "Copying files from %s to build directory..." "$YPKGBUILDDIR")
+	cp -v ${YFILES[@]} "$YTMPDIR"
+	echo
+
+	package_loop "$YPKG" 1 || manage_error "$YPKG" ||
+	  { cd "$cwd"; return 1; }
+	cd "$cwd"
+	rm -rf "$YTMPDIR"
+
+	return 0
 }
 
 # If we have to deal with PKGBUILD and makepkg, source makepkg conf(s)
