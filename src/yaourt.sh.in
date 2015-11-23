@@ -47,7 +47,7 @@ usage() {
 	echo -e "\t$(gettext 'yaourt {-R --remove}      [options] <package(s)>')"
 	echo -e "\t$(gettext 'yaourt {-S --sync}        [options] [package(s)]')"
 	echo -e "\t$(gettext 'yaourt {-U --upgrade}     [options] <package(s)>')"
-	echo -e "\t$(gettext 'yaourt {-C --clean}       [options]')"
+	echo -e "\t$(gettext 'yaourt {-C}               [options]')"
 	echo -e "\t$(gettext 'yaourt {-B --backup}      [save directory|restore file]')"
 	echo -e "\t$(gettext 'yaourt {-G --getpkgbuild} [options] <package(s)>')"
 	echo -e "\t$(gettext 'yaourt {--stats}')"

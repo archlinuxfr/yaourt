@@ -165,7 +165,7 @@ msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr ""
 
 #: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
+msgid "yaourt {-C}               [options]"
 msgstr ""
 
 #: ../../yaourt.sh.in:50
