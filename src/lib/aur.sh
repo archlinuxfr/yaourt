@@ -45,9 +45,9 @@ aur_show_info() {
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	local pkgname=$1 id votes outofdate maintainer pkgbuild_url
+	local pkgname=$1 id votes outofdate maintainer last_mod pkgbuild_url
 	title "Searching info on AUR for $pkgname"
-	read id votes outofdate maintainer pkgbuild_url < <(pkgquery -Aif '%i %w %o %m %u' "$pkgname")
+	read id votes outofdate maintainer last_mod pkgbuild_url < <(pkgquery -Aif '%i %w %o %m %L %u' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	local pkgbase=${pkgbuild_url#*/snapshot/}; pkgbase=${pkgbase%.tar.gz}
@@ -56,7 +56,7 @@ info_from_aur() {
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
 	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
 		depends_${CARCH} optdepends_${CARCH} \
-		conflicts replaces arch last_mod pkgdesc)
+		conflicts replaces arch pkgdesc)
 	unset ${vars[*]}
 	local ${vars[*]}
 	. <( source_pkgbuild "$tmpfile" ${vars[*]} )
@@ -81,7 +81,7 @@ info_from_aur() {
 	aur_show_info "Replaces       " "${replaces[*]}"
 	aur_show_info "Maintainer     " "${maintainer}"
 	aur_show_info "Architecture   " "${arch[*]}"
-	aur_show_info "Last update    " "$(date +"%c" --date "$last_mod")"
+	aur_show_info "Last update    " "$(date +"%c" --date "@$last_mod")"
 	aur_show_info "Description    " "$pkgdesc"
 	echo
 	rm "$tmpfile"

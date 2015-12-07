@@ -393,7 +393,7 @@ sanitize_pkgbuild() {
 	local file="$1"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	sed -n -e '/\$(\|`\|[><](\|[&|]\|;/d' -e '/ *[a-zA-Z0-9_\-]\+ *( *)/q' -e 's/^ *[a-zA-Z0-9_]\+=/declare &/' -e 'p' "$file" > "$tmpfile"
-	sed -n -e '1,/^\r$/ { s/Last-Modified: \(.*\)\r/declare last_mod="\1"/p;d }' \
+	sed -n -e '1,/^\r$/ d' \
 	       -e '/^declare *[a-zA-Z0-9_]\+=(.*) *\(#.*\|$\)/{p;d}' \
 	       -e '/^declare *[a-zA-Z0-9_]\+=(.*$/ {:a;N;$bb;/.*) *\(#.*\|$\)/!ba;s/\n/ /g;p;d;:b}' \
 	       -e '/^declare *[a-zA-Z0-9_]\+=.*[^\\]$/{p;d}' "$tmpfile"
