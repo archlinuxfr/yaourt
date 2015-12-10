@@ -357,6 +357,7 @@ while [[ $1 ]]; do
 		-V|--version)       version; exit 0;;
 		-v)                 program_arg $((A_PQ | A_PS)) $1;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
+		-)                  break;; # support smth like echo package | yaourt -S -
 		--)                 shift; ARGS+=("$@"); break;;
 		-*)                 [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		*)                  ARGS+=("$1") ;;
