@@ -47,13 +47,13 @@ abs_get_pkgbuild() {
 	fi
 	if ((USE_GIT)) && [[ " ${REPOS[*]} " =~ " $repo " ]]; then
 		local url
-        if [[ $repo = "core" || $repo = "extra" ]]; then
-            url="https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz"
-        else
-            url="https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz"
-        fi
+		if [[ $repo = "core" || $repo = "extra" ]]; then
+			url="https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz"
+		else
+			url="https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz"
+		fi
 		curl_fetch -L -f "$url" -o - | bsdtar --strip-components 3 --include="*/$pkgbase/trunk/" -xvf -
-    else
+	else
 		if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
 			$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkgbase/" . && return 0
 		fi
