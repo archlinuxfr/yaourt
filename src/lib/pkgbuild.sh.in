@@ -42,7 +42,7 @@ source_makepkg_conf() {
 # Set PKGBUILD_VARS, exec "eval $PKGBUILD_VARS" to have PKGBUILD content.
 read_pkgbuild() {
 	local update=${1:-0}
-	local vars=(pkgbase pkgname pkgver pkgrel arch pkgdesc provides url \
+	local vars=(pkgbase pkgname epoch pkgver pkgrel arch pkgdesc provides url \
 		groups license source install md5sums depends checkdepends makedepends conflicts \
 		depends_${CARCH} checkdepends_${CARCH} makedepends_${CARCH} \
 		replaces \
@@ -243,7 +243,7 @@ build_package() {
 				read_pkgbuild || return 1
 				eval $PKGBUILD_VARS
 			fi
-			if ! is_x_gt_y "$pkgver-$pkgrel" $(pkgversion $pkgbase); then
+			if ! is_x_gt_y $(get_package_version "$epoch" "$pkgver" "$pkgrel") $(pkgversion $pkgbase); then
 				msg $(_gettext '%s is already up to date.' "$pkgbase")
 				return 2
 			fi
@@ -283,6 +283,19 @@ build_package() {
 	fi
 	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && SRCDEST="$YSRCDEST" y_makepkg --allsource -p ./PKGBUILD
 	return 0
+}
+
+# Get package version
+# Usage:	get_package_version ($epoch, $pkgver, $pkgrel)
+get_package_version() {
+	local epoch=$1
+	local pkgver=$2
+	local pkgrel=$3
+	if (( epoch > 0 )); then
+		echo "$epoch:$pkgver-$pkgrel"
+	else
+		echo "$pkgver-$pkgrel"
+	fi
 }
 
 # Install package after build
