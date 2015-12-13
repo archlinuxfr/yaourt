@@ -41,7 +41,6 @@ source_makepkg_conf() {
 # PKGBUILD must be in current directory
 # Set PKGBUILD_VARS, exec "eval $PKGBUILD_VARS" to have PKGBUILD content.
 read_pkgbuild() {
-	local update=${1:-0}
 	local vars=(pkgbase pkgname pkgver pkgrel arch pkgdesc provides url \
 		groups license source install md5sums depends checkdepends makedepends conflicts \
 		depends_${CARCH} checkdepends_${CARCH} makedepends_${CARCH} \
