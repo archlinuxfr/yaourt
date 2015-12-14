@@ -54,16 +54,14 @@ info_from_aur() {
 	pkgbuild_url="${pkgbuild_url%/snapshot/*}/plain/PKGBUILD?h=$pkgbase"
 	curl_fetch -fis "$pkgbuild_url" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
-	local vars=(pkgname epoch pkgver pkgrel url license groups provides depends optdepends \
-		depends_${CARCH} optdepends_${CARCH} \
-		conflicts replaces arch pkgdesc)
+	local vars=(pkgname pkgver pkgrel epoch pkgdesc arch url license groups
+		depends depends_$CARCH optdepends optdepends_$CARCH provides
+		provides_$CARCH conflicts conflicts_$CARCH replaces replaces_$CARCH)
+
 	unset ${vars[*]}
 	local ${vars[*]}
 	. <( source_pkgbuild "$tmpfile" ${vars[*]} )
-
-	# Merge generic dependencies with architecture specific dependencies
-	eval depends+=(\"\${depends_${CARCH}[@]}\")
-	eval optdepends+=(\"\${optdepends_${CARCH}[@]}\")
+	merge_arch_attrs
 
 	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
