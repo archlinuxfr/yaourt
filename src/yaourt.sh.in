@@ -397,7 +397,7 @@ fi
 case "$MAJOR" in
 	clean)
 		(( CLEAN )) && _arg="-c" || _arg=""
-		launch_with_su pacdiffviewer $_arg
+		launch_with_su bash -c "DIFFEDITCMD=\"$DIFFEDITCMD\" pacdiffviewer $_arg"
 		;;
 
 	stats)

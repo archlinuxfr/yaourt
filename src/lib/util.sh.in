@@ -249,7 +249,7 @@ DETAILUPGRADE=1
 SHOWORPHANS=1
 TERMINALTITLE=1
 # Command
-DIFFEDITCMD="vimdiff"
+DIFFEDITCMD=${DIFFEDITCMD:-vimdiff}
 
 source_config() {
 	local env_EDITOR="$EDITOR"
