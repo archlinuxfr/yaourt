@@ -111,32 +111,91 @@ install_from_abs() {
 	rm -rf "$YAOURTTMPDIR/abs-${pkginfo[1]}"
 }
 
+# Retrieve the list of packages existing in repos with pending upgrade
 # Set vars:
-# upgrade_details=(new release, new version then new pkgs)
-# srcpkgs=(pkgs with a custom pkgbuild)
-# pkgs=(others)
-# usage: classify_pkg $pkg_nb < [one pkg / line ]
-# read from stdin: pkgname repo rversion lversion outofdate pkgdesc
-classify_pkg() {
-	declare -a newrelease newversion newpkgs
-	unset srcpkgs pkgs
-	longestpkg=(0 0)
-	local i=0 bar="|/-\\"
-	local pkgname repo rversion lversion outofdate pkgdesc maintainer \
-	      pkgver lrel rrel lver rver
-	local prefix=''
-	if ((DETAILUPGRADE<2)); then
-		((REFRESH)) && printf -vprefix "\r " || printf -vprefix "\r"
+#  - pkgs_repo_up_info=(properties of packages to upgrade)
+#  - pkgs_repo=(packages to get directly from repo)
+#  - pkgs_src=(packages to upgrade from PKGBUILD)
+fetch_pkgs_repo_up_list() {
+	unset pkgs_repo_up_info pkgs_repo pkgs_src
+	local packages pkgname repo
+
+	# Retrieve list of pending upgrades from repos
+	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
+	packages=($(pacman_parse -Sp --noconfirm --print-format "## %n" \
+	                $_arg "${PACMAN_S_ARG[@]}" "${pkg_up[@]}"       \
+	            | sed -n 's/^## \(.*\)/\1/p' | sort))
+
+	# package-query invocations are expensive, hence, the result is saved
+	# in a global variable which can be used later by format_update().
+	[[ $packages ]] && mapfile pkgs_repo_up_info < \
+		<(pkgquery -1Sif "%n %r %v %l %d" "${packages[@]}")
+
+	while read pkgname repo unused; do
+		if (( BUILD )) || custom_pkg "$pkgname"; then
+			pkgs_src+=("$repo/$pkgname")
+		else
+			pkgs_repo+=("$repo/$pkgname")
+		fi
+	done < <(echo -n "${pkgs_repo_up_info[@]}")
+}
+
+# Retrieve the list of AUR packages with pending upgrade
+# Set vars:
+# - pkgs_aur=(packages to upgrade from AUR)
+# - pkgs_aur_up_info=(properties of packages to upgrade from AUR)
+fetch_pkgs_aur_up_list() {
+	unset pkgs_aur_up_info pkgs_aur
+
+	local pkgname repo rversion lversion outofdate maintainer pkgdesc
+	local pkgs_foreign_count pkgs_foreign_info prefix='' i=0 bar="|/-\\"
+
+	# Retrieve the list of all foreign packages
+	mapfile pkgs_foreign_info < <(pkgquery -AQmf "%n %r %v %l %o %m %d")
+	if [[ $aur_up ]]; then
+		mapfile -O "${#pkgs_foreign_info[@]}" pkgs_foreign_info < \
+			<(pkgquery --pkgbase -Aif "%n %r %v - %o %m %d" "${aur_up[@]}")
 	fi
+
+	if ((DETAILUPGRADE)); then
+		((REFRESH)) && printf -v prefix "\r " || printf -v prefix "\r"
+		pkgs_foreign_count=$(pacman_parse -Qqm | wc -l)
+	fi
+
+	# Keep only packages with pending upgrade in AUR
 	while read pkgname repo rversion lversion outofdate maintainer pkgdesc; do
-		printf -v pkgdesc "%q" "$pkgdesc"
-		if [[ "$repo" = "aur" && ${lversion#-} ]] || [[ "$repo" = "local" ]]; then
-			((DETAILUPGRADE<2)) && echo -en "$prefix$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $1"
-			[[ "$repo" = "local" ]] && continue
+		(( DETAILUPGRADE==1 )) && \
+			echo -en "$prefix$(gettext 'Foreign packages: ')${bar:$((++i%4)):1} $i / $pkgs_foreign_count"
+
+		[[ "$repo" = "local" ]] && continue
+		if [[ "$repo" = "aur" && ${lversion#-} ]]; then
 			aur_update_exists "$pkgname" "$rversion" "$lversion" "$outofdate" "$maintainer" \
 				|| continue
 		fi
-		custom_pkg "$pkgname" && srcpkgs+=("$repo/$pkgname") || pkgs+=("$repo/$pkgname")
+
+		# package-query invocations are expensive, hence, the result is saved
+		# in a global variable which can be used later by format_update().
+		pkgs_aur_up_info+=("$pkgname $repo $rversion $lversion $pkgdesc"$'\n')
+		pkgs_aur+=("$repo/$pkgname")
+	done < <(echo -n "${pkgs_foreign_info[@]}")
+
+	((  DETAILUPGRADE==1 && pkgs_foreign_count > 0 )) && echo
+}
+
+# Set vars:
+# - upgrade_details=(new release, new version then new pkgs)
+# Usage: format_update < [one pkg / line ]
+# Read from stdin: pkgname repo rversion lversion pkgdesc
+format_update() {
+	declare -a newrelease newversion newpkgs
+
+	longestpkg=(0 0)
+	local pkgname repo rversion lversion pkgdesc \
+	      pkgver lrel rrel lver rver
+
+	while read pkgname repo rversion lversion pkgdesc; do
+		printf -v pkgdesc "%q" "$pkgdesc"
+
 		if [[ "$lversion" != "-" ]]; then
 			pkgver=$lversion
 			lrel=${lversion#*-}
@@ -157,7 +216,7 @@ classify_pkg() {
 
 			local pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
-				[[ " ${packages[@]} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
+				[[ " ${pkgs_repo[@]#*/} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
 			done
 
 			# query the provided packages as dependencies
@@ -165,10 +224,11 @@ classify_pkg() {
 			for pkg_prov in ${pkg_provided[@]}; do
 				pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkg_prov") )
 				for pkg in ${pkg_dep_on[@]}; do
-					[[ " ${packages[@]} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
+					[[ " ${pkgs_repo[@]#*/} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
 				done
 				[[ $requiredbypkg ]] && break
 			done
+
 			[[ ! $requiredbypkg ]] && requiredpkg=$(pkgquery -Sf'%R' "$pkgname")
 			[[ ! ${requiredbypkg#-} ]] && requiredpkg=$(printf "%q" "$(gettext 'not found')")
 			newpkgs+=("3 $repo $pkgname $pkgver $requiredbypkg - $pkgdesc")
@@ -176,7 +236,7 @@ classify_pkg() {
 		(( ${#repo} + ${#pkgname} > longestpkg[0] )) && longestpkg[0]=$(( ${#repo} + ${#pkgname}))
 		(( ${#pkgver} > longestpkg[1] )) && longestpkg[1]=${#pkgver}
 	done
-	((DETAILUPGRADE<2)) && echo
+
 	(( longestpkg[1]+=longestpkg[0] ))
 	upgrade_details=("${newrelease[@]}" "${newversion[@]}" "${newpkgs[@]}")
 }
@@ -217,9 +277,9 @@ show_targets() {
 
 # Searching for packages to update, buid from sources if necessary
 sysupgrade() {
-	local packages pkgs pkg
+	local pkg
 	declare -a aur_up pkg_up
-	local pkg_foreign=0
+
 	if ((AURUPGRADE)); then
 		if [[ $ARGS ]]; then
 			pkg_up=($(pkgquery -1Siif '%n' "${ARGS[@]}"))
@@ -231,58 +291,44 @@ sysupgrade() {
 		pkg_up=("${ARGS[@]}")
 	fi
 	(( UP_NOCONFIRM )) && { EDITFILES=0 AURCOMMENT=0; BUILD_NOCONFIRM=1; }
-	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 
-	if ((DETAILUPGRADE)); then
-		((REFRESH)) && pacman_refresh $REFRESH
-		if pacman_parse -Sp --print-format "## %n" \
-		             --noconfirm $_arg "${PACMAN_S_ARG[@]}" \
-		             "${pkg_up[@]}" 1> "$YAOURTTMPDIR/sysupgrade"; then
-			packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade"))
-			rm "$YAOURTTMPDIR/sysupgrade"
-		else
-			REFRESH=0
-			DETAILUPGRADE=0
-		fi
+	# Retrieve the list of packages to upgrade
+	((REFRESH)) && pacman_refresh $REFRESH
+	fetch_pkgs_repo_up_list
+	((AURUPGRADE)) && fetch_pkgs_aur_up_list
+
+	# Upgrade packages from sources
+	if [[ $pkgs_src ]]; then
+		show_targets 'Source targets' "${pkgs_src[@]#*/}" || return 0
+		build_pkg "${pkgs_src[@]}"
+		local ret=$?
+		# Refresh update list because packages may have been customized
+		fetch_pkgs_repo_up_list
 	fi
-	if (( ! DETAILUPGRADE )); then
-		(( REFRESH )) && _arg+="y"
-		(( REFRESH>1 )) && _arg+="y"
+
+	[[ $pkgs_repo ]] || [[ $pkgs_aur ]] || return $ret
+
+	# Display update info
+	if ((DETAILUPGRADE)); then
+		format_update < \
+			<(echo -n "${pkgs_repo_up_info[@]}" "${pkgs_aur_up_info[@]}")
+		display_update || return 0
+	fi
+
+	# Upgrade packages from repos
+	if [[ $pkgs_repo ]]; then
+		(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
 	fi
-	#[[ ! "$packages" ]] && return 0
-	local cmd="echo -n"
-	readarray -t packages < <(for a in "${packages[@]}"; do echo "$a"; done | sort)
-	[[ $packages ]] && cmd+='; pkgquery -1Sif "%n %r %v %l - - %d" "${packages[@]}"'
-	if ((AURUPGRADE)); then
-		# TODO: %m return the maintainer for AUR package and packager for local packages.
-		# AUR username does not contain spaces.
-		# packager does, but for now, local packages are not parsed by classify_pkg()
-		cmd+='; pkgquery -AQmf "%n %r %v %l %o %m %d"'
-		[[ $aur_up ]] && cmd+='; pkgquery --pkgbase -Aif "%n %r %v - %o %m %d" "${aur_up[@]}"'
-		((DETAILUPGRADE<2)) && pkg_foreign=$(pacman_parse -Qqm | wc -l)
+
+	# Upgrade AUR packages
+	if [[ $pkgs_aur ]]; then
+		(( ! DETAILUPGRADE )) && { show_targets 'AUR targets' "${pkgs_aur[@]#aur/}" || return 0; }
+
+		for pkg in ${pkgs_aur[@]}; do
+			install_from_aur "$pkg" || error $(_gettext 'unable to update %s' "$pkgname")
+		done
 	fi
-	classify_pkg $pkg_foreign < <(eval $cmd)
-	(( BUILD )) && srcpkgs+=("${pkgs[@]}") && unset pkgs
-	if [[ $srcpkgs ]]; then
-		show_targets 'Source targets' "${srcpkgs[@]#*/}" || return 0
-		build_pkg "${srcpkgs[@]}"
-		local ret=$?
-		[[ $pkgs ]] || return $ret
-	fi
-	[[ $pkgs ]] || return 0
-	if (( ! DETAILUPGRADE )); then
-		show_targets 'AUR targets' "${pkgs[@]#aur/}" || return 0
-	else
-		display_update || return 0
-		if [[ ${pkgs[*]##aur/*} ]]; then
-			su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
-		fi
-	fi
-	for pkg in ${pkgs[@]}; do
-		[[ ${pkg#aur/} = $pkg ]] && continue
-		install_from_aur "$pkg" || error $(_gettext 'unable to update %s' "$pkgname")
-	done
 }
 
 
