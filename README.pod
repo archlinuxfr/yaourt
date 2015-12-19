@@ -35,6 +35,10 @@ Manage .pac* files.
 
 Get PKGBUILD for ABS or AUR.
 
+=item B<-P, --pkgbuild E<lt>directoryE<gt>>
+
+Build package from PKGBUILD found in a local directory. Also install the packacke with I<-i>.
+
 =item B<-Q, --query>
 
 Query local database + Can sort packages by installation date, possibility to delete orphans.
