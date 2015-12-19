@@ -47,13 +47,13 @@ abs_get_pkgbuild() {
 	fi
 	if ((USE_GIT)) && [[ " ${REPOS[*]} " =~ " $repo " ]]; then
 		local url
-        if [[ $repo = "core" || $repo = "extra" ]]; then
-            url="https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz"
-        else
-            url="https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz"
-        fi
+		if [[ $repo = "core" || $repo = "extra" ]]; then
+			url="https://projects.archlinux.org/svntogit/packages.git/snapshot/packages/$pkgbase.tar.gz"
+		else
+			url="https://projects.archlinux.org/svntogit/community.git/snapshot/community-packages/$pkgbase.tar.gz"
+		fi
 		curl_fetch -L -f "$url" -o - | bsdtar --strip-components 3 --include="*/$pkgbase/trunk/" -xvf -
-    else
+	else
 		if [[ $RSYNCCMD && $SYNCSERVER && " ${REPOS[*]} " =~ " $repo " ]]; then
 			$RSYNCCMD $RSYNCOPT "$SYNCSERVER::abs/$arch/$repo/$pkgbase/" . && return 0
 		fi
@@ -154,19 +154,20 @@ classify_pkg() {
 			# new package (not installed at this time)
 			pkgver=$rversion
 			local requiredbypkg=""
+
 			local pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
-				[[ " ${packages[@]} " =~ " $pkg " ]] &&	requiredbypkg=$pkg && break
+				[[ " ${packages[@]} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
 			done
+
 			# query the provided packages as dependencies
-			local pkg_provided=""
-			[[ ! $requiredbypkg ]] && pkg_provided=( $(pkgquery -S -f "%P" "$pkgname") )
+			[[ ! $requiredbypkg ]] && local pkg_provided=( $(pkgquery -S -f "%P" "$pkgname") )
 			for pkg_prov in ${pkg_provided[@]}; do
 				pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkg_prov") )
 				for pkg in ${pkg_dep_on[@]}; do
-					[[ " ${packages[@]} " =~ " $pkg " ]] &&	requiredbypkg=$pkg && break
+					[[ " ${packages[@]} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
 				done
-				[[ requiredbypkg ]] && break
+				[[ $requiredbypkg ]] && break
 			done
 			[[ ! $requiredbypkg ]] && requiredpkg=$(pkgquery -Sf'%R' "$pkgname")
 			[[ ! ${requiredbypkg#-} ]] && requiredpkg=$(printf "%q" "$(gettext 'not found')")
