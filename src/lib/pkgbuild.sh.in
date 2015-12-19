@@ -275,13 +275,14 @@ build_package() {
 	}
 
 	# Build
-	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" y_makepkg -s ${TARGET_PACKAGE} -f -p ./PKGBUILD
+	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" y_makepkg -s ${TARGET_PACKAGE} -c -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(_gettext 'Makepkg was unable to build %s.' "$pkgbase")
 		return 1
 	fi
-	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && SRCDEST="$YSRCDEST" y_makepkg --allsource -p ./PKGBUILD
+	(( EXPORT && EXPORTSRC )) && [[ $SRCPKGDEST ]] && SRCDEST="$YSRCDEST" y_makepkg --allsource -c -p ./PKGBUILD
+	[[ $BUILDDIR ]] && rmdir "$BUILDDIR/$pl_pkgname"
 	return 0
 }
 
