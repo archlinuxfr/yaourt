@@ -166,8 +166,8 @@ msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade}     [voľby] <balíky(y)>"
 
 #: ../../yaourt.sh.in:49
-msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C}               [voľby]"
+msgid "yaourt {-C --clean}       [options]"
+msgstr "yaourt {-C --clean}       [voľby]"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-B --backup}      [save directory|restore file]"

@@ -170,8 +170,8 @@ msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade}        [опции] <пакет(ы)>"
 
 #: ../../yaourt.sh.in:49
-msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C}        [опции]"
+msgid "yaourt {-C --clean}       [options]"
+msgstr "yaourt {-C --clean}        [опции]"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-B --backup}      [save directory|restore file]"

@@ -2,7 +2,7 @@
 # Copyright (C) 2010-2015
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
-#
+# 
 # Translators:
 # Jeff Huang <s8321414@gmail.com>, 2014-2015
 msgid ""
@@ -166,8 +166,8 @@ msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade}     [選項] <套件>"
 
 #: ../../yaourt.sh.in:49
-msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C}               [選項]"
+msgid "yaourt {-C --clean}       [options]"
+msgstr "yaourt {-C --clean}       [選項]"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-B --backup}      [save directory|restore file]"
