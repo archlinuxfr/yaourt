@@ -54,7 +54,7 @@ info_from_aur() {
 	pkgbuild_url="${pkgbuild_url%/snapshot/*}/plain/PKGBUILD?h=$pkgbase"
 	curl_fetch -fis "$pkgbuild_url" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
-	local vars=(pkgname pkgver pkgrel url license groups provides depends optdepends \
+	local vars=(pkgname epoch pkgver pkgrel url license groups provides depends optdepends \
 		depends_${CARCH} optdepends_${CARCH} \
 		conflicts replaces arch pkgdesc)
 	unset ${vars[*]}
@@ -67,7 +67,7 @@ info_from_aur() {
 
 	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
-	aur_show_info "Version        " "$CGREEN$pkgver-$pkgrel$C0"
+	aur_show_info "Version        " "$CGREEN$(get_package_version "$epoch" "$pkgver" "$pkgrel")$C0"
 	aur_show_info "Description    " "$pkgdesc"
 	aur_show_info "Architecture   " "${arch[*]}"
 	aur_show_info "URL            " "$CCYAN$url$C0"
