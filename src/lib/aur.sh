@@ -202,7 +202,7 @@ install_from_aur() {
 	  { cd "$cwd"; return 1; }
 	aur_comments ${pkginfo[0]}
 	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0 ($(date -u -d "@${pkginfo[8]}" "+%F %H:%M"))"
-	((UPGRADES && AURUSEGIT)) && aur_git_diff
+	((UPGRADES && AURUSEGIT && AURSHOWDIFF)) && aur_git_diff
 	[[ ! ${pkginfo[6]#-} ]] && echo -e "$CBLINK$CRED$(gettext 'This package is orphaned')$C0"
 	echo -e "$CBLINK$CRED$(gettext '( Unsupported package: Potentially dangerous ! )')$C0"
 
