@@ -52,7 +52,7 @@ usage() {
 # Save files marked as backup in packages for a possible later merge
 backup_files() {
 	local _file _md5sum _version pkgname pkgver backupdir currentfile
-	pkgquery -Qf '%n - %v\n%B' --csep '\n' |
+	pkgquery -Qf '%n - %v\n%B' --delimiter '\n' |
 	while read _file _md5sum _version
 	do
 		# no backups
