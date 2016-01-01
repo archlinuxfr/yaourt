@@ -6,6 +6,24 @@
 load_lib alpm_query
 Y_MAKEPKG_CHECKDEP=0
 
+# Attributes which may be defined specifically for an architecture
+# See: srcinfo_write_section_details() in makepkg
+PKGBUILD_ARCH_ATTRS=(source provides conflicts depends replaces optdepends
+                     makedepends checkdepends {md5,sha{1,224,256,384,512}}sums)
+
+# Merge generic attributes with architecture specific attributes
+# Copyright: merge_arch_attrs() from makepkg
+merge_arch_attrs() {
+	local attr
+
+	for attr in "${PKGBUILD_ARCH_ATTRS[@]}"; do
+		eval "$attr+=(\"\${${attr}_$CARCH[@]}\")"
+	done
+
+	# Ensure that calling this function is idempotent.
+	unset -v "${PKGBUILD_ARCH_ATTRS[@]/%/_$CARCH}"
+}
+
 # source makepkg configuration
 source_makepkg_conf() {
 	# From makepkg, try to source the same way
@@ -41,12 +59,12 @@ source_makepkg_conf() {
 # PKGBUILD must be in current directory
 # Set PKGBUILD_VARS, exec "eval $PKGBUILD_VARS" to have PKGBUILD content.
 read_pkgbuild() {
-	local vars=(pkgbase pkgname epoch pkgver pkgrel arch pkgdesc provides url \
-		groups license source install md5sums depends checkdepends makedepends conflicts \
-		depends_${CARCH} checkdepends_${CARCH} makedepends_${CARCH} \
-		replaces \
-		_svntrunk _svnmod _cvsroot_cvsmod _hgroot _hgrepo \
-		_darcsmod _darcstrunk _bzrtrunk _bzrmod _gitroot _gitname \
+	local vars=(pkgbase pkgname pkgver pkgrel epoch pkgdesc arch url
+		license groups depends makedepends checkdepends provides
+		conflicts replaces install source md5sums
+		"${PKGBUILD_ARCH_ATTRS[@]/%/_$CARCH}"
+		_svntrunk _svnmod _cvsroot_cvsmod _hgroot _hgrepo
+		_darcsmod _darcstrunk _bzrtrunk _bzrmod _gitroot _gitname
 		YPKGVER_FUNC YCHECK_FUNC
 		)
 
@@ -90,11 +108,7 @@ read_pkgbuild() {
 check_deps() {
 	local nodisplay=${1:-0} dep
 	eval $PKGBUILD_VARS
-
-	# Merge generic dependencies with architecture specific dependencies
-	eval depends+=(\"\${depends_${CARCH}[@]}\")
-	eval makedepends+=(\"\${makedepends_${CARCH}[@]}\")
-	eval checkdepends+=(\"\${checkdepends_${CARCH}[@]}\")
+	merge_arch_attrs
 
 	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}") )
 	PKGBUILD_DEPS_INSTALLED=()
@@ -460,14 +474,10 @@ get_pkgbuild() {
 		(($?)) && continue
 		if ((DEPENDS)); then
 			unset depends makedepends checkdepends \
-			      depends_${CARCH} makedepends_${CARCH} checkdepends_${CARCH}
+			      depends_$CARCH makedepends_$CARCH checkdepends_$CARCH
 			. <( source_pkgbuild PKGBUILD depends makedepends checkdepends \
-					depends_${CARCH} makedepends_${CARCH} checkdepends_${CARCH}) || continue
-
-			# Merge generic dependencies with architecture specific dependencies
-			eval depends+=(\"\${depends_${CARCH}[@]}\")
-			eval makedepends+=(\"\${makedepends_${CARCH}[@]}\")
-			eval checkdepends+=(\"\${checkdepends_${CARCH}[@]}\")
+				    depends_$CARCH makedepends_$CARCH checkdepends_$CARCH) || continue
+			merge_arch_attrs
 
 			deps=("${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}")
 			((DEPENDS>1)) || deps=($(pacman_parse -T "${deps[@]}"))
