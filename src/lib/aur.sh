@@ -23,8 +23,9 @@ aur_get_pkgbuild() {
 
 	if ((local_aurusegit)); then
 		local git_repo_url=$(pkgquery -Aif "%G" "$pkg")
+		((UPGRADES && AURSHOWDIFF)) || local _depth="--depth=1"
 		# We're already in "$pkg"/ here, so clone to the current directory
-		git clone "$git_repo_url" . || return 1
+		git clone $_depth "$git_repo_url" . || return 1
 	else
 		[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
 		if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
