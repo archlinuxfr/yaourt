@@ -225,7 +225,7 @@ aur_update_exists() {
 		fi
 		_msg=" $CRED$(gettext 'Orphan')$C0 $_msg"
 	fi
-	[[ $_msg ]] && echo -e "$1 :$_msg"
+	[[ $_msg ]] && echo -e "${REFRESH:+ }$1 :$_msg"
 	((ret)) && return $ret
 	is_package_ignored "$1" $DETAILUPGRADE && return 1
 	return 0
