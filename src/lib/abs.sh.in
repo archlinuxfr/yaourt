@@ -214,7 +214,7 @@ format_update() {
 			pkgver=$rversion
 			local requiredbypkg=""
 
-			local pkg_dep_on=( $(pkgquery -Sif "%N" "$pkgname") )
+			local pkg_dep_on=( $(pkgquery -S1if "%N" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
 				[[ " ${pkgs_repo[@]#*/} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
 			done
