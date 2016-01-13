@@ -23,8 +23,9 @@ aur_get_pkgbuild() {
 
 	if ((local_aurusegit)); then
 		local git_repo_url=$(pkgquery -Aif "%G" "$pkg")
+		((UPGRADES && AURSHOWDIFF)) || local _depth="--depth=1"
 		# We're already in "$pkg"/ here, so clone to the current directory
-		git clone "$git_repo_url" . || return 1
+		git clone $_depth "$git_repo_url" . || return 1
 	else
 		[[ -z "$pkgurl" ]] && pkgurl=$(pkgquery -Aif "%u" "$pkg")
 		if [[ ! "$pkgurl" ]] || ! curl_fetch -fs "$pkgurl" -o "$pkg.tar.gz"; then
@@ -151,6 +152,22 @@ END {
 }'
 }
 
+# Display PKGBUILD changes between installed version and AUR version.
+# For devel packages compare the last two revisions as a fallback.
+aur_git_diff() {
+	local lrev rev
+
+	# Search git revision matching the local version of the package
+	while read rev; do
+		git grep -F -q --all-match -e "pkgver = ${pkginfo[7]%-*}" -e "pkgrel = ${pkginfo[7]#*-}" $rev -- .SRCINFO
+		[[ $? -eq 0 ]] && { lrev=$rev; break; }
+	done < <(git rev-list HEAD -- .SRCINFO)
+
+	echo
+	git diff ${lrev:-HEAD^}..HEAD -- PKGBUILD
+	echo
+}
+
 # Check if this package has been voted on AUR, and vote for it
 vote_package() {
 	(( ! AURVOTEINSTALLED )) && return
@@ -184,6 +201,7 @@ install_from_aur() {
 	  { cd "$cwd"; return 1; }
 	aur_comments ${pkginfo[0]}
 	echo -e "$CBOLD${pkginfo[0]} ${pkginfo[2]} $C0 ($(date -u -d "@${pkginfo[8]}" "+%F %H:%M"))"
+	((UPGRADES && AURUSEGIT && AURSHOWDIFF)) && aur_git_diff
 	[[ ! ${pkginfo[6]#-} ]] && echo -e "$CBLINK$CRED$(gettext 'This package is orphaned')$C0"
 	echo -e "$CBLINK$CRED$(gettext '( Unsupported package: Potentially dangerous ! )')$C0"
 
