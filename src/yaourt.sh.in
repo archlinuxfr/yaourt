@@ -164,7 +164,7 @@ yaourt_sync() {
 	elif (( INFO )); then
 		load_lib aur
 		for arg in ${ARGS[@]}; do
-			title $(_gettext 'Informations for %s' $arg)
+			title $(_gettext 'Information for %s' $arg)
 			local _repo="${arg%/*}"
 			if [[ "$_repo" = "$arg" || "$_repo" != "aur" ]]; then
 				pacman_out -S "${PACMAN_S_ARG[@]}" "$arg" 2> /dev/null ||\

@@ -223,19 +223,9 @@ format_update() {
 			pkgver=$rversion
 			local requiredbypkg=""
 
-			local pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkgname") )
+			local pkg_dep_on=( $(pkgquery -S1if "%N" "$pkgname") )
 			for pkg in ${pkg_dep_on[@]}; do
 				[[ " ${pkgs_repo[@]#*/} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
-			done
-
-			# query the provided packages as dependencies
-			[[ ! $requiredbypkg ]] && local pkg_provided=( $(pkgquery -S -f "%P" "$pkgname") )
-			for pkg_prov in ${pkg_provided[@]}; do
-				pkg_dep_on=( $(pkgquery -S --qdepends -f "%n" "$pkg_prov") )
-				for pkg in ${pkg_dep_on[@]}; do
-					[[ " ${pkgs_repo[@]#*/} " =~ " $pkg " ]] && requiredbypkg=$pkg && break
-				done
-				[[ $requiredbypkg ]] && break
 			done
 
 			[[ ! $requiredbypkg ]] && requiredpkg=$(pkgquery -Sf'%R' "$pkgname")
