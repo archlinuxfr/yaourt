@@ -117,19 +117,28 @@ install_from_abs() {
 #  - pkgs_repo=(packages to get directly from repo)
 #  - pkgs_src=(packages to upgrade from PKGBUILD)
 fetch_pkgs_repo_up_list() {
-	unset pkgs_repo_up_info pkgs_repo pkgs_src
+	unset pkgs_repo_up_info pkgs_repo pkgs_src upgrade_needed
 	local packages pkgname repo
 
 	# Retrieve list of pending upgrades from repos
 	(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
-	packages=($(pacman_parse -Sp --noconfirm --print-format "## %n" \
-	                $_arg "${PACMAN_S_ARG[@]}" "${pkg_up[@]}"       \
-	            | sed -n 's/^## \(.*\)/\1/p' | sort))
+
+	# `pacman -Spu` fails in some cases (e.g: when a package is replaced
+	# by another one)
+	if pacman_parse -Sp --noconfirm --print-format "## %n" $_arg \
+		    "${PACMAN_S_ARG[@]}" "${pkg_up[@]}" >"$YAOURTTMPDIR/sysupgrade"; then
+		packages=($(sed -n 's/^## \(.*\)/\1/p' "$YAOURTTMPDIR/sysupgrade" | sort))
+		rm "$YAOURTTMPDIR/sysupgrade"
+		[[ $packages ]] && upgrade_needed=1 || { upgrade_needed=0; return 0; }
+	else
+		# `pacman -Spu` failed so we don't know which packages
+		# will be updated
+		DETAILUPGRADE=0; upgrade_needed=1; return 1
+	fi
 
 	# package-query invocations are expensive, hence, the result is saved
 	# in a global variable which can be used later by format_update().
-	[[ $packages ]] && mapfile pkgs_repo_up_info < \
-		<(pkgquery -1Sif "%n %r %v %l %d" "${packages[@]}")
+	mapfile pkgs_repo_up_info < <(pkgquery -1Sif "%n %r %v %l %d" "${packages[@]}")
 
 	while read pkgname repo unused; do
 		if (( BUILD )) || custom_pkg "$pkgname"; then
@@ -306,7 +315,7 @@ sysupgrade() {
 		fetch_pkgs_repo_up_list
 	fi
 
-	[[ $pkgs_repo ]] || [[ $pkgs_aur ]] || return $ret
+	((upgrade_needed)) || [[ $pkgs_aur ]] || return $ret
 
 	# Display update info
 	if ((DETAILUPGRADE)); then
@@ -316,7 +325,7 @@ sysupgrade() {
 	fi
 
 	# Upgrade packages from repos
-	if [[ $pkgs_repo ]]; then
+	if ((upgrade_needed)); then
 		(( UPGRADES > 1 )) && local _arg="-uu" || local _arg="-u"
 		su_pacman -S "${PACMAN_S_ARG[@]}" $_arg "${pkg_up[@]}" || return $?
 	fi
