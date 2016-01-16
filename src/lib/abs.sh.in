@@ -93,7 +93,7 @@ install_from_abs() {
 	declare -a pkginfo=($(pkgquery -1Sif "%r %n %v %a" "$1"))
 	(( ! BUILD )) && ! custom_pkg "${pkginfo[1]}" &&
 	  bin_pkgs+=("${pkginfo[0]}/${pkginfo[1]}") && continue
-	(( BUILD > 1 )) && build_deps=1 || build_deps=0
+	(( BUILD > 1 )) && build_deps=2 || build_deps=0
 	msg $(_gettext 'Building %s from sources.' "${pkginfo[1]}")
 	title $(_gettext 'Install %s from sources' "${pkginfo[1]}")
 	echo
