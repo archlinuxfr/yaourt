@@ -46,9 +46,10 @@ aur_show_info() {
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	local pkgname=$1 id votes outofdate maintainer last_mod pkgbuild_url
+	local pkgname=$1 id votes outofdate maintainer popularity last_mod pkgbuild_url
 	title "Searching info on AUR for $pkgname"
-	read id votes outofdate maintainer last_mod pkgbuild_url < <(pkgquery -Aif '%i %w %o %m %L %u' "$pkgname")
+	read id votes outofdate maintainer last_mod popularity pkgbuild_url \
+		< <(pkgquery -Aif '%i %w %o %m %L %p %u' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	local pkgbase=${pkgbuild_url#*/snapshot/}; pkgbase=${pkgbase%.tar.gz}
@@ -82,6 +83,7 @@ info_from_aur() {
 	aur_show_info "Last update    " "$(date +"%c" --date "@$last_mod")"
 	aur_show_info "Out Of Date    " "$outofdate"
 	aur_show_info "Votes          " "$votes"
+	aur_show_info "Popularity     " "$popularity"
 	echo
 	rm "$tmpfile"
 }
