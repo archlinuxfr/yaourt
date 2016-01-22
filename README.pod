@@ -37,7 +37,7 @@ Get PKGBUILD for ABS or AUR.
 
 =item B<-P, --pkgbuild E<lt>directoryE<gt>>
 
-Build package from PKGBUILD found in a local directory. Also install the packacke with I<-i>.
+Build package from PKGBUILD found in a local directory. Also install the package with I<-i>.
 
 =item B<-Q, --query>
 
