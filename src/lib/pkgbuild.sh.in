@@ -112,8 +112,7 @@ check_deps() {
 
 	PKGBUILD_DEPS=( $(pacman_parse -T "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}") )
 	PKGBUILD_DEPS_INSTALLED=()
-	for dep in "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}"
-	do
+	for dep in "${depends[@]}" "${makedepends[@]}" "${checkdepends[@]}"; do
 		if ! in_array "$dep" "${PKGBUILD_DEPS[@]}"; then
 			PKGBUILD_DEPS_INSTALLED+=("$dep")
 		fi
@@ -121,24 +120,24 @@ check_deps() {
 	(( nodisplay )) && return 0
 	msg "$(_gettext '%s dependencies:' "$pkgbase")"
 	for dep in "${PKGBUILD_DEPS_INSTALLED[@]}"; do
-		if $(in_array "$dep" "${makedepends[@]}"); then
-                    echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)') [makedepend]"
-                else
-                    echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
-                fi
+		if in_array "$dep" "${makedepends[@]}"; then
+			echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)') [makedepend]"
+		else
+			echo -e " - $CBOLD$dep$C0 $(gettext '(already installed)')"
+		fi
 	done
 	for dep in "${PKGBUILD_DEPS[@]}"; do
 		if isavailable $dep; then
-            if $(in_array "$dep" "${makedepends[@]}"); then
-                echo -e " - $CBLUE$dep$C0 $(gettext '(package found)') [makedepend]" && continue
-            else
-                echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
-            fi
-        elif $(in_array "$dep" "${makedepends[@]}"); then
-            echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)') [makedepend]"
-        else
-            echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)')"
-        fi
+			if in_array "$dep" "${makedepends[@]}"; then
+				echo -e " - $CBLUE$dep$C0 $(gettext '(package found)') [makedepend]" && continue
+			else
+				echo -e " - $CBLUE$dep$C0 $(gettext '(package found)')" && continue
+			fi
+		elif in_array "$dep" "${makedepends[@]}"; then
+			echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)') [makedepend]"
+		else
+			echo -e " - $CYELLOW$dep$C0 $(gettext '(building from AUR)')"
+		fi
 	done
 	echo
 	return 0
