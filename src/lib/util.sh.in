@@ -16,11 +16,19 @@ declare -A LOADEDLIBS=()
 type -p sudo &> /dev/null && SUDOINSTALLED=1
 type -t gettext &> /dev/null || { gettext() { echo "$@"; }; }
 
+# Programs arguments bitmask
+(( A_PS  = 1 << 0 )) # pacman -S
+(( A_M   = 1 << 1 )) # makepkg
+(( A_PQ  = 1 << 2 )) # pacman -Q
+(( A_PC  = 1 << 3 )) # pacman
+(( A_PKC = 1 << 4 )) # package-query
+(( A_CC  = 1 << 5 )) # curl
+(( A_PU  = 1 << 6 )) # pacman -U
+(( A_PO  = 1 << 7 )) # pacman_out
 
-# Programs arguments
-# pacman -S, makepkg, pacman -Q, pacman, package-query, curl, pacman -U,
-# pacman_out
-A_PS=1 A_M=2 A_PQ=4 A_PC=8 A_PKC=16 A_CC=32 A_PU=64 A_PO=128
+# Programs arguments:
+#     pacman -S, makepkg, pacman -Q, pacman, package-query,
+#     curl, pacman -U, pacman_out
 unset PACMAN_S_ARG MAKEPKG_ARG PACMAN_Q_ARG PACMAN_C_ARG PKGQUERY_C_ARG \
       CURL_C_ARG PACMAN_U_ARG PACMAN_O_ARG
 

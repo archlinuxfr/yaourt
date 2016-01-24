@@ -59,7 +59,6 @@ version() {
 	echo "$(gettext 'homepage: http://archlinux.fr/yaourt-en')"
 }
 
-
 ###################################
 ### Handle actions              ###
 ###################################
@@ -336,7 +335,7 @@ while [[ $1 ]]; do
 		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
 		--noconfirm)        NOCONFIRM=1;;
-		--nodeps)           program_arg $((A_PS | A_M )) $1;;
+		--nodeps)           program_arg $((A_PS | A_M)) $1;;
 		-Q|--query)         MAJOR="query";;
 		-y|--refresh)       (( REFRESH ++ ));;
 		-S|--sync)          MAJOR="sync";;

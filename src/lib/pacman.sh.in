@@ -38,7 +38,7 @@ pacman_queue() {
 	fi
 }
 
-# launch pacman as root
+# Launch pacman as root
 su_pacman() {
 	pacman_queue; launch_with_su $PACMAN "${PACMAN_C_ARG[@]}" "${PACMAN_O_ARG[@]}" "$@"
 }
@@ -59,7 +59,6 @@ pacman_refresh() {
 	(( $1 > 1 )) && _arg="-Syy" || _arg="-Sy"
 	su_pacman $_arg || exit $?
 }
-
 
 is_package_ignored() {
 	if [[ " ${P[ignorepkg]} " =~ " $1 " ]]; then
