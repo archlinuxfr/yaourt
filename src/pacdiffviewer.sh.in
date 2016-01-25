@@ -192,7 +192,7 @@ manage_file() {
 		prompt "$(gettext "$_prompt [C]ontinue (default), [A]bort ?")"
 		local answer=$(userinput "$_prompt_action" "C")
 		case "$answer" in
-			A) break 2;;	# break manage() loop
+			A) return 2;;	# break manage() loop
 			C) break;;
 			E) $DIFFEDITCMD "${_file%$ext}" "$_file" ;;
 			R) mv "$_file" "${_file%$ext}"; return 1;;
@@ -230,11 +230,13 @@ manage() {
 			read -e i
 			(( ! i )) && break
 			(( --i>=0 && i < ${#pacdata[@]} )) || continue
-			manage_file "$ext" "${pacfiles[$i]}"
-			if (( $? )); then
+			manage_file "$ext" "${pacfiles[$i]}"; local ret=$?
+			if (( ret == 1 )); then
 				unset pacdata[$i]; pacdata=("${pacdata[@]}")
 				unset pacfiles[$i]; pacfiles=("${pacfiles[@]}")
-				(( ${#pacdata[@]} )) || break;
+				(( ${#pacdata[@]} )) || break
+			elif (( ret == 2 )); then
+				break
 			fi
 		done
 	else
