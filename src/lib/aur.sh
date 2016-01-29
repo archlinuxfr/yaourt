@@ -69,7 +69,7 @@ info_from_aur() {
 
 	aur_show_info "Repository     " "${C[aur]:-${C[other]}}aur$C0"
 	aur_show_info "Name           " "$CBOLD$pkgname$C0"
-	aur_show_info "Version        " "$CGREEN$(get_package_version "$epoch" "$pkgver" "$pkgrel")$C0"
+	aur_show_info "Version        " "$CGREEN$pkgver$C0"
 	aur_show_info "Description    " "$pkgdesc"
 	aur_show_info "Architecture   " "${arch[*]}"
 	aur_show_info "URL            " "$CCYAN$url$C0"
