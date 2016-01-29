@@ -46,11 +46,11 @@ aur_show_info() {
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	local pkgname=$1 id votes outofdate maintainer popularity last_mod pkgbuild_url licenses \
-		pkgver pkgdesc url
+	local pkgname=$1 id votes outofdate maintainer popularity last_mod pkgbuild_url \
+		licenses pkgver pkgdesc url
 	title "Searching info on AUR for $pkgname"
-	IFS='|' read id votes outofdate maintainer last_mod popularity pkgbuild_url licenses \
-		pkgver pkgdesc url \
+	IFS='|' read id votes outofdate maintainer last_mod popularity pkgbuild_url \
+		licenses pkgver pkgdesc url \
 		< <(pkgquery -Aif '%i|%w|%o|%m|%L|%p|%u|%e|%v|%d|%U' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
@@ -58,9 +58,8 @@ info_from_aur() {
 	pkgbuild_url="${pkgbuild_url%/snapshot/*}/plain/PKGBUILD?h=$pkgbase"
 	curl_fetch -fis "$pkgbuild_url" -o "$tmpfile" || \
 		{ error $(_gettext '%s not found in AUR.' "$pkgname"); return 1; }
-	local vars=(pkgrel epoch arch groups
-		depends depends_$CARCH optdepends optdepends_$CARCH provides
-		provides_$CARCH conflicts conflicts_$CARCH replaces replaces_$CARCH)
+	local vars=(arch groups depends depends_$CARCH optdepends optdepends_$CARCH
+		provides provides_$CARCH conflicts conflicts_$CARCH replaces replaces_$CARCH)
 
 	unset ${vars[*]}
 	local ${vars[*]}
