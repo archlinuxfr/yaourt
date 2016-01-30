@@ -295,7 +295,7 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
       IGNOREGRP IGNOREPKG CHANGELOG LIST INFO RSORT SORT UNREQUIRED \
       FOREIGN GROUP QUERYTYPE QUIET DEPENDS PRINT \
       AURVOTEINSTALLED CUSTOMIZEPKGINSTALLED PACMAN_CMD \
-      NEEDED SPLITOPT
+      NEEDED
 
 # Disable color if output is not a terminal
 [[ -t 1 ]] || { ((USECOLOR!=2)) && USECOLOR=0; USEPAGER=0; TERMINALTITLE=0; }
@@ -368,7 +368,6 @@ while [[ $1 ]]; do
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		--file)             FILE=1; program_arg $A_PQ $1;;
 		--print-format)     ((PRINT++));; # --print-format needs --print
-		--pkg)              program_arg $((A_M)) $1 "$2"; SPLITOPT=1; shift;;
 		-P|--pkgbuild)      MAJOR="pkgbuild"; shift; YPKGBUILDDIR="$1"
 		                    if [[ $1 == "-i" ]] || [[ $1 == "--install" ]]; then
 		                        YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"

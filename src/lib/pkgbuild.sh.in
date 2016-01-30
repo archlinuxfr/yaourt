@@ -279,15 +279,8 @@ build_package() {
 		fi
 	fi
 
-	local TARGET_PACKAGE
-	[[ ! $SPLITOPT && ${#pkgname[@]} > 1 ]] && {
-		msg $(_gettext 'This PKGBUILD provides " %b "' "${pkgname[*]}")
-		prompt  $(_gettext 'Install only %s ?' "${pl_pkgname}") $(yes_no 1)
-		builduseragrees && TARGET_PACKAGE="--pkg ${pl_pkgname}"
-	}
-
 	# Build
-	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" y_makepkg -s ${TARGET_PACKAGE} -c -f -p ./PKGBUILD
+	SRCDEST="$YSRCDEST" PKGDEST="$YPKGDEST" y_makepkg -s -c -f -p ./PKGBUILD
 
 	if (( $? )); then
 		error $(_gettext 'Makepkg was unable to build %s.' "$pkgbase")
