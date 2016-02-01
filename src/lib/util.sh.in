@@ -259,11 +259,19 @@ TERMINALTITLE=1
 # Command
 DIFFEDITCMD=${DIFFEDITCMD:-vimdiff}
 
+# Load yaourt configuration
 source_config() {
+	# Backup notable environment variables
 	local env_EDITOR="$EDITOR"
 	local env_VISUAL="$VISUAL"
 
+	# Source system-wide configuration file
 	[[ -r '@sysconfdir@/yaourtrc' ]] && source '@sysconfdir@/yaourtrc'
+
+	# Source user's configuration file:
+	#   - $XDG_CONFIG_HOME/yaourt/yaourtrc
+	#   - ~/.yaourtrc if the previous one does not exist
+	# Settings defined in the system-wide configuration file are overriden
 	XDG_YAOURT_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/yaourt"
 	if [[ -r $XDG_YAOURT_DIR/yaourtrc ]]; then
 		source "$XDG_YAOURT_DIR/yaourtrc"
@@ -271,12 +279,10 @@ source_config() {
 		source ~/.yaourtrc
 	fi
 
-	if [[ "$env_EDITOR" ]]; then
-		EDITOR="$env_EDITOR"
-	fi
-	if [[ "$env_VISUAL" ]]; then
-		VISUAL="$env_VISUAL"
-	fi
+	# Restore environment variables if they were defined
+	# This overrides values from configuration files
+	[[ "$env_EDITOR" ]] && EDITOR="$env_EDITOR"
+	[[ "$env_VISUAL" ]] && VISUAL="$env_VISUAL"
 }
 
 source_config
