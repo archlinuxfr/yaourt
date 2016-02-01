@@ -30,7 +30,7 @@ analyse_status_list() {
 		fi
 	fi
 	# Test local database
-	if [[ ! "$NO_TESTDB" ]]; then testdb; fi
+	if [[ ! "$NO_TESTDB" ]]; then pacman -Dk; fi
 	if ((AUTOSAVEBACKUPFILE)) && ! \
 		diff "$Y_PKG_INSTALLED" <(pkgquery -Qf '%n %v' --sort n) &> /dev/null; then
 		# save original of backup files (pacnew/pacsave)
