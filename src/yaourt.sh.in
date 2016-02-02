@@ -306,7 +306,7 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
 } &> /dev/null
 
-# Explode arguments (-Su -> -S -u)
+# Explode arguments (-Su -> -S -u, , --foo=bar -> --foo bar)
 ARGSANS=("$@")
 explode_args "$@"
 set -- "${OPTS[@]}"
