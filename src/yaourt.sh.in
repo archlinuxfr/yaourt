@@ -323,7 +323,7 @@ while [[ $1 ]]; do
 		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
 		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
 		--asexplicit|--asdeps) program_arg $A_PS $1;;
-		--assume-installed) program_arg $A_PS $1;;
+		--assume-installed) program_arg $A_PS $1 "$2"; shift;;
 		--needed)           NEEDED=1; program_arg $A_PS $1;;
 		--clean)            ((CLEAN++));;
 		-c)                 ((CLEAN++)); ((CHANGELOG++)); program_arg $A_PQ "$1";;
