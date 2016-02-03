@@ -52,17 +52,33 @@ cleanup_add() {
 
 trap cleanup 0
 
-# explode_args ($arg1,...)
-# -ab --long -> -a -b --long
-# set $OPTS
+# Split command line arguments, i.e:
+#   -ab -> -a -b
+#   --foo=bar -> --foo bar
+#
+# Split arguments are stored in the OPTS array
+#
+# Parameters:
+#   $1,$2,$3,...,$n: arguments to split
 explode_args() {
 	unset OPTS
-	local arg=$1
+	local arg=$1 key value
+
 	while [[ $arg ]]; do
 		[[ $arg = "--" ]] && OPTS+=("$@") && break;
+
+		# Short options
 		if [[ ${arg:0:1} = "-" && ${arg:1:1} != "-" ]]; then
 			OPTS+=("-${arg:1:1}")
 			(( ${#arg} > 2 )) && arg="-${arg:2}" || { shift; arg=$1; }
+		# Long options
+		elif [[ ${arg:0:2} = "--" ]]; then
+			# Split argument at '=' :
+			# e.g --foo=bar -> key=--foo, value=bar
+			key=${arg%%=*}; value=${arg#*=}
+			OPTS+=("$key")
+			[[ $key != $value ]] && OPTS+=("$value")
+			shift; arg=$1
 		else
 			OPTS+=("$arg"); shift; arg=$1
 		fi
