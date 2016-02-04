@@ -6,13 +6,15 @@
 
 # General
 #AUTOSAVEBACKUPFILE=0
-#DEVELSRCDIR=""
 #DEVEL=0
-#VISUAL="$VISUAL"
-#EDITOR="$EDITOR"
+#DEVELSRCDIR=""
 #FORCE=0
-#TMPDIR="/tmp"
 #NO_TESTDB=0
+
+# Environment variables
+#EDITOR="$EDITOR"
+#TMPDIR="/tmp"
+#VISUAL="$VISUAL"
 
 # SUDO
 #SUDONOVERIF=0      # Avoid multiple sudo checks when timestamp_timeout=0
