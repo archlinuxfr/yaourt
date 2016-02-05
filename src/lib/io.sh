@@ -83,8 +83,15 @@ userinput() {
 }
 
 useragrees() {
-	userinput "$@" &> /dev/null
-	local ret=$?
+	local answer ret
+
+	if ((NOENTER)); then
+		userinput "$@" &>/dev/null
+	else
+		answer=$(userinput "$@")
+	fi
+	ret=$?
+
 	echo
 	return $ret
 }
