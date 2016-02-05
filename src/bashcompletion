@@ -14,39 +14,49 @@ _yaourt_backup_file() {
   compopt -o filenames; _filedir 'tar.*'
 }
 
-_yaourt ()
-{
-  local op cur o
+_yaourt() {
+  local _yaourt_opts='-B --backup -C -G --getpkgbuild -P --pkgbuild --stats'
+  local _yaourt_c_opts='-c --clean'
+  local _yaourt_p_opts='-i --install'
+  local _yaourt_q_opts='--backupfile --date --conflicts --depends --provides
+    --replaces'
+  local _yaourt_s_opts='-A --ignorearch -a --aur --aur-url -b --build
+    --conflicts --depends --devel --holdver --m-arg --provides --replaces'
+
+  local cur=$(_get_cword) o op
   COMPREPLY=()
-  cur=$(_get_cword)
+
   if ((COMP_CWORD == 1)); then
     if [[ $cur != -* ]]; then
-      _pacman_file; return 0;
+      _pacman_file
     else
       _pacman &> /dev/null
-      _arch_compgen "${COMPREPLY[@]}" "-B --backup -C -G --getpkgbuild -P --pkgbuild --stats"
-      return 0
+      _arch_compgen "${COMPREPLY[@]}" "$_yaourt_opts"
     fi
+    return 0
   fi
-  for o in 'D database' 'Q query' 'R remove' 'S sync' 'U upgrade' 'B backup' 'C' 'G getpkgbuild' 'P pkgbuild'; do
+
+  for o in 'B backup' 'C' 'G getpkgbuild' 'P pkgbuild' 'Q query' 'S sync'; do
     _arch_incomp "$o" && break
   done
   (($?)) && op="" || op="${o% *}"
   _arch_incomp 'backupfile' || [[ $op == "B" ]] || _pacman &> /dev/null
   if [[ "$cur" == -* ]]; then
     case "$op" in
-      C) _arch_compgen "-c --clean";;
-      Q) _arch_compgen  "${COMPREPLY[@]}" "--backupfile --date";;
-      S) _arch_compgen  "${COMPREPLY[@]}" "-b --build -a --aur --devel --holdver";;
-      P) _arch_compgen  "${COMPREPLY[@]}" "-i --install";;
+      C) _arch_compgen "$_yaourt_c_opts";;
+      P) _arch_compgen "$_yaourt_p_opts";;
+      Q) _arch_compgen "${COMPREPLY[@]}" "$_yaourt_q_opts";;
+      S) _arch_compgen "${COMPREPLY[@]}" "$_yaourt_s_opts";;
     esac
   else
     case "$op" in
-      Q) _arch_incomp 'backupfile' && _yaourt_backup_file;;
       B) _yaourt_backup_file;;
       G) _pacman_pkg Slq;;
+      P) _arch_compgen "$_yaourt_p_opts"; _filedir -d;;
+      Q) _arch_incomp 'backupfile' && _yaourt_backup_file;;
     esac
   fi
 }
+
 _completion_loader pacman
 complete -o default -F _yaourt yaourt
