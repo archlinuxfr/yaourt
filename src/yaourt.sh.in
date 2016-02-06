@@ -359,6 +359,7 @@ while [[ $1 ]]; do
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
 		--force)            FORCE=1;;
+		-F|--files)         MAJOR="files";;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
 		-h|--help)          usage; exit 0;;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
@@ -431,6 +432,17 @@ case "$MAJOR" in
 	clean)
 		(( CLEAN )) && _arg="-c" || _arg=""
 		launch_with_su bash -c "DIFFEDITCMD=\"$DIFFEDITCMD\" pacdiffviewer $_arg"
+		;;
+
+	# yaourt -F
+	files)
+		# pacman -Fy needs to be run as root
+		if ((REFRESH)); then
+			pacman_cmd 1
+		# without -y, root privileges are not needed
+		else
+			pacman_cmd 0
+		fi
 		;;
 
 	# yaourt -G
