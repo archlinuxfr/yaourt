@@ -420,16 +420,19 @@ fi
 
 # Action
 case "$MAJOR" in
+	# yaourt -B
+	backup)
+		load_lib alpm_backup
+		yaourt_backup "${ARGS[0]}"
+		;;
+
+	# yaourt -C
 	clean)
 		(( CLEAN )) && _arg="-c" || _arg=""
 		launch_with_su bash -c "DIFFEDITCMD=\"$DIFFEDITCMD\" pacdiffviewer $_arg"
 		;;
 
-	stats)
-		load_lib alpm_stats
-		yaourt_stats
-		;;
-
+	# yaourt -G
 	getpkgbuild)
 		title "$(gettext 'get PKGBUILD')"
 		load_lib pkgbuild
@@ -437,19 +440,29 @@ case "$MAJOR" in
 		[[ $? -eq 0 ]] || exit 1
 		;;
 
-	backup)
-		load_lib alpm_backup
-		yaourt_backup "${ARGS[0]}"
-		;;
+	# yaourt <search pattern>
+	interactivesearch) yaourt_interactive ;;
 
+	# yaourt -P
 	pkgbuild)
 		load_lib pkgbuild util misc
 		yaourt_pkgbuild
 		;;
-	upgrade) yaourt_upgrade ;;
-	sync) yaourt_sync ;;
+
+	# yaourt -Q
 	query) yaourt_query ;;
-	interactivesearch) yaourt_interactive ;;
+
+	# yaourt --stats
+	stats)
+		load_lib alpm_stats
+		yaourt_stats
+		;;
+
+	# yaourt -S
+	sync) yaourt_sync ;;
+
+	# yaourt -U
+	upgrade) yaourt_upgrade ;;
 
 	*) pacman_cmd 0 ;;
 esac
