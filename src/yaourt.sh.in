@@ -31,11 +31,11 @@ VERSION='@VERSION@'
 ###################################
 
 usage() {
-	if ((${#ARGSANS[*]} > 1)); then
+	if ((${#CMDLINE_ARGS[*]} > 1)); then
 		echo "$(gettext 'Yaourt does not support --help for a particular option.')"
 		echo "$(_gettext 'The following is %s help :' "$PACMAN")"
 		echo
-		pacman_out "${ARGSANS[@]}"
+		pacman_out "${CMDLINE_ARGS[@]}"
 		return
 	fi
 	echo "$(gettext 'Usage: yaourt <operation> [...]')"
@@ -306,8 +306,9 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 	type -p customizepkg && CUSTOMIZEPKGINSTALLED=1
 } &> /dev/null
 
+# Save command line arguments
+CMDLINE_ARGS=("$@")
 # Explode arguments (-Su -> -S -u, , --foo=bar -> --foo bar)
-ARGSANS=("$@")
 explode_args "$@"
 set -- "${OPTS[@]}"
 unset OPTS

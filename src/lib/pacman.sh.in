@@ -45,9 +45,9 @@ su_pacman() {
 
 # Launch pacman and exit
 pacman_cmd() {
-	(( ! $1 )) && exec $PACMAN "${ARGSANS[@]}"
+	(( ! $1 )) && exec $PACMAN "${CMDLINE_ARGS[@]}"
 	(( $1 == 2 )) && load_lib misc && prepare_status_list
-	pacman_queue; launch_with_su $PACMAN "${ARGSANS[@]}" || die $?
+	pacman_queue; launch_with_su $PACMAN "${CMDLINE_ARGS[@]}" || die $?
 	(( $1 == 2 )) && analyse_status_list
 	die 0
 }
