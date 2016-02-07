@@ -238,7 +238,7 @@ yaourt_pkgbuild() {
 	msg $(_gettext 'Installing %s from local PKGBUILD' "$pkg")
 
 	cd "$YPKGBUILDDIR"
-	YPKGBUILDDIR="$(pwd)"
+	YPKGBUILDDIR="$PWD"
 	package_pkgbuild_only "$pkgname"
 	return $?
 }

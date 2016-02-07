@@ -198,7 +198,7 @@ install_from_aur() {
 	[[ "${pkginfo[1]#-}" ]] || return 1
 	in_array ${pkginfo[0]} "${AUR_INSTALLED_PKGS[@]}" && return 0
 	title $(_gettext 'Installing %s from AUR' "${pkginfo[0]}")
-	cwd=$(pwd)
+	cwd=$PWD
 	init_build_dir "$YAOURTTMPDIR/aur-${pkginfo[0]}" || return 1
 	echo
 	msg $(_gettext 'Downloading %s PKGBUILD from AUR...' "${pkginfo[0]}")

@@ -73,7 +73,7 @@ restore_alpm_db() {
 # save ($1 is a dir) or restore ($1 is a file) alpm database
 yaourt_backup() {
 	local dest="$1"
-	[[ $dest ]] || dest="$(pwd)"
+	[[ $dest ]] || dest="$PWD"
 	if [[ -d "$dest" && -w "$dest" ]]; then
 		save_alpm_db "$dest"
 	elif [[ -f "$dest" && -r "$dest" ]]; then

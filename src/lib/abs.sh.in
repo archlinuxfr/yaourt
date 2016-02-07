@@ -98,7 +98,7 @@ install_from_abs() {
 	title $(_gettext 'Install %s from sources' "${pkginfo[1]}")
 	echo
 	msg $(gettext 'Retrieving PKGBUILD and local sources...')
-	cwd=$(pwd)
+	cwd=$PWD
 	init_build_dir "$YAOURTTMPDIR/abs-${pkginfo[1]}" || return 1
 	abs_get_pkgbuild ${pkginfo[0]}/${pkginfo[1]} ${pkginfo[3]} ||
 	  { cd "$cwd"; return 1; }

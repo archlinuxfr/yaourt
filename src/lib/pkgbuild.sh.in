@@ -438,7 +438,7 @@ source_pkgbuild() {
 # get_pkgbuild ($pkgs)
 # Get each package source and decompress into pkg directory
 get_pkgbuild() {
-	local i pkgs repo pkg pkgbase pkgver arch deps cwd=$(pwd) pkgdir
+	local i pkgs repo pkg pkgbase pkgver arch deps cwd=$PWD pkgdir
 	pkgs=("$@")
 	load_lib aur abs
 	declare -A pkgs_downloaded
