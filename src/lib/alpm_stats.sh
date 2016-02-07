@@ -98,7 +98,7 @@ show_disk_usage() {
 	echo -e "$CGREEN$(gettext 'Theoretical space used by packages:') $CYELLOW$(($size_t/1048576))M"
 	echo -e "$CGREEN$(gettext 'Real space used by packages:') $CYELLOW$(($size_r/1048576))M"
 	# Get cachedir
-	cachedir=(`pacman_parse --debug 2>/dev/null | grep "^debug: option 'cachedir'" |awk '{print $5}'`)
+	cachedir=($(pacman_parse --debug 2>&1 | grep "^debug: option 'cachedir'" | awk '{print $5}'))
 	# space used by download packages or sources in cache
 	echo -e "$CGREEN$(gettext 'Space used by pkg downloaded in cache (cachedir):') $CYELLOW $(du -sh "${P[cachedir]}" 2>/dev/null|awk '{print $1}')"
 	[[ $SRCDEST ]] && srcdestsize=`du -sh "$SRCDEST" 2>/dev/null|awk '{print $1}'` || srcdestsize="0M"
