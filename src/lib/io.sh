@@ -83,21 +83,14 @@ userinput() {
 }
 
 useragrees() {
-	local answer ret
-
-	if ((NOENTER)); then
-		userinput "$@" &>/dev/null
-	else
-		answer=$(userinput "$@")
-	fi
-	ret=$?
-
+	userinput "$@" >/dev/null
+	local ret=$?
 	echo
 	return $ret
 }
 
 # ask while building
-builduserinput() { NOCONFIRM=$BUILD_NOCONFIRM userinput "$@"; }
+builduserinput()  { NOCONFIRM=$BUILD_NOCONFIRM userinput  "$@"; }
 builduseragrees() { NOCONFIRM=$BUILD_NOCONFIRM useragrees "$@"; }
 
 yes_no() {
