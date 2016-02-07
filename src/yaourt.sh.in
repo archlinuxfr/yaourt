@@ -196,9 +196,10 @@ yaourt_upgrade () {
 	((!ret))
 }
 
-# Handle query
+# Handle query (yaourt -Q)
 yaourt_query() {
-	[[ -n $BACKUPFILE ]] && if [[ -r "$BACKUPFILE" ]]; then   # -Q --backupfile
+	# yaourt -Q --backupfile
+	[[ -n $BACKUPFILE ]] && if [[ -r "$BACKUPFILE" ]]; then
 		load_lib alpm_backup
 		is_an_alpm_backup "$BACKUPFILE" || die 1
 		program_arg $((A_PC | A_PKC)) "-b" "$backupdir"
@@ -206,18 +207,20 @@ yaourt_query() {
 		error $(_gettext 'Unable to read %s file' "$BACKUPFILE")
 		die 1
 	fi
-	if (( CHANGELOG || LIST || INFO || FILE )); then
+
+	# yaourt  -Qc   |  -Qp  |  -Qi  |  -Ql
+	if (( CHANGELOG || FILE || INFO || LIST )); then
 		pacman_out -Q "${PACMAN_Q_ARG[@]}" "${ARGS[@]}"
-		return $?
-	fi
-	if (( DEPENDS && UNREQUIRED )); then
+	# yaourt -Qdt
+	elif (( DEPENDS && UNREQUIRED )); then
 		load_lib alpm_query
 		search_forgotten_orphans
+	# yaourt -Q --conflicts | --depends | --provides | --replaces
 	elif [[ $QUERYTYPE ]]; then
 		yaourt_query_type
+	# yaourt -Q | -Qm | -Qn | -Qq | -Qs | ...
 	else
-		#title $(gettext "Query installed packages")
-		#msg $(gettext "Query installed packages")
+		# Enhance search with package-query
 		AURSEARCH=0 search 0
 	fi
 }
