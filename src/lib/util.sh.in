@@ -185,10 +185,10 @@ program_arg() {
 }
 
 # programs call with command line options
-pacman_parse() { LC_ALL=C pacman --color never "${PACMAN_C_ARG[@]}" "$@"; }
+pacman_parse() { LC_ALL=C pacman "${PACMAN_C_ARG[@]}" --color never "$@"; }
 pacman_out()   { $PACMAN "${PACMAN_C_ARG[@]}" "${PACMAN_O_ARG[@]}" "$@"; }
 pkgquery()     { package-query "${PKGQUERY_C_ARG[@]}" "$@"; }
-y_makepkg() { $MAKEPKG "${MAKEPKG_ARG[@]}" "$@"; }
+y_makepkg()    { $MAKEPKG "${MAKEPKG_ARG[@]}" "$@"; }
 curl_fetch()   { curl "${CURL_C_ARG[@]}" "$@"; }
 
 # Run editor

@@ -327,7 +327,7 @@ while [[ $1 ]]; do
 		--assume-installed) program_arg $A_PS $1 "$2"; shift;;
 		--needed)           NEEDED=1; program_arg $A_PS $1;;
 		--clean)            ((CLEAN++));;
-		-c)                 ((CLEAN++)); ((CHANGELOG++)); program_arg $A_PQ "$1";;
+		-c)                 ((CLEAN++)); CHANGELOG=1; program_arg $A_PQ "$1";;
 		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
 		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_PQ)) $1;;
 		-e|--explicit)      program_arg $A_PQ $1;;
