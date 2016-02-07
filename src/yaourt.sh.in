@@ -224,12 +224,10 @@ yaourt_query() {
 
 # Handle building from local PKGBUILD
 yaourt_pkgbuild() {
-	! [ -d "$YPKGBUILDDIR" ] && {
-		msg $(gettext 'You have to provide a valid directory after --pkgbuild')
-		return 1
-	}
+	YPKGBUILDDIR="${YPKGBUILDDIR:-$PWD}"
+
 	! [ -e "$YPKGBUILDDIR"/PKGBUILD ] && {
-		msg $(gettext 'Your directory after --pkgbuild does not contain a PKGBUILD')
+		msg $(_gettext '%s directory does not contain a PKGBUILD' "$YPKGBUILDDIR")
 		return 1
 	}
 
