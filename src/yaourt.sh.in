@@ -382,7 +382,7 @@ while [[ $1 ]]; do
 		--tmp)              shift; TMPDIR="$1";;
 		--nameonly)         program_arg $A_PQ $1;;
 		-V|--version)       version; exit 0;;
-		-v)                 program_arg $((A_PQ | A_PS)) $1;;
+		-v|--verbose)       program_arg $((A_PQ | A_PS)) $1;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
 		-)                  break;; # support smth like echo package | yaourt -S -
 		--)                 shift; ARGS+=("$@"); break;;
