@@ -258,8 +258,8 @@ display_update() {
 			   SP_ARG="" sync_packages "$YAOURTTMPDIR/sysuplist"
 			   return 2
 			   ;;
-			N) return 1;;
-			*) break;;
+			Y) break;;
+			*) return 1;;
 		esac
 	done
 }

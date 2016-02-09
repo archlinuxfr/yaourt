@@ -75,8 +75,11 @@ userinput() {
 		answer=$default
 	else
 		read -en $NOENTER
-		[[ $REPLY ]] && answer=$(echo ${REPLY^^*} | tr "$(gettext $_key)" "$_key") || answer=$default
-		[[ "${_key/$answer/}" = "$_key" ]] && answer=$default
+		if [[ $REPLY ]]; then
+			answer=$(echo ${REPLY^^*} | tr "$(gettext $_key)" "$_key")
+		else
+			answer=$default
+		fi
 	fi
 	echo $answer
 	[[ "$answer" = "$default" ]]

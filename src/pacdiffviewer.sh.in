@@ -160,10 +160,9 @@ suppress() {
 	prompt "$(gettext 'Do you want to delete these files ?') $(\
 		yes_no 2) $(gettext '(S: no confirm)')"
 	local answer=$(userinput "YNS" "N")
-	[[ "$answer" = "N" ]] && return
 	local _opt=""
 	[[ "$answer" = "Y" ]] && _opt="-i"
-	rm $_opt "${pacfiles[@]}"
+	[[ "$answer" = "Y" ]] || [[ "$answer" = "S" ]] && rm $_opt "${pacfiles[@]}"
 }
 
 # Manage .pac* file
