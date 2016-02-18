@@ -316,78 +316,101 @@ unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
-		-D|--database|-w|--downloadonly)      PACMAN_CMD=1;;
-		-R|--remove)        [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
-		-o|--owns|--changelog|--check|--file) [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
-		--dbpath)           DBPATH="$2"
-		                    program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
-		--config|-r|--root) program_arg $((A_PC | A_PKC)) "$1" "$2"; shift;;
-		--cachedir|--logfile|--arch) program_arg $A_PC "$1" "$2"; shift;;
-		--noprogressbar|--noscriptlet) program_arg $A_PC "$1";;
-		--asexplicit|--asdeps) program_arg $A_PS $1;;
-		--assume-installed) program_arg $A_PS $1 "$2"; shift;;
-		--gpgdir)           program_arg $A_PC $1 "$2"; shift;;
-		--hookdir)          program_arg $A_PC $1 "$2"; shift;;
-		--needed)           NEEDED=1; program_arg $A_PS $1;;
-		--clean)            ((CLEAN++));;
-		-c)                 ((CLEAN++)); CHANGELOG=1; program_arg $A_PQ "$1";;
-		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
-		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_PQ)) $1;;
-		-e|--explicit)      program_arg $A_PQ $1;;
-		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
-		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
-		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1;;
-		-l|--list)          LIST=1; program_arg $A_PQ $1;;
-		--noconfirm)        NOCONFIRM=1;;
-		--nodeps)           program_arg $((A_PS | A_M)) $1;;
-		-Q|--query)         MAJOR="query";;
-		-y|--refresh)       (( REFRESH ++ ));;
-		-S|--sync)          MAJOR="sync";;
-		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
-		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
-		-U|--upgrade)       MAJOR="upgrade";;
-		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
-		--holdver)          program_arg $A_M $1;;
-		-A|--ignorearch)    program_arg $A_M $1;;
-		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=(${1//,/ });;
-		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=(${1//,/ });;
-		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
-		--aur-url)          AURURL="$2"; shift;;
-		-B|--backup)        MAJOR="backup";;
-		--backupfile)       shift; BACKUPFILE="$1";;
-		-b|--build)         ((BUILD++));;
-		-C)                 MAJOR="clean";;
-		--conflicts|--depends|--provides|--replaces) QUERYTYPE=${1:2};;
-		--date)             SORT=1;;
-		--devel)            DEVEL=1;;
-		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
-		--force)            FORCE=1;;
+		# Pacman operations
+		-D|--database)      PACMAN_CMD=1;;
 		-F|--files)         MAJOR="files";;
+		-Q|--query)         MAJOR="query";;
+		-R|--remove)        [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
+		-S|--sync)          MAJOR="sync";;
+		-U|--upgrade)       MAJOR="upgrade";;
+
+		# Yaourt operations
+		-B|--backup)        MAJOR="backup";;
+		-C)                 MAJOR="clean";;
 		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
-		-h|--help)          usage; exit 0;;
-		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
-		--color)            USECOLOR=2;;
-		--m-arg)            program_arg $((A_M)) $2; shift;;
-		--nocolor)          USECOLOR=0;;
-		--pager)            USEPAGER=1;;
-		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
-		--file)             FILE=1; program_arg $A_PQ $1;;
-		--print-format)     ((PRINT++));; # --print-format needs --print
 		-P|--pkgbuild)      MAJOR="pkgbuild"; shift; YPKGBUILDDIR="$1"
 		                    if [[ $1 == "-i" ]] || [[ $1 == "--install" ]]; then
-		                        YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"
+		                    	YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"
 		                    fi;;
-		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
-		--rsort)            RSORT=$2; shift;;
-		--sort)             SORT=$2; shift;;
 		--stats)            MAJOR="stats";;
-		--tmp)              shift; TMPDIR="$1";;
-		--nameonly)         program_arg $A_PQ $1;;
+
+		# Pacman options
+		-c)                 ((CLEAN++)); CHANGELOG=1; program_arg $A_PQ "$1";;
+		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_PQ)) $1;;
+		-e|--explicit)      program_arg $A_PQ $1;;
+		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
+		-h|--help)          usage; exit 0;;
+		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1
+		-k|--check)         [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
+		-l|--list)          LIST=1; program_arg $A_PQ $1;;
+		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
+		-o|--owns)          [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
+		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
+		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
+		-r|--root)          program_arg $((A_PC | A_PKC)) $1 "$2"; shift;;
+		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
+		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
+		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
 		-V|--version)       version; exit 0;;
 		-v|--verbose)       program_arg $((A_PQ | A_PS)) $1;;
-		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
+		-w|--downloadonly)  PACMAN_CMD=1;;
+		-y|--refresh)       (( REFRESH ++ ));;
+
+		--asdeps)           program_arg $A_PS $1;;
+		--asexplicit)       program_arg $A_PS $1;;
+		--assume-installed) program_arg $A_PS $1 "$2"; shift;;
+		--arch)             program_arg $A_PC $1 "$2"; shift;;
+		--cachedir)         program_arg $A_PC $1 "$2"; shift;;
+		--changelog)        [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
+		--clean)            ((CLEAN++));;
+		--color)            USECOLOR=2;;
+		--config)           program_arg $((A_PC | A_PKC)) $1 "$2"; shift;;
+		--dbpath)           DBPATH=$2; program_arg $((A_PC | A_PKC)) $1 "$2"; shift;;
+		--deps)             ((DEPENDS++)); program_arg $A_PQ $1;;
+		--file)             [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
+		--force)            FORCE=1;;
+		--gpgdir)           program_arg $A_PC $1 "$2"; shift;;
+		--holdver)          program_arg $A_M $1;;
+		--hookdir)          program_arg $A_PC $1 "$2"; shift;;
+		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=(${1//,/ });;
+		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=(${1//,/ });;
+		--logfile)          program_arg $A_PC $1 "$2"; shift;;
+		--needed)           NEEDED=1; program_arg $A_PS $1;;
+		--nocolor)          USECOLOR=0;;
+		--noconfirm)        NOCONFIRM=1;;
+		--nodeps)           program_arg $((A_PS | A_M)) $1;;
+		--noprogressbar)    program_arg $A_PC $1;;
+		--noscriptlet)      program_arg $A_PC $1;;
+		--print-format)     ((PRINT++));; # --print-format needs --print
+		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
+
+		# makepkg options
+		-A|--ignorearch)    program_arg $A_M $1;;
+
+		# Yaourt options
 		-)                  break;; # support smth like echo package | yaourt -S -
+		-a|--aur)           AUR=1; AURUPGRADE=1; AURSEARCH=1;;
+		-b|--build)         ((BUILD++));;
+
 		--)                 shift; ARGS+=("$@"); break;;
+		--aur-url)          AURURL=$2; shift;;
+		--backupfile)       BACKUPFILE=$2; shift;;
+		--conflicts)        QUERYTYPE=${1:2};;
+		--date)             SORT=1;;
+		--depends)          QUERYTYPE=${1:2};;
+		--devel)            DEVEL=1;;
+		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
+		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
+		--m-arg)            program_arg $A_M "$2"; shift;;
+		--nameonly)         program_arg $A_PQ $1;;
+		--pager)            USEPAGER=1;;
+		--provides)         QUERYTYPE=${1:2};;
+		--replaces)         QUERYTYPE=${1:2};;
+		--rsort)            RSORT=$2; shift;;
+		--sort)             SORT=$2; shift;;
+		--tmp)              TMPDIR=$2; shift;;
+
+		# Other options
 		-*)                 [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		*)                  ARGS+=("$1") ;;
 	esac
