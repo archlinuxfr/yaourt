@@ -47,11 +47,11 @@ aur_show_info() {
 # Grab info for package on AUR Unsupported
 info_from_aur() {
 	local pkgname=$1 id votes outofdate maintainer popularity last_mod pkgbuild_url \
-		licenses pkgver pkgdesc url
+		keywords licenses pkgver pkgdesc url
 	title "Searching info on AUR for $pkgname"
 	IFS='|' read id votes outofdate maintainer last_mod popularity pkgbuild_url \
-		licenses pkgver pkgdesc url \
-		< <(pkgquery -Aif '%i|%w|%o|%m|%L|%p|%u|%e|%v|%d|%U' "$pkgname")
+		keywords licenses pkgver pkgdesc url \
+		< <(pkgquery -Aif '%i|%w|%o|%m|%L|%p|%u|%K|%e|%v|%d|%U' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	local pkgbase=${pkgbuild_url#*/snapshot/}; pkgbase=${pkgbase%.tar.gz}
@@ -75,6 +75,8 @@ info_from_aur() {
 	aur_show_info "Architecture   " "${arch[*]}"
 	aur_show_info "URL            " "$CCYAN$url$C0"
 	aur_show_info "AUR URL        " "$CCYAN${AURURL}/packages/$pkgname$C0"
+	[[ "$keywords" != "-" ]] && {
+	aur_show_info "Keywords       " "${keywords[*]}"; }
 	aur_show_info "Licenses       " "${licenses[*]}"
 	aur_show_info "Groups         " "${groups[*]}"
 	aur_show_info "Provides       " "${provides[*]}"
