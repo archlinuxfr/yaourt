@@ -75,7 +75,8 @@ info_from_aur() {
 	aur_show_info "Architecture   " "${arch[*]}"
 	aur_show_info "URL            " "$CCYAN$url$C0"
 	aur_show_info "AUR URL        " "$CCYAN${AURURL}/packages/$pkgname$C0"
-	aur_show_info "Keywords       " "${keywords[*]}"
+	[[ "$keywords" != "-" ]] && {
+	aur_show_info "Keywords       " "${keywords[*]}"; }
 	aur_show_info "Licenses       " "${licenses[*]}"
 	aur_show_info "Groups         " "${groups[*]}"
 	aur_show_info "Provides       " "${provides[*]}"
