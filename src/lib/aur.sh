@@ -127,18 +127,6 @@ BEGIN {
 		comment_content=1
 	}
 }
-/^[\t ]*<p class="timestamp">/ {
-	if (comment==1) {
-		gsub (/[\t ]*<\/*p[^>]*>/, "", $0)
-		line=line" ("$0")"
-	}
-}
-
-/<\/h4>$/ {
-	if (comment==1) {
-		line="'$CYELLOW'"striphtml($0)"'$C0' "
-	}
-}
 /^[\t ]*<\/div>$/ {
 	if (comment==1) {
 		comment=0
@@ -148,6 +136,9 @@ BEGIN {
 }
 /^[\t ]*<h4 id="comment-/ {
 	comment=1
+	getline
+	sub("^[\t ]*","")
+	line="'$CYELLOW'"$0"'$C0' "
 }
 /^<div id="news">$/ {
 	div_news=!div_news;
