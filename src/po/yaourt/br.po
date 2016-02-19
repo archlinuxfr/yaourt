@@ -4,121 +4,117 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Artem Vorotnikov <artem@vorotnikov.me>, 2014
-# Dmitry Korzhevin <dkorzhevin@lsupport.net>, 2012
-# Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
-# Petr Zhizhin <piter.zh@gmail.com>, 2014
-# Vladislav <nuklea@gmail.com>, 2015
+# Gwenn M <tornoz@laposte.net>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2015-09-08 18:33+0200\n"
-"PO-Revision-Date: 2016-01-31 10:41+0000\n"
-"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
-"Language-Team: Russian (http://www.transifex.com/archlinuxfr/yaourt/language/ru/)\n"
+"PO-Revision-Date: 2016-02-18 12:14+0000\n"
+"Last-Translator: Gwenn M <tornoz@laposte.net>\n"
+"Language-Team: Breton (http://www.transifex.com/archlinuxfr/yaourt/language/br/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ru\n"
-"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"Language: br\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
-msgstr "Удалить все найденные *.pac*"
+msgstr "Dilemel an holl restroù *.pac* kavet"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
-msgstr "Сохранить все резервные файлы для последующего слияния"
+msgstr "Enrollañ an holl pakadoù restroù gwarediñ evit ur c'hendeuziñ diwezhatoc'h"
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
-msgstr "Использовать вместе с резервной копией без сообщений "
+msgstr "Arverit gant ar gwared evit chom hep ec'hankañ kemennadennoù"
 
 #: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
-msgstr "Последовательный список"
+msgstr "Roll urzhiet"
 
 #: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
-msgstr "Отобразить различия"
+msgstr "Skrammañ an difoc'hoù"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "This help"
-msgstr "Эта помощь"
+msgstr "Ar skoazell-mañ"
 
 #: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "Показать версию"
+msgstr "Skrammañ an handelv"
 
 #: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr "сохранение"
+msgstr "oc'h enrollañ"
 
 #: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
 msgid "found"
-msgstr "найдено"
+msgstr "kavet"
 
 #: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr "файлы без владельца"
+msgstr "emzivaded eo ar restroù"
 
 #: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr "Данные файлы не имеют первоначальной версии."
+msgstr "N'eus handelv orin ebet evit ar restroù da heul."
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
-msgstr "Вы действительно хотите удалить эти файлы ?"
+msgstr "Fellout a ra deoc'h dilemel ar restroù-mañ ?"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
-msgstr "(S: без подтверждения)"
+msgstr "(S : kadarnadur ebet)"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
-msgstr "**тот же файл**"
+msgstr "**hevelep restr**"
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
-msgstr "**автослияние**"
+msgstr "**emgendeuziñ**"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
-msgstr "Пропатчить: "
+msgstr "Pegell :"
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
-msgstr "Применить ?"
+msgstr "Arloañ ?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr "ошибка во время применения патча!"
+msgstr "ur fazi a zo bet distroet gant ar begell !"
 
 #: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
-msgstr "Введите №: "
+msgstr "Enankit an niver :"
 
 #: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
-msgstr "Yaourt не поддерживает --help для конкретной опции."
+msgstr "N'eo ket skoret --help gant yaourt evel dibarzh arbennik."
 
 #: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
-msgstr "Следующие %s -- помощь :"
+msgstr "Skoazell %s eo ar pezh a zo da heul :"
 
 #: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
-msgstr "Использование: yaourt <действия> [...]"
+msgstr "Arver : yaourt <oberatadenn> [...]"
 
 #: ../../yaourt.sh.in:42
 msgid "operations:"
-msgstr "действия:"
+msgstr "oberatadennoù :"
 
 #: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (паттерн поиска|файл пакета)"
+msgstr "yaourt (goustur enklask|restr pakad)"
 
 #: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
@@ -130,31 +126,31 @@ msgstr "yaourt {-V --version}"
 
 #: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
-msgstr "yaourt {-Q --query}          [опции] [пакет(ы)]"
+msgstr "yaourt {-Q --query} [dibarzhioù] [pakad(où)]"
 
 #: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
-msgstr "yaourt {-R --remove}         [опции] <пакет(ы)>"
+msgstr "yaourt {-R --remove} [dibarzhioù] <pakad(où)>"
 
 #: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
-msgstr "yaourt {-S --sync}           [опции] [пакет(ы)]"
+msgstr "yaourt {-S --sync} [dibarzhioù] [pakad(où)]"
 
 #: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
-msgstr "yaourt {-U --upgrade}        [опции] <пакет(ы)>"
+msgstr "yaourt {-U --upgrade} [dibarzhioù] <pakad(où)>"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr ""
+msgstr "yaourt {-C} [dibarzhioù]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
-msgstr "yaourt {-B --backup}      [папка для сохранения|файл для восстановления]"
+msgstr "yaourt {-B --backup} [kavlec'h enrollañ|restr assaviñ]"
 
 #: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
-msgstr "yaourt {-G --getpkgbuild} [опции] <пакет(ы)>"
+msgstr "yaourt {-G --getpkgbuild} [dibarzhioù] <pakad(où)>"
 
 #: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
@@ -162,506 +158,506 @@ msgstr "yaourt {--stats}"
 
 #: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
-msgstr "домашняя страница: http://archlinux.fr/yaourt-en"
+msgstr "pennbajenn: http://archlinux.fr/yaourt-en"
 
 #: ../../yaourt.sh.in:117
 msgid "query packages"
-msgstr "запрос пакетов"
+msgstr "azgoulenn pakadoù"
 
 #: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
-msgstr "Следующие пакеты не были установлены:"
+msgstr "N'eo ket bet staliet ar pakadoù da heul :"
 
 #: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
-msgstr "список всех пакетов в репозитории(ях)"
+msgstr "o sevel roll an holl pakadoù er mirlec'h(ioù)"
 
 #: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
-msgstr "Список всех пакетов в репозитории(ях)"
+msgstr "O sevel roll an holl pakadoù er mirlec'h(ioù)"
 
 #: ../../yaourt.sh.in:147
 msgid "show groups"
-msgstr "показать группы"
+msgstr "diskouez ar strolladoù"
 
 #: ../../yaourt.sh.in:166
 msgid "Informations for %s"
-msgstr ""
+msgstr "Titouroù evit %s"
 
 #: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
-msgstr "Невозможно прочитать файл %s"
+msgstr "N'haller ket lenn ar restr %s"
 
 #: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Введите номера пакетов для установки (например: 1 2 3 или 1-3)"
+msgstr "Enankit niverenn ar pakadoù a fell deoc'h staliañ (sk: 1 2 3 pe 1-3) "
 
 #: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
-msgstr "загрузка PKGBUILD"
+msgstr "kaout PKGBUILD"
 
 #: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
-msgstr "Загрузка архивов abs"
+msgstr "Pellgargañ an diell abs"
 
 #: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
-msgstr "Сборка %s из исходников."
+msgstr "O kempunañ %s adalek an tarzh."
 
 #: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
-msgstr "Установка %s из исходников"
+msgstr "O staliañ %s adalek an tarzh"
 
 #: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "Получение PKGBUILD и локальных исходников..."
+msgstr "Oc'h adtapout PKGBUILD hag an tarzhioù lec'hel..."
 
 #: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
-msgstr "Другие пакеты: "
+msgstr "Pakadoù estren :"
 
 #: ../../lib/abs.sh.in:162
 msgid "not found"
-msgstr "не найдено"
+msgstr "n'eo ket bet kavet"
 
 #: ../../lib/abs.sh.in:180
 msgid "Continue upgrade ?"
-msgstr "Продолжить обновление ?"
+msgstr "Kenderc'hel gant an hizivadenn ?"
 
 #: ../../lib/abs.sh.in:181
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr "[V]показать детали пакета  [M]вручную выбрать пакеты"
+msgstr "[V]Munudoù ar pakad [M]Diuzañ pakadoù gant an dorn"
 
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
-msgstr "Продолжить обновление? "
+msgstr "Kenderc'hel gant an hizivadenn ?"
 
 #: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
-msgstr "невозможно обновить %s"
+msgstr "n'haller ket hizivaat %s"
 
 #: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
-msgstr "Только обновление пакета (новая версия):"
+msgstr "Hizivadenn pakad hepken (ermaeziadenn nevez) :"
 
 #: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
-msgstr "Обновление программ (новая версия) :"
+msgstr "Hizivadenn meziant (handelv nevez) :"
 
 #: ../../lib/abs.sh.in:293
 msgid "New package :"
-msgstr "Новые пакеты :"
+msgstr "Pakadenn nevez :"
 
 #: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
-msgstr "(требуется %s)"
+msgstr "(azgoulennet gant %s)"
 
 #: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
-msgstr "Установка из списка пакетов"
+msgstr "O staliañ adalek roll ar pakadoù"
 
 #: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
-msgstr "установка пакета SVN/CVS/HG/GIT"
+msgstr "o hizivaat ar pakad "
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Сохранение баз данных pacman в %s"
+msgstr "Oc'h enrollañ stlennvon pacman e %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "База данных pacman успешно сохранена в %s"
+msgstr "Enrollet eo bet  gant berzh stlennvon pacman e %s"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Анализ файла резервного копирования"
+msgstr "O tezranniñ ar restr gwarediñ"
 
 #: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr "%s не резервная копия базы alpm"
+msgstr "%s n'eo ket ur gwared stlennvon alpm talvoudek"
 
 #: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "Новые пакеты, установленные после резервного копирования:"
+msgstr "Pakadoù nevez staliet abaoe ar gwarediñ :"
 
 #: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Пакеты, установленные или удаленные после резервного копирования:"
+msgstr "Pakadoù dilammet pe hizivaet abaoe ar gwarediñ :"
 
 #: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
-msgstr "Внимание! Вы действительно хотите восстановить эту резервную копию ?"
+msgstr "Diwallit ! C'hoant ho peus assav ar gwared-mañ ?"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
-msgstr "(локальная БД будет сохранена в %s)"
+msgstr "(enrollet e vo ar stlennvon lec'hel e %s)"
 
 #: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Если вы действительно хотите восстановить резервную копию, наберите \"yes\""
+msgstr "Biziatait 'ya' ma fell deoc'h assav ar gwared"
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
-msgstr "yes"
+msgstr "ya"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "Удаление БД pacman"
+msgstr "O tilemel stlennvon pacman"
 
 #: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr "Копирование резервной копии"
+msgstr "Oc'h eilañ ar gwared"
 
 #: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
-msgstr "Тестирование новой базы данных"
+msgstr "Oc'h amprouiñ ar stlennvon nevez"
 
 #: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "Ваша резервная копия не восстановлена"
+msgstr "N'eo ket assavet gant berzh ho gwared"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
-msgstr "Ваша резервная копия восстановлена"
+msgstr "Assavet eo bet ho gwared gant berzh"
 
 #: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr "найденные пакеты"
+msgstr "a bakadoù kavet"
 
 #: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr "(старая база данных сохранена в %s)"
+msgstr "(enrollet eo bet ar stlennvon kozh e %s)"
 
 #: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
-msgstr "неверный аргумент"
+msgstr "arguzenn fall"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "Вы действительно хотите удалить эти пакеты (с опциями -Rcs) ? "
+msgstr "Fell a ra deoc'h dilemel ar pakadoù-mañ (gant an dibarzh -Rcs) ?"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
-msgstr "Всего пакетов установлено:"
+msgstr "Hollad ar pakadoù staliet :"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Явно установленные пакеты:"
+msgstr "Pakadoù staliet a-ratozh :"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
-msgstr "Пакеты, установленные как зависимости других пакетов:"
+msgstr "Pakadoù staliet evel amzalc'hoù evit lañsañ pakadoù all :"
 
 #: ../../lib/alpm_stats.sh:52
 msgid "Packages out of date:"
-msgstr "Пакеты, требующие обновления:"
+msgstr "Pakadoù diamzeret :"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "Lec'h ma vez %s a bakadoù ne seblantont ket bezañ implijet gant pakad ebet :"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Удержанные пакеты:"
+msgstr "Pakadoù miret :"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr "Проигнорированные пакеты:"
+msgstr "Pakadoù laosket a-gostez :"
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr "Проигнорированные группы:"
+msgstr "Strolladoù laosket a-gostez :"
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
-msgstr "Количество настроенных репозиториев:"
+msgstr "Niver a mirlec'hioù kefluniet :"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Пакеты по репозиториям (отсортированные в порядке pacman'a)"
+msgstr "Pakadoù dre mirlec'hioù (urzhiet dre tevet pacman)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr "другие"
+msgstr "re all"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr "пакеты, созданные локально или неподдерживаемые AUR"
+msgstr "a zo pakadoù kempunet lec'hel pe AUR amskoret"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Теоретическое - Действительное пространство, занятое пакетами:"
+msgstr "Ez teorikel - egor arveret gant ar pakadoù :"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
-msgstr "Продвижение:"
+msgstr "araokadenn :"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Теоретическое место, занятое пакетами:"
+msgstr "Egor teorikel kemeret gant ar pakadoù :"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr "Действительное место, занятое пакетами:"
+msgstr "Egor gwirion kemeret gant ar pakadoù :"
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr "Место, использованное пакетами, загруженными в кэш (cachedir):"
+msgstr "Egor arveret gant ar pakadoù pellgarget er c'hrubuilh (cachedir) :"
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr "Место, занятое исходниками, загруженными в кэш:"
+msgstr "Egor arveret gant tarzhioù pellgarget er c'hrubuilh :"
 
 #: ../../lib/aur.sh:20
 msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
-msgstr ""
+msgstr "Arventennet eo AURUSEGIT met n'eo ket bet kavet an arc'had  git. O tistreiñ d'an tarballs."
 
 #: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
-msgstr "%s не найден в AUR."
+msgstr "N'eo ket bet kavet %s e AUR."
 
 #: ../../lib/aur.sh:51
 msgid "Yes"
-msgstr "Да"
+msgstr "Ya"
 
 #: ../../lib/aur.sh:51
 msgid "No"
-msgstr "Нет"
+msgstr "Ket"
 
 #: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
-msgstr "Проверка статуса голосования за %s"
+msgstr "O gwiriañ stad ar mouezhiadeg evit %s"
 
 #: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
-msgstr "Вы уже проголосовали за %s"
+msgstr "Mouezhiet ho peus evit %s endeo"
 
 #: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
-msgstr "Вы хотите проголосовать за %s ? "
+msgstr "Fellout a ra deoc'h votiñ evit %s ?"
 
 #: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
-msgstr "Установка %s из AUR"
+msgstr "O staliañ %s adalek AUR"
 
 #: ../../lib/aur.sh:183
 msgid "Downloading %s PKGBUILD from AUR..."
-msgstr "Загрузка PKGBUILD %s из AUR..."
+msgstr "O pellgargañ PKGBUILD %s adalek AUR..."
 
 #: ../../lib/aur.sh:188
 msgid "This package is orphaned"
-msgstr "Данный пакет более не используется"
+msgstr "Emzivad eo ar pakad"
 
 #: ../../lib/aur.sh:189
 msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr "( Неподдерживаемый пакет: Потенциально опасен ! )"
+msgstr "( pakad amskoret : arvarus e c'hell bezañ !)"
 
 #: ../../lib/aur.sh:210
 msgid "not found on AUR"
-msgstr "не найден в AUR"
+msgstr "n'eo ket bet kavet war AUR"
 
 #: ../../lib/aur.sh:217
 msgid "up to date "
-msgstr "обновлен "
+msgstr "hizivaet"
 
 #: ../../lib/aur.sh:218
 msgid "flagged as out of date"
-msgstr "помечен как требующий обновления"
+msgstr "merket evel diamzeret"
 
 #: ../../lib/aur.sh:227
 msgid "Orphan"
-msgstr "Нет ответственного"
+msgstr "Emzivad"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
-msgstr "Да/нет [Y/n]"
+msgstr "[Y/n]"
 
 #: ../../lib/io.sh:99
 msgid "[y/N]"
-msgstr "да/Нет [y/N]"
+msgstr "[y/N]"
 
 #: ../../lib/io.sh:100
 msgid "[y/n]"
-msgstr "да/нет [y/n]"
+msgstr "[y/n]"
 
 #: ../../lib/io.sh:155
 msgid "WARNING: "
-msgstr "ВНИМАНИЕ: "
+msgstr "DIWALLIT :"
 
 #: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr "ОШИБКА: "
+msgstr "FAZI :"
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Пакеты, более не требующиеся какому-либо установленному пакету:"
+msgstr "N'eo ket azgoulennet ar pakadoù ken gant pakadoù staliet all :"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
-msgstr "Поиск оригинального файла конфигурации для сохранения"
+msgstr "O klask war-lec'h ar restroù kefluniañ orin da enrollañ"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman используется в данный момент, пожалуйста, подождите."
+msgstr "Arveret eo pacman endeo, gortozit mar plij."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
-msgstr "синхронизация баз данных пакетов"
+msgstr "O goubredañ stlennvonioù ar pakdoù"
 
 #: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
-msgstr "(игнорирование обновления пакета)"
+msgstr "(o leuskel hizivadenn ar pakad a-gostez)"
 
 #: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
-msgstr "Невозможно прочитать PKGBUILD"
+msgstr "N'haller ket lenn PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
-msgstr "Данный PKGBUILD описывает разделенный пакет."
+msgstr "Ur pakad troc'het a zo deskrivet gant ar PKGBUILD."
 
 #: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
-msgstr "Неизвестные специфические параметры пакета"
+msgstr "Dianav eo an dibarzhioù pakad arbennik"
 
 #: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
-msgstr "зависимости %s:"
+msgstr "%s amzalc'hoù :"
 
 #: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
-msgstr "(уже установлен)"
+msgstr "(staliet endeo)"
 
 #: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
-msgstr "(пакет найден)"
+msgstr "(pakad kavet)"
 
 #: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
-msgstr "(сборка из AUR)"
+msgstr "(o sevel adalek AUR)"
 
 #: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
-msgstr "%s конфликтует:"
+msgstr "%s a tabutoù :"
 
 #: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
-msgstr "Сборка и установка пакета"
+msgstr "O sevel hag o staliañ ar pakad"
 
 #: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
-msgstr "%s уже обновлен"
+msgstr "Hizivaet eo %s endeo."
 
 #: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
-msgstr "Установить или собрать отсутствующие зависимости %s:"
+msgstr "Staliañ pe sevel an amzalc'hoù a vank evit %s :"
 
 #: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
-msgstr "Зависимости были установлены до сбоя"
+msgstr "Staliet eo bet amzalc'hoù a-raok ar c'hwitaden"
 
 #: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
-msgstr "Данный PKGBUILD обеспечивает  \" %b \""
+msgstr "Roet eo gant PKGBUILD \" %b \""
 
 #: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
-msgstr "Установить только %s ?"
+msgstr "Staliañ %s nemetken ?"
 
 #: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
-msgstr "Makepkg не смог собрать %s."
+msgstr "N'eo ket bet gouest Makepkg da sevel %s."
 
 #: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
-msgstr "Экспорт %s в директорию %s"
+msgstr "Oc'h ezporzhiañ %s da kavlec'h %s"
 
 #: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
-msgstr "Продолжить установку %s ?"
+msgstr "Kenderc'hel da staliañ %s ?"
 
 #: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr "[v]просмотреть содержимое пакета    [c]проверить пакет при помощи namcap"
+msgstr "[v]gwelet endalc'hadoù ar pakad [c]gwiriañ ar pakad gant namcap"
 
 #: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
-msgstr "Нажмите любую клавишу для продолжения"
+msgstr "Pouezit war ur stokell evit kenderc'hel"
 
 #: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
-msgstr "namcap не установлен"
+msgstr "n'eo ket staliet namcap"
 
 #: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
-msgstr "Ваши пакеты сохранены в %s"
+msgstr "Enrollet eo ho pakadoù e %s"
 
 #: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
-msgstr "Невозможно скопировать пакеты в директорию %s"
+msgstr "N'haller ket eilañ pakadoù e kavlec'h %s"
 
 #: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "Невозможно удалить директорию %s. Пожалуйста, удалите её, используя привилегии root"
+msgstr "N'haller ket dilemel ar c'havlec'h %s. Dilamit anezhañ gant brientoù root."
 
 #: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
-msgstr "Невозможно создать директорию %s."
+msgstr "N'haller ket krouiñ ur c'havlec'h %s."
 
 #: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
-msgstr "Продолжить сборку %s ? "
+msgstr "Kenderc'hel da sevel %s ?"
 
 #: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
-msgstr "Перезапустить сборку %s ? "
+msgstr "Adloc'hañ savidigezh %s ?"
 
 #: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "Директория %s уже существует. [R]заменить, [C]изменить на %s, [S]пропустить ?"
+msgstr "%s a gavlec'hioù a zo endeo. [R]Amsaviñ, [C]Kemmañ da %s, [S]Tremen ?"
 
 #: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
-msgstr "Загрузка исходников %s"
+msgstr "Pellgargañ %s a darzhioù"
 
 #: ../../lib/util.sh.in:135
 msgid "is not a directory"
-msgstr "не директория"
+msgstr "n'eo ket ur c'havlec'h"
 
 #: ../../lib/util.sh.in:136
 msgid "is not writable"
-msgstr "недостаточно прав для записи"
+msgstr "n'haller ket skrivañ warnañ/warni"
 
 #: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
-msgstr "Отредактировать %s ?"
+msgstr "Embann %s ?"
 
 #: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
-msgstr "(\"A\" для отмены)"
+msgstr "(\"A\" evit dilezel)"
 
 #: ../../lib/util.sh.in:184
 msgid "Aborted..."
-msgstr "Отменено..."
+msgstr "Dilezet..."
 
 #: ../../lib/util.sh.in:190
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr ""
+msgstr "Ouzhpennit $VISUAL d'ho variennoù endro"
 
 #: ../../lib/util.sh.in:191
 msgid "for example:"
-msgstr "например:"
+msgstr "da skouer :"
 
 #: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
-msgstr "(в ~/.bashrc)"
+msgstr "(e ~/.bashrc)"
 
 #: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
-msgstr "(замените vim на ваш любимый редактор)"
+msgstr "(amsavit vim gant ho embanner karetañ)"
 
 #: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
-msgstr "Отредактировать %s при помощи: "
+msgstr "Embann %s gant :"

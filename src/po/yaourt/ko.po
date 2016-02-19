@@ -4,14 +4,17 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# Ji-Hyeon Gim <potatogim@potatogim.net>, 2015
 # Jin Sung Lee <zinsss.7734@gmail.com>, 2015
-# Taegil Bae <esrevinu@gmail.com>, 2015
+# Sungjin Kang <potopro@gmail.com>, 2016
+# Taegil Bae <esrevinu@gmail.com>, 2015-2016
+# Youngbin Han <sukso96100@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
-"POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-06-12 17:29+0000\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"PO-Revision-Date: 2016-02-02 01:40+0000\n"
 "Last-Translator: Taegil Bae <esrevinu@gmail.com>\n"
 "Language-Team: Korean (http://www.transifex.com/archlinuxfr/yaourt/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -20,62 +23,58 @@ msgstr ""
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../../pacdiffviewer.sh.in:41
+#: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
 msgstr "모든 *.pac*파일 삭제"
 
-#: ../../pacdiffviewer.sh.in:42
-msgid "Save all packages backup files for a later merge"
-msgstr "나중에 병합하기 위해 모든 패키지 백업파일들을 저장"
-
 #: ../../pacdiffviewer.sh.in:43
+msgid "Save all packages backup files for a later merge"
+msgstr "나중에 병합하기 위해 모든 패키지 백업 파일들을 저장"
+
+#: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
 msgstr "백업할 때 메시지 출력하지 않음"
 
-#: ../../pacdiffviewer.sh.in:44
+#: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
 msgstr "순차적으로 나열"
 
-#: ../../pacdiffviewer.sh.in:45
-msgid "Display diff"
-msgstr "diff를 표시"
-
 #: ../../pacdiffviewer.sh.in:46
+msgid "Display diff"
+msgstr "차이점을 표시"
+
+#: ../../pacdiffviewer.sh.in:47
 msgid "This help"
 msgstr "이 도움말"
 
-#: ../../pacdiffviewer.sh.in:47
+#: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "버전정보 보기"
+msgstr "버전 정보 보기"
 
-#: ../../pacdiffviewer.sh.in:69
+#: ../../pacdiffviewer.sh.in:70
 msgid "saving"
 msgstr "저장 중"
 
-#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
-#: ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:104
 msgid "found"
 msgstr "찾음"
 
-#: ../../pacdiffviewer.sh.in:104
+#: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr "개의 파일이 고아임"
+msgstr "개의 파일이 버려진 파일임"
 
-#: ../../pacdiffviewer.sh.in:156
+#: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr "다음 파일들은 원 버전 정보가 없음."
+msgstr "다음 파일들은 원래의 버전 정보가 없음."
 
-#: ../../pacdiffviewer.sh.in:159
+#: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
 msgstr "다음 파일들을 삭제하겠습니까?"
 
-#: ../../pacdiffviewer.sh.in:160
+#: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(S: 확인 없음)"
-
-#: ../../pacdiffviewer.sh.in:161
-msgid "YNS"
-msgstr "YNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -84,27 +83,6 @@ msgstr "**같은 파일**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**자동병합**"
-
-#: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "동작: [E]편집, [R]교체, [S]억제, [C]계속 (기본값), [A]중단 ?"
-
-#: ../../pacdiffviewer.sh:192
-msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
-"[A]bort ?"
-msgstr "동작: [E]편집, [R]교체, [S]억제, [M]병합, [C]계속 (기본값), [A]중단 ?"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCA"
-msgstr "ERSCA"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
-# [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCAM"
-msgstr "ERSCAM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -118,135 +96,127 @@ msgstr "적용하겠습니까?"
 msgid "patch returned an error!"
 msgstr "패치 중 에러!"
 
-#: ../../pacdiffviewer.sh.in:227
+#: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
 msgstr "번호 입력: "
 
-#: ../../yaourt.sh.in:34
+#: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
 msgstr "Yaourt는 해당 옵션에 대한 --help를 지원하지 않습니다."
 
-#: ../../yaourt.sh.in:35
+#: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
 msgstr "다음은 %s에 대한 도움말입니다 :"
 
-#: ../../yaourt.sh.in:40
+#: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
 msgstr "사용법: yaourt <명령어> [...]"
 
-#: ../../yaourt.sh.in:41
+#: ../../yaourt.sh.in:42
 msgid "operations:"
 msgstr "명령어:"
 
-#: ../../yaourt.sh.in:42
+#: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
 msgstr "yaourt (패턴|꾸러미 검색)"
 
-#: ../../yaourt.sh.in:43
+#: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
 msgstr "yaourt {-h --help}"
 
-#: ../../yaourt.sh.in:44
+#: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
 msgstr "yaourt {-V --version}"
 
-#: ../../yaourt.sh.in:45
+#: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query}       [옵션들] [꾸러미들]"
 
-#: ../../yaourt.sh.in:46
+#: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
 msgstr "yaourt {-R --remove}      [옵션들] <꾸러미들>"
 
-#: ../../yaourt.sh.in:47
+#: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync}        [옵션들] [꾸러미들]"
 
-#: ../../yaourt.sh.in:48
+#: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade}     [옵션들] <꾸러미들>"
 
-#: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
-msgstr "yaourt {-G --clean}       [옵션들]"
-
 #: ../../yaourt.sh.in:50
+msgid "yaourt {-C}               [options]"
+msgstr "yaourt {-C} [옵션들]"
+
+#: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
 msgstr "yaourt {-B --backup}      [저장 디렉토리|복구 파일]"
 
-#: ../../yaourt.sh.in:51
+#: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [옵션들] <꾸러미들>"
 
-#: ../../yaourt.sh.in:52
+#: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:57
+#: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "홈페이지: http://archlinux.fr/yaourt-en"
 
-#: ../../yaourt.sh.in:98
+#: ../../yaourt.sh.in:117
 msgid "query packages"
 msgstr "꾸러미 질의하기"
 
-#: ../../yaourt.sh.in:112
+#: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
 msgstr "다음 꾸러미들은 설치되지 않았습니다:"
 
-#: ../../yaourt.sh.in:125
+#: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
 msgstr "저장소의 모든 꾸러미를 나열"
 
-#: ../../yaourt.sh.in:126
+#: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
 msgstr "저장소의 모든 꾸러미를 나열"
 
-#: ../../yaourt.sh.in:128
+#: ../../yaourt.sh.in:147
 msgid "show groups"
 msgstr "그룹들을 보여줌"
 
-#: ../../yaourt.sh.in:147
+#: ../../yaourt.sh.in:166
 msgid "Informations for %s"
-msgstr "%s 에 대한 정보"
+msgstr "%s에 대한 정보"
 
-#: ../../yaourt.sh.in:168
+#: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
 msgstr "%s 파일을 읽을 수 없음"
 
-#: ../../yaourt.sh.in:192
+#: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "설치할 꾸러미의 번호를 입력 (예: 1 2 3 또는 1-3)"
 
-#: ../../yaourt.sh.in:363
+#: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
 msgstr "PKGBUILD 가져오기"
 
-#: ../../lib/abs.sh.in:55
+#: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
 msgstr "ABS 보관 파일을 내려 받음"
 
-#: ../../lib/abs.sh.in:78
-msgid "The following packages should be upgraded first :"
-msgstr "다음 꾸러미들을 먼저 업그레이드해야 함 :"
-
-#: ../../lib/abs.sh.in:80
-msgid "Do it now ?"
-msgstr "지금 할까요?"
-
-#: ../../lib/abs.sh.in:93
+#: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
 msgstr "소스로부터 %s를 빌드합니다."
 
-#: ../../lib/abs.sh.in:94
+#: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
 msgstr "소스로부터 %s를 설치합니다"
 
-#: ../../lib/abs.sh.in:96
+#: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "PKGBUILD와 지역 소스를 가져오는 중..."
 
-#: ../../lib/abs.sh.in:133
+#: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
 msgstr "외부 꾸러미들:"
 
@@ -262,53 +232,37 @@ msgstr "업그레이드를 계속 하시겠습니까?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]꾸러미 상세 보기     [M]직접 꾸러미 선택하기"
 
-#: ../../lib/abs.sh.in:182
-msgid "YNVM"
-msgstr "YNVM"
-
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
 msgstr "업그레이드를 계속 진행하시겠습니까?"
 
-#: ../../lib/abs.sh.in:251
-msgid "Source targets"
-msgstr "소스 대상"
-
-#: ../../lib/abs.sh.in:258
-msgid "AUR targets"
-msgstr "AUR 대상"
-
-#: ../../lib/abs.sh.in:267
+#: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
 msgstr "%s를 업데이트할 수 없음"
 
-#: ../../lib/abs.sh.in:285
+#: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
 msgstr "꾸러미 업그레이드만 (꾸러미 새로 냄):"
 
-#: ../../lib/abs.sh.in:286
+#: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
 msgstr "소프트웨어 업그레이드 (새 버전) :"
 
-#: ../../lib/abs.sh.in:287
+#: ../../lib/abs.sh.in:293
 msgid "New package :"
 msgstr "새 꾸러미 :"
 
-#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
 msgstr "(%s가 요구함)"
 
-#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
 msgstr "꾸러미 목록으로부터 설치합니다"
 
-#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "SVN/CVS/HG/GIT 꾸러미를 업그레이드합니다"
-
-#: ../../lib/abs.sh.in:380
-msgid "Targets"
-msgstr "대상"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -322,89 +276,69 @@ msgstr "pacman 데이터베이스가 %s에 성공적으로 저장되었습니다
 msgid "Analysing backup file"
 msgstr "백업 파일을 분석 중"
 
-#: ../../lib/alpm_backup.sh:29
+#: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
 msgstr "%s는 유효한 alpm 데이터베이스 백업이 아닙니다"
 
-#: ../../lib/alpm_backup.sh:44
+#: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
 msgstr "백업 이후 새로 설치된 꾸러미들:"
 
-#: ../../lib/alpm_backup.sh:47
+#: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
 msgstr "백업 이후 제거되거나 업그레이드된 꾸러미들:"
 
-#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+#: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
 msgstr "경고! 이 백업을 복구하시겠습니까?"
 
-#: ../../lib/alpm_backup.sh:52
+#: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
 msgstr "(지역 db는 %s에 저장될 것입니다)"
 
-#: ../../lib/alpm_backup.sh:53
+#: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
 msgstr "이 백업을 복구하려면 \"yes\"를 입력하세요."
 
-#: ../../lib/alpm_backup.sh:55
+#: ../../lib/alpm_backup.sh:56
 msgid "yes"
 msgstr "yes"
 
-#: ../../lib/alpm_backup.sh:56
+#: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
 msgstr "pacman DB를 삭제 중"
 
-#: ../../lib/alpm_backup.sh:58
+#: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
 msgstr "백업을 복사 중"
 
-#: ../../lib/alpm_backup.sh:61
+#: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
 msgstr "새 데이터베이스를 시험 중"
 
-#: ../../lib/alpm_backup.sh:64
+#: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
 msgstr "백업이 성공적으로 복구되지 않았습니다."
 
-#: ../../lib/alpm_backup.sh:66
+#: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
 msgstr "백업이 성공적으로 복구되었습니다."
 
-#: ../../lib/alpm_backup.sh:67
+#: ../../lib/alpm_backup.sh:68
 msgid "packages found"
 msgstr "개의 꾸러미가 발견됨"
 
-#: ../../lib/alpm_backup.sh:69
+#: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr "(옛 데이터베이스는 %s에 저장됨)"
+msgstr "(기존 데이터베이스는 %s에 저장됨)"
 
-#: ../../lib/alpm_backup.sh:81
+#: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
 msgstr "잘못된 인수"
-
-#: ../../lib/alpm_query.sh:34
-msgid "Packages which depend on %s:"
-msgstr "%s에 의존하는 꾸러미들:"
-
-#: ../../lib/alpm_query.sh:35
-msgid "Packages which conflicts with %s:"
-msgstr "%s와 충돌하는 꾸러미들:"
-
-#: ../../lib/alpm_query.sh:46
-msgid "Packages which replace %s:"
-msgstr "%s를 교체하는 꾸러미들:"
-
-#: ../../lib/alpm_query.sh:47
-msgid "Packages which provide %s:"
-msgstr "%s를 제공하는 꾸러미들:"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "이 꾸러미들을 (-Rcs 옵션으로) 삭제하길 원합니까?"
-
-#: ../../lib/alpm_query.sh:49
-msgid "YN"
-msgstr "YN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -423,8 +357,8 @@ msgid "Packages out of date:"
 msgstr "구식 꾸러미들:"
 
 #: ../../lib/alpm_stats.sh:54
-msgid "Where %s packages seems no more used by any package:"
-msgstr "여기서 %s 개의 꾸러미들은 사용하는 꾸러미가 없어 보임:"
+msgid "Where %s packages seem to no longer be in use by any package:"
+msgstr "이 중 %s 개의 꾸러미들은 다른 꾸러미가 사용하지 않아 보입니다:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -478,133 +412,66 @@ msgstr "캐시(cachedir)에 내려 받은 꾸러미에 의해 사용된 공간:"
 msgid "Space used by src downloaded in cache:"
 msgstr "캐시에 내려 받은 소스에 의해서 사용된 공간:"
 
-#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+#: ../../lib/aur.sh:20
+msgid ""
+"AURUSEGIT is set but git command is not found. Falling back to tarballs."
+msgstr "AURUSEGIT가 설정되었지만 git 명령어가 없습니다. 타르볼로 대신합니다."
+
+#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
 msgstr "AUR에서 %s 검색안됨."
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "Yes"
 msgstr "네"
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "No"
 msgstr "아니오"
 
-#: ../../lib/aur.sh:45
-msgid "Repository     "
-msgstr "저장소         "
-
-#: ../../lib/aur.sh:46
-msgid "Name           "
-msgstr "이름           "
-
-#: ../../lib/aur.sh:47
-msgid "Version        "
-msgstr "버전           "
-
-#: ../../lib/aur.sh:48
-msgid "URL            "
-msgstr "URL            "
-
-#: ../../lib/aur.sh:49
-msgid "AUR URL        "
-msgstr "AUR URL        "
-
-#: ../../lib/aur.sh:50
-msgid "Licenses       "
-msgstr "라이선스       "
-
-#: ../../lib/aur.sh:51
-msgid "Votes          "
-msgstr "추천           "
-
-#: ../../lib/aur.sh:52
-msgid "Out Of Date    "
-msgstr "구식           "
-
-#: ../../lib/aur.sh:53
-msgid "Groups         "
-msgstr "그룹           "
-
-#: ../../lib/aur.sh:54
-msgid "Provides       "
-msgstr "제공           "
-
-#: ../../lib/aur.sh:55
-msgid "Depends On     "
-msgstr "의존           "
-
-#: ../../lib/aur.sh:56
-msgid "Optional Deps  "
-msgstr "선택 의존      "
-
-#: ../../lib/aur.sh:57
-msgid "Conflicts With "
-msgstr "충돌           "
-
-#: ../../lib/aur.sh:58
-msgid "Replaces       "
-msgstr "교체           "
-
-#: ../../lib/aur.sh:59
-msgid "Maintainer     "
-msgstr "유지관리자     "
-
-#: ../../lib/aur.sh:60
-msgid "Architecture   "
-msgstr "아키텍처       "
-
-#: ../../lib/aur.sh:61
-msgid "Last update    "
-msgstr "마지막 업데이트"
-
-#: ../../lib/aur.sh:62
-msgid "Description    "
-msgstr "설명           "
-
-#: ../../lib/aur.sh:117
+#: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
 msgstr "%s에 대한 투표 상태를 확인 중"
 
-#: ../../lib/aur.sh:120
+#: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
 msgstr "%s에 대해 벌써 투표하였습니다"
 
-#: ../../lib/aur.sh:123
+#: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
-msgstr "%s를 추천하시겠습니까?"
+msgstr "%s를 평가하시겠습니까?"
 
-#: ../../lib/aur.sh:136
+#: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
 msgstr "AUR에서 %s를 설치하는 중"
 
-#: ../../lib/aur.sh:140
+#: ../../lib/aur.sh:183
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "AUR에서 %s PKGBUILD를 다운 받는 중..."
 
-#: ../../lib/aur.sh:145
+#: ../../lib/aur.sh:188
 msgid "This package is orphaned"
-msgstr "이 꾸러미는 고아입니다"
+msgstr "이 꾸러미는 버려졌습니다(관리자가 없는 꾸러미입니다)"
 
-#: ../../lib/aur.sh:146
+#: ../../lib/aur.sh:189
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "(지원 되지 않는 꾸러미: 위험할 수 있음!)"
 
-#: ../../lib/aur.sh:166
+#: ../../lib/aur.sh:210
 msgid "not found on AUR"
 msgstr "AUR에서 검색되지 않음"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:217
 msgid "up to date "
 msgstr "최신"
 
-#: ../../lib/aur.sh:174
+#: ../../lib/aur.sh:218
 msgid "flagged as out of date"
 msgstr "구식으로 표시됨"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:227
 msgid "Orphan"
-msgstr "고아"
+msgstr "고아(버려짐)"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
@@ -618,13 +485,13 @@ msgstr "[y/N]"
 msgid "[y/n]"
 msgstr "[y/n]"
 
-#: ../../lib/io.sh:146
+#: ../../lib/io.sh:155
 msgid "WARNING: "
 msgstr "경고: "
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr "에러: "
+msgstr "오류: "
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
@@ -646,175 +513,155 @@ msgstr "꾸러미 데이터베이스 동기화 중"
 msgid "(ignoring package upgrade)"
 msgstr "(꾸러미 업그레이드를 무시하는 중)"
 
-#: ../../lib/pkgbuild.sh.in:68
+#: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
 msgstr "PKGBUILD를 읽을 수 없습니다."
 
-#: ../../lib/pkgbuild.sh.in:72
+#: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
 msgstr "이 PKGBUILD는 분할 꾸러미를 기술하고 있습니다."
 
-#: ../../lib/pkgbuild.sh.in:73
+#: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
 msgstr "특정 꾸러미 옵션들을 알 수 없습니다"
 
-#: ../../lib/pkgbuild.sh.in:94
+#: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
 msgstr "%s 의존 꾸러미:"
 
-#: ../../lib/pkgbuild.sh.in:96
+#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
 msgstr "(설치됨)"
 
-#: ../../lib/pkgbuild.sh.in:99
+#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
 msgstr "(꾸러미 검색됨)"
 
-#: ../../lib/pkgbuild.sh.in:100
+#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
 msgstr "(AUR로부터 빌드함)"
 
-#: ../../lib/pkgbuild.sh.in:135
+#: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
 msgstr "%s는 다음과 충돌함:"
 
-#: ../../lib/pkgbuild.sh.in:202
+#: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
 msgstr "꾸러미를 빌드하고 설치합니다"
 
-#: ../../lib/pkgbuild.sh.in:209
-msgid "The sources of %s were kept last time. Use them ?"
-msgstr "%s 소스는 지난 번에 보존하였습니다. 그것을 사용할까요?"
-
-#: ../../lib/pkgbuild.sh.in:215
-msgid "Unable to write in %s directory. Using /tmp directory"
-msgstr "%s 디렉토리 안에 쓸 수 없습니다. /tmp 디렉토리 사용함"
-
-#: ../../lib/pkgbuild.sh.in:222
+#: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
 msgstr "%s는 이미 최신입니다."
 
-#: ../../lib/pkgbuild.sh.in:230
+#: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
 msgstr "%s의 빠진 의존 꾸러미들을 설치하거나 빌드함:"
 
-#: ../../lib/pkgbuild.sh.in:238
+#: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
 msgstr "의존 꾸러미들이 실패 이전에 설치되었습니다"
 
-#: ../../lib/pkgbuild.sh.in:242
+#: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
 msgstr "이 PKGBUILD는 \" %b \"를 제공합니다"
 
-#: ../../lib/pkgbuild.sh.in:243
+#: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
-msgstr "%s만 설치?"
+msgstr "%s만 설치할까요?"
 
-#: ../../lib/pkgbuild.sh.in:253
+#: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
 msgstr "Makepkg가 %s를 빌드할 수 없었습니다."
 
-#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
-msgstr "%s를 %s 디렉토리로 내보내는 중"
+msgstr "%s를 %s 디렉터리로 내보내는 중"
 
-#: ../../lib/pkgbuild.sh.in:276
+#: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
 msgstr "%s 설치를 계속할까요?"
 
-#: ../../lib/pkgbuild.sh.in:277
+#: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]꾸러미 내용 보기       [c]namcap으로 꾸러미 검사"
 
-#: ../../lib/pkgbuild.sh.in:278
-msgid "YNVC"
-msgstr "YNVC"
-
-#: ../../lib/pkgbuild.sh.in:283
+#: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
 msgstr "계속하려면 아무 키나 누르세요"
 
-#: ../../lib/pkgbuild.sh.in:292
+#: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
 msgstr "namcap이 설치되지 않았습니다"
 
-#: ../../lib/pkgbuild.sh.in:306
+#: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
 msgstr "당신의 꾸러미는 %s에 저장되었습니다"
 
-#: ../../lib/pkgbuild.sh.in:307
+#: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
-msgstr "%s 디렉토리로 꾸러미를 복사할 수 없습니다"
+msgstr "%s 디렉터리로 꾸러미를 복사할 수 없습니다"
 
-#: ../../lib/pkgbuild.sh.in:317
+#: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "%s 디렉토리를 삭제할 수 없습니다. 루트 권한으로 삭제하세요."
+msgstr "%s 디렉터리를 삭제할 수 없습니다. 루트 권한으로 삭제하세요."
 
-#: ../../lib/pkgbuild.sh.in:319
+#: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
-msgstr "%s 디렉토리를 생성할 수 없습니다."
+msgstr "%s 디렉터리를 생성할 수 없습니다."
 
-#: ../../lib/pkgbuild.sh.in:347
+#: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
-msgstr "%s를 계속 빌드하겠습니까? "
+msgstr "%s을(를) 계속 빌드하겠습니까? "
 
-#: ../../lib/pkgbuild.sh.in:353
+#: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
 msgstr "%s 빌드를 다시 시작하겠습니까? "
 
-#: ../../lib/pkgbuild.sh.in:399
+#: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "%s 디렉토리는 이미 존재합니다. [R]교체, [C]%s로 변경, [S]넘어감?"
+msgstr "%s 디렉터리는 이미 존재합니다. [R]교체, [C]%s로 변경, [S]넘어감?"
 
-#: ../../lib/pkgbuild.sh.in:400
-msgid "RCS"
-msgstr "RCS"
-
-#: ../../lib/pkgbuild.sh.in:407
+#: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
 msgstr "%s 소스를 내려 받는 중"
 
-#: ../../lib/util.sh.in:134
+#: ../../lib/util.sh.in:135
 msgid "is not a directory"
 msgstr "는 디렉토리가 아닙니다"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/util.sh.in:136
 msgid "is not writable"
 msgstr "는 쓰기 불가입니다"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
-msgstr "%s 편집?"
+msgstr "%s 을(를) 편집하시겠습니까?"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
 msgstr "(중단하려면 \"A\")"
 
-#: ../../lib/util.sh.in:178
-msgid "YNA"
-msgstr "YNA"
-
-#: ../../lib/util.sh.in:180
+#: ../../lib/util.sh.in:184
 msgid "Aborted..."
 msgstr "중단 중..."
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:190
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "$EDITOR를 환경변수에 추가하세요"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "환경 변수에 $VISUAL를 추가하세요"
 
-#: ../../lib/util.sh.in:185
+#: ../../lib/util.sh.in:191
 msgid "for example:"
 msgstr "예를 들면:"
 
-#: ../../lib/util.sh.in:186
+#: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
 msgstr "(~/.bashrc 파일 내)"
 
-#: ../../lib/util.sh.in:187
+#: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
 msgstr "(vim을 좋아하는 편집기로 교체하세요)"
 
-#: ../../lib/util.sh.in:189
+#: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
 msgstr "%s를 편집할 편집기: "

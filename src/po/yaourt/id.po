@@ -4,77 +4,74 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# Mohamad Hasan Al Banna <se7entime@openmailbox.org>, 2016
 # Rendiyono Wahyu Saputro <rendi.7936@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
-"POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-16 16:24+0000\n"
-"Last-Translator: Rendiyono Wahyu Saputro <rendi.7936@gmail.com>\n"
-"Language-Team: Indonesian (http://www.transifex.com/projects/p/yaourt/language/id/)\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"PO-Revision-Date: 2016-01-31 23:20+0000\n"
+"Last-Translator: Mohamad Hasan Al Banna <se7entime@openmailbox.org>\n"
+"Language-Team: Indonesian (http://www.transifex.com/archlinuxfr/yaourt/language/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: id\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../../pacdiffviewer.sh.in:41
+#: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
 msgstr "Hapus semua *.pac* yang ditemukan"
 
-#: ../../pacdiffviewer.sh.in:42
+#: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
 msgstr "Simpan semua berkas cadangan untuk kemudian digabungkan"
 
-#: ../../pacdiffviewer.sh.in:43
+#: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
 msgstr "Gunakan dengan cadangan untuk tidak mengeluarkan pesan"
 
-#: ../../pacdiffviewer.sh.in:44
+#: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
 msgstr "Daftar berurutan"
 
-#: ../../pacdiffviewer.sh.in:45
+#: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
 msgstr "Menampilkan perbedaan"
 
-#: ../../pacdiffviewer.sh.in:46
+#: ../../pacdiffviewer.sh.in:47
 msgid "This help"
 msgstr "Bantuan ini"
 
-#: ../../pacdiffviewer.sh.in:47
+#: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
 msgstr "Tampilkan versi"
 
-#: ../../pacdiffviewer.sh.in:69
+#: ../../pacdiffviewer.sh.in:70
 msgid "saving"
 msgstr "menyimpan"
 
-#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
-#: ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:104
 msgid "found"
 msgstr "ditemukan"
 
-#: ../../pacdiffviewer.sh.in:104
+#: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
 msgstr "berkas adalah anak yatim"
 
-#: ../../pacdiffviewer.sh.in:156
+#: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
 msgstr "Berkas berikut tidak memiliki versi asli."
 
-#: ../../pacdiffviewer.sh.in:159
+#: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
 msgstr "Apakah anda ingin menghapus berkas ini?"
 
-#: ../../pacdiffviewer.sh.in:160
+#: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(S: tidak ada konfirmasi)"
-
-#: ../../pacdiffviewer.sh.in:161
-msgid "YNS"
-msgstr "YNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -83,27 +80,6 @@ msgstr "**berkas yang sama**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**gabung otomatis**"
-
-#: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Tindakan: [S]unting, [G]anti, [T]ahan, [L]anjutkan (baku), [B]atalkan ?"
-
-#: ../../pacdiffviewer.sh:192
-msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
-"[A]bort ?"
-msgstr "Tindakan: [S]unting, [G]anti, [T]ahan, [Ga]bung, [L]anjutkan (baku), [B]atalkan ?"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCA"
-msgstr "ERSCA"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
-# [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCAM"
-msgstr "ERSCAM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -117,135 +93,127 @@ msgstr "Terapkan ?"
 msgid "patch returned an error!"
 msgstr "tambalan mengembalikan sebuah galat!"
 
-#: ../../pacdiffviewer.sh.in:227
+#: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
 msgstr "Masukan n° : "
 
-#: ../../yaourt.sh.in:34
+#: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
 msgstr "Yaourt tidak mendukung -help untuk pilihan tertentu."
 
-#: ../../yaourt.sh.in:35
+#: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
 msgstr "Berikut ini adalah %s bantuan :"
 
-#: ../../yaourt.sh.in:40
+#: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
 msgstr "Pemakaian: yaourt <operation> [...]"
 
-#: ../../yaourt.sh.in:41
+#: ../../yaourt.sh.in:42
 msgid "operations:"
 msgstr "operasi:"
 
-#: ../../yaourt.sh.in:42
+#: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
 msgstr "yaourt (pola pencarian|berkas paket)"
 
-#: ../../yaourt.sh.in:43
+#: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
 msgstr "yaourt {-h --help}"
 
-#: ../../yaourt.sh.in:44
+#: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
 msgstr "yaourt {-V --version}"
 
-#: ../../yaourt.sh.in:45
+#: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query} [opsi] [paket(s)]"
 
-#: ../../yaourt.sh.in:46
+#: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
 msgstr "yaourt {-R --remove} [opsi] <paket(s)>"
 
-#: ../../yaourt.sh.in:47
+#: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync} [opsi] [paket(s)]"
 
-#: ../../yaourt.sh.in:48
+#: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade} [opsi] <paket(s)>"
 
-#: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
-msgstr "yaourt {-C --clean} [opsi]"
-
 #: ../../yaourt.sh.in:50
+msgid "yaourt {-C}               [options]"
+msgstr "yaourt {-C} [opsi]"
+
+#: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
 msgstr "yaourt {-B --backup} [direktori penyimpanan|berkas kembalian]"
 
-#: ../../yaourt.sh.in:51
+#: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [opsi] <paket(s)>"
 
-#: ../../yaourt.sh.in:52
+#: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:57
+#: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "halaman awal: http://archlinux.fr/yaourt-en"
 
-#: ../../yaourt.sh.in:98
+#: ../../yaourt.sh.in:117
 msgid "query packages"
 msgstr "kueri paket"
 
-#: ../../yaourt.sh.in:112
+#: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
 msgstr "Paket berikut belum dipasang:"
 
-#: ../../yaourt.sh.in:125
+#: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
 msgstr "daftar semua paket dalam repo(s)"
 
-#: ../../yaourt.sh.in:126
+#: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
 msgstr "Daftar semua paket dalam repo(s)"
 
-#: ../../yaourt.sh.in:128
+#: ../../yaourt.sh.in:147
 msgid "show groups"
 msgstr "tampilkan grup"
 
-#: ../../yaourt.sh.in:147
+#: ../../yaourt.sh.in:166
 msgid "Informations for %s"
 msgstr "Informasi untuk %s"
 
-#: ../../yaourt.sh.in:168
+#: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
 msgstr "Tidak dapat membaca %s berkas"
 
-#: ../../yaourt.sh.in:192
+#: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Masukan n° dari paket yang ingin dipasang (contoh: 1 2 3 or 1-3)"
 
-#: ../../yaourt.sh.in:363
+#: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
 msgstr "dapatkan PKGBUILD"
 
-#: ../../lib/abs.sh.in:55
+#: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
 msgstr "Unduh arsip abs"
 
-#: ../../lib/abs.sh.in:78
-msgid "The following packages should be upgraded first :"
-msgstr "Paket berikut harus ditingkatkan terlebih dahulu:"
-
-#: ../../lib/abs.sh.in:80
-msgid "Do it now ?"
-msgstr "Lakukan itu sekarang ?"
-
-#: ../../lib/abs.sh.in:93
+#: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
 msgstr "Membangun %s dari sumber."
 
-#: ../../lib/abs.sh.in:94
+#: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
 msgstr "Pasang %s dari sumber"
 
-#: ../../lib/abs.sh.in:96
+#: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Mengambil PKGBUILD dan sumber lokal..."
 
-#: ../../lib/abs.sh.in:133
+#: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
 msgstr "Paket asing:"
 
@@ -261,53 +229,37 @@ msgstr "Lanjutkan meningkatkan ?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[T]ampilkan detil paket [P]ilih manual paket"
 
-#: ../../lib/abs.sh.in:182
-msgid "YNVM"
-msgstr "YNVM"
-
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
 msgstr "Lanjutkan dengan peningkatan?"
 
-#: ../../lib/abs.sh.in:251
-msgid "Source targets"
-msgstr "Sasaran sumber"
-
-#: ../../lib/abs.sh.in:258
-msgid "AUR targets"
-msgstr "Sasaran AUR"
-
-#: ../../lib/abs.sh.in:267
+#: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
 msgstr "tidak dapat memperbarui %s"
 
-#: ../../lib/abs.sh.in:285
+#: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
 msgstr "Hanya tingkatkan paket (rilis baru):"
 
-#: ../../lib/abs.sh.in:286
+#: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
 msgstr "Tingkatkan perangkat lunak (versi baru)"
 
-#: ../../lib/abs.sh.in:287
+#: ../../lib/abs.sh.in:293
 msgid "New package :"
 msgstr "Paket baru :"
 
-#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
 msgstr "(diperlukan oleh %s)"
 
-#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
 msgstr "Memasang dari daftar paket"
 
-#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "Meningkatkan paket SVN/CVS/HG/GIT"
-
-#: ../../lib/abs.sh.in:380
-msgid "Targets"
-msgstr "Sasaran"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -321,89 +273,69 @@ msgstr "Basis data pacman berhasil disimpan di %s"
 msgid "Analysing backup file"
 msgstr "Menganalisa berkas cadangan"
 
-#: ../../lib/alpm_backup.sh:29
+#: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
 msgstr "%s bukan cadangan basis data alpm yang sah"
 
-#: ../../lib/alpm_backup.sh:44
+#: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
 msgstr "Paket baru dipasang secara cadangan:"
 
-#: ../../lib/alpm_backup.sh:47
+#: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
 msgstr "Paket dihapus atau ditingkatkan sejak cadangan:"
 
-#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+#: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
 msgstr "Peringatan! Apakah anda ingin mengembalikan cadangan ini ?"
 
-#: ../../lib/alpm_backup.sh:52
+#: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
 msgstr "(basis data lokal akan disimpan di %s)"
 
-#: ../../lib/alpm_backup.sh:53
+#: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
 msgstr "Jika anda ingin mengembalikan cadangan ini, ketik \"ya\""
 
-#: ../../lib/alpm_backup.sh:55
+#: ../../lib/alpm_backup.sh:56
 msgid "yes"
 msgstr "ya"
 
-#: ../../lib/alpm_backup.sh:56
+#: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
 msgstr "Menghapus basis data pacman"
 
-#: ../../lib/alpm_backup.sh:58
+#: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
 msgstr "Menyalin cadangan"
 
-#: ../../lib/alpm_backup.sh:61
+#: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
 msgstr "Menguji basis data baru"
 
-#: ../../lib/alpm_backup.sh:64
+#: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
 msgstr "Cadanganmu tidak sukses dikembalikan"
 
-#: ../../lib/alpm_backup.sh:66
+#: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
 msgstr "Cadanganmu telah sukses dikembalikan"
 
-#: ../../lib/alpm_backup.sh:67
+#: ../../lib/alpm_backup.sh:68
 msgid "packages found"
 msgstr "paket ditemukan"
 
-#: ../../lib/alpm_backup.sh:69
+#: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
 msgstr "(basis data lama disimpan di %s)"
 
-#: ../../lib/alpm_backup.sh:81
+#: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
 msgstr "argumen salah"
-
-#: ../../lib/alpm_query.sh:34
-msgid "Packages which depend on %s:"
-msgstr "Paket yang tergantung pada %s:"
-
-#: ../../lib/alpm_query.sh:35
-msgid "Packages which conflicts with %s:"
-msgstr "Paket yang bertentangan dengan %s:"
-
-#: ../../lib/alpm_query.sh:46
-msgid "Packages which replace %s:"
-msgstr "Paket yang menggantikan %s:"
-
-#: ../../lib/alpm_query.sh:47
-msgid "Packages which provide %s:"
-msgstr "Paket yang menyediakan %s:"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Apakah anda ingin menghapus paket ini (dengan opsi -Rcs) ?"
-
-#: ../../lib/alpm_query.sh:49
-msgid "YN"
-msgstr "YN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -423,7 +355,7 @@ msgstr "Paket ketinggalan zaman:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "Dimana paket %s tampaknya tidak lebih digunakan oleh setiap paket:"
+msgstr "Dimana paket %s tampaknya tidak lagi digunakan oleh paket apapun:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -477,131 +409,64 @@ msgstr "Ruang uang digunakan oleh paket yang terunduh di cache (direktori cache)
 msgid "Space used by src downloaded in cache:"
 msgstr "Ruang yang digunakan oleh sumber terunduh di cache:"
 
-#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+#: ../../lib/aur.sh:20
+msgid ""
+"AURUSEGIT is set but git command is not found. Falling back to tarballs."
+msgstr "AURUSEGIT telah diatur tapi perintah git tidak ditemukan. Kembali lagi ke tarballs."
+
+#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
 msgstr "%s tidak ditemukan di AUR."
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "Yes"
 msgstr "Ya"
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "No"
 msgstr "Tidak"
 
-#: ../../lib/aur.sh:45
-msgid "Repository     "
-msgstr "Repositori"
-
-#: ../../lib/aur.sh:46
-msgid "Name           "
-msgstr "Nama"
-
-#: ../../lib/aur.sh:47
-msgid "Version        "
-msgstr "Versi"
-
-#: ../../lib/aur.sh:48
-msgid "URL            "
-msgstr "URL"
-
-#: ../../lib/aur.sh:49
-msgid "AUR URL        "
-msgstr "URL AUR"
-
-#: ../../lib/aur.sh:50
-msgid "Licenses       "
-msgstr "Lisensi"
-
-#: ../../lib/aur.sh:51
-msgid "Votes          "
-msgstr "Penilaian"
-
-#: ../../lib/aur.sh:52
-msgid "Out Of Date    "
-msgstr "Ketinggalan Zaman"
-
-#: ../../lib/aur.sh:53
-msgid "Groups         "
-msgstr "Grup"
-
-#: ../../lib/aur.sh:54
-msgid "Provides       "
-msgstr "Menyediakan"
-
-#: ../../lib/aur.sh:55
-msgid "Depends On     "
-msgstr "Dependensi Pada"
-
-#: ../../lib/aur.sh:56
-msgid "Optional Deps  "
-msgstr "Dependensi Opsional"
-
-#: ../../lib/aur.sh:57
-msgid "Conflicts With "
-msgstr "Bertentangan Dengan"
-
-#: ../../lib/aur.sh:58
-msgid "Replaces       "
-msgstr "Menggantikan"
-
-#: ../../lib/aur.sh:59
-msgid "Maintainer     "
-msgstr "Pengelola"
-
-#: ../../lib/aur.sh:60
-msgid "Architecture   "
-msgstr "Arsitektur"
-
-#: ../../lib/aur.sh:61
-msgid "Last update    "
-msgstr "Terakhir diperbarui"
-
-#: ../../lib/aur.sh:62
-msgid "Description    "
-msgstr "Deskripsi"
-
-#: ../../lib/aur.sh:117
+#: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
 msgstr "Cek status penilaian untuk %s"
 
-#: ../../lib/aur.sh:120
+#: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
 msgstr "Anda sudah menilai untuk %s"
 
-#: ../../lib/aur.sh:123
+#: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
 msgstr "Apakah anda ingin menilai untuk %s?"
 
-#: ../../lib/aur.sh:136
+#: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
 msgstr "Memasang %s dair AUR"
 
-#: ../../lib/aur.sh:140
+#: ../../lib/aur.sh:183
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "Mengunduh %s PKGBUILD dari AUR..."
 
-#: ../../lib/aur.sh:145
+#: ../../lib/aur.sh:188
 msgid "This package is orphaned"
 msgstr "Paket ini yatim piatu"
 
-#: ../../lib/aur.sh:146
+#: ../../lib/aur.sh:189
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Paket tidak didukung: Berpotensi berbahaya ! )"
 
-#: ../../lib/aur.sh:166
+#: ../../lib/aur.sh:210
 msgid "not found on AUR"
 msgstr "tidak ditemukan di AUR"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:217
 msgid "up to date "
 msgstr "mutakhir"
 
-#: ../../lib/aur.sh:174
+#: ../../lib/aur.sh:218
 msgid "flagged as out of date"
 msgstr "tertandai sebagai usang"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:227
 msgid "Orphan"
 msgstr "Yatim Piatu"
 
@@ -617,11 +482,11 @@ msgstr "[y/N]"
 msgid "[y/n]"
 msgstr "[y/n]"
 
-#: ../../lib/io.sh:146
+#: ../../lib/io.sh:155
 msgid "WARNING: "
 msgstr "PERINGATAN: "
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:164
 msgid "ERROR: "
 msgstr "GALAT:"
 
@@ -645,175 +510,155 @@ msgstr "sinkronisasi basis data paket"
 msgid "(ignoring package upgrade)"
 msgstr "(mengabaikan peningkatan paket)"
 
-#: ../../lib/pkgbuild.sh.in:68
+#: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
 msgstr "Tidak dapat membaca PKGBUILD"
 
-#: ../../lib/pkgbuild.sh.in:72
+#: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
 msgstr "PKGBUILD ini menjelaskan sebuah paket terbagi."
 
-#: ../../lib/pkgbuild.sh.in:73
+#: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
 msgstr "Pilihan paket tertentu tidak diketahui"
 
-#: ../../lib/pkgbuild.sh.in:94
+#: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
 msgstr "%s dependensi:"
 
-#: ../../lib/pkgbuild.sh.in:96
+#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
 msgstr "(telah terpasang)"
 
-#: ../../lib/pkgbuild.sh.in:99
+#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
 msgstr "(paket ditemukan)"
 
-#: ../../lib/pkgbuild.sh.in:100
+#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
 msgstr "(membangun dari AUR)"
 
-#: ../../lib/pkgbuild.sh.in:135
+#: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
 msgstr "%s pertentangan:"
 
-#: ../../lib/pkgbuild.sh.in:202
+#: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
 msgstr "Membangun dan memasang paket"
 
-#: ../../lib/pkgbuild.sh.in:209
-msgid "The sources of %s were kept last time. Use them ?"
-msgstr "Sumber %s disimpan terakhir kali. Menggunakannya?"
-
-#: ../../lib/pkgbuild.sh.in:215
-msgid "Unable to write in %s directory. Using /tmp directory"
-msgstr "Tidak dapat menulis di direktori %s. Menggunakan direktori / tmp"
-
-#: ../../lib/pkgbuild.sh.in:222
+#: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
 msgstr "%s sudah paling mutakhir."
 
-#: ../../lib/pkgbuild.sh.in:230
+#: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
 msgstr "Pasang atau bangun dependensi yang hilang dari %s:"
 
-#: ../../lib/pkgbuild.sh.in:238
+#: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
 msgstr "Dependensi telah dipasang sebelum kegagalan"
 
-#: ../../lib/pkgbuild.sh.in:242
+#: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
 msgstr "PKGBUILD ini menyediakan \" %b \""
 
-#: ../../lib/pkgbuild.sh.in:243
+#: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
 msgstr "Hanya pasang %s ?"
 
-#: ../../lib/pkgbuild.sh.in:253
+#: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
 msgstr "Makepkg tidak dapat untuk membangun %s."
 
-#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
 msgstr "Menekspor %s ke %s direktori"
 
-#: ../../lib/pkgbuild.sh.in:276
+#: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
 msgstr "Lanjutkan memasang %s ?"
 
-#: ../../lib/pkgbuild.sh.in:277
+#: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[t]ampilkan konten paket [c]ek paket dengan namcap"
 
-#: ../../lib/pkgbuild.sh.in:278
-msgid "YNVC"
-msgstr "YNVC"
-
-#: ../../lib/pkgbuild.sh.in:283
+#: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
 msgstr "Tekan sembarang tombol untuk melanjutkan"
 
-#: ../../lib/pkgbuild.sh.in:292
+#: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
 msgstr "namcap tidak terpasang"
 
-#: ../../lib/pkgbuild.sh.in:306
+#: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
 msgstr "Paket anda disimpan di %s"
 
-#: ../../lib/pkgbuild.sh.in:307
+#: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
 msgstr "Tidak dapat menyalin paket ke direktori %s"
 
-#: ../../lib/pkgbuild.sh.in:317
+#: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "Tidak dapat menghapus direktori %s. Silahkan hapus menggunakan hak root."
 
-#: ../../lib/pkgbuild.sh.in:319
+#: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
 msgstr "Tidak dapat membuat direktori %s."
 
-#: ../../lib/pkgbuild.sh.in:347
+#: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
 msgstr "Lanjutkan membangun %s ?"
 
-#: ../../lib/pkgbuild.sh.in:353
+#: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
 msgstr "Hidupkan ulang membangun %s ?"
 
-#: ../../lib/pkgbuild.sh.in:399
+#: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "%s direktori telah ada. [G]anti, [U]bah ke %s, [L]ewati ?"
 
-#: ../../lib/pkgbuild.sh.in:400
-msgid "RCS"
-msgstr "RCS"
-
-#: ../../lib/pkgbuild.sh.in:407
+#: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
 msgstr "Unduh %s sumber"
 
-#: ../../lib/util.sh.in:134
+#: ../../lib/util.sh.in:135
 msgid "is not a directory"
 msgstr "bukan sebuah direktori"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/util.sh.in:136
 msgid "is not writable"
 msgstr "tidak dapat ditulis"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
 msgstr "Sunting %s ?"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
 msgstr "(\"B\" untuk batalkan)"
 
-#: ../../lib/util.sh.in:178
-msgid "YNA"
-msgstr "YNA"
-
-#: ../../lib/util.sh.in:180
+#: ../../lib/util.sh.in:184
 msgid "Aborted..."
 msgstr "Dibatalkan..."
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:190
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr "Silakan tambah $EDITOR pada variabel lingkunganmu"
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Harap tambahkan $VISUAL ke variabel lingkungan anda"
 
-#: ../../lib/util.sh.in:185
+#: ../../lib/util.sh.in:191
 msgid "for example:"
 msgstr "sebagai contoh:"
 
-#: ../../lib/util.sh.in:186
+#: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
 msgstr "(dalam ~/.bashrc)"
 
-#: ../../lib/util.sh.in:187
+#: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
 msgstr "(ganti vim dengan penyunting favoritmu)"
 
-#: ../../lib/util.sh.in:189
+#: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
 msgstr "Sunting %s dengan: "

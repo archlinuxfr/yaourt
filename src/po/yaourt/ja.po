@@ -4,77 +4,73 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# kusakata <shohei@kusakata.com>, 2014
+# kusakata, 2014,2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
-"POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-09 09:50+0000\n"
-"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
-"Language-Team: Japanese (http://www.transifex.com/projects/p/yaourt/language/ja/)\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"PO-Revision-Date: 2016-02-01 11:06+0000\n"
+"Last-Translator: kusakata\n"
+"Language-Team: Japanese (http://www.transifex.com/archlinuxfr/yaourt/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../../pacdiffviewer.sh.in:41
-msgid "Delete all *.pac* found"
-msgstr "Delete all *.pac* found"
-
 #: ../../pacdiffviewer.sh.in:42
+msgid "Delete all *.pac* found"
+msgstr "見つかった全ての *.pac* を削除"
+
+#: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
 msgstr "Save all packages backup files for a later merge"
 
-#: ../../pacdiffviewer.sh.in:43
+#: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
 msgstr "Use with backup to not output messages"
 
-#: ../../pacdiffviewer.sh.in:44
+#: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
 msgstr "Sequential listing"
 
-#: ../../pacdiffviewer.sh.in:45
+#: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
 msgstr "差分を表示"
 
-#: ../../pacdiffviewer.sh.in:46
-msgid "This help"
-msgstr "This help"
-
 #: ../../pacdiffviewer.sh.in:47
+msgid "This help"
+msgstr "このヘルプ"
+
+#: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "Show version"
+msgstr "バージョンを表示"
 
-#: ../../pacdiffviewer.sh.in:69
+#: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr "saving"
+msgstr "保存"
 
-#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
-#: ../../pacdiffviewer.sh.in:103
-msgid "found"
-msgstr "found"
-
+#: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
+msgid "found"
+msgstr "見つかりました"
+
+#: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
 msgstr "files are orphans"
 
-#: ../../pacdiffviewer.sh.in:156
+#: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr "The following files have no original version."
-
-#: ../../pacdiffviewer.sh.in:159
-msgid "Do you want to delete these files ?"
-msgstr "Do you want to delete these files ?"
+msgstr "以下のファイルにはオリジナルのバージョンがありません。"
 
 #: ../../pacdiffviewer.sh.in:160
-msgid "(S: no confirm)"
-msgstr "(S: no confirm)"
+msgid "Do you want to delete these files ?"
+msgstr "ファイルを削除しますか?"
 
 #: ../../pacdiffviewer.sh.in:161
-msgid "YNS"
-msgstr "YNS"
+msgid "(S: no confirm)"
+msgstr "(S: no confirm)"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -83,27 +79,6 @@ msgstr "**same file**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**automerge**"
-
-#: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "アクション: [E]編集, [R]置換, [S]削除, [C]続行 (デフォルト), [A]中止 ?"
-
-#: ../../pacdiffviewer.sh:192
-msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
-"[A]bort ?"
-msgstr "アクション: [E]編集, [R]置換, [S]削除, [M]結合, [C]続行 (デフォルト), [A]中止 ?"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCA"
-msgstr "ERSCA"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
-# [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCAM"
-msgstr "ERSCAM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -115,143 +90,135 @@ msgstr "適用しますか ?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr "patch returned an error!"
+msgstr "パッチでエラーが返ってきました！"
 
-#: ../../pacdiffviewer.sh.in:227
+#: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
 msgstr "番号を入力してください : "
 
-#: ../../yaourt.sh.in:34
-msgid "Yaourt does not support --help for a particular option."
-msgstr "Yaourt does not support --help for a particular option."
-
 #: ../../yaourt.sh.in:35
+msgid "Yaourt does not support --help for a particular option."
+msgstr "Yaourt は特定のオプションで --help を使うことができません。"
+
+#: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
 msgstr "The following is %s help :"
 
-#: ../../yaourt.sh.in:40
+#: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
 msgstr "使用方法: yaourt <オペレーション> [...]"
 
-#: ../../yaourt.sh.in:41
+#: ../../yaourt.sh.in:42
 msgid "operations:"
 msgstr "オペレーション:"
 
-#: ../../yaourt.sh.in:42
-msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (search pattern|package file)"
-
 #: ../../yaourt.sh.in:43
+msgid "yaourt (search pattern|package file)"
+msgstr "yaourt (検索パターン|パッケージファイル)"
+
+#: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
 msgstr "yaourt {-h --help}"
 
-#: ../../yaourt.sh.in:44
+#: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
 msgstr "yaourt {-V --version}"
 
-#: ../../yaourt.sh.in:45
+#: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query}       [オプション] [パッケージ]"
 
-#: ../../yaourt.sh.in:46
+#: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
 msgstr "yaourt {-R --remove}      [オプション] <パッケージ>"
 
-#: ../../yaourt.sh.in:47
+#: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync}        [オプション] [パッケージ]"
 
-#: ../../yaourt.sh.in:48
+#: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade}     [オプション] <パッケージ>"
 
-#: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
-msgstr "yaourt {-C --clean}       [オプション]"
-
 #: ../../yaourt.sh.in:50
-msgid "yaourt {-B --backup}      [save directory|restore file]"
-msgstr "yaourt {-B --backup}      [save directory|restore file]"
+msgid "yaourt {-C}               [options]"
+msgstr "yaourt {-C}               [オプション]"
 
 #: ../../yaourt.sh.in:51
+msgid "yaourt {-B --backup}      [save directory|restore file]"
+msgstr "yaourt {-B --backup}      [保存ディレクトリ|リストアファイル]"
+
+#: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [オプション] <パッケージ>"
 
-#: ../../yaourt.sh.in:52
+#: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:57
+#: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "ホームページ: http://archlinux.fr/yaourt-en"
 
-#: ../../yaourt.sh.in:98
+#: ../../yaourt.sh.in:117
 msgid "query packages"
 msgstr "query packages"
 
-#: ../../yaourt.sh.in:112
+#: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
 msgstr "以下のパッケージがインストールされていません:"
 
-#: ../../yaourt.sh.in:125
+#: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
-msgstr "listing all packages in repo(s)"
+msgstr "リポジトリの全てのパッケージを一覧"
 
-#: ../../yaourt.sh.in:126
+#: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
-msgstr "Listing all packages in repo(s)"
-
-#: ../../yaourt.sh.in:128
-msgid "show groups"
-msgstr "show groups"
+msgstr "リポジトリの全てのパッケージを一覧"
 
 #: ../../yaourt.sh.in:147
-msgid "Informations for %s"
-msgstr "Informations for %s"
+msgid "show groups"
+msgstr "グループを表示"
 
-#: ../../yaourt.sh.in:168
+#: ../../yaourt.sh.in:166
+msgid "Informations for %s"
+msgstr "%s の情報"
+
+#: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
 msgstr "%s ファイルを読み込めません"
 
-#: ../../yaourt.sh.in:192
+#: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "インストールするパッケージの番号を入力してください (例: 1 2 3 or 1-3)"
 
-#: ../../yaourt.sh.in:363
+#: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
-msgstr "get PKGBUILD"
+msgstr "PKGBUILD を取得"
 
-#: ../../lib/abs.sh.in:55
+#: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
 msgstr "abs アーカイブのダウンロード"
 
-#: ../../lib/abs.sh.in:78
-msgid "The following packages should be upgraded first :"
-msgstr "The following packages should be upgraded first :"
-
-#: ../../lib/abs.sh.in:80
-msgid "Do it now ?"
-msgstr "いますぐ実行しますか ?"
-
-#: ../../lib/abs.sh.in:93
+#: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
-msgstr "Building %s from sources."
+msgstr "ソースから %s をビルドします。"
 
-#: ../../lib/abs.sh.in:94
+#: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
-msgstr "Install %s from sources"
+msgstr "ソースから %s をインストール"
 
-#: ../../lib/abs.sh.in:96
+#: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "Retrieving PKGBUILD and local sources..."
+msgstr "PKGBUILD とローカルソースを取得しています..."
 
-#: ../../lib/abs.sh.in:133
+#: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
 msgstr "外部のパッケージ: "
 
 #: ../../lib/abs.sh.in:162
 msgid "not found"
-msgstr "not found"
+msgstr "見つかりませんでした"
 
 #: ../../lib/abs.sh.in:180
 msgid "Continue upgrade ?"
@@ -261,149 +228,113 @@ msgstr "アップグレードを続行しますか ?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]パッケージの詳細表示  [M]手動でパッケージを選択"
 
-#: ../../lib/abs.sh.in:182
-msgid "YNVM"
-msgstr "YNVM"
-
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
 msgstr "アップグレードを続行しますか ? "
 
-#: ../../lib/abs.sh.in:251
-msgid "Source targets"
-msgstr "Source targets"
-
-#: ../../lib/abs.sh.in:258
-msgid "AUR targets"
-msgstr "AUR targets"
-
-#: ../../lib/abs.sh.in:267
+#: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
 msgstr "%s を更新できません"
 
-#: ../../lib/abs.sh.in:285
+#: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
-msgstr "パッケージの更新 (new release):"
+msgstr "パッケージの更新 (新リリース):"
 
-#: ../../lib/abs.sh.in:286
+#: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
-msgstr "ソフトウェアの更新 (new version) :"
+msgstr "ソフトウェアの更新 (新バージョン) :"
 
-#: ../../lib/abs.sh.in:287
+#: ../../lib/abs.sh.in:293
 msgid "New package :"
 msgstr "新規パッケージ :"
 
-#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
-msgstr "(required by %s)"
+msgstr "(%s から必要とされています)"
 
-#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
 msgstr "パッケージリストからインストール"
 
-#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "SVN/CVS/HG/GIT パッケージの更新"
 
-#: ../../lib/abs.sh.in:380
-msgid "Targets"
-msgstr "対象"
-
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Saving pacman database in %s"
+msgstr "pacman データベースを %s に保存"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "Pacman database successfully saved in %s"
+msgstr "Pacman データベースは %s に保存されました"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Analysing backup file"
+msgstr "バックアップファイルを解析"
 
-#: ../../lib/alpm_backup.sh:29
+#: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr "%s is not a valid alpm database backup"
+msgstr "%s は正しい alpm データベースバックアップではありません"
 
-#: ../../lib/alpm_backup.sh:44
+#: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "New packages installed since backup:"
+msgstr "バックアップ後にインストールされた新しいパッケージ:"
 
-#: ../../lib/alpm_backup.sh:47
+#: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Packages removed or ugpraded since backup:"
+msgstr "バックアップ後に削除あるいはアップグレードされたパッケージ:"
 
-#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+#: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
-msgstr "Warning! Do you want to restore this backup ?"
-
-#: ../../lib/alpm_backup.sh:52
-msgid "(local db will be saved in %s)"
-msgstr "(local db will be saved in %s)"
+msgstr "警告！このバックアップをリストアしますか？"
 
 #: ../../lib/alpm_backup.sh:53
+msgid "(local db will be saved in %s)"
+msgstr "(ローカルデータベースは %s に保存されます)"
+
+#: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
 msgstr "バックアップを復元するには, \"yes\" と入力してください"
 
-#: ../../lib/alpm_backup.sh:55
+#: ../../lib/alpm_backup.sh:56
 msgid "yes"
 msgstr "yes"
 
-#: ../../lib/alpm_backup.sh:56
+#: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "Deleting pacman DB"
+msgstr "pacman DB の削除"
 
-#: ../../lib/alpm_backup.sh:58
+#: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr "Copying backup"
+msgstr "バックアップのコピー"
 
-#: ../../lib/alpm_backup.sh:61
+#: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
-msgstr "Testing the new database"
+msgstr "新しいデータベースのテスト"
 
-#: ../../lib/alpm_backup.sh:64
+#: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "Your backup is not successfully restored"
-
-#: ../../lib/alpm_backup.sh:66
-msgid "Your backup has been successfully restored"
-msgstr "Your backup has been successfully restored"
+msgstr "バックアップのリストアに失敗しました"
 
 #: ../../lib/alpm_backup.sh:67
+msgid "Your backup has been successfully restored"
+msgstr "バックアップのリストアに成功しました"
+
+#: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr "packages found"
+msgstr "パッケージが見つかりました"
 
-#: ../../lib/alpm_backup.sh:69
+#: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr "(old database is saved in %s)"
+msgstr "(古いデータベースは %s に保存されます)"
 
-#: ../../lib/alpm_backup.sh:81
+#: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
 msgstr "不正な引数"
 
-#: ../../lib/alpm_query.sh:34
-msgid "Packages which depend on %s:"
-msgstr "Packages which depend on %s:"
-
-#: ../../lib/alpm_query.sh:35
-msgid "Packages which conflicts with %s:"
-msgstr "Packages which conflicts with %s:"
-
-#: ../../lib/alpm_query.sh:46
-msgid "Packages which replace %s:"
-msgstr "Packages which replace %s:"
-
-#: ../../lib/alpm_query.sh:47
-msgid "Packages which provide %s:"
-msgstr "Packages which provide %s:"
-
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "Do you want to remove these packages (with -Rcs options) ? "
-
-#: ../../lib/alpm_query.sh:49
-msgid "YN"
-msgstr "YN"
+msgstr "パッケージを削除しますか (-Rcs オプション) ? "
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -427,7 +358,7 @@ msgstr "%s のパッケージが他のパッケージによって使われてい
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Hold packages:"
+msgstr "保持するパッケージ:"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
@@ -443,11 +374,11 @@ msgstr "設定済みのリポジトリの数:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "リポジトリ別のパッケージ数 (ordered by pacmans priority)"
+msgstr "リポジトリ別のパッケージ (ordered by pacmans priority)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr "others"
+msgstr "その他"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
@@ -455,153 +386,86 @@ msgstr "はローカルや AUR からビルドしたサポートのないパッ�
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Theoretical - Real space used by packages:"
+msgstr "パッケージの理論 - 実使用容量:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
-msgstr "progression:"
+msgstr "進捗:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Theoretical space used by packages:"
+msgstr "パッケージの理論使用容量:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr "Real space used by packages:"
+msgstr "パッケージの実使用容量:"
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr "Space used by pkg downloaded in cache (cachedir):"
+msgstr "キャッシュにダウンロードしたパッケージの容量 (cachedir):"
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr "Space used by src downloaded in cache:"
+msgstr "キャッシュにダウンロードしたソースの容量:"
 
-#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+#: ../../lib/aur.sh:20
+msgid ""
+"AURUSEGIT is set but git command is not found. Falling back to tarballs."
+msgstr "AURUSEGIT が設定されていますが git コマンドが存在しません。tarball にフォールバックします。"
+
+#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
 msgstr "%s は AUR に存在しません。"
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "Yes"
 msgstr "Yes"
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "No"
 msgstr "No"
 
-#: ../../lib/aur.sh:45
-msgid "Repository     "
-msgstr "リポジトリ　　　"
-
-#: ../../lib/aur.sh:46
-msgid "Name           "
-msgstr "名前　　　　　　"
-
-#: ../../lib/aur.sh:47
-msgid "Version        "
-msgstr "バージョン　　　"
-
-#: ../../lib/aur.sh:48
-msgid "URL            "
-msgstr "URL            "
-
-#: ../../lib/aur.sh:49
-msgid "AUR URL        "
-msgstr "AUR URL        "
-
-#: ../../lib/aur.sh:50
-msgid "Licenses       "
-msgstr "ライセンス　　　"
-
-#: ../../lib/aur.sh:51
-msgid "Votes          "
-msgstr "投票　　　　　　"
-
-#: ../../lib/aur.sh:52
-msgid "Out Of Date    "
-msgstr "Out Of Date    "
-
-#: ../../lib/aur.sh:53
-msgid "Groups         "
-msgstr "グループ　　　　"
-
-#: ../../lib/aur.sh:54
-msgid "Provides       "
-msgstr "Provides       "
-
-#: ../../lib/aur.sh:55
-msgid "Depends On     "
-msgstr "依存パッケージ　"
-
-#: ../../lib/aur.sh:56
-msgid "Optional Deps  "
-msgstr "Optional Deps  "
-
-#: ../../lib/aur.sh:57
-msgid "Conflicts With "
-msgstr "衝突パッケージ　"
-
-#: ../../lib/aur.sh:58
-msgid "Replaces       "
-msgstr "置換パッケージ　"
-
-#: ../../lib/aur.sh:59
-msgid "Maintainer     "
-msgstr "メンテナ　　　　"
-
-#: ../../lib/aur.sh:60
-msgid "Architecture   "
-msgstr "アーキテクチャ　"
-
-#: ../../lib/aur.sh:61
-msgid "Last update    "
-msgstr "最終更新　　　　"
-
-#: ../../lib/aur.sh:62
-msgid "Description    "
-msgstr "説明　　　　　　"
-
-#: ../../lib/aur.sh:117
+#: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
-msgstr "Checking vote status for %s"
+msgstr "%s の投票状態を確認"
 
-#: ../../lib/aur.sh:120
+#: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
 msgstr "%s にはすでに投票しています"
 
-#: ../../lib/aur.sh:123
+#: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
 msgstr "%s に投票を行いますか ? "
 
-#: ../../lib/aur.sh:136
+#: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
 msgstr "AUR から %s をインストール"
 
-#: ../../lib/aur.sh:140
+#: ../../lib/aur.sh:183
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "AUR から %s の PKGBUILD をダウンロード..."
 
-#: ../../lib/aur.sh:145
+#: ../../lib/aur.sh:188
 msgid "This package is orphaned"
 msgstr "このパッケージはメンテナンスされていません"
 
-#: ../../lib/aur.sh:146
+#: ../../lib/aur.sh:189
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( サポートがないパッケージ: 潜在的に危険です ! )"
 
-#: ../../lib/aur.sh:166
+#: ../../lib/aur.sh:210
 msgid "not found on AUR"
-msgstr "not found on AUR"
+msgstr "AUR に存在しません"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:217
 msgid "up to date "
 msgstr "最新 "
 
-#: ../../lib/aur.sh:174
+#: ../../lib/aur.sh:218
 msgid "flagged as out of date"
-msgstr "flagged as out of date"
+msgstr "out of date フラグが立てられています"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:227
 msgid "Orphan"
 msgstr "孤児"
 
@@ -617,21 +481,21 @@ msgstr "[y/N]"
 msgid "[y/n]"
 msgstr "[y/n]"
 
-#: ../../lib/io.sh:146
+#: ../../lib/io.sh:155
 msgid "WARNING: "
 msgstr "警告: "
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:164
 msgid "ERROR: "
 msgstr "エラー: "
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Packages no longer required by any installed package:"
+msgstr "インストールしたパッケージから必要とされないパッケージ:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
-msgstr "Searching for original config files to save"
+msgstr "オリジナルの設定ファイルを検索して保存"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
@@ -643,177 +507,157 @@ msgstr "パッケージデータベースの同期"
 
 #: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
-msgstr "(ignoring package upgrade)"
+msgstr "(パッケージのアップグレードを無視)"
 
-#: ../../lib/pkgbuild.sh.in:68
+#: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
 msgstr "PKGBUILD を読み込めません"
 
-#: ../../lib/pkgbuild.sh.in:72
+#: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
-msgstr ""
+msgstr "この PKGBUILD には分割パッケージが記述されています。"
 
-#: ../../lib/pkgbuild.sh.in:73
+#: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
 msgstr "Specific package options are unknown"
 
-#: ../../lib/pkgbuild.sh.in:94
+#: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
 msgstr "%s の依存パッケージ:"
 
-#: ../../lib/pkgbuild.sh.in:96
+#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
-msgstr "(already installed)"
+msgstr "(既にインストールされています)"
 
-#: ../../lib/pkgbuild.sh.in:99
+#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
-msgstr "(package found)"
+msgstr "(パッケージが見つかりました)"
 
-#: ../../lib/pkgbuild.sh.in:100
+#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
-msgstr "(building from AUR)"
+msgstr "(AUR からビルド)"
 
-#: ../../lib/pkgbuild.sh.in:135
+#: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
 msgstr "%s と衝突するパッケージ:"
 
-#: ../../lib/pkgbuild.sh.in:202
+#: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
 msgstr "パッケージのビルドとインストール"
 
-#: ../../lib/pkgbuild.sh.in:209
-msgid "The sources of %s were kept last time. Use them ?"
-msgstr "The sources of %s were kept last time. Use them ?"
-
-#: ../../lib/pkgbuild.sh.in:215
-msgid "Unable to write in %s directory. Using /tmp directory"
-msgstr "Unable to write in %s directory. Using /tmp directory"
-
-#: ../../lib/pkgbuild.sh.in:222
+#: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
 msgstr "%s はすでに最新です。"
 
-#: ../../lib/pkgbuild.sh.in:230
+#: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
-msgstr "Install or build missing dependencies for %s:"
+msgstr "%s に欠けている依存パッケージをインストールあるいはビルド:"
 
-#: ../../lib/pkgbuild.sh.in:238
+#: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
 msgstr "Dependencies have been installed before the failure"
 
-#: ../../lib/pkgbuild.sh.in:242
+#: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
-msgstr ""
+msgstr "この PKGBUILD は \" %b \" を提供します"
 
-#: ../../lib/pkgbuild.sh.in:243
+#: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
-msgstr ""
+msgstr "%s だけをインストールしますか?"
 
-#: ../../lib/pkgbuild.sh.in:253
+#: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
-msgstr "Makepkg was unable to build %s."
+msgstr "Makepkg は %s をビルドできませんでした。"
 
-#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
-msgstr "Exporting %s to %s directory"
+msgstr "%s を %s ディレクトリにエクスポート"
 
-#: ../../lib/pkgbuild.sh.in:276
+#: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
 msgstr "%s のインストールを続行しますか ?"
 
-#: ../../lib/pkgbuild.sh.in:277
+#: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]パッケージの中身確認 [c]heck package with namcap"
 
-#: ../../lib/pkgbuild.sh.in:278
-msgid "YNVC"
-msgstr "YNVC"
-
-#: ../../lib/pkgbuild.sh.in:283
+#: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
 msgstr "続行するにはキーを押して下さい"
 
-#: ../../lib/pkgbuild.sh.in:292
+#: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
 msgstr "namcap がインストールされていません"
 
-#: ../../lib/pkgbuild.sh.in:306
+#: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
 msgstr "パッケージは %s に保存されています"
 
-#: ../../lib/pkgbuild.sh.in:307
+#: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
 msgstr "パッケージを %s ディレクトリにコピーできません"
 
-#: ../../lib/pkgbuild.sh.in:317
+#: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "ディレクトリ %s を削除できません。root で削除してください。"
 
-#: ../../lib/pkgbuild.sh.in:319
+#: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
 msgstr "ディレクトリ %s を作成できません。"
 
-#: ../../lib/pkgbuild.sh.in:347
+#: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
 msgstr "%s のビルドを続行しますか ? "
 
-#: ../../lib/pkgbuild.sh.in:353
+#: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
 msgstr "%s のビルドを再開しますか ? "
 
-#: ../../lib/pkgbuild.sh.in:399
+#: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr ""
+msgstr "%s ディレクトリは既に存在します。 [R]eplace, [C]hange to %s, [S]kip ?"
 
-#: ../../lib/pkgbuild.sh.in:400
-msgid "RCS"
-msgstr ""
-
-#: ../../lib/pkgbuild.sh.in:407
+#: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
-msgstr "Download %s sources"
-
-#: ../../lib/util.sh.in:134
-msgid "is not a directory"
-msgstr "is not a directory"
+msgstr "%s のソースをダウンロード"
 
 #: ../../lib/util.sh.in:135
-msgid "is not writable"
-msgstr "is not writable"
+msgid "is not a directory"
+msgstr "はディレクトリではありません"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:136
+msgid "is not writable"
+msgstr "に書き込む権限がありません"
+
+#: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
 msgstr "%s を編集しますか ?"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
 msgstr "(\"A\" で中止)"
 
-#: ../../lib/util.sh.in:178
-msgid "YNA"
-msgstr "YNA"
-
-#: ../../lib/util.sh.in:180
+#: ../../lib/util.sh.in:184
 msgid "Aborted..."
 msgstr "中止..."
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:190
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
 msgstr "$VISUAL を環境変数に追加してください"
 
-#: ../../lib/util.sh.in:185
+#: ../../lib/util.sh.in:191
 msgid "for example:"
 msgstr "例:"
 
-#: ../../lib/util.sh.in:186
+#: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
 msgstr "(in ~/.bashrc)"
 
-#: ../../lib/util.sh.in:187
+#: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
-msgstr "(replace vim with your favorite editor)"
+msgstr "(vim をお気に入りのエディタで置き換える)"
 
-#: ../../lib/util.sh.in:189
+#: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
-msgstr "Edit %s with: "
+msgstr "%s を編集するエディタ: "

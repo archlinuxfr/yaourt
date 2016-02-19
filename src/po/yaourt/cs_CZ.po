@@ -4,630 +4,495 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# Martin Kříž <liberte.czech@gmail.com>, 2016
 # halfark <vojtechprecechtel@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
-"POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-09 09:50+0000\n"
-"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
-"Language-Team: Czech (Czech Republic) (http://www.transifex.com/projects/p/yaourt/language/cs_CZ/)\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"PO-Revision-Date: 2016-02-15 20:35+0000\n"
+"Last-Translator: Martin Kříž <liberte.czech@gmail.com>\n"
+"Language-Team: Czech (Czech Republic) (http://www.transifex.com/archlinuxfr/yaourt/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: cs_CZ\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: ../../pacdiffviewer.sh.in:41
-msgid "Delete all *.pac* found"
-msgstr ""
-
 #: ../../pacdiffviewer.sh.in:42
-msgid "Save all packages backup files for a later merge"
-msgstr ""
+msgid "Delete all *.pac* found"
+msgstr "Smazat všechny *pac* nalezené"
 
 #: ../../pacdiffviewer.sh.in:43
-msgid "Use with backup to not output messages"
-msgstr ""
+msgid "Save all packages backup files for a later merge"
+msgstr "Uložit všechny balíčky záložních souborů pro pozdější sloučení"
 
 #: ../../pacdiffviewer.sh.in:44
-msgid "Sequential listing"
-msgstr ""
+msgid "Use with backup to not output messages"
+msgstr "Použít k zálohování bez výstupních zpráv"
 
 #: ../../pacdiffviewer.sh.in:45
-msgid "Display diff"
-msgstr ""
+msgid "Sequential listing"
+msgstr "Sekvenční výpis"
 
 #: ../../pacdiffviewer.sh.in:46
-msgid "This help"
-msgstr ""
+msgid "Display diff"
+msgstr "Displej diff"
 
 #: ../../pacdiffviewer.sh.in:47
+msgid "This help"
+msgstr "Tato pomoc"
+
+#: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr ""
+msgstr "Zobrazit verzi"
 
-#: ../../pacdiffviewer.sh.in:69
+#: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr ""
+msgstr "ukládání"
 
-#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
-#: ../../pacdiffviewer.sh.in:103
-msgid "found"
-msgstr ""
-
+#: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
+msgid "found"
+msgstr "nalezeno"
+
+#: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr ""
+msgstr "soubory jsou sirotci"
 
-#: ../../pacdiffviewer.sh.in:156
+#: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr ""
-
-#: ../../pacdiffviewer.sh.in:159
-msgid "Do you want to delete these files ?"
-msgstr ""
+msgstr "Následující soubory nemají původní verzi."
 
 #: ../../pacdiffviewer.sh.in:160
-msgid "(S: no confirm)"
-msgstr ""
+msgid "Do you want to delete these files ?"
+msgstr "Chcete odstranit tyto soubory?"
 
 #: ../../pacdiffviewer.sh.in:161
-msgid "YNS"
-msgstr ""
+msgid "(S: no confirm)"
+msgstr "(S: bez potvrzení)"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
-msgstr ""
+msgstr "**stejný soubor**"
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
-msgstr ""
-
-#: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
-
-#: ../../pacdiffviewer.sh:192
-msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
-"[A]bort ?"
-msgstr ""
-
-# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCA"
-msgstr ""
-
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
-# [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCAM"
-msgstr ""
+msgstr "**automatické sloučení**"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
-msgstr ""
+msgstr "Oprava:"
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
-msgstr ""
+msgstr "Použít?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr ""
+msgstr "Oprava vrátila chybu!"
 
-#: ../../pacdiffviewer.sh.in:227
+#: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
-msgstr ""
-
-#: ../../yaourt.sh.in:34
-msgid "Yaourt does not support --help for a particular option."
-msgstr ""
+msgstr "Zadejte n° :"
 
 #: ../../yaourt.sh.in:35
-msgid "The following is %s help :"
-msgstr ""
+msgid "Yaourt does not support --help for a particular option."
+msgstr "Yaourt nepodporuje --help k popisu určité volby."
 
-#: ../../yaourt.sh.in:40
+#: ../../yaourt.sh.in:36
+msgid "The following is %s help :"
+msgstr "Následující text je %s nápovědy :"
+
+#: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
 msgstr "Použití: yaourt <operace> [...]"
 
-#: ../../yaourt.sh.in:41
+#: ../../yaourt.sh.in:42
 msgid "operations:"
 msgstr "operace:"
 
-#: ../../yaourt.sh.in:42
+#: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
 msgstr "yaourt (hledaná fráze|soubor balíčku)"
 
-#: ../../yaourt.sh.in:43
+#: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
 msgstr "yaourt {-h --help}"
 
-#: ../../yaourt.sh.in:44
+#: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
 msgstr "yaourt {-V --version}"
 
-#: ../../yaourt.sh.in:45
+#: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query} [volby] [balíčky]"
 
-#: ../../yaourt.sh.in:46
+#: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
 msgstr "yaourt {-R --remove} [volby] <balíčky>"
 
-#: ../../yaourt.sh.in:47
+#: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync} [volby] [balíčky]"
 
-#: ../../yaourt.sh.in:48
+#: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade} [volby] <balíčky>"
 
-#: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
-msgstr "yaourt {-C --clean} [volby]"
-
 #: ../../yaourt.sh.in:50
+msgid "yaourt {-C}               [options]"
+msgstr "yaourt {-C} [volby]"
+
+#: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
 msgstr "yaourt {-B --backup} [adresář pro uložení|soubor pro obnovení]"
 
-#: ../../yaourt.sh.in:51
+#: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [volby] <balíčky>"
 
-#: ../../yaourt.sh.in:52
+#: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:57
+#: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "domovská stránka: http://archlinux.fr/yaourt-en"
 
-#: ../../yaourt.sh.in:98
+#: ../../yaourt.sh.in:117
 msgid "query packages"
 msgstr "dotaz na balíčky"
 
-#: ../../yaourt.sh.in:112
+#: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
 msgstr "Následující balíčky nebyly nainstalovány:"
 
-#: ../../yaourt.sh.in:125
+#: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
 msgstr "zobrazení všech balíčků v repozitářích"
 
-#: ../../yaourt.sh.in:126
+#: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
 msgstr "Zobrazení všech balíčků v repozitářích"
 
-#: ../../yaourt.sh.in:128
+#: ../../yaourt.sh.in:147
 msgid "show groups"
 msgstr "ukázat skupiny"
 
-#: ../../yaourt.sh.in:147
+#: ../../yaourt.sh.in:166
 msgid "Informations for %s"
-msgstr "Informace o %s"
+msgstr "Informace pro %s"
 
-#: ../../yaourt.sh.in:168
+#: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
 msgstr "Nepodařilo se načíst soubor %s"
 
-#: ../../yaourt.sh.in:192
+#: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Zadejte čísla balíčků k instalaci (př: 1 2 3 nebo 1-3)"
 
-#: ../../yaourt.sh.in:363
+#: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
 msgstr "získat PKGBUILD"
 
-#: ../../lib/abs.sh.in:55
+#: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
 msgstr "Stáhnout archiv abs"
 
-#: ../../lib/abs.sh.in:78
-msgid "The following packages should be upgraded first :"
-msgstr ""
-
-#: ../../lib/abs.sh.in:80
-msgid "Do it now ?"
-msgstr ""
-
-#: ../../lib/abs.sh.in:93
+#: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
 msgstr "Vytváření balíčku %s ze zdrojů"
 
-#: ../../lib/abs.sh.in:94
+#: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
 msgstr "Nainstalovat %s ze zdrojů"
 
-#: ../../lib/abs.sh.in:96
+#: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Získávání PKGBUILDu a lokálních zdrojů..."
 
-#: ../../lib/abs.sh.in:133
+#: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
-msgstr ""
+msgstr "Cizí balíčky:"
 
 #: ../../lib/abs.sh.in:162
 msgid "not found"
-msgstr ""
+msgstr "nenalezen"
 
 #: ../../lib/abs.sh.in:180
 msgid "Continue upgrade ?"
-msgstr ""
+msgstr "Pokračovat v aktualizaci ?"
 
 #: ../../lib/abs.sh.in:181
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr ""
-
-#: ../../lib/abs.sh.in:182
-msgid "YNVM"
-msgstr ""
+msgstr "[Z]obrazit detail balíčku [R]učně vybrat balíčky"
 
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
-msgstr ""
+msgstr "Pokračovat s upgradem?"
 
-#: ../../lib/abs.sh.in:251
-msgid "Source targets"
-msgstr ""
-
-#: ../../lib/abs.sh.in:258
-msgid "AUR targets"
-msgstr ""
-
-#: ../../lib/abs.sh.in:267
+#: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
-msgstr ""
+msgstr "nelze aktualizovat %s"
 
-#: ../../lib/abs.sh.in:285
+#: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
-msgstr ""
+msgstr "Pouze upgrade balíčku (nové vydání):"
 
-#: ../../lib/abs.sh.in:286
+#: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
-msgstr ""
+msgstr "Upgrade softwaru (nová verze):"
 
-#: ../../lib/abs.sh.in:287
+#: ../../lib/abs.sh.in:293
 msgid "New package :"
-msgstr ""
+msgstr "Nový balíček:"
 
-#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
-msgstr ""
+msgstr "(vyžaduje %s)"
 
-#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
-msgstr ""
+msgstr "Instalace ze seznamu balíků"
 
-#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
-msgstr ""
-
-#: ../../lib/abs.sh.in:380
-msgid "Targets"
-msgstr ""
+msgstr "upgrade SVN/CVS/HG/GIT balíčku"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr ""
+msgstr "Ukládání pacman databáze v %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr ""
+msgstr "Databáze Pacmana úspěšně uložena do %s"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr ""
+msgstr "Analýza záložního souboru"
 
-#: ../../lib/alpm_backup.sh:29
+#: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr ""
+msgstr "%s není platná záloha alpm databáze"
 
-#: ../../lib/alpm_backup.sh:44
+#: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr ""
+msgstr "Nové balíčky byly nainstalovány ze zálohy:"
 
-#: ../../lib/alpm_backup.sh:47
+#: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr ""
+msgstr "Balíčky byly odstraněny nebo aktualizovány ze zálohy:"
 
-#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+#: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
-msgstr ""
-
-#: ../../lib/alpm_backup.sh:52
-msgid "(local db will be saved in %s)"
-msgstr ""
+msgstr "Varování! Chcete obnovit tuto zálohu?"
 
 #: ../../lib/alpm_backup.sh:53
-msgid "If you want to restore this backup, type \"yes\""
-msgstr ""
+msgid "(local db will be saved in %s)"
+msgstr "(Místní db bude uložena do %s)"
 
-#: ../../lib/alpm_backup.sh:55
-msgid "yes"
-msgstr ""
+#: ../../lib/alpm_backup.sh:54
+msgid "If you want to restore this backup, type \"yes\""
+msgstr "Chcete-li obnovit tuto zálohu, zadejte \"ano\""
 
 #: ../../lib/alpm_backup.sh:56
+msgid "yes"
+msgstr "ano"
+
+#: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr ""
+msgstr "Odstraňuje sa pacman DB"
 
-#: ../../lib/alpm_backup.sh:58
+#: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr ""
+msgstr "Kopíruje sa záloha"
 
-#: ../../lib/alpm_backup.sh:61
+#: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
-msgstr ""
+msgstr "Testuje se nová databáze"
 
-#: ../../lib/alpm_backup.sh:64
+#: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr ""
-
-#: ../../lib/alpm_backup.sh:66
-msgid "Your backup has been successfully restored"
-msgstr ""
+msgstr "Vaše záloha nebyla úspěšně obnovená"
 
 #: ../../lib/alpm_backup.sh:67
+msgid "Your backup has been successfully restored"
+msgstr "Vaša záloha byla úspěšně obnovená"
+
+#: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr ""
+msgstr "balíčky nalezeny"
 
-#: ../../lib/alpm_backup.sh:69
+#: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr ""
+msgstr "(předchozí databáze je uložená v %s)"
 
-#: ../../lib/alpm_backup.sh:81
+#: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
 msgstr "špatný argument"
 
-#: ../../lib/alpm_query.sh:34
-msgid "Packages which depend on %s:"
-msgstr ""
-
-#: ../../lib/alpm_query.sh:35
-msgid "Packages which conflicts with %s:"
-msgstr ""
-
-#: ../../lib/alpm_query.sh:46
-msgid "Packages which replace %s:"
-msgstr ""
-
-#: ../../lib/alpm_query.sh:47
-msgid "Packages which provide %s:"
-msgstr ""
-
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr ""
-
-#: ../../lib/alpm_query.sh:49
-msgid "YN"
-msgstr ""
+msgstr "Chcete odstranit tyto balíky (s volbou -Rcs) ?"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
-msgstr ""
+msgstr "Celkem nainstalovaných balíčků:"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr ""
+msgstr "Výlučně nainstalované balíky:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
-msgstr ""
+msgstr "Balíky instalované jako závislosti kvůli spuštění jiných balíkov:"
 
 #: ../../lib/alpm_stats.sh:52
 msgid "Packages out of date:"
-msgstr ""
+msgstr "Zastaralé balíky:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "Kde %s balíky se nezdají být používány nějakým balíkem:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr ""
+msgstr "Uchopit balíčky:"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr ""
+msgstr "Ignorované balíky:"
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr ""
+msgstr "Ignorované skupiny:"
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
-msgstr ""
+msgstr "Počet konfigurovaných repozitářů:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr ""
+msgstr "Balíky repozitářů (uspořádané podle priority pacmanu)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr ""
+msgstr "ostatní"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr ""
+msgstr "jsou balíky z lokálního sestavení nebo nepodporované repozitářem AUR"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr ""
+msgstr "Teoreticky - skutečně využité místo balíčky:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
-msgstr ""
+msgstr "průběh:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr ""
+msgstr "Teoreticky využité místo balíky:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr ""
+msgstr "Skutečně využité místo balíky:"
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr ""
+msgstr "Místo využité převzatými pkg ve vyrovnávací paměti (cachedir):"
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr ""
+msgstr "Místo využité převzatými src ve vyrovnávací paměti:"
 
-#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+#: ../../lib/aur.sh:20
+msgid ""
+"AURUSEGIT is set but git command is not found. Falling back to tarballs."
+msgstr "Vlastnost AURUSEGIT je nastavená, ale příkaz git se nenašel. Přechází se zpět na archivy tarball."
+
+#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
-msgstr ""
-
-#: ../../lib/aur.sh:37
-msgid "Yes"
-msgstr ""
-
-#: ../../lib/aur.sh:37
-msgid "No"
-msgstr ""
-
-#: ../../lib/aur.sh:45
-msgid "Repository     "
-msgstr ""
-
-#: ../../lib/aur.sh:46
-msgid "Name           "
-msgstr ""
-
-#: ../../lib/aur.sh:47
-msgid "Version        "
-msgstr ""
-
-#: ../../lib/aur.sh:48
-msgid "URL            "
-msgstr ""
-
-#: ../../lib/aur.sh:49
-msgid "AUR URL        "
-msgstr ""
-
-#: ../../lib/aur.sh:50
-msgid "Licenses       "
-msgstr ""
+msgstr "Balík %s nebyl nalezen v repozitáři AUR"
 
 #: ../../lib/aur.sh:51
-msgid "Votes          "
-msgstr ""
+msgid "Yes"
+msgstr "Ano"
 
-#: ../../lib/aur.sh:52
-msgid "Out Of Date    "
-msgstr ""
+#: ../../lib/aur.sh:51
+msgid "No"
+msgstr "Ne"
 
-#: ../../lib/aur.sh:53
-msgid "Groups         "
-msgstr ""
-
-#: ../../lib/aur.sh:54
-msgid "Provides       "
-msgstr ""
-
-#: ../../lib/aur.sh:55
-msgid "Depends On     "
-msgstr ""
-
-#: ../../lib/aur.sh:56
-msgid "Optional Deps  "
-msgstr ""
-
-#: ../../lib/aur.sh:57
-msgid "Conflicts With "
-msgstr ""
-
-#: ../../lib/aur.sh:58
-msgid "Replaces       "
-msgstr ""
-
-#: ../../lib/aur.sh:59
-msgid "Maintainer     "
-msgstr ""
-
-#: ../../lib/aur.sh:60
-msgid "Architecture   "
-msgstr ""
-
-#: ../../lib/aur.sh:61
-msgid "Last update    "
-msgstr ""
-
-#: ../../lib/aur.sh:62
-msgid "Description    "
-msgstr ""
-
-#: ../../lib/aur.sh:117
+#: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
-msgstr ""
+msgstr "Kontroluje se stav hlasování za %s"
 
-#: ../../lib/aur.sh:120
+#: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
-msgstr ""
+msgstr "Už jste hlasovali za %s"
 
-#: ../../lib/aur.sh:123
+#: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
-msgstr ""
+msgstr "Chcete hlasovat za %s ?"
 
-#: ../../lib/aur.sh:136
+#: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
-msgstr ""
-
-#: ../../lib/aur.sh:140
-msgid "Downloading %s PKGBUILD from AUR..."
-msgstr ""
-
-#: ../../lib/aur.sh:145
-msgid "This package is orphaned"
-msgstr ""
-
-#: ../../lib/aur.sh:146
-msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr ""
-
-#: ../../lib/aur.sh:166
-msgid "not found on AUR"
-msgstr ""
-
-#: ../../lib/aur.sh:173
-msgid "up to date "
-msgstr ""
-
-#: ../../lib/aur.sh:174
-msgid "flagged as out of date"
-msgstr ""
+msgstr "Instaluje se %s z AUR"
 
 #: ../../lib/aur.sh:183
+msgid "Downloading %s PKGBUILD from AUR..."
+msgstr "Stahuje se PKGBUILD balíku %s z AUR..."
+
+#: ../../lib/aur.sh:188
+msgid "This package is orphaned"
+msgstr "Tento balík je osiřelý"
+
+#: ../../lib/aur.sh:189
+msgid "( Unsupported package: Potentially dangerous ! )"
+msgstr "( Nepodporovaný balík: Potenciálně nebezpečný ! )"
+
+#: ../../lib/aur.sh:210
+msgid "not found on AUR"
+msgstr "nebyl nalezen na AUR"
+
+#: ../../lib/aur.sh:217
+msgid "up to date "
+msgstr "aktuální"
+
+#: ../../lib/aur.sh:218
+msgid "flagged as out of date"
+msgstr "označený jako zastaralý"
+
+#: ../../lib/aur.sh:227
 msgid "Orphan"
-msgstr ""
+msgstr "Sirotek"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
-msgstr ""
+msgstr "[A/n]"
 
 #: ../../lib/io.sh:99
 msgid "[y/N]"
-msgstr ""
+msgstr "[a/N]"
 
 #: ../../lib/io.sh:100
 msgid "[y/n]"
-msgstr ""
-
-#: ../../lib/io.sh:146
-msgid "WARNING: "
-msgstr ""
+msgstr "[a/n]"
 
 #: ../../lib/io.sh:155
+msgid "WARNING: "
+msgstr "VAROVÁNÍ:"
+
+#: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr ""
+msgstr "CHYBA:"
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr ""
+msgstr "Balíky které již nadále nejsou vyžadovány žádným jiným nainstalovaným balíkem:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
@@ -643,177 +508,157 @@ msgstr "synchronizace databází balíčků"
 
 #: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
-msgstr ""
+msgstr "(ignoruje se aktualizace balíků)"
 
-#: ../../lib/pkgbuild.sh.in:68
+#: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
-msgstr ""
+msgstr "Není možné číst PKGBUILD"
 
-#: ../../lib/pkgbuild.sh.in:72
+#: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
-msgstr ""
+msgstr "Tento PKGBUILD popisuje rozdělený balík."
 
-#: ../../lib/pkgbuild.sh.in:73
+#: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
-msgstr ""
+msgstr "Konkrétní možnosti balíčku nejsou známé"
 
-#: ../../lib/pkgbuild.sh.in:94
+#: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
-msgstr ""
+msgstr "%s závislostí:"
 
-#: ../../lib/pkgbuild.sh.in:96
+#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
-msgstr ""
+msgstr "(Již nainstalovaný)"
 
-#: ../../lib/pkgbuild.sh.in:99
+#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
-msgstr ""
+msgstr "(balík nalezený)"
 
-#: ../../lib/pkgbuild.sh.in:100
+#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
-msgstr ""
+msgstr "(postaví se z AUR)"
 
-#: ../../lib/pkgbuild.sh.in:135
+#: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
-msgstr ""
+msgstr "%s konflikty:"
 
-#: ../../lib/pkgbuild.sh.in:202
+#: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
-msgstr ""
+msgstr "Postavení a instalace balíku"
 
-#: ../../lib/pkgbuild.sh.in:209
-msgid "The sources of %s were kept last time. Use them ?"
-msgstr ""
-
-#: ../../lib/pkgbuild.sh.in:215
-msgid "Unable to write in %s directory. Using /tmp directory"
-msgstr ""
-
-#: ../../lib/pkgbuild.sh.in:222
+#: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
-msgstr ""
+msgstr "Balík %s je už aktuální."
 
-#: ../../lib/pkgbuild.sh.in:230
+#: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
-msgstr ""
+msgstr "Instalace nebo sestavení chybějících závislostí pro balík %s:"
 
-#: ../../lib/pkgbuild.sh.in:238
+#: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
-msgstr ""
+msgstr "Závislosti byly nainstalovány před výpadkem napájení"
 
-#: ../../lib/pkgbuild.sh.in:242
+#: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
-msgstr ""
+msgstr "Tento PKGBUILD poskytuje \" %b \""
 
-#: ../../lib/pkgbuild.sh.in:243
+#: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
-msgstr ""
+msgstr "Nainstalovat pouze %s ?"
 
-#: ../../lib/pkgbuild.sh.in:253
+#: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
-msgstr ""
+msgstr "Nástroji makepkg se nepodařilo sestavit balík %s."
 
-#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
-msgstr ""
+msgstr "Exportuje se %s do %s adresáře"
 
-#: ../../lib/pkgbuild.sh.in:276
+#: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
-msgstr ""
+msgstr "Pokračovat v instalaci balíku %s ?"
 
-#: ../../lib/pkgbuild.sh.in:277
+#: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr ""
+msgstr "[z]obrazit obsah balíku   [z]kontrolovat balík s nástrojem namcap"
 
-#: ../../lib/pkgbuild.sh.in:278
-msgid "YNVC"
-msgstr ""
-
-#: ../../lib/pkgbuild.sh.in:283
+#: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
-msgstr ""
+msgstr "Stiskněte kteroukoli z kláves k pokračování"
 
-#: ../../lib/pkgbuild.sh.in:292
+#: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
-msgstr ""
+msgstr "Nástroj namcap není nainstalovaný"
 
-#: ../../lib/pkgbuild.sh.in:306
+#: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
-msgstr ""
+msgstr "Vaše balíky jsou uložené v %s"
 
-#: ../../lib/pkgbuild.sh.in:307
+#: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
-msgstr ""
+msgstr "Není možné zkopírovat balíky do %s adresáře"
 
-#: ../../lib/pkgbuild.sh.in:317
+#: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr ""
+msgstr "Není možné odstranit adresář %s. Prosím, odstraňte ho použitím správcovských privilegií."
 
-#: ../../lib/pkgbuild.sh.in:319
+#: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
-msgstr ""
+msgstr "Není možné vytvořit adresář %s."
 
-#: ../../lib/pkgbuild.sh.in:347
+#: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
-msgstr ""
+msgstr "Pokračovat v sestavení balíku %s ?"
 
-#: ../../lib/pkgbuild.sh.in:353
+#: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
-msgstr ""
+msgstr "Spustit znovu sestavení balíku %s ?"
 
-#: ../../lib/pkgbuild.sh.in:399
+#: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr ""
+msgstr "Adresář %s už existuje. [N]ahradit, [Z]měnit na %s, [P]řeskočit ?"
 
-#: ../../lib/pkgbuild.sh.in:400
-msgid "RCS"
-msgstr ""
-
-#: ../../lib/pkgbuild.sh.in:407
+#: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
 msgstr "Stáhnout %s zdroje"
 
-#: ../../lib/util.sh.in:134
+#: ../../lib/util.sh.in:135
 msgid "is not a directory"
 msgstr "není adresář"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/util.sh.in:136
 msgid "is not writable"
 msgstr "není povolen zápis"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
-msgstr ""
+msgstr "Upravit %s ?"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
-msgstr ""
-
-#: ../../lib/util.sh.in:178
-msgid "YNA"
-msgstr ""
-
-#: ../../lib/util.sh.in:180
-msgid "Aborted..."
-msgstr ""
+msgstr "(\"P\" pro přerušení)"
 
 #: ../../lib/util.sh.in:184
+msgid "Aborted..."
+msgstr "Přerušení..."
+
+#: ../../lib/util.sh.in:190
 #, sh-format
-msgid "Please add $EDITOR to your environment variables"
-msgstr ""
+msgid "Please add $VISUAL to your environment variables"
+msgstr "Prosím, přidejte $VISUAL do proměnných vašeho prostředí"
 
-#: ../../lib/util.sh.in:185
+#: ../../lib/util.sh.in:191
 msgid "for example:"
-msgstr ""
+msgstr "například:"
 
-#: ../../lib/util.sh.in:186
+#: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
-msgstr ""
+msgstr "(v ~/.bashrc)"
 
-#: ../../lib/util.sh.in:187
+#: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
-msgstr ""
+msgstr "(nahraďte vim s vaším oblíbeným editorem)"
 
-#: ../../lib/util.sh.in:189
+#: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
-msgstr ""
+msgstr "Upravit %s s:"

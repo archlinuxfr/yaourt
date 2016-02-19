@@ -4,77 +4,73 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Yarema aka Knedlyk <yupadmin@gmail.com>, 2012-2015
+# Yarema aka Knedlyk <yupadmin@gmail.com>, 2012-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
-"POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-09 10:07+0000\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"PO-Revision-Date: 2016-01-31 13:01+0000\n"
 "Last-Translator: Yarema aka Knedlyk <yupadmin@gmail.com>\n"
-"Language-Team: Ukrainian (http://www.transifex.com/projects/p/yaourt/language/uk/)\n"
+"Language-Team: Ukrainian (http://www.transifex.com/archlinuxfr/yaourt/language/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: uk\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../../pacdiffviewer.sh.in:41
+#: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
 msgstr "Вилучити всі знайдені *.pac*"
 
-#: ../../pacdiffviewer.sh.in:42
+#: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
 msgstr "Збереження всіх резервних копій файлів для пізнішого злиття"
 
-#: ../../pacdiffviewer.sh.in:43
+#: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
 msgstr "Використання з резервною копією без повідомлень "
 
-#: ../../pacdiffviewer.sh.in:44
+#: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
 msgstr "Послідовний список"
 
-#: ../../pacdiffviewer.sh.in:45
+#: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
 msgstr "Показати різницю"
 
-#: ../../pacdiffviewer.sh.in:46
+#: ../../pacdiffviewer.sh.in:47
 msgid "This help"
 msgstr "Ця допомога"
 
-#: ../../pacdiffviewer.sh.in:47
+#: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
 msgstr "Показати версію"
 
-#: ../../pacdiffviewer.sh.in:69
+#: ../../pacdiffviewer.sh.in:70
 msgid "saving"
 msgstr "збереження"
 
-#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
-#: ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:104
 msgid "found"
 msgstr "знайдено"
 
-#: ../../pacdiffviewer.sh.in:104
+#: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
 msgstr "файли без власника"
 
-#: ../../pacdiffviewer.sh.in:156
+#: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
 msgstr "Наступні файли не мають первісної версії."
 
-#: ../../pacdiffviewer.sh.in:159
+#: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
 msgstr "Ви бажаєте вилучити ці файли ?"
 
-#: ../../pacdiffviewer.sh.in:160
+#: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(S: без підтвердження)"
-
-#: ../../pacdiffviewer.sh.in:161
-msgid "YNS"
-msgstr "YNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -83,27 +79,6 @@ msgstr "**той самий файл**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**автозлиття**"
-
-#: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Дія: [E]редагувати, [R]замістити, [S]пригнітити, [C]продовжити (типово), [A]припинити ?"
-
-#: ../../pacdiffviewer.sh:192
-msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
-"[A]bort ?"
-msgstr "Дія: [E]редагувати, [R]замінити, [S]пригнітити, [M]з’єднати, [C]продовжити (типово), [A]припинити ?"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCA"
-msgstr "ERSCA"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
-# [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCAM"
-msgstr "ERSCAM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -117,135 +92,127 @@ msgstr "Подати заявку ?"
 msgid "patch returned an error!"
 msgstr "помилка застосування латки!"
 
-#: ../../pacdiffviewer.sh.in:227
+#: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
 msgstr "Введіть № : "
 
-#: ../../yaourt.sh.in:34
+#: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
 msgstr "Yaourt не підтримує --help для певних параметрів."
 
-#: ../../yaourt.sh.in:35
+#: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
 msgstr "Наступне є допомога %s :"
 
-#: ../../yaourt.sh.in:40
+#: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
 msgstr "Використання: yaourt <дія> [...]"
 
-#: ../../yaourt.sh.in:41
+#: ../../yaourt.sh.in:42
 msgid "operations:"
 msgstr "дії:"
 
-#: ../../yaourt.sh.in:42
+#: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
 msgstr "yaourt (слово для пошуку|файл пакунку)"
 
-#: ../../yaourt.sh.in:43
+#: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
 msgstr "yaourt {-h --help}"
 
-#: ../../yaourt.sh.in:44
+#: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
 msgstr "yaourt {-V --version}"
 
-#: ../../yaourt.sh.in:45
+#: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query}       [опції] [пакунок(ки)]"
 
-#: ../../yaourt.sh.in:46
+#: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
 msgstr "yaourt {-R --remove}      [опції] <пакунок(ки)>"
 
-#: ../../yaourt.sh.in:47
+#: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync}        [опції] [пакунок(ки)]"
 
-#: ../../yaourt.sh.in:48
+#: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade}     [опції] <пакунок(ки)>"
 
-#: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
-msgstr "yaourt {-C --clean}       [опції]"
-
 #: ../../yaourt.sh.in:50
+msgid "yaourt {-C}               [options]"
+msgstr "yaourt {-C}               [опції]"
+
+#: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
 msgstr "yaourt {-B --backup}      [тека для збереження|файл для відновлення]"
 
-#: ../../yaourt.sh.in:51
+#: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [опції] <пакунок(ки)>"
 
-#: ../../yaourt.sh.in:52
+#: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:57
+#: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "домашня сторінка: http://archlinux.fr/yaourt-en"
 
-#: ../../yaourt.sh.in:98
+#: ../../yaourt.sh.in:117
 msgid "query packages"
 msgstr "запит пакунків"
 
-#: ../../yaourt.sh.in:112
+#: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
 msgstr "Наступні пакунки не встановлено:"
 
-#: ../../yaourt.sh.in:125
+#: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
 msgstr "список всіх пакунків в сховищі(щах)"
 
-#: ../../yaourt.sh.in:126
+#: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
 msgstr "Список всіх пакунків в сховищі(щах)"
 
-#: ../../yaourt.sh.in:128
+#: ../../yaourt.sh.in:147
 msgid "show groups"
 msgstr "показати групи"
 
-#: ../../yaourt.sh.in:147
+#: ../../yaourt.sh.in:166
 msgid "Informations for %s"
 msgstr "Інформація для %s"
 
-#: ../../yaourt.sh.in:168
+#: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
 msgstr "Неможливо прочитати файл %s"
 
-#: ../../yaourt.sh.in:192
+#: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Введіть № пакунків для встановлення (наприклад: 1 2 3 або 1-3)"
 
-#: ../../yaourt.sh.in:363
+#: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
 msgstr "отримання PKGBUILD"
 
-#: ../../lib/abs.sh.in:55
+#: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
 msgstr "Звантаження архіву abs"
 
-#: ../../lib/abs.sh.in:78
-msgid "The following packages should be upgraded first :"
-msgstr "Наступні пакунки будуть оновлені спочатку :"
-
-#: ../../lib/abs.sh.in:80
-msgid "Do it now ?"
-msgstr "Зробити це зараз?"
-
-#: ../../lib/abs.sh.in:93
+#: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
 msgstr "Створення %s з сирців."
 
-#: ../../lib/abs.sh.in:94
+#: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
 msgstr "Встановлення %s з сирців"
 
-#: ../../lib/abs.sh.in:96
+#: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Отримання PKGBUILD і локальних сирців..."
 
-#: ../../lib/abs.sh.in:133
+#: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
 msgstr "Інші пакунки: "
 
@@ -261,53 +228,37 @@ msgstr "Продовжувати оновлення ?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]переглянути деталі пакунка  [M]вручну вибрати пакунки"
 
-#: ../../lib/abs.sh.in:182
-msgid "YNVM"
-msgstr "YNVM"
-
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
 msgstr "Перейти до оновлення? "
 
-#: ../../lib/abs.sh.in:251
-msgid "Source targets"
-msgstr "Сирці"
-
-#: ../../lib/abs.sh.in:258
-msgid "AUR targets"
-msgstr "Цілі AUR"
-
-#: ../../lib/abs.sh.in:267
+#: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
 msgstr "неможливо оновити %s"
 
-#: ../../lib/abs.sh.in:285
+#: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
 msgstr "Тільки оновлення пакунка (нова версія):"
 
-#: ../../lib/abs.sh.in:286
+#: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
 msgstr "Оновлення програми (нова версія) :"
 
-#: ../../lib/abs.sh.in:287
+#: ../../lib/abs.sh.in:293
 msgid "New package :"
 msgstr "Новий пакунок :"
 
-#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
 msgstr "(вимагається через %s)"
 
-#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
 msgstr "Встановлення зі списку пакунків"
 
-#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "оновлення пакунка SVN/CVS/HG/GIT"
-
-#: ../../lib/abs.sh.in:380
-msgid "Targets"
-msgstr "Цілі"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -321,89 +272,69 @@ msgstr "База даних pacman успішно збережено в %s"
 msgid "Analysing backup file"
 msgstr "Аналіз файлу резервного копіювання"
 
-#: ../../lib/alpm_backup.sh:29
+#: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
 msgstr "%s не є резервною копією бази alpm"
 
-#: ../../lib/alpm_backup.sh:44
+#: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
 msgstr "Нові пакунки, що встановлені після останнього резервного копіювання:"
 
-#: ../../lib/alpm_backup.sh:47
+#: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
 msgstr "Пакунки, що вилучені або оновлені після останнього резервного копіювання:"
 
-#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+#: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
 msgstr "Попередження!!! Ви бажаєте відновити цю резервну копію ?"
 
-#: ../../lib/alpm_backup.sh:52
+#: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
 msgstr "(локальну базу буде збережено в %s)"
 
-#: ../../lib/alpm_backup.sh:53
+#: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
 msgstr "Якщо Ви бажаєете відновити цю резервну копію, введіть \"так\""
 
-#: ../../lib/alpm_backup.sh:55
+#: ../../lib/alpm_backup.sh:56
 msgid "yes"
 msgstr "так"
 
-#: ../../lib/alpm_backup.sh:56
+#: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
 msgstr "Вилучення бази пакунків pacman"
 
-#: ../../lib/alpm_backup.sh:58
+#: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
 msgstr "Копіювання резервної копії"
 
-#: ../../lib/alpm_backup.sh:61
+#: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
 msgstr "Тестування нової бази даних"
 
-#: ../../lib/alpm_backup.sh:64
+#: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
 msgstr "Вашу резервну копію не відновлено"
 
-#: ../../lib/alpm_backup.sh:66
+#: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
 msgstr "Вашу резервну копію успішно відновлено"
 
-#: ../../lib/alpm_backup.sh:67
+#: ../../lib/alpm_backup.sh:68
 msgid "packages found"
 msgstr "пакунки знайдено"
 
-#: ../../lib/alpm_backup.sh:69
+#: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
 msgstr "(стару базу даних збережено в %s)"
 
-#: ../../lib/alpm_backup.sh:81
+#: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
 msgstr "неправильний аргумент"
-
-#: ../../lib/alpm_query.sh:34
-msgid "Packages which depend on %s:"
-msgstr "Пакунки, що залежать від %s:"
-
-#: ../../lib/alpm_query.sh:35
-msgid "Packages which conflicts with %s:"
-msgstr "Пакунки, що конфліктують з %s:"
-
-#: ../../lib/alpm_query.sh:46
-msgid "Packages which replace %s:"
-msgstr "Пакунки, що заміняють %s:"
-
-#: ../../lib/alpm_query.sh:47
-msgid "Packages which provide %s:"
-msgstr "Пакунки, що забезпечують %s:"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Ви бажаєте вилучити ці пакунки (з опціями -Rcs) ? "
-
-#: ../../lib/alpm_query.sh:49
-msgid "YN"
-msgstr "YN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -423,7 +354,7 @@ msgstr "Застарілих пакунків:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "Де %s пакунків, можливо, не використовуються жодним з пакунків:"
+msgstr "Де %s пакунки, здається, не будуть використовуються жодним пакунком:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -455,7 +386,7 @@ msgstr "чи пакунки створені локально чи з непід
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Теоретично - Справжній простір, використаний пакунками:"
+msgstr "Теоретично - Справжній об'єм, використаний пакунками:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -463,7 +394,7 @@ msgstr "поступ:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Теоретичний простій, використаний пакунками:"
+msgstr "Теоретичний об'єм, використаний пакунками:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -477,131 +408,64 @@ msgstr "Об’єм, використаний пакунками, звантаж
 msgid "Space used by src downloaded in cache:"
 msgstr "Об’єм, використаний сирцями, звантаженими в кеш :"
 
-#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+#: ../../lib/aur.sh:20
+msgid ""
+"AURUSEGIT is set but git command is not found. Falling back to tarballs."
+msgstr "Змінну середовища AURUSEGIT встановлено, однак git-команду не знайдено. Повертаємося до архівів tar."
+
+#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
 msgstr "%s не знайдено в AUR."
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "Yes"
 msgstr "Так"
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "No"
 msgstr "Ні"
 
-#: ../../lib/aur.sh:45
-msgid "Repository     "
-msgstr "Сховище     "
-
-#: ../../lib/aur.sh:46
-msgid "Name           "
-msgstr "Назва           "
-
-#: ../../lib/aur.sh:47
-msgid "Version        "
-msgstr "Версія        "
-
-#: ../../lib/aur.sh:48
-msgid "URL            "
-msgstr "URL            "
-
-#: ../../lib/aur.sh:49
-msgid "AUR URL        "
-msgstr "AUR URL        "
-
-#: ../../lib/aur.sh:50
-msgid "Licenses       "
-msgstr "Ліцензії       "
-
-#: ../../lib/aur.sh:51
-msgid "Votes          "
-msgstr "Голоси        "
-
-#: ../../lib/aur.sh:52
-msgid "Out Of Date    "
-msgstr "Застарілий    "
-
-#: ../../lib/aur.sh:53
-msgid "Groups         "
-msgstr "Групи         "
-
-#: ../../lib/aur.sh:54
-msgid "Provides       "
-msgstr "Забезпечує       "
-
-#: ../../lib/aur.sh:55
-msgid "Depends On     "
-msgstr "Залежить від     "
-
-#: ../../lib/aur.sh:56
-msgid "Optional Deps  "
-msgstr "Необов’язкові залежності  "
-
-#: ../../lib/aur.sh:57
-msgid "Conflicts With "
-msgstr "Конфліктує з "
-
-#: ../../lib/aur.sh:58
-msgid "Replaces       "
-msgstr "Заміняє       "
-
-#: ../../lib/aur.sh:59
-msgid "Maintainer     "
-msgstr "Супровідник     "
-
-#: ../../lib/aur.sh:60
-msgid "Architecture   "
-msgstr "Архітектура   "
-
-#: ../../lib/aur.sh:61
-msgid "Last update    "
-msgstr "Останнє оновлення    "
-
-#: ../../lib/aur.sh:62
-msgid "Description    "
-msgstr "Опис    "
-
-#: ../../lib/aur.sh:117
+#: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
 msgstr "Перевіряння статусу голосування для %s"
 
-#: ../../lib/aur.sh:120
+#: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
 msgstr "Ви вже проголосували за %s"
 
-#: ../../lib/aur.sh:123
+#: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
 msgstr "Ви бажаєте проголосувати за %s ? "
 
-#: ../../lib/aur.sh:136
+#: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
 msgstr "Встановлення %s з AUR"
 
-#: ../../lib/aur.sh:140
+#: ../../lib/aur.sh:183
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "Звантаження PKGBUILD %s з AUR..."
 
-#: ../../lib/aur.sh:145
+#: ../../lib/aur.sh:188
 msgid "This package is orphaned"
 msgstr "Цей пакунок покинутий"
 
-#: ../../lib/aur.sh:146
+#: ../../lib/aur.sh:189
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Пакунок не підтримується: Потенційна небезпека ! )"
 
-#: ../../lib/aur.sh:166
+#: ../../lib/aur.sh:210
 msgid "not found on AUR"
 msgstr "не знайдено на AUR"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:217
 msgid "up to date "
 msgstr "оновлено "
 
-#: ../../lib/aur.sh:174
+#: ../../lib/aur.sh:218
 msgid "flagged as out of date"
 msgstr "позначено як застарілий"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:227
 msgid "Orphan"
 msgstr "Покинутий"
 
@@ -617,11 +481,11 @@ msgstr "так/Ні [y/N]"
 msgid "[y/n]"
 msgstr "так/ні [y/n]"
 
-#: ../../lib/io.sh:146
+#: ../../lib/io.sh:155
 msgid "WARNING: "
 msgstr "ПОПЕРЕДЖЕННЯ: "
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:164
 msgid "ERROR: "
 msgstr "ПОМИЛКА: "
 
@@ -645,175 +509,155 @@ msgstr "синхронізування бази даних пакунків"
 msgid "(ignoring package upgrade)"
 msgstr "(ігнорування оновлення пакунка)"
 
-#: ../../lib/pkgbuild.sh.in:68
+#: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
 msgstr "Неможливо прочитати PKGBUILD"
 
-#: ../../lib/pkgbuild.sh.in:72
+#: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
 msgstr "Цей PKGBUILD описує розділений пакунок."
 
-#: ../../lib/pkgbuild.sh.in:73
+#: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
 msgstr "Невідомі специфічні параметри пакунка"
 
-#: ../../lib/pkgbuild.sh.in:94
+#: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
 msgstr "Залежності %s:"
 
-#: ../../lib/pkgbuild.sh.in:96
+#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
 msgstr "(вже встановлено)"
 
-#: ../../lib/pkgbuild.sh.in:99
+#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
 msgstr "(пакунок знайдено)"
 
-#: ../../lib/pkgbuild.sh.in:100
+#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
 msgstr "(створення з AUR)"
 
-#: ../../lib/pkgbuild.sh.in:135
+#: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
 msgstr "%s конфліктує:"
 
-#: ../../lib/pkgbuild.sh.in:202
+#: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
 msgstr "Створення і встановлення пакунка"
 
-#: ../../lib/pkgbuild.sh.in:209
-msgid "The sources of %s were kept last time. Use them ?"
-msgstr "Джерельний код %s був збережений перед тим. Використати його ?"
-
-#: ../../lib/pkgbuild.sh.in:215
-msgid "Unable to write in %s directory. Using /tmp directory"
-msgstr "Запис у теку %s неможливий. Використовується тека /tmp"
-
-#: ../../lib/pkgbuild.sh.in:222
+#: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
 msgstr "%s вже оновлено."
 
-#: ../../lib/pkgbuild.sh.in:230
+#: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
 msgstr "Встановлення або збирання пропущених залежностей для  %s:"
 
-#: ../../lib/pkgbuild.sh.in:238
+#: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
 msgstr "Залежності, встановлені перед відмовою"
 
-#: ../../lib/pkgbuild.sh.in:242
+#: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
 msgstr "Цей PKGBUILD постачає \" %b \""
 
-#: ../../lib/pkgbuild.sh.in:243
+#: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
 msgstr "Встановити тільки %s ?"
 
-#: ../../lib/pkgbuild.sh.in:253
+#: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
 msgstr "Makepkg не може створити %s."
 
-#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
 msgstr "Експортування %s до теки %s"
 
-#: ../../lib/pkgbuild.sh.in:276
+#: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
 msgstr "Продовжувати встановлення %s ?"
 
-#: ../../lib/pkgbuild.sh.in:277
+#: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]переглянути вміст пакунка   [c]перевірити з namcap"
 
-#: ../../lib/pkgbuild.sh.in:278
-msgid "YNVC"
-msgstr "YNVC"
-
-#: ../../lib/pkgbuild.sh.in:283
+#: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
 msgstr "Натисніть будь-яку клавішу для продовження"
 
-#: ../../lib/pkgbuild.sh.in:292
+#: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
 msgstr "namcap не встановлено"
 
-#: ../../lib/pkgbuild.sh.in:306
+#: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
 msgstr "Ваші пакунки збережено в %s"
 
-#: ../../lib/pkgbuild.sh.in:307
+#: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
 msgstr "Неможливо скопіювати пакунки до теки %s"
 
-#: ../../lib/pkgbuild.sh.in:317
+#: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "Неможливо вилучити теку %s. Вилучіть її, використовуючи права доступу суперкористувача."
 
-#: ../../lib/pkgbuild.sh.in:319
+#: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
 msgstr "Неможливо створити теку %s."
 
-#: ../../lib/pkgbuild.sh.in:347
+#: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
 msgstr "Продовжити побудову %s ? "
 
-#: ../../lib/pkgbuild.sh.in:353
+#: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
 msgstr "Розпочати знову побудову %s ? "
 
-#: ../../lib/pkgbuild.sh.in:399
+#: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "Тека %s вже існує. [R]замінити, [C]змінити на %s, [S]пропустити ?"
 
-#: ../../lib/pkgbuild.sh.in:400
-msgid "RCS"
-msgstr "RCS"
-
-#: ../../lib/pkgbuild.sh.in:407
+#: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
 msgstr "Звантаження сирців %s"
 
-#: ../../lib/util.sh.in:134
+#: ../../lib/util.sh.in:135
 msgid "is not a directory"
 msgstr "це не тека"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/util.sh.in:136
 msgid "is not writable"
 msgstr "немає прав для запису"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
 msgstr "Редагувати %s ?"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
 msgstr "(\"A\" щоб перервати)"
 
-#: ../../lib/util.sh.in:178
-msgid "YNA"
-msgstr "YNA"
-
-#: ../../lib/util.sh.in:180
+#: ../../lib/util.sh.in:184
 msgid "Aborted..."
 msgstr "Перервано..."
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:190
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "удь ласка, додайте $VISUAL до Ваших змінних середовища"
+msgstr "Додайте, будь ласка, $VISUAL до Ваших змінних середовища"
 
-#: ../../lib/util.sh.in:185
+#: ../../lib/util.sh.in:191
 msgid "for example:"
 msgstr "наприклад:"
 
-#: ../../lib/util.sh.in:186
+#: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
 msgstr "(в ~/.bashrc)"
 
-#: ../../lib/util.sh.in:187
+#: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
 msgstr "(поміняйте vim на Ваш улюблений редактор)"
 
-#: ../../lib/util.sh.in:189
+#: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
 msgstr "Редагувати %s з: "

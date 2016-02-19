@@ -10,73 +10,69 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
-"Report-Msgid-Bugs-To: http://bugs.archlinux.fr/index.php?project=3\n"
-"POT-Creation-Date: 2010-04-09 15:19+0200\n"
-"PO-Revision-Date: 2015-01-09 09:50+0000\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"PO-Revision-Date: 2016-01-31 10:41+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
-"Language-Team: Turkish (http://www.transifex.com/projects/p/yaourt/language/tr/)\n"
+"Language-Team: Turkish (http://www.transifex.com/archlinuxfr/yaourt/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: tr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../../pacdiffviewer.sh.in:41
+#: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
 msgstr "Bulunan tüm *.pac* dosyalarını sil"
 
-#: ../../pacdiffviewer.sh.in:42
+#: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
 msgstr "Tüm paketlerin yedek dosyalarını daha sonra birleştirmek üzere kaydet"
 
-#: ../../pacdiffviewer.sh.in:43
+#: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
 msgstr "Sessiz kip, iletileri azaltmak için yedekleme seçeneği ile kullanın"
 
-#: ../../pacdiffviewer.sh.in:44
+#: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
 msgstr "Sıralı listeleme"
 
-#: ../../pacdiffviewer.sh.in:45
+#: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
 msgstr "Farklılıkları görüntüle"
 
-#: ../../pacdiffviewer.sh.in:46
+#: ../../pacdiffviewer.sh.in:47
 msgid "This help"
 msgstr "Bu yardımı görüntler"
 
-#: ../../pacdiffviewer.sh.in:47
+#: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
 msgstr "Sürüm bilgilerini gösterir"
 
-#: ../../pacdiffviewer.sh.in:69
+#: ../../pacdiffviewer.sh.in:70
 msgid "saving"
 msgstr "kaydediliyor"
 
-#: ../../pacdiffviewer.sh.in:101 ../../pacdiffviewer.sh.in:102
-#: ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
+#: ../../pacdiffviewer.sh.in:104
 msgid "found"
 msgstr "bulundu"
 
-#: ../../pacdiffviewer.sh.in:104
+#: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
 msgstr "dosya sahipsiz durumda"
 
-#: ../../pacdiffviewer.sh.in:156
+#: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
 msgstr "Aşağıdaki dosyalar özgün sürümlerinde değil."
 
-#: ../../pacdiffviewer.sh.in:159
+#: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
 msgstr "Bu dosyaları silmek istiyor musunuz ?"
 
-#: ../../pacdiffviewer.sh.in:160
+#: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(onaylamamak için \"S\")"
-
-#: ../../pacdiffviewer.sh.in:161
-msgid "YNS"
-msgstr "EHS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -85,27 +81,6 @@ msgstr "**aynı dosya**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**otomatik birleştirme**"
-
-#: ../../pacdiffviewer.sh:192
-msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Eylem: [D]üzenle, D[E]ğiştir, [B]askıla, De[V]am et (öntanımlı), İp[T]al et ?"
-
-#: ../../pacdiffviewer.sh:192
-msgid ""
-"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
-"[A]bort ?"
-msgstr "Eylem: [D]üzenle, D[E]ğiştir, [B]askıla, Bir[L]eştir, De[V]am et (öntanımlı), İp[T]al et ?"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCA"
-msgstr "DEBVT"
-
-# Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default),
-# [A]bort ?
-#: ../../pacdiffviewer.sh:193
-msgid "ERSCAM"
-msgstr "DEBVTL"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -119,135 +94,127 @@ msgstr "Uygulansın mı?"
 msgid "patch returned an error!"
 msgstr "yama bir hata verdi!"
 
-#: ../../pacdiffviewer.sh.in:227
+#: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
 msgstr "İşlem yapmak istediğiniz dosyanın sıra numarasını giriniz : "
 
-#: ../../yaourt.sh.in:34
+#: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
 msgstr "Yaourt --help değişkenini bu belirlediğiniz seçenek için desteklemiyor."
 
-#: ../../yaourt.sh.in:35
+#: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
 msgstr "%s yardımı :"
 
-#: ../../yaourt.sh.in:40
+#: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
 msgstr "Kullanım: yaourt <işlem> [...]"
 
-#: ../../yaourt.sh.in:41
+#: ../../yaourt.sh.in:42
 msgid "operations:"
 msgstr "işlemler:"
 
-#: ../../yaourt.sh.in:42
+#: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
 msgstr "yaourt (aranacak kelime|paket dosyası)"
 
-#: ../../yaourt.sh.in:43
+#: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
 msgstr "yaourt {-h --help}"
 
-#: ../../yaourt.sh.in:44
+#: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
 msgstr "yaourt {-V --version}"
 
-#: ../../yaourt.sh.in:45
+#: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
 msgstr "yaourt {-Q --query} [seçenekler] [paket(ler)]"
 
-#: ../../yaourt.sh.in:46
+#: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
 msgstr "yaourt {-R --remove} [seçenekler] <paket(ler)>"
 
-#: ../../yaourt.sh.in:47
+#: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
 msgstr "yaourt {-S --sync} [seçenekler] [paket(ler)]"
 
-#: ../../yaourt.sh.in:48
+#: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
 msgstr "yaourt {-U --upgrade} [seçenekler] <paket(ler)>"
 
-#: ../../yaourt.sh.in:49
-msgid "yaourt {-C --clean}       [options]"
-msgstr "yaourt {-C --clean} [seçenekler]"
-
 #: ../../yaourt.sh.in:50
+msgid "yaourt {-C}               [options]"
+msgstr ""
+
+#: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
 msgstr "yaourt {-B --backup} [kayıt dizini|geri alınacak dosya]"
 
-#: ../../yaourt.sh.in:51
+#: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [seçenekler] <paket(ler)>"
 
-#: ../../yaourt.sh.in:52
+#: ../../yaourt.sh.in:53
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:57
+#: ../../yaourt.sh.in:58
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "anasayfa: http://archlinux.fr/yaourt-en"
 
-#: ../../yaourt.sh.in:98
+#: ../../yaourt.sh.in:117
 msgid "query packages"
 msgstr "paketleri sorgula"
 
-#: ../../yaourt.sh.in:112
+#: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
 msgstr "Aşağıdaki paketler yüklenmedi:"
 
-#: ../../yaourt.sh.in:125
+#: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
 msgstr "depo(lar)daki tüm paketler listeleniyor"
 
-#: ../../yaourt.sh.in:126
+#: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
 msgstr "Depo(lar)daki tüm paketler listeleniyor"
 
-#: ../../yaourt.sh.in:128
+#: ../../yaourt.sh.in:147
 msgid "show groups"
 msgstr "grupları göster"
 
-#: ../../yaourt.sh.in:147
+#: ../../yaourt.sh.in:166
 msgid "Informations for %s"
-msgstr "%s için bilgiler"
+msgstr ""
 
-#: ../../yaourt.sh.in:168
+#: ../../yaourt.sh.in:206
 msgid "Unable to read %s file"
 msgstr "%s adlı dosya okunamadı"
 
-#: ../../yaourt.sh.in:192
+#: ../../yaourt.sh.in:230
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Yüklenecek paketlerin sıra numarasını girin (örn: 1 2 3 veya 1-3)"
 
-#: ../../yaourt.sh.in:363
+#: ../../yaourt.sh.in:408
 msgid "get PKGBUILD"
 msgstr "PKGBUILD' i al"
 
-#: ../../lib/abs.sh.in:55
+#: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
 msgstr "Abs arşivini indir"
 
-#: ../../lib/abs.sh.in:78
-msgid "The following packages should be upgraded first :"
-msgstr "Önce aşağıdaki paketler güncellenmelidir :"
-
-#: ../../lib/abs.sh.in:80
-msgid "Do it now ?"
-msgstr "Şimdi yapılsın mı?"
-
-#: ../../lib/abs.sh.in:93
+#: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
 msgstr "%s kaynak kodundan inşa ediliyor."
 
-#: ../../lib/abs.sh.in:94
+#: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
 msgstr "%s'i kaynak kodundan yükle"
 
-#: ../../lib/abs.sh.in:96
+#: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "PKGBUILD ve yerel kaynaklar alınıyor..."
 
-#: ../../lib/abs.sh.in:133
+#: ../../lib/abs.sh.in:134
 msgid "Foreign packages: "
 msgstr "Yabancı paketler:"
 
@@ -263,53 +230,37 @@ msgstr "Güncellemeye devam edilsin mi ?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "Paket ayrıntılarına [B]ak - Paketleri elle [S]eç"
 
-#: ../../lib/abs.sh.in:182
-msgid "YNVM"
-msgstr "EHBS"
-
 #: ../../lib/abs.sh.in:203
 msgid "Proceed with upgrade? "
 msgstr "Yükseltmeye devam edilsin mi? "
 
-#: ../../lib/abs.sh.in:251
-msgid "Source targets"
-msgstr "Kaynak hedefleri"
-
-#: ../../lib/abs.sh.in:258
-msgid "AUR targets"
-msgstr "AUR hedefleri"
-
-#: ../../lib/abs.sh.in:267
+#: ../../lib/abs.sh.in:273
 msgid "unable to update %s"
 msgstr " %s güncellenemedi"
 
-#: ../../lib/abs.sh.in:285
+#: ../../lib/abs.sh.in:291
 msgid "Package upgrade only (new release):"
 msgstr "Sadece paket yüksetlme (ara sürüm):"
 
-#: ../../lib/abs.sh.in:286
+#: ../../lib/abs.sh.in:292
 msgid "Software upgrade (new version) :"
 msgstr "Yazılım güncellemesi (yeni sürüm) :"
 
-#: ../../lib/abs.sh.in:287
+#: ../../lib/abs.sh.in:293
 msgid "New package :"
 msgstr "Yeni paket :"
 
-#: ../../lib/abs.sh.in:303 ../../lib/abs.sh.in:311
+#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
 msgid "(required by %s)"
 msgstr "(%s için gerekli)"
 
-#: ../../lib/abs.sh.in:328 ../../lib/abs.sh.in:329
+#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
 msgid "Installing from a package list"
 msgstr "Bir paket listesinden yükleniyor"
 
-#: ../../lib/abs.sh.in:370 ../../lib/abs.sh.in:371
+#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "SVN/CVS/HG/GIT paketleri güncelleniyor"
-
-#: ../../lib/abs.sh.in:380
-msgid "Targets"
-msgstr "Hedefler"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -323,89 +274,69 @@ msgstr "Pacman veritabanı %s içine başarıyla kaydedildi."
 msgid "Analysing backup file"
 msgstr "Yedek dosyası çözümleniyor"
 
-#: ../../lib/alpm_backup.sh:29
+#: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
 msgstr "%s geçerli bir alpm veritabanı yedeği değil"
 
-#: ../../lib/alpm_backup.sh:44
+#: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
 msgstr "Yedeklemeden sonra yüklenen yeni paketler:"
 
-#: ../../lib/alpm_backup.sh:47
+#: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
 msgstr "Yedeklemeden sonra silinen veya güncellenen paketler:"
 
-#: ../../lib/alpm_backup.sh:50 ../../lib/alpm_backup.sh:51
+#: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
 msgstr "Uyarı! Bu yedeği geri almak istiyor musunuz ?"
 
-#: ../../lib/alpm_backup.sh:52
+#: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
 msgstr "(yerel veritabanı %s içine kaydedilecek)"
 
-#: ../../lib/alpm_backup.sh:53
+#: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
 msgstr "Bu yedeği geri almak istiyorsanız, \"evet\" yazınız"
 
-#: ../../lib/alpm_backup.sh:55
+#: ../../lib/alpm_backup.sh:56
 msgid "yes"
 msgstr "evet"
 
-#: ../../lib/alpm_backup.sh:56
+#: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
 msgstr "Pacman veritabanı siliniyor"
 
-#: ../../lib/alpm_backup.sh:58
+#: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
 msgstr "Yedek kopyalanıyor"
 
-#: ../../lib/alpm_backup.sh:61
+#: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
 msgstr "Yeni veritabanı test ediliyor"
 
-#: ../../lib/alpm_backup.sh:64
+#: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
 msgstr "Yedeğinizin geri alınması başarısız oldu"
 
-#: ../../lib/alpm_backup.sh:66
+#: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
 msgstr "Yedeğinizin geri alınması başarıyla gerçekleştirildi"
 
-#: ../../lib/alpm_backup.sh:67
+#: ../../lib/alpm_backup.sh:68
 msgid "packages found"
 msgstr "paket bulundu"
 
-#: ../../lib/alpm_backup.sh:69
+#: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
 msgstr "(eski veritabanı %s içine kaydedildi)"
 
-#: ../../lib/alpm_backup.sh:81
+#: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
 msgstr " yanlış değişken"
-
-#: ../../lib/alpm_query.sh:34
-msgid "Packages which depend on %s:"
-msgstr "%s'a bağlı olan paketler:"
-
-#: ../../lib/alpm_query.sh:35
-msgid "Packages which conflicts with %s:"
-msgstr "%s ile çakışan paketler:"
-
-#: ../../lib/alpm_query.sh:46
-msgid "Packages which replace %s:"
-msgstr "%s'in yerini alan paketler:"
-
-#: ../../lib/alpm_query.sh:47
-msgid "Packages which provide %s:"
-msgstr "%s'i sağlayan paketler:"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Bu paketleri kaldırmak istiyor musunuz (-Rcs seçenekleriyle) ? "
-
-#: ../../lib/alpm_query.sh:49
-msgid "YN"
-msgstr "EH"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -425,7 +356,7 @@ msgstr "Güncel olmayan paketler:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "%s paket görünüşe göre artık diğer paketler tarafından kullanılmıyor:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -479,131 +410,64 @@ msgstr "Önbelleğe indirilen dosyaların pkg klasörününde kapladığı alan 
 msgid "Space used by src downloaded in cache:"
 msgstr "Önbelleğe indirilen dosyaların src klasöründe kapladığı alan:"
 
-#: ../../lib/aur.sh:18 ../../lib/aur.sh:40
+#: ../../lib/aur.sh:20
+msgid ""
+"AURUSEGIT is set but git command is not found. Falling back to tarballs."
+msgstr ""
+
+#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
 msgid "%s not found in AUR."
 msgstr "%s AUR'da bulunamadı."
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "Yes"
 msgstr "Evet"
 
-#: ../../lib/aur.sh:37
+#: ../../lib/aur.sh:51
 msgid "No"
 msgstr "Hayır"
 
-#: ../../lib/aur.sh:45
-msgid "Repository     "
-msgstr "Depo"
-
-#: ../../lib/aur.sh:46
-msgid "Name           "
-msgstr "İsim"
-
-#: ../../lib/aur.sh:47
-msgid "Version        "
-msgstr "Sürüm"
-
-#: ../../lib/aur.sh:48
-msgid "URL            "
-msgstr "Bağlantı"
-
-#: ../../lib/aur.sh:49
-msgid "AUR URL        "
-msgstr "AUR Bağlantısı"
-
-#: ../../lib/aur.sh:50
-msgid "Licenses       "
-msgstr "Lisans         "
-
-#: ../../lib/aur.sh:51
-msgid "Votes          "
-msgstr "Oy             "
-
-#: ../../lib/aur.sh:52
-msgid "Out Of Date    "
-msgstr "Eski sürüm mü? "
-
-#: ../../lib/aur.sh:53
-msgid "Groups         "
-msgstr "Gruplar        "
-
-#: ../../lib/aur.sh:54
-msgid "Provides       "
-msgstr "Sağladıkları   "
-
-#: ../../lib/aur.sh:55
-msgid "Depends On     "
-msgstr "Bağımlılıklar  "
-
-#: ../../lib/aur.sh:56
-msgid "Optional Deps  "
-msgstr "İstemli bağm.. "
-
-#: ../../lib/aur.sh:57
-msgid "Conflicts With "
-msgstr "Çakıştıkları   "
-
-#: ../../lib/aur.sh:58
-msgid "Replaces       "
-msgstr "Değiştirdiği   "
-
-#: ../../lib/aur.sh:59
-msgid "Maintainer     "
-msgstr "Sorumlu        "
-
-#: ../../lib/aur.sh:60
-msgid "Architecture   "
-msgstr "Mimari         "
-
-#: ../../lib/aur.sh:61
-msgid "Last update    "
-msgstr "Son güncelleme "
-
-#: ../../lib/aur.sh:62
-msgid "Description    "
-msgstr "Açıklama       "
-
-#: ../../lib/aur.sh:117
+#: ../../lib/aur.sh:159
 msgid "Checking vote status for %s"
 msgstr "%s 'in oy durumu denetleniyor"
 
-#: ../../lib/aur.sh:120
+#: ../../lib/aur.sh:162
 msgid "You have already voted for %s"
 msgstr "Zaten %s için oy verdiniz"
 
-#: ../../lib/aur.sh:123
+#: ../../lib/aur.sh:165
 msgid "Do you want to vote for %s ? "
 msgstr "%s için oy vermek istiyor musunuz ? "
 
-#: ../../lib/aur.sh:136
+#: ../../lib/aur.sh:179
 msgid "Installing %s from AUR"
 msgstr "%s AUR'dan yükleniyor"
 
-#: ../../lib/aur.sh:140
+#: ../../lib/aur.sh:183
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "%s PKGBUILD'i AUR'dan indiriliyor..."
 
-#: ../../lib/aur.sh:145
+#: ../../lib/aur.sh:188
 msgid "This package is orphaned"
 msgstr "Bu paket sahipsiz kalmış"
 
-#: ../../lib/aur.sh:146
+#: ../../lib/aur.sh:189
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Desteklenmeyen paket: Tehlikeli olma olasılığı var ! )"
 
-#: ../../lib/aur.sh:166
+#: ../../lib/aur.sh:210
 msgid "not found on AUR"
 msgstr "AUR'da bulunamadı"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:217
 msgid "up to date "
 msgstr "güncel"
 
-#: ../../lib/aur.sh:174
+#: ../../lib/aur.sh:218
 msgid "flagged as out of date"
 msgstr "güncelliğini yitirmiş olarak işaretlendi"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:227
 msgid "Orphan"
 msgstr "Sahipsiz"
 
@@ -619,11 +483,11 @@ msgstr "[e/H]"
 msgid "[y/n]"
 msgstr "[e/h]"
 
-#: ../../lib/io.sh:146
+#: ../../lib/io.sh:155
 msgid "WARNING: "
 msgstr "UYARI:"
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:164
 msgid "ERROR: "
 msgstr "HATA:"
 
@@ -647,175 +511,155 @@ msgstr "paket veritabanları eşitleniyor"
 msgid "(ignoring package upgrade)"
 msgstr "(paket yükseltmesi yok sayılıyor)"
 
-#: ../../lib/pkgbuild.sh.in:68
+#: ../../lib/pkgbuild.sh.in:77
 msgid "Unable to read PKGBUILD"
 msgstr "PKGBUILD okunamadı"
 
-#: ../../lib/pkgbuild.sh.in:72
+#: ../../lib/pkgbuild.sh.in:81
 msgid "This PKGBUILD describes a split package."
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:73
+#: ../../lib/pkgbuild.sh.in:82
 msgid "Specific package options are unknown"
 msgstr "Özel paket seçenekleri bilinmiyor"
 
-#: ../../lib/pkgbuild.sh.in:94
+#: ../../lib/pkgbuild.sh.in:109
 msgid "%s dependencies:"
 msgstr "%s bağımlılıkları:"
 
-#: ../../lib/pkgbuild.sh.in:96
+#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
 msgid "(already installed)"
 msgstr "(kurulu)"
 
-#: ../../lib/pkgbuild.sh.in:99
+#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
 msgid "(package found)"
 msgstr "(paket bulundu)"
 
-#: ../../lib/pkgbuild.sh.in:100
+#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
 msgid "(building from AUR)"
 msgstr "(AUR'dan inşa ediliyor)"
 
-#: ../../lib/pkgbuild.sh.in:135
+#: ../../lib/pkgbuild.sh.in:163
 msgid "%s conflicts:"
 msgstr "%s ile çakışan paketler:"
 
-#: ../../lib/pkgbuild.sh.in:202
+#: ../../lib/pkgbuild.sh.in:231
 msgid "Building and installing package"
 msgstr "Paket inşa edilip yükneniyor"
 
-#: ../../lib/pkgbuild.sh.in:209
-msgid "The sources of %s were kept last time. Use them ?"
-msgstr "%s kaynak dosyaları önceki zaman tutulmuş. Kullanmak ister misiniz ?"
-
-#: ../../lib/pkgbuild.sh.in:215
-msgid "Unable to write in %s directory. Using /tmp directory"
-msgstr "%s dizinine yazılamadı. /tmp dizini kullanılıyor"
-
-#: ../../lib/pkgbuild.sh.in:222
+#: ../../lib/pkgbuild.sh.in:247
 msgid "%s is already up to date."
 msgstr "%s zaten güncel."
 
-#: ../../lib/pkgbuild.sh.in:230
+#: ../../lib/pkgbuild.sh.in:255
 msgid "Install or build missing dependencies for %s:"
 msgstr "%s için kayıp bağımlılıkları yükle veya inşa et:"
 
-#: ../../lib/pkgbuild.sh.in:238
+#: ../../lib/pkgbuild.sh.in:263
 msgid "Dependencies have been installed before the failure"
 msgstr "Bağımlılıklar aksaklıktan önce yüklendi"
 
-#: ../../lib/pkgbuild.sh.in:242
+#: ../../lib/pkgbuild.sh.in:272
 msgid "This PKGBUILD provides \" %b \""
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:243
+#: ../../lib/pkgbuild.sh.in:273
 msgid "Install only %s ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:253
+#: ../../lib/pkgbuild.sh.in:281
 msgid "Makepkg was unable to build %s."
 msgstr " makepkg %s'i inşa edemedi."
 
-#: ../../lib/pkgbuild.sh.in:267 ../../lib/pkgbuild.sh.in:270
+#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
 msgid "Exporting %s to %s directory"
 msgstr "%s, %s dizinine çıkarılıyor"
 
-#: ../../lib/pkgbuild.sh.in:276
+#: ../../lib/pkgbuild.sh.in:304
 msgid "Continue installing %s ?"
 msgstr "%s yüklensin mi ?"
 
-#: ../../lib/pkgbuild.sh.in:277
+#: ../../lib/pkgbuild.sh.in:305
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "Paket içeriğine [B]ak - Paketleri namcap ile [D]enetle"
 
-#: ../../lib/pkgbuild.sh.in:278
-msgid "YNVC"
-msgstr "EHBD"
-
-#: ../../lib/pkgbuild.sh.in:283
+#: ../../lib/pkgbuild.sh.in:311
 msgid "Press any key to continue"
 msgstr "Devam etmek için bir tuşa basın"
 
-#: ../../lib/pkgbuild.sh.in:292
+#: ../../lib/pkgbuild.sh.in:320
 msgid "namcap is not installed"
 msgstr "namcap yüklü değil"
 
-#: ../../lib/pkgbuild.sh.in:306
+#: ../../lib/pkgbuild.sh.in:332
 msgid "Your packages are saved in %s"
 msgstr "Paketleriniz %s içine kaydedildi"
 
-#: ../../lib/pkgbuild.sh.in:307
+#: ../../lib/pkgbuild.sh.in:333
 msgid "Unable to copy packages to %s directory"
 msgstr "Paketler %s dizinine kopyalanamadı"
 
-#: ../../lib/pkgbuild.sh.in:317
+#: ../../lib/pkgbuild.sh.in:343
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "%s adlı dizin silinemedi. Lütfen kök kullanıcı yetkileriyle silin."
 
-#: ../../lib/pkgbuild.sh.in:319
+#: ../../lib/pkgbuild.sh.in:345
 msgid "Unable to create directory %s."
 msgstr "%s adlı dizin yaratılamadı."
 
-#: ../../lib/pkgbuild.sh.in:347
+#: ../../lib/pkgbuild.sh.in:373
 msgid "Continue building %s ? "
 msgstr "%s inşa edilsin mi ? "
 
-#: ../../lib/pkgbuild.sh.in:353
+#: ../../lib/pkgbuild.sh.in:379
 msgid "Restart building %s ? "
 msgstr "%s yeniden inşa edilsin mi ? "
 
-#: ../../lib/pkgbuild.sh.in:399
+#: ../../lib/pkgbuild.sh.in:429
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:400
-msgid "RCS"
-msgstr ""
-
-#: ../../lib/pkgbuild.sh.in:407
+#: ../../lib/pkgbuild.sh.in:436
 msgid "Download %s sources"
 msgstr "%s'in kaynak kodlarını indir"
 
-#: ../../lib/util.sh.in:134
+#: ../../lib/util.sh.in:135
 msgid "is not a directory"
 msgstr "bir dizin değil"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/util.sh.in:136
 msgid "is not writable"
 msgstr "salt okunur"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "Edit %s ?"
 msgstr "%s'i düzenlemek istiyor musunuz ?"
 
-#: ../../lib/util.sh.in:177
+#: ../../lib/util.sh.in:181
 msgid "(\"A\" to abort)"
 msgstr "(iptal etmek için \"T\")"
 
-#: ../../lib/util.sh.in:178
-msgid "YNA"
-msgstr "EHT"
-
-#: ../../lib/util.sh.in:180
+#: ../../lib/util.sh.in:184
 msgid "Aborted..."
 msgstr "İptal Edildi..."
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:190
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "Lütfen çevre değişkenleriniz arasına $VISUAL 'ü ekleyiniz."
+msgstr ""
 
-#: ../../lib/util.sh.in:185
+#: ../../lib/util.sh.in:191
 msgid "for example:"
 msgstr "Örneğin:"
 
-#: ../../lib/util.sh.in:186
+#: ../../lib/util.sh.in:192
 msgid "(in ~/.bashrc)"
 msgstr "(ifadesini ~/.bashrc dosyası içerisine ekleyerek bu işlemi gerçekleştirebilirsiniz.)"
 
-#: ../../lib/util.sh.in:187
+#: ../../lib/util.sh.in:193
 msgid "(replace vim with your favorite editor)"
 msgstr "(vim'i en sevdiğiniz düzenleyiciyle değiştirmeyi unutmayın)"
 
-#: ../../lib/util.sh.in:189
+#: ../../lib/util.sh.in:195
 msgid "Edit %s with: "
 msgstr "%s için düzenleyici seçiniz: "

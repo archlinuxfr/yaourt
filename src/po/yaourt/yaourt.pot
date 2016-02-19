@@ -1,5 +1,5 @@
 # yaourt default.po file
-# Copyright (C) 2010-2015
+# Copyright (C) 2010-2016
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
@@ -9,7 +9,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
-"POT-Creation-Date: 2015-09-08 18:33+0200\n"
+"POT-Creation-Date: 2016-02-19 21:24+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Skunnyk <skunnyk@archlinux.fr>\n"
 "Language-Team: https://www.transifex.com/archlinuxfr/yaourt/\n"
@@ -152,10 +152,14 @@ msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr ""
 
 #: ../../yaourt.sh.in:53
+msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
+msgstr ""
+
+#: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
 msgstr ""
 
-#: ../../yaourt.sh.in:58
+#: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr ""
 
@@ -180,18 +184,30 @@ msgid "show groups"
 msgstr ""
 
 #: ../../yaourt.sh.in:166
-msgid "Informations for %s"
+msgid "Information for %s"
 msgstr ""
 
-#: ../../yaourt.sh.in:206
+#: ../../yaourt.sh.in:206 ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
 msgstr ""
 
-#: ../../yaourt.sh.in:230
+#: ../../yaourt.sh.in:228
+msgid "You have to provide a valid directory after --pkgbuild"
+msgstr ""
+
+#: ../../yaourt.sh.in:232
+msgid "Your directory after --pkgbuild does not contain a PKGBUILD"
+msgstr ""
+
+#: ../../yaourt.sh.in:238 ../../yaourt.sh.in:239
+msgid "Installing %s from local PKGBUILD"
+msgstr ""
+
+#: ../../yaourt.sh.in:251 ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr ""
 
-#: ../../yaourt.sh.in:408
+#: ../../yaourt.sh.in:435 ../../yaourt.sh.in:486
 msgid "get PKGBUILD"
 msgstr ""
 
@@ -211,51 +227,51 @@ msgstr ""
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr ""
 
-#: ../../lib/abs.sh.in:134
+#: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
 msgstr ""
 
-#: ../../lib/abs.sh.in:162
+#: ../../lib/abs.sh.in:232
 msgid "not found"
 msgstr ""
 
-#: ../../lib/abs.sh.in:180
+#: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
 msgstr ""
 
-#: ../../lib/abs.sh.in:181
+#: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr ""
 
-#: ../../lib/abs.sh.in:203
+#: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr ""
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
 msgstr ""
 
-#: ../../lib/abs.sh.in:291
+#: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
 msgstr ""
 
-#: ../../lib/abs.sh.in:292
+#: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
 msgstr ""
 
-#: ../../lib/abs.sh.in:293
+#: ../../lib/abs.sh.in:349
 msgid "New package :"
 msgstr ""
 
-#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
+#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
 msgstr ""
 
-#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
+#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
 msgstr ""
 
-#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
+#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr ""
 
@@ -412,59 +428,59 @@ msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
 msgstr ""
 
-#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
+#: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
 msgstr ""
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "Yes"
 msgstr ""
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "No"
 msgstr ""
 
-#: ../../lib/aur.sh:159
+#: ../../lib/aur.sh:180 ../../lib/aur.sh:182
 msgid "Checking vote status for %s"
 msgstr ""
 
-#: ../../lib/aur.sh:162
+#: ../../lib/aur.sh:183 ../../lib/aur.sh:185
 msgid "You have already voted for %s"
 msgstr ""
 
-#: ../../lib/aur.sh:165
+#: ../../lib/aur.sh:186 ../../lib/aur.sh:188
 msgid "Do you want to vote for %s ? "
 msgstr ""
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:200 ../../lib/aur.sh:202
 msgid "Installing %s from AUR"
 msgstr ""
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:204 ../../lib/aur.sh:206
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr ""
 
-#: ../../lib/aur.sh:188
+#: ../../lib/aur.sh:210 ../../lib/aur.sh:212
 msgid "This package is orphaned"
 msgstr ""
 
-#: ../../lib/aur.sh:189
+#: ../../lib/aur.sh:211 ../../lib/aur.sh:213
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr ""
 
-#: ../../lib/aur.sh:210
+#: ../../lib/aur.sh:232 ../../lib/aur.sh:234
 msgid "not found on AUR"
 msgstr ""
 
-#: ../../lib/aur.sh:217
+#: ../../lib/aur.sh:239 ../../lib/aur.sh:241
 msgid "up to date "
 msgstr ""
 
-#: ../../lib/aur.sh:218
+#: ../../lib/aur.sh:240 ../../lib/aur.sh:242
 msgid "flagged as out of date"
 msgstr ""
 
-#: ../../lib/aur.sh:227
+#: ../../lib/aur.sh:249 ../../lib/aur.sh:251
 msgid "Orphan"
 msgstr ""
 
@@ -504,159 +520,168 @@ msgstr ""
 msgid "synchronizing package databases"
 msgstr ""
 
-#: ../../lib/pacman.sh.in:71
+#: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:77
+#: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:81
+#: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:82
+#: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:109
+#: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
+#: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
+#: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
+#: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:163
+#: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:231
+#: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:247
+#: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:255
+#: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:263
+#: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:272
+#: ../../lib/pkgbuild.sh.in:284
 msgid "This PKGBUILD provides \" %b \""
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:273
+#: ../../lib/pkgbuild.sh.in:285
 msgid "Install only %s ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:281
+#: ../../lib/pkgbuild.sh.in:293 ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
+#: ../../lib/pkgbuild.sh.in:321 ../../lib/pkgbuild.sh.in:324
+#: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:304
+#: ../../lib/pkgbuild.sh.in:330 ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:305
+#: ../../lib/pkgbuild.sh.in:331 ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:311
+#: ../../lib/pkgbuild.sh.in:337 ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:320
+#: ../../lib/pkgbuild.sh.in:346 ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:332
+#: ../../lib/pkgbuild.sh.in:358 ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:333
+#: ../../lib/pkgbuild.sh.in:359 ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:343
+#: ../../lib/pkgbuild.sh.in:369 ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:345
+#: ../../lib/pkgbuild.sh.in:371 ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:373
+#: ../../lib/pkgbuild.sh.in:399 ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:379
+#: ../../lib/pkgbuild.sh.in:405 ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:429
+#: ../../lib/pkgbuild.sh.in:463 ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:436
+#: ../../lib/pkgbuild.sh.in:470 ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr ""
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/pkgbuild.sh.in:513 ../../lib/pkgbuild.sh.in:506
+msgid "Copying files from %s to build directory..."
+msgstr ""
+
+#: ../../lib/util.sh.in:143 ../../lib/util.sh.in:159
 msgid "is not a directory"
 msgstr ""
 
-#: ../../lib/util.sh.in:136
+#: ../../lib/util.sh.in:144 ../../lib/util.sh.in:160
 msgid "is not writable"
 msgstr ""
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:189 ../../lib/util.sh.in:205
 msgid "Edit %s ?"
 msgstr ""
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:189 ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr ""
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:192 ../../lib/util.sh.in:208
 msgid "Aborted..."
 msgstr ""
 
-#: ../../lib/util.sh.in:190
+#: ../../lib/util.sh.in:198 ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
 msgstr ""
 
-#: ../../lib/util.sh.in:191
+#: ../../lib/util.sh.in:199 ../../lib/util.sh.in:215
 msgid "for example:"
 msgstr ""
 
-#: ../../lib/util.sh.in:192
+#: ../../lib/util.sh.in:200 ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
 msgstr ""
 
-#: ../../lib/util.sh.in:193
+#: ../../lib/util.sh.in:201 ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
 msgstr ""
 
-#: ../../lib/util.sh.in:195
+#: ../../lib/util.sh.in:203 ../../lib/util.sh.in:219
 msgid "Edit %s with: "
+msgstr ""
+
+#: ../../yaourt.sh.in:233
+msgid "%s directory does not contain a PKGBUILD"
 msgstr ""
