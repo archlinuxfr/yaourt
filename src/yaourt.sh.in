@@ -227,7 +227,7 @@ yaourt_query() {
 
 # Handle building from local PKGBUILD
 yaourt_pkgbuild() {
-	YPKGBUILDDIR="${YPKGBUILDDIR:-$PWD}"
+	YPKGBUILDDIR="${ARGS[0]:-$PWD}"
 
 	! [ -e "$YPKGBUILDDIR"/PKGBUILD ] && {
 		msg $(_gettext '%s directory does not contain a PKGBUILD' "$YPKGBUILDDIR")
@@ -311,36 +311,44 @@ unset MAJOR AUR SEARCH BUILD REFRESH SYSUPGRADE CLEAN \
 CMDLINE_ARGS=("$@")
 # Explode arguments (-Su -> -S -u, , --foo=bar -> --foo bar)
 explode_args "$@"
+
+# Parse operation
+for ((i = 0; i < "${#OPTS[@]}"; i++)); do
+	case ${OPTS[$i]} in
+		# Pacman operations
+		-D|--database)      unset OPTS[$i]; PACMAN_CMD=1;;
+		-F|--files)         unset OPTS[$i]; MAJOR="files";;
+		-Q|--query)         unset OPTS[$i]; MAJOR="query";;
+		-R|--remove)        unset OPTS[$i]; [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
+		-S|--sync)          unset OPTS[$i]; MAJOR="sync";;
+		-U|--upgrade)       unset OPTS[$i]; MAJOR="upgrade";;
+
+		# Yaourt operations
+		-B|--backup)        unset OPTS[$i]; MAJOR="backup";;
+		-C)                 unset OPTS[$i]; MAJOR="clean";;
+		-G|--getpkgbuild)   unset OPTS[$i]; MAJOR="getpkgbuild";;
+		-P|--pkgbuild)      unset OPTS[$i]; MAJOR="pkgbuild";;
+		--stats)            unset OPTS[$i]; MAJOR="stats";;
+	esac
+done
+
+# Parse all other options
 set -- "${OPTS[@]}"
 unset OPTS
 
 while [[ $1 ]]; do
 	case "$1" in
-		# Pacman operations
-		-D|--database)      PACMAN_CMD=1;;
-		-F|--files)         MAJOR="files";;
-		-Q|--query)         MAJOR="query";;
-		-R|--remove)        [[ ! $PACMAN_CMD ]] && PACMAN_CMD=2;;
-		-S|--sync)          MAJOR="sync";;
-		-U|--upgrade)       MAJOR="upgrade";;
-
-		# Yaourt operations
-		-B|--backup)        MAJOR="backup";;
-		-C)                 MAJOR="clean";;
-		-G|--getpkgbuild)   MAJOR="getpkgbuild";;
-		-P|--pkgbuild)      MAJOR="pkgbuild"; shift; YPKGBUILDDIR="$1"
-		                    if [[ $1 == "-i" ]] || [[ $1 == "--install" ]]; then
-		                    	YPKGBUILD_INSTALL=1; YPKGBUILDDIR="$2"
-		                    fi;;
-		--stats)            MAJOR="stats";;
-
 		# Pacman options
 		-c)                 ((CLEAN++)); CHANGELOG=1; program_arg $A_PQ "$1";;
 		-d)                 ((DEPENDS++)); program_arg $((A_PS | A_M | A_PQ)) $1;;
 		-e|--explicit)      program_arg $A_PQ $1;;
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-h|--help)          usage; exit 0;;
-		-i|--info)          INFO=1; program_arg $((A_PQ | A_PS)) $1
+		-i)                 if [ "$MAJOR" = "pkgbuild" ]; then
+		                    	YPKGBUILD_INSTALL=1
+		                    else
+		                    	INFO=1; program_arg $((A_PQ | A_PS)) $1
+		                    fi;;
 		-k|--check)         [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
 		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
@@ -374,6 +382,7 @@ while [[ $1 ]]; do
 		--hookdir)          program_arg $A_PC $1 "$2"; shift;;
 		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=(${1//,/ });;
 		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=(${1//,/ });;
+		--info)             INFO=1; program_arg $((A_PQ | A_PS)) $1;;
 		--logfile)          program_arg $A_PC $1 "$2"; shift;;
 		--needed)           NEEDED=1; program_arg $A_PS $1;;
 		--nocolor)          USECOLOR=0;;
@@ -401,6 +410,7 @@ while [[ $1 ]]; do
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
+		--install)          YPKGBUILD_INSTALL=1;;
 		--m-arg)            program_arg $A_M "$2"; shift;;
 		--nameonly)         program_arg $A_PQ $1;;
 		--pager)            USEPAGER=1;;
