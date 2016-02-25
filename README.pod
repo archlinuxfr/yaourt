@@ -97,6 +97,10 @@ Disable color.
 
 Don't ask for confirmation.
 
+=item B<--confirm>
+
+Always ask for confirmation, even when the configuration says otherwise.
+
 =item B<--pager>
 
 Use I<$PAGER> to show search results.
