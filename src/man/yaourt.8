@@ -203,6 +203,11 @@ Show packages that provide one of the targets\&.
 .RS 4
 Show packages that replace one of the targets\&.
 .RE
+.PP
+\fB\-\-nameonly\fR
+.RS 4
+Query the package names only (names and descriptions are queried by default)\&.
+.RE
 .SH "QUERY OPTIONS"
 .PP
 \fB\-\-backupfile <file>\fR
@@ -218,11 +223,6 @@ List queries result sorted by installation date\&.
 \fB\-d, \-\-deps\fR
 .RS 4
 Filter output to packages installed as dependencies\&.
-.RE
-.PP
-\fB\-\-nameonly\fR
-.RS 4
-Query the package names only (names and descriptions are queried by default)\&.
 .RE
 .PP
 \fB\-t, \-\-unrequired\fR
@@ -268,6 +268,11 @@ or
 \fB\-i, \-\-info\fR
 .RS 4
 Display dependency and other information for a given package\&. This will search through all repositories and AUR database for a matching package\&.
+.RE
+.PP
+\fB\-\-maintainer\fR
+.RS 4
+Search packages by maintainer instead of name (AUR only)\&. Empty query will search for orphaned packages\&.
 .RE
 .PP
 \fB\-\-m-arg <opts>\fR
