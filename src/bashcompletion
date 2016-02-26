@@ -18,11 +18,11 @@ _yaourt() {
   local _yaourt_opts='-B --backup -C -G --getpkgbuild -P --pkgbuild --stats'
   local _yaourt_c_opts='-c --clean'
   local _yaourt_p_opts='-i --install'
-  local _yaourt_q_opts='--backupfile --date --conflicts --depends --provides
-    --replaces'
+  local _yaourt_q_opts='--backupfile --date --conflicts --depends --nameonly
+    --provides --replaces'
   local _yaourt_s_opts='-A --ignorearch -a --aur --aur-url -b --build
-    --conflicts --depends --devel --holdver --m-arg --maintainer --provides
-    --replaces'
+    --conflicts --depends --devel --holdver --m-arg --maintainer --nameonly
+    --provides --replaces'
 
   local cur=$(_get_cword) o op
   COMPREPLY=()
