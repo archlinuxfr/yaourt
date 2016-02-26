@@ -21,7 +21,8 @@ _yaourt() {
   local _yaourt_q_opts='--backupfile --date --conflicts --depends --provides
     --replaces'
   local _yaourt_s_opts='-A --ignorearch -a --aur --aur-url -b --build
-    --conflicts --depends --devel --holdver --m-arg --provides --replaces'
+    --conflicts --depends --devel --holdver --m-arg --maintainer --provides
+    --replaces'
 
   local cur=$(_get_cword) o op
   COMPREPLY=()
