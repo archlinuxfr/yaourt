@@ -413,6 +413,7 @@ while [[ $1 ]]; do
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
 		--install)          YPKGBUILD_INSTALL=1;;
 		--m-arg)            program_arg $A_M "$2"; shift;;
+		--maintainer)       program_arg $A_PQ $1;;
 		--nameonly)         program_arg $A_PQ $1;;
 		--pager)            USEPAGER=1;;
 		--provides)         QUERYTYPE=${1:2};;
