@@ -1,5 +1,5 @@
 # yaourt default.po file
-# Copyright (C) 2010-2015
+# Copyright (C) 2010-2016
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
-"POT-Creation-Date: 2015-09-08 18:33+0200\n"
-"PO-Revision-Date: 2016-01-31 10:51+0000\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"POT-Creation-Date: 2016-02-21 21:05+0100\n"
+"PO-Revision-Date: 2016-02-21 20:32+0000\n"
+"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Slovak (http://www.transifex.com/archlinuxfr/yaourt/language/sk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -80,6 +80,16 @@ msgstr "**rovnaký súbor**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**automatické zlúčenie**"
+
+#: ../../pacdiffviewer.sh.in:188
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:189
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -154,10 +164,14 @@ msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [voľby] <balíky(y)>"
 
 #: ../../yaourt.sh.in:53
+msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
+msgstr "yaourt {-P --pkgbuild}    [-i --install] <adresár>"
+
+#: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:58
+#: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "Domovská stránka: http://archlinux.fr/yaourt-en"
 
@@ -182,18 +196,26 @@ msgid "show groups"
 msgstr "Zobraziť skupiny"
 
 #: ../../yaourt.sh.in:166
-msgid "Informations for %s"
-msgstr "Informácie pre %s"
+msgid "Information for %s"
+msgstr "Informácia pre %s"
 
-#: ../../yaourt.sh.in:206
+#: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
 msgstr "Nie je možné čítať súbor %s"
 
-#: ../../yaourt.sh.in:230
+#: ../../yaourt.sh.in:233
+msgid "%s directory does not contain a PKGBUILD"
+msgstr "Adresár %s neobsahuje PKGBUILD"
+
+#: ../../yaourt.sh.in:239
+msgid "Installing %s from local PKGBUILD"
+msgstr "Inštaluje sa %s z miestneho PKGBUILDu"
+
+#: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Zadajte číslo balíkov na nainštalovanie (napr.: 1 2 3 alebo 1-3)"
 
-#: ../../yaourt.sh.in:408
+#: ../../yaourt.sh.in:486
 msgid "get PKGBUILD"
 msgstr "získať PKGBUILD"
 
@@ -213,53 +235,61 @@ msgstr "Inštaluje sa balík %s zo zdrojového kódu."
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Získava sa PKGBUILD a lokálne zdroje..."
 
-#: ../../lib/abs.sh.in:134
+#: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
 msgstr "Cudzie balíky: "
 
-#: ../../lib/abs.sh.in:162
+#: ../../lib/abs.sh.in:232
 msgid "not found"
 msgstr "nenájdené"
 
-#: ../../lib/abs.sh.in:180
+#: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
 msgstr "Pokračovať v aktualizácii?"
 
-#: ../../lib/abs.sh.in:181
+#: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[Z]obraziť podrobnosti o balíku   [R]učne vybrať balíky"
 
-#: ../../lib/abs.sh.in:203
+#: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "Pokračovať v aktualizácii? "
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:301
+msgid "Source targets"
+msgstr ""
+
+#: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
 msgstr "Nie je možné aktualizovať balík %s"
 
-#: ../../lib/abs.sh.in:291
+#: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
 msgstr "Iba aktualizácia balíku (nové vydanie):"
 
-#: ../../lib/abs.sh.in:292
+#: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
 msgstr "Aktualizácia softvéru (nová verzia):"
 
-#: ../../lib/abs.sh.in:293
+#: ../../lib/abs.sh.in:349
 msgid "New package :"
 msgstr "Nový balík:"
 
-#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
+#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
 msgstr "(vyžadovaný balíkom %s)"
 
-#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
+#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
 msgstr "Inštaluje sa zo zoznamu balíkov"
 
-#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
+#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "Aktualizuje sa balík SVN/CVS/HG/GIT"
+
+#: ../../lib/abs.sh.in:454
+msgid "Targets"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -414,59 +444,143 @@ msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
 msgstr "Vlastnosť AURUSEGIT je nastavená, ale príkaz git sa nenašiel. Prechádza sa naspäť na archívy tarball."
 
-#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
+#: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
 msgstr "Balík %s sa nenašiel v repozitári AUR."
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "Yes"
 msgstr "Áno"
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "No"
 msgstr "Nie"
 
-#: ../../lib/aur.sh:159
+#: ../../lib/aur.sh:69
+msgid "Repository     "
+msgstr ""
+
+#: ../../lib/aur.sh:70
+msgid "Name           "
+msgstr ""
+
+#: ../../lib/aur.sh:72
+msgid "Base Package   "
+msgstr ""
+
+#: ../../lib/aur.sh:73
+msgid "Version        "
+msgstr ""
+
+#: ../../lib/aur.sh:74
+msgid "Description    "
+msgstr ""
+
+#: ../../lib/aur.sh:75
+msgid "Architecture   "
+msgstr ""
+
+#: ../../lib/aur.sh:76
+msgid "URL            "
+msgstr ""
+
+#: ../../lib/aur.sh:77
+msgid "AUR URL        "
+msgstr ""
+
+#: ../../lib/aur.sh:79
+msgid "Keywords       "
+msgstr ""
+
+#: ../../lib/aur.sh:80
+msgid "Licenses       "
+msgstr ""
+
+#: ../../lib/aur.sh:81
+msgid "Groups         "
+msgstr ""
+
+#: ../../lib/aur.sh:82
+msgid "Provides       "
+msgstr ""
+
+#: ../../lib/aur.sh:83
+msgid "Depends On     "
+msgstr ""
+
+#: ../../lib/aur.sh:84
+msgid "Optional Deps  "
+msgstr ""
+
+#: ../../lib/aur.sh:85
+msgid "Conflicts With "
+msgstr ""
+
+#: ../../lib/aur.sh:86
+msgid "Replaces       "
+msgstr ""
+
+#: ../../lib/aur.sh:87
+msgid "Maintainer     "
+msgstr ""
+
+#: ../../lib/aur.sh:88
+msgid "Last update    "
+msgstr ""
+
+#: ../../lib/aur.sh:89
+msgid "Out Of Date    "
+msgstr ""
+
+#: ../../lib/aur.sh:90
+msgid "Votes          "
+msgstr ""
+
+#: ../../lib/aur.sh:91
+msgid "Popularity     "
+msgstr ""
+
+#: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
 msgstr "Kontroluje sa stav hlasovania za %s"
 
-#: ../../lib/aur.sh:162
+#: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
 msgstr "Už ste hlasovali za %s"
 
-#: ../../lib/aur.sh:165
+#: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
 msgstr "Chcete hlasovať za %s ? "
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
 msgstr "Inštaluje sa %s z AUR"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:197
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "Preberá sa PKGBUILD balíka %s z AUR..."
 
-#: ../../lib/aur.sh:188
+#: ../../lib/aur.sh:203
 msgid "This package is orphaned"
 msgstr "Tento balík je osirotený"
 
-#: ../../lib/aur.sh:189
+#: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Nepodporovaný balík: Potencionálne nebezpečný ! )"
 
-#: ../../lib/aur.sh:210
+#: ../../lib/aur.sh:225
 msgid "not found on AUR"
 msgstr "nenašiel sa na AUR"
 
-#: ../../lib/aur.sh:217
+#: ../../lib/aur.sh:232
 msgid "up to date "
 msgstr "aktuálny "
 
-#: ../../lib/aur.sh:218
+#: ../../lib/aur.sh:233
 msgid "flagged as out of date"
 msgstr "označený ako zastaraný"
 
-#: ../../lib/aur.sh:227
+#: ../../lib/aur.sh:242
 msgid "Orphan"
 msgstr "Sirota"
 
@@ -506,159 +620,155 @@ msgstr "Pacman je momentálne vyťažený. Prosím, čakajte."
 msgid "synchronizing package databases"
 msgstr "Synchronizujú sa databázy balíkov"
 
-#: ../../lib/pacman.sh.in:71
+#: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
 msgstr "(ignoruje sa aktualizácia balíkov)"
 
-#: ../../lib/pkgbuild.sh.in:77
+#: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
 msgstr "Nie je možné čítať PKGBUILD"
 
-#: ../../lib/pkgbuild.sh.in:81
+#: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
 msgstr "Tento PKGBUILD popisuje rozdelený balík."
 
-#: ../../lib/pkgbuild.sh.in:82
+#: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
 msgstr "Určené voľby balíka nie sú známe"
 
-#: ../../lib/pkgbuild.sh.in:109
+#: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
 msgstr "Závislosti balíka %s:"
 
-#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
+#: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
 msgstr "(už nainštalovaný)"
 
-#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
+#: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
 msgstr "(balík nájdený)"
 
-#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
+#: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
 msgstr "(zostaví sa z AUR)"
 
-#: ../../lib/pkgbuild.sh.in:163
+#: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
 msgstr "Konflikty s balíkom %s:"
 
-#: ../../lib/pkgbuild.sh.in:231
+#: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
 msgstr "Zostavenie a inštalácia balíka"
 
-#: ../../lib/pkgbuild.sh.in:247
+#: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
 msgstr "Balík %s je už aktuálny."
 
-#: ../../lib/pkgbuild.sh.in:255
+#: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
 msgstr "Inštalácia alebo zostavenie chýbajúcich závislostí pre balík %s:"
 
-#: ../../lib/pkgbuild.sh.in:263
+#: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
 msgstr "Závislosti boli nainštalované pred zlyhaním"
 
-#: ../../lib/pkgbuild.sh.in:272
-msgid "This PKGBUILD provides \" %b \""
-msgstr "Tento PKGBUILD poskytuje \" %b \""
-
-#: ../../lib/pkgbuild.sh.in:273
-msgid "Install only %s ?"
-msgstr "Nainštalovať iba balík %s?"
-
-#: ../../lib/pkgbuild.sh.in:281
+#: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
 msgstr "Nástroju makepkg sa nepodarilo zostaviť balík %s."
 
-#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
+#: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
 msgstr "Exportuje sa %s do adresára %s"
 
-#: ../../lib/pkgbuild.sh.in:304
+#: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
 msgstr "Pokračovať v inštalácii balíka %s ?"
 
-#: ../../lib/pkgbuild.sh.in:305
+#: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[z]obraziť obsah balíka   [s]kontrolovať balík s nástrojom namcap"
 
-#: ../../lib/pkgbuild.sh.in:311
+#: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "Stlačte akýkoľvek kláves na pokračovanie"
 
-#: ../../lib/pkgbuild.sh.in:320
+#: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
 msgstr "Nástroj namcap nie je nainštalovaný"
 
-#: ../../lib/pkgbuild.sh.in:332
+#: ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
 msgstr "Vaše balíky sú uložené v %s"
 
-#: ../../lib/pkgbuild.sh.in:333
+#: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
 msgstr "Nie je možné skopírovať balíky do adresára %s"
 
-#: ../../lib/pkgbuild.sh.in:343
+#: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "Nie je možné odstrániť adresár %s. Prosím, odstráňte ho použitím správcovských privilégií."
 
-#: ../../lib/pkgbuild.sh.in:345
+#: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
 msgstr "Nie je možné vytvoriť adresár %s."
 
-#: ../../lib/pkgbuild.sh.in:373
+#: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
 msgstr "Pokračovať v zostavení balíka %s ? "
 
-#: ../../lib/pkgbuild.sh.in:379
+#: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
 msgstr "Spustiť znovu zostavovanie balíka %s ? "
 
-#: ../../lib/pkgbuild.sh.in:429
+#: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "Adresár %s už existuje. [N]ahradiť, [Z]meniť na %s, [P]reskočiť ?"
 
-#: ../../lib/pkgbuild.sh.in:436
+#: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "Prevziať %s zdrojov"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/pkgbuild.sh.in:506
+msgid "Copying files from %s to build directory..."
+msgstr "Kopírujú sa súbory z %s do adresára zostavenia..."
+
+#: ../../lib/util.sh.in:159
 msgid "is not a directory"
 msgstr "nie je adresárom"
 
-#: ../../lib/util.sh.in:136
+#: ../../lib/util.sh.in:160
 msgid "is not writable"
 msgstr "nie je zapisovateľný"
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
 msgstr "Upraviť %s ?"
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "(\"P\" na prerušenie)"
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:208
 msgid "Aborted..."
 msgstr "Prerušené..."
 
-#: ../../lib/util.sh.in:190
+#: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
 msgstr "Prosím, pridajte premennú $VISUAL do premenných vášho prostredia"
 
-#: ../../lib/util.sh.in:191
+#: ../../lib/util.sh.in:215
 msgid "for example:"
 msgstr "napríklad:"
 
-#: ../../lib/util.sh.in:192
+#: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
 msgstr "(v ~/.bashrc)"
 
-#: ../../lib/util.sh.in:193
+#: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
 msgstr "(nahraďte vim s vaším obľúbeným editorom)"
 
-#: ../../lib/util.sh.in:195
+#: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
 msgstr "Upraviť %s s:"

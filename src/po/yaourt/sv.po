@@ -4,128 +4,127 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Rafael Fontenelle <rffontenelle@gmail.com>, 2011-2015
-# Rafael Fontenelle <rffontenelle@gmail.com>, 2015-2016
+# riiga <riiga_92@hotmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-21 21:28+0000\n"
-"Last-Translator: Rafael Fontenelle <rffontenelle@gmail.com>\n"
-"Language-Team: Portuguese (Brazil) (http://www.transifex.com/archlinuxfr/yaourt/language/pt_BR/)\n"
+"PO-Revision-Date: 2016-02-21 20:32+0000\n"
+"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"Language-Team: Swedish (http://www.transifex.com/archlinuxfr/yaourt/language/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pt_BR\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: sv\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
-msgstr "Exclui todos *.pac* encontrados"
+msgstr "Radera alla funna *.pac*-filer"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
-msgstr "Salva todos arquivos backup de pacotes para posterior mesclagem"
+msgstr "Spara alla säkerhetskopior av paket för senare sammanslagning"
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
-msgstr "Usa com backup para não exibir mensages"
+msgstr "Använd med säkerhetskopiering för att inte visa meddelanden"
 
 #: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
-msgstr "Listagem sequencial"
+msgstr "Sekventiell listning"
 
 #: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
-msgstr "Mostra diff"
+msgstr "Visa diff"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "This help"
-msgstr "Essa ajuda"
+msgstr "Hjälp"
 
 #: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "Exibe versão"
+msgstr "Visa version"
 
 #: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr "salvando"
+msgstr "sparar"
 
 #: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
 msgid "found"
-msgstr "encontrado"
+msgstr "hittade"
 
 #: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr "arquivos são orfãos"
+msgstr "filer är föräldralösa"
 
 #: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr "Os seguintes arquivos não têm versão original."
+msgstr "Följande filer har ingen originalversion."
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
-msgstr "Você deseja excluir esses arquivos ?"
+msgstr "Vill du verkligen radera dessa filer?"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
-msgstr "(I: ignorar, não confirmar)"
+msgstr "(S: bekräfta automatiskt)"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
-msgstr "**mesmo arquivo**"
+msgstr "**samma fil**"
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
-msgstr "**automesclar**"
+msgstr "**autosammanslagning**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [C]ontinuar (padrão), [A]bortar ?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [M]esclar, [C]ontinuar (padrão), [A]bortar ?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
-msgstr "Patch: "
+msgstr "Patch:"
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
-msgstr "Aplicar ?"
+msgstr "Verkställ ?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr "o patch retornou um erro!"
+msgstr "patchen returnerade ett fel!"
 
 #: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
-msgstr "Digite o n° : "
+msgstr "Ange nr:"
 
 #: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
-msgstr "Yaourt não suporta --help para uma opção em particular."
+msgstr "Yaourt stödjer inte --help för det alternativet."
 
 #: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
-msgstr "A ajuda de %s:"
+msgstr "Följande är %s-hjälp:"
 
 #: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
-msgstr "Uso: yaourt <operação> [...]"
+msgstr "Användning: yaourt <operation> [...]"
 
 #: ../../yaourt.sh.in:42
 msgid "operations:"
-msgstr "operações:"
+msgstr "operationer:"
 
 #: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (padrão de pesquisa|arquivo de pacote)"
+msgstr "yaourt (sökmönster|paketfil)"
 
 #: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
@@ -137,35 +136,35 @@ msgstr "yaourt {-V --version}"
 
 #: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
-msgstr "yaourt {-Q --query}       [opções] [pacote(s)]"
+msgstr "yaourt {-Q --query}       [alternativ] [paket]"
 
 #: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
-msgstr "yaourt {-R --remove}      [opções] <pacote(s)>"
+msgstr "yaourt {-R --remove}      [alternativ] <paket>"
 
 #: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
-msgstr "yaourt {-S --sync}        [opções] [pacote(s)]"
+msgstr "yaourt {-S --sync}        [alternativ] [paket]"
 
 #: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
-msgstr "yaourt {-U --upgrade}     [opções] <pacote(s)>"
+msgstr "yaourt {-U --upgrade}     [alternativ] <paket>"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C}               [opções]"
+msgstr "yaourt {-C}               [alternativ]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
-msgstr "yaourt {-B --backup}      [salvar diretório|restaurar arquivo]"
+msgstr "yaourt {-B --backup}      [katalogsökväg|återställningsfil]"
 
 #: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
-msgstr "yaourt {-G --getpkgbuild} [opções] <pacote(s)>"
+msgstr "yaourt {-G --getpkgbuild} [alternativ] <paket>"
 
 #: ../../yaourt.sh.in:53
 msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
-msgstr "yaourt {-P --pkgbuild}    [-i --install] <diretório>"
+msgstr ""
 
 #: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
@@ -173,602 +172,602 @@ msgstr "yaourt {--stats}"
 
 #: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
-msgstr "homepage: http://archlinux.fr/yaourt-en"
+msgstr "hemsida (engelska): http://archlinux.fr/yaourt-en"
 
 #: ../../yaourt.sh.in:117
 msgid "query packages"
-msgstr "consultar pacotes"
+msgstr "paketfråga"
 
 #: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
-msgstr "Os seguintes pacotes não foram instalados:"
+msgstr "Följande paket installerade inte:"
 
 #: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
-msgstr "listando todos pacotes no(s) repositório(s)"
+msgstr "listar alla paket i förråden"
 
 #: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
-msgstr "Listando todos pacotes no(s) repositório(s)"
+msgstr "Listar alla paket i förråden"
 
 #: ../../yaourt.sh.in:147
 msgid "show groups"
-msgstr "exibir grupos"
+msgstr "visa grupper"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr "Informação de %s"
+msgstr ""
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
-msgstr "Não foi possível ler o arquivo %s"
+msgstr "Kunde inte läsa filen %s"
 
 #: ../../yaourt.sh.in:233
 msgid "%s directory does not contain a PKGBUILD"
-msgstr "O diretório %s não contém um PKGBUILD"
+msgstr ""
 
 #: ../../yaourt.sh.in:239
 msgid "Installing %s from local PKGBUILD"
-msgstr "Instalando %s a partir de um PKGBUILD local"
+msgstr ""
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Digite o n° de pacotes a serem instalados (ex: 1 2 3 ou 1-3)"
+msgstr "Ange nr för alla paket som ska installeras (t.ex: 1 2 3 eller 1-3)"
 
 #: ../../yaourt.sh.in:486
 msgid "get PKGBUILD"
-msgstr "obter PKGBUILD"
+msgstr "hämta PKGBUILD"
 
 #: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
-msgstr "Download de arquivos do abs"
+msgstr "Laddar ner ABS-arkiv"
 
 #: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
-msgstr "Compilando %s a partir do código fonte"
+msgstr "Bygger %s från källa."
 
 #: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
-msgstr "Instalando %s a partir do código fonte"
+msgstr "Installera %s från källa"
 
 #: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "Resgatando PKGBUILD e fontes locais..."
+msgstr "Hämtar PKGBUILD och lokala källor..."
 
 #: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
-msgstr "Pacotes externos: "
+msgstr "Främmande paket:"
 
 #: ../../lib/abs.sh.in:232
 msgid "not found"
-msgstr "não encontrado"
+msgstr "hittade inte"
 
 #: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
-msgstr "Continuar a atualização ?"
+msgstr "Fortsätta uppgradera ?"
 
 #: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr "[V]er detalhes do pacote [M]anualmente selecionar os pacotes"
+msgstr "[V]isa paketinformation   [M]anuell paketväljare"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
-msgstr "Prosseguir com a atualização?"
+msgstr "Fortsätt med uppgradering?"
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr "Alvos fontes"
+msgstr ""
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
-msgstr "não foi possível atualizar %s"
+msgstr "kunde inte uppdatera %s"
 
 #: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
-msgstr "Somente atualização de pacote (novo lançamento):"
+msgstr "Paketuppgradering (nytt släpp):"
 
 #: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
-msgstr "Atualização de software (nova versão) :"
+msgstr "Mjukvaruuppgradering (ny version):"
 
 #: ../../lib/abs.sh.in:349
 msgid "New package :"
-msgstr "Novo pacote :"
+msgstr "Nytt paket:"
 
 #: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
-msgstr "(necessário para %s)"
+msgstr "(krävs av %s)"
 
 #: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
-msgstr "Instalando de uma lista de pacotes"
+msgstr "Installerar från paketlista"
 
 #: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
-msgstr "atualizando pacote SVN/CVS/HG/GIT"
+msgstr "uppgraderar versionshanteringspaket"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr "Alvos"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Salvando base de dados do pacman em %s"
+msgstr "Sparar pacmandatabas i %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "Base de dados do pacman salvada com sucesso em %s"
+msgstr "Pacmandatabas sparades i %s"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Analisando o arquivo backup"
+msgstr "Analyserar säkerhetskopia"
 
 #: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr "%s não é um backup válido de base de dados alpm"
+msgstr "%s är inte en giltig alpm-säkerhetskopia"
 
 #: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "Pacotes novos instalados desde o backup:"
+msgstr "Nya paket installerade sedan säkerhetskopiering:"
 
 #: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Pacotes removidos ou atualizados desde backup:"
+msgstr "Borttagna eller uppgraderade paket sedan säkerhetskopiering:"
 
 #: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
-msgstr "Aviso! Você deseja restaurar esse backup ?"
+msgstr "Varning! Vill du verkligen återställa denna säkerhetskopia?"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
-msgstr "(base de dados local será salvada em %s)"
+msgstr "(lokal db kommer att spara i %s)"
 
 #: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Se você deseja restaurar esse backup, digite \"sim\""
+msgstr "Om du vill återställa denna säkerhetskopia, skriv \"ja\""
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
-msgstr "sim"
+msgstr "ja"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "Excluindo Base de Dados do pacman"
+msgstr "Raderar pacmandatabas"
 
 #: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr "Copiando backup"
+msgstr "Kopierar säkerhetskopia"
 
 #: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
-msgstr "Testando o nova base de dados"
+msgstr "Testar ny databas"
 
 #: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "Seu backup não foi restaurado com sucesso"
+msgstr "Din säkerhetskopia kunde inte återställas fullt ut"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
-msgstr "Seu backup foi restaurado com sucesso"
+msgstr "Din säkerhetskopia har återställts"
 
 #: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr "pacotes encontrados"
+msgstr "paket funna"
 
 #: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr "(a base de dados antiga foi salvada em %s)"
+msgstr "(gammal databas sparades i %s)"
 
 #: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
-msgstr "argumento incorreto"
+msgstr "felaktigt argument"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "Você deseja remover esses pacotes (com opções -Rcs) ?"
+msgstr "Vill du verkligen ta bort dessa paket (med -Rcs-alternativen) ?"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
-msgstr "Total de pacotes instalados:"
+msgstr "Totalt installerade paket:"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Pacotes instalados explicitamente:"
+msgstr "Uttryckligen installerade paket:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
-msgstr "Pacotes instalados como dependências para executar outros pacotes:"
+msgstr "Paket installerade som beroenden:"
 
 #: ../../lib/alpm_stats.sh:52
 msgid "Packages out of date:"
-msgstr "Pacotes desatualizados:"
+msgstr "Utdaterade paket:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "Onde os pacotes %s parecem não estar sendo usados por nenhum outro pacote:"
+msgstr "Där %s paket ser ut att inte längre användas av något annat paket:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Dep. opcionais      "
+msgstr "Tillbakahållna paket:"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr "Pacotes ignorados:"
+msgstr "Ignorerade paket:"
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr "Grupos ignorados:"
+msgstr "Ignorerade grupper:"
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
-msgstr "Número de repositórios configurados:"
+msgstr "Antal konfiguerarade förråd:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Pacotes por repositório (ordenados por prioridade do pacman)"
+msgstr "Paket efter förråd (sorterade efter pacmanprioritet)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr "outros"
+msgstr "andra"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr "são pacotes de compilação local ou do AUR Sem Suporte"
+msgstr "är paket från lokalt bygge eller icke-stödda av AUR"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Espaço teórico - real usado por pacotes:"
+msgstr "Teoretiskt - riktigt uttrymme använt av paket:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
-msgstr "progresso:"
+msgstr "framsteg:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Espaço teórico usado por pacotes:"
+msgstr "Teoretiskt utrymme använt av paket:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr "Espaço real usado por pacotes:"
+msgstr "Riktigt utrymme använt av paket:"
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr "Espaço usado pelo diretório pkg baixado no cache (cachedir):"
+msgstr "Utrymme använt av pkg i cachen:"
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr "Espaço usado pelo diretório src baixado no cache:"
+msgstr "Utrymme använt av src i cachen:"
 
 #: ../../lib/aur.sh:20
 msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
-msgstr "AURUSEGIT está definido, mas comando git não foi encontrado. Voltando para tarballs."
+msgstr "AURUSEGIT är satt men git hittade inte. Faller tillbaka på tarbollar."
 
 #: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
-msgstr "%s não encontrado no AUR."
+msgstr "%s hittade inte i AUR."
 
 #: ../../lib/aur.sh:55
 msgid "Yes"
-msgstr "Sim"
+msgstr "Ja"
 
 #: ../../lib/aur.sh:55
 msgid "No"
-msgstr "Não"
+msgstr "Nej"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr "Repositório"
+msgstr ""
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr "Nome"
+msgstr ""
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr "Pacote base"
+msgstr ""
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr "Versão"
+msgstr ""
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr "Descrição"
+msgstr ""
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr "Arquitetura"
+msgstr ""
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr "URL"
+msgstr ""
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr "URL no AUR"
+msgstr ""
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr "Palavras-chave"
+msgstr ""
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr "Licenças"
+msgstr ""
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr "Grupos"
+msgstr ""
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr "Provê"
+msgstr ""
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr "Depende de"
+msgstr ""
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr "Dep. opcionais"
+msgstr ""
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr "Conflita com"
+msgstr ""
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr "Substitui"
+msgstr ""
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr "Mantenedor"
+msgstr ""
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr "Última atualização"
+msgstr ""
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr "Desatualizado"
+msgstr ""
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr "Votos"
+msgstr ""
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr "Popularidade"
+msgstr ""
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
-msgstr "Verificando estado de voto para %s"
+msgstr "Kontrollerar röststatus för %s"
 
 #: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
-msgstr "Você já votou em %s"
+msgstr "Du har redan röstat på %s"
 
 #: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
-msgstr "Deseja votar em %s ? "
+msgstr "Vill du rösta på %s ?"
 
 #: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
-msgstr "Instalando %s do AUR"
+msgstr "Installerar %s från AUR"
 
 #: ../../lib/aur.sh:197
 msgid "Downloading %s PKGBUILD from AUR..."
-msgstr "Fazendo download do PKGBUILD de %s do AUR..."
+msgstr "Laddar ner PKGBUILD för %s från AUR..."
 
 #: ../../lib/aur.sh:203
 msgid "This package is orphaned"
-msgstr "Este pacote é órfão"
+msgstr "Paketet är föräldralöst"
 
 #: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr "( Pacote sem suporte: Potencialmente perigoso ! )"
+msgstr "( Paket utan stöd: Potentiellt farligt! )"
 
 #: ../../lib/aur.sh:225
 msgid "not found on AUR"
-msgstr "não encontrado no AUR"
+msgstr "hittades inte i AUR"
 
 #: ../../lib/aur.sh:232
 msgid "up to date "
-msgstr "atualizado "
+msgstr "fullständigt uppdaterad"
 
 #: ../../lib/aur.sh:233
 msgid "flagged as out of date"
-msgstr "marcado como desatualizado"
+msgstr "flaggad som utdaterad"
 
 #: ../../lib/aur.sh:242
 msgid "Orphan"
-msgstr "Órfão"
+msgstr "Föräldralös"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
-msgstr "[S/n]"
+msgstr "[J/n]"
 
 #: ../../lib/io.sh:99
 msgid "[y/N]"
-msgstr "[s/N]"
+msgstr "[j/N]"
 
 #: ../../lib/io.sh:100
 msgid "[y/n]"
-msgstr "[s/n]"
+msgstr "[j/n]"
 
 #: ../../lib/io.sh:155
 msgid "WARNING: "
-msgstr "AVISO: "
+msgstr "VARNING:"
 
 #: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr "ERRO: "
+msgstr "FEL:"
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Pacotes que não são mais necessários para nenhum dos pacotes instalados:"
+msgstr "Paket som inte längre krävs av något annat paket:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
-msgstr "Procurando por arquivos de configuração originais a serem salvos"
+msgstr "Söker efter konfigfiler att spara"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman está em uso no momento, por favor espere."
+msgstr "Pacman används för tillfället, vänligen vänta."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
-msgstr "sincronizando base de dados de pacote"
+msgstr "synkroniserar paketdatabas"
 
 #: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
-msgstr "(ignorando atualização de pacote)"
+msgstr "(ignorerar paketuppgradering)"
 
 #: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
-msgstr "Não foi possível ler o PKGBUILD"
+msgstr "Kunde inte läsa PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
-msgstr "Esse PKGBUILD descreve um pacote separado."
+msgstr "Denna PKGBUILD beskriver ett delat paket."
 
 #: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
-msgstr "Opções específicas do pacote são desconhecidas"
+msgstr "Särskilda paketalterntiv är okända"
 
 #: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
-msgstr "Dependências de %s:"
+msgstr "%s beroenden:"
 
 #: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
-msgstr "(já instalado)"
+msgstr "(redan installerat)"
 
 #: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
-msgstr "(pacote encontrado)"
+msgstr "(paket funna)"
 
 #: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
-msgstr "(compilando do AUR)"
+msgstr "(bygger från AUR)"
 
 #: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
-msgstr "Conflitos de %s:"
+msgstr "%s i konflikt med:"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
-msgstr "Compilando e instalando pacote"
+msgstr "Bygger och installerar paket"
 
 #: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
-msgstr "%s já está atualizado."
+msgstr "%s är redan senaste versionen."
 
 #: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
-msgstr "Instalar ou compilar dependências que faltam para %s:"
+msgstr "Installerar eller bygg saknade beroenden för %s:"
 
 #: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
-msgstr "Dependências foram instaladas antes da falha"
+msgstr "Beroenden installerades för misslyckandet"
 
 #: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
-msgstr "Makepkg não conseguiu compilar %s."
+msgstr "Makepkg kunde inte bygga %s."
 
 #: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
-msgstr "Exportando %s para o diretório %s"
+msgstr "Exporterar %s till katalogen %s"
 
 #: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
-msgstr "Continuar a instalação de %s ?"
+msgstr "Fortsätta installera %s ?"
 
 #: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr "[V]er conteúdo do pacote [C]hecar pacote com namcap"
+msgstr "[v]isa paketinnehåll   [c]heck package with namcap"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
-msgstr "Pressione qualquer tecla para continuar"
+msgstr "Tryck på valfri tangent för att fortsätta"
 
 #: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
-msgstr "namcap não está instalado"
+msgstr "namcap är inte installerat"
 
 #: ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
-msgstr "Seus pacotes foram salvos em %s"
+msgstr "Dina paket sparade i %s"
 
 #: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
-msgstr "Não foi possível copiar os pacotes para o diretório %s"
+msgstr "Kunde inte kopiera paket till katalogen %s"
 
 #: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "Não foi possível excluir o diretório %s. Por favor remova-o usando privilégios de root."
+msgstr "Kunde inte ta bort katalogen %s. Ta bort den som root."
 
 #: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
-msgstr "Não foi possível criar o diretório %s."
+msgstr "Kunde inte skapa katalogen %s."
 
 #: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
-msgstr "Continuar a compilação de %s ? "
+msgstr "Fortsätta bygga %s ?"
 
 #: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
-msgstr "Reiniciar a compilação de %s ? "
+msgstr "Bygg om %s ?"
 
 #: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "O diretório %s já existe. [S]ubstituir, [A]lterar para %s, [I]gnorar ?"
+msgstr "katalogen %s finns redan. [R] Ersätt, [C] Ändra till %s, [S] Hoppa över ?"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
-msgstr "Download das fontes de %s"
+msgstr "Laddar ner källor för %s"
 
 #: ../../lib/pkgbuild.sh.in:506
 msgid "Copying files from %s to build directory..."
-msgstr "Copiando arquivos de %s para o diretório de compilação..."
+msgstr ""
 
 #: ../../lib/util.sh.in:159
 msgid "is not a directory"
-msgstr "não é um diretório"
+msgstr "är inte en katalog"
 
 #: ../../lib/util.sh.in:160
 msgid "is not writable"
-msgstr "não é gravável"
+msgstr "är inte skrivbar"
 
 #: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
-msgstr "Editar %s ?"
+msgstr "Redigera %s ?"
 
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
-msgstr "(\"A\" para abortar)"
+msgstr "(\"A\") för att avbryta)"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
-msgstr "Abortado..."
+msgstr "Avbruten..."
 
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "Por favor, adicione $VISUAL às suas variáveis de ambiente"
+msgstr "Lägg till $VISUAL bland dina miljövariabler"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"
-msgstr "por exemplo:"
+msgstr "till exempel:"
 
 #: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
-msgstr "(em ~/.bashrc)"
+msgstr "(i ~/.bashrc)"
 
 #: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
-msgstr "(substitua vim por seu editor favorito)"
+msgstr "(ersätt vim med din favoriteditor)"
 
 #: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
-msgstr "Editar %s com: "
+msgstr "Redigera %s med:"

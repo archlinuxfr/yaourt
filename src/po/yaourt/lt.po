@@ -1,5 +1,5 @@
 # yaourt default.po file
-# Copyright (C) 2010-2015
+# Copyright (C) 2010-2016
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
-"POT-Creation-Date: 2015-09-08 18:33+0200\n"
-"PO-Revision-Date: 2016-01-31 19:33+0000\n"
+"POT-Creation-Date: 2016-02-21 21:05+0100\n"
+"PO-Revision-Date: 2016-02-21 20:52+0000\n"
 "Last-Translator: Moo\n"
 "Language-Team: Lithuanian (http://www.transifex.com/archlinuxfr/yaourt/language/lt/)\n"
 "MIME-Version: 1.0\n"
@@ -82,6 +82,16 @@ msgstr "**tas pats failas**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**auto sujungimas**"
+
+#: ../../pacdiffviewer.sh.in:188
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:189
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -156,10 +166,14 @@ msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [parinktys] <paketas(-ai)>"
 
 #: ../../yaourt.sh.in:53
+msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
+msgstr "yaourt {-P --pkgbuild}    [-i --install] <katalogas>"
+
+#: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:58
+#: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "namų puslapis: http://archlinux.fr/yaourt-en"
 
@@ -184,18 +198,26 @@ msgid "show groups"
 msgstr "rodyti greupes"
 
 #: ../../yaourt.sh.in:166
-msgid "Informations for %s"
+msgid "Information for %s"
 msgstr "%s informacija"
 
-#: ../../yaourt.sh.in:206
+#: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
 msgstr "Perskaityti failą %s nepavyko"
 
-#: ../../yaourt.sh.in:230
+#: ../../yaourt.sh.in:233
+msgid "%s directory does not contain a PKGBUILD"
+msgstr "%s kataloge nėra PKGBUILD"
+
+#: ../../yaourt.sh.in:239
+msgid "Installing %s from local PKGBUILD"
+msgstr "Įdiegiama %s iš vietinio PKGBUILD"
+
+#: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Įveskite paketo(-ų) numerį kurį(-iuos) norite įdiegti (pvz. 1 2 3 arba 1-3)"
 
-#: ../../yaourt.sh.in:408
+#: ../../yaourt.sh.in:486
 msgid "get PKGBUILD"
 msgstr "gauti PKGBUILD"
 
@@ -215,53 +237,61 @@ msgstr "Įdiegti %s iš pradinio kodo"
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Gaunamas PKGBUILD ir vietinis pradinis kodas..."
 
-#: ../../lib/abs.sh.in:134
+#: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
 msgstr "Nevietiniai paketai:"
 
-#: ../../lib/abs.sh.in:162
+#: ../../lib/abs.sh.in:232
 msgid "not found"
 msgstr "nerasta"
 
-#: ../../lib/abs.sh.in:180
+#: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
 msgstr "Tęsti atnaujinimą?"
 
-#: ../../lib/abs.sh.in:181
+#: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[P]eržiūrėti paketo detales   [R]ankiniu būdu pasirinkti paketus"
 
-#: ../../lib/abs.sh.in:203
+#: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "Tęsti atnaujinimą?"
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:301
+msgid "Source targets"
+msgstr "Šaltinio paskirtys"
+
+#: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
 msgstr "atnaujinti %s nepavyko"
 
-#: ../../lib/abs.sh.in:291
+#: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
 msgstr "Tik paketo atnaujinimas (naujas leidimas):"
 
-#: ../../lib/abs.sh.in:292
+#: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
 msgstr "Programinės įrangos atnaujinimas(nauja versija):"
 
-#: ../../lib/abs.sh.in:293
+#: ../../lib/abs.sh.in:349
 msgid "New package :"
 msgstr "Naujas paketas:"
 
-#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
+#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
 msgstr "(%s reikalauja)"
 
-#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
+#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
 msgstr "Įdiegiama iš paketų sąrašo"
 
-#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
+#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "atnaujinamas SVN/CVS/HG/GIT paketas"
+
+#: ../../lib/abs.sh.in:454
+msgid "Targets"
+msgstr "Paskirtys"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -416,59 +446,143 @@ msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
 msgstr "AURUSEGIT yra nustatyta, tačiau git komanda nerasta. Grįžtama prie TAR pakų."
 
-#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
+#: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
 msgstr "%s nerasta AUR."
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "Yes"
 msgstr "Taip"
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "No"
 msgstr "Ne"
 
-#: ../../lib/aur.sh:159
+#: ../../lib/aur.sh:69
+msgid "Repository     "
+msgstr "Saugykla"
+
+#: ../../lib/aur.sh:70
+msgid "Name           "
+msgstr "Pavadinimas"
+
+#: ../../lib/aur.sh:72
+msgid "Base Package   "
+msgstr "Bazinis paketas"
+
+#: ../../lib/aur.sh:73
+msgid "Version        "
+msgstr "Versija"
+
+#: ../../lib/aur.sh:74
+msgid "Description    "
+msgstr "Aprašymas"
+
+#: ../../lib/aur.sh:75
+msgid "Architecture   "
+msgstr "Architektūra    "
+
+#: ../../lib/aur.sh:76
+msgid "URL            "
+msgstr "URL            "
+
+#: ../../lib/aur.sh:77
+msgid "AUR URL        "
+msgstr "AUR URL        "
+
+#: ../../lib/aur.sh:79
+msgid "Keywords       "
+msgstr "Raktažodžiai"
+
+#: ../../lib/aur.sh:80
+msgid "Licenses       "
+msgstr "Licencijos"
+
+#: ../../lib/aur.sh:81
+msgid "Groups         "
+msgstr "Grupės"
+
+#: ../../lib/aur.sh:82
+msgid "Provides       "
+msgstr "Pateikia"
+
+#: ../../lib/aur.sh:83
+msgid "Depends On     "
+msgstr "Priklauso nuo"
+
+#: ../../lib/aur.sh:84
+msgid "Optional Deps  "
+msgstr "Nebūtinos priklausomybės"
+
+#: ../../lib/aur.sh:85
+msgid "Conflicts With "
+msgstr "Nesuderinamas su"
+
+#: ../../lib/aur.sh:86
+msgid "Replaces       "
+msgstr "Pakeičia"
+
+#: ../../lib/aur.sh:87
+msgid "Maintainer     "
+msgstr "Prižiūrėtojas"
+
+#: ../../lib/aur.sh:88
+msgid "Last update    "
+msgstr "Paskutinis atnaujinimas"
+
+#: ../../lib/aur.sh:89
+msgid "Out Of Date    "
+msgstr "Pasenęs"
+
+#: ../../lib/aur.sh:90
+msgid "Votes          "
+msgstr "Balsai"
+
+#: ../../lib/aur.sh:91
+msgid "Popularity     "
+msgstr "Populiarumas"
+
+#: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
 msgstr "Tikrinama %s balsavimo būsena"
 
-#: ../../lib/aur.sh:162
+#: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
 msgstr "Jūs jau balsavote už %s"
 
-#: ../../lib/aur.sh:165
+#: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
 msgstr "Ar norite balsuoti už %s?"
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
 msgstr "Diegiamas %s iš AUR"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:197
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "Iš AUR parsiunčiamas %s PKGBUILD..."
 
-#: ../../lib/aur.sh:188
+#: ../../lib/aur.sh:203
 msgid "This package is orphaned"
 msgstr "Šis paketas yra paliktas"
 
-#: ../../lib/aur.sh:189
+#: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "(Nepalaikomas paketas: gali būti pavojinga!)"
 
-#: ../../lib/aur.sh:210
+#: ../../lib/aur.sh:225
 msgid "not found on AUR"
 msgstr "nerasta AUR"
 
-#: ../../lib/aur.sh:217
+#: ../../lib/aur.sh:232
 msgid "up to date "
 msgstr "naujausias"
 
-#: ../../lib/aur.sh:218
+#: ../../lib/aur.sh:233
 msgid "flagged as out of date"
 msgstr "pažymėtas kaip pasenęs"
 
-#: ../../lib/aur.sh:227
+#: ../../lib/aur.sh:242
 msgid "Orphan"
 msgstr "Paliktas"
 
@@ -508,159 +622,155 @@ msgstr "Šiuo metu pacman naudojamas, palaukite."
 msgid "synchronizing package databases"
 msgstr "sinchronizuojamos paketų duomenų bazės"
 
-#: ../../lib/pacman.sh.in:71
+#: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
 msgstr "(nepaisomas paketo atnaujinimas)"
 
-#: ../../lib/pkgbuild.sh.in:77
+#: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
 msgstr "Perskaityti PKGBUILD nepavyko"
 
-#: ../../lib/pkgbuild.sh.in:81
+#: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
 msgstr "Šis PKGBUILD aprašo padalytą paketą."
 
-#: ../../lib/pkgbuild.sh.in:82
+#: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
 msgstr "Konkretaus paketo parinktys nežinomos"
 
-#: ../../lib/pkgbuild.sh.in:109
+#: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
 msgstr "%s priklausomybės:"
 
-#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
+#: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
 msgstr "(jau įdiegta)"
 
-#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
+#: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
 msgstr "(paketas rastas)"
 
-#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
+#: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
 msgstr "(kuriama iš AUR)"
 
-#: ../../lib/pkgbuild.sh.in:163
+#: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
 msgstr "%s nesuderinamumai:"
 
-#: ../../lib/pkgbuild.sh.in:231
+#: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
 msgstr "Kuriamas ir diegiamas paketas"
 
-#: ../../lib/pkgbuild.sh.in:247
+#: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
 msgstr "%s naujausias."
 
-#: ../../lib/pkgbuild.sh.in:255
+#: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
 msgstr "Įdiegti ar sukurti trūkstamas %s priklausomybes:"
 
-#: ../../lib/pkgbuild.sh.in:263
+#: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
 msgstr "Priklausomybės įdiegtos prieš šią nesėkmę"
 
-#: ../../lib/pkgbuild.sh.in:272
-msgid "This PKGBUILD provides \" %b \""
-msgstr "Šis PKGBUILD pateikia \" %b \""
-
-#: ../../lib/pkgbuild.sh.in:273
-msgid "Install only %s ?"
-msgstr "Įdiegti tik %s ?"
-
-#: ../../lib/pkgbuild.sh.in:281
+#: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
 msgstr "Makepkg nesugebėjo sukurti %s."
 
-#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
+#: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
 msgstr "%s eksportuojamas į aplanką %s"
 
-#: ../../lib/pkgbuild.sh.in:304
+#: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
 msgstr "Tęsti %s diegimą?"
 
-#: ../../lib/pkgbuild.sh.in:305
+#: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[p]eržiūrėti paketo turinį   t[i]krinti paketą su namcap"
 
-#: ../../lib/pkgbuild.sh.in:311
+#: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "Norėdami tęsti paspauskite betkokį klavišą"
 
-#: ../../lib/pkgbuild.sh.in:320
+#: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
 msgstr "namcap neįdiegtas"
 
-#: ../../lib/pkgbuild.sh.in:332
+#: ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
 msgstr "Jūsų paketai išsaugoti aplanke %s"
 
-#: ../../lib/pkgbuild.sh.in:333
+#: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
 msgstr "Paketų nukopijuoti į %s aplanką nepavyko"
 
-#: ../../lib/pkgbuild.sh.in:343
+#: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "Aplanko %s sukurti nepavyko. Pašalinkite jį naudodami root teises."
 
-#: ../../lib/pkgbuild.sh.in:345
+#: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
 msgstr "Aplanko %s sukurti nepavyko."
 
-#: ../../lib/pkgbuild.sh.in:373
+#: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
 msgstr "Tęsti %s kūrimą?"
 
-#: ../../lib/pkgbuild.sh.in:379
+#: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
 msgstr "Paleisti %s kūrimą iš naujo?"
 
-#: ../../lib/pkgbuild.sh.in:429
+#: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:436
+#: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "Atsiųsti %s pradinį kodą"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/pkgbuild.sh.in:506
+msgid "Copying files from %s to build directory..."
+msgstr "Kopijuojami failai iš %s į kūrimo katalogą..."
+
+#: ../../lib/util.sh.in:159
 msgid "is not a directory"
 msgstr "ne aplankas"
 
-#: ../../lib/util.sh.in:136
+#: ../../lib/util.sh.in:160
 msgid "is not writable"
 msgstr "nėra rašomas"
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
 msgstr "Redaguoti %s?"
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "(„A“ atšaukti)"
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:208
 msgid "Aborted..."
 msgstr "Nutraukta..."
 
-#: ../../lib/util.sh.in:190
+#: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
 msgstr "Prašome prie savo aplinkos kintamųjų pridėti $VISUAL"
 
-#: ../../lib/util.sh.in:191
+#: ../../lib/util.sh.in:215
 msgid "for example:"
 msgstr "pavyzdžiui:"
 
-#: ../../lib/util.sh.in:192
+#: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
 msgstr "(faile ~/.bashrc)"
 
-#: ../../lib/util.sh.in:193
+#: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
 msgstr "(pakeiskite vim savo mėgstamu redaktoriumi)"
 
-#: ../../lib/util.sh.in:195
+#: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
 msgstr "Redaguoti %s su: "

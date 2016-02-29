@@ -1,5 +1,5 @@
 # yaourt default.po file
-# Copyright (C) 2010-2015
+# Copyright (C) 2010-2016
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
-"POT-Creation-Date: 2015-09-08 18:33+0200\n"
-"PO-Revision-Date: 2016-01-31 13:04+0000\n"
+"POT-Creation-Date: 2016-02-21 21:05+0100\n"
+"PO-Revision-Date: 2016-02-22 05:00+0000\n"
 "Last-Translator: Jeff Huang <s8321414@gmail.com>\n"
 "Language-Team: Chinese (Taiwan) (http://www.transifex.com/archlinuxfr/yaourt/language/zh_TW/)\n"
 "MIME-Version: 1.0\n"
@@ -79,6 +79,16 @@ msgstr "**相同的檔案**"
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
 msgstr "**自動合併**"
+
+#: ../../pacdiffviewer.sh.in:188
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr "動作： [E]編輯, [R]取代, [S]取消, [C]繼續(預設), [A]中止 ？"
+
+#: ../../pacdiffviewer.sh.in:189
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
+msgstr "動作： [E]編輯, [R]取代, [S]取消, [M]合併, [C]繼續（預設）, [A]中止 ？"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -153,10 +163,14 @@ msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
 msgstr "yaourt {-G --getpkgbuild} [選項] <套件>"
 
 #: ../../yaourt.sh.in:53
+msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
+msgstr "yaourt {-P --pkgbuild}    [-i --install] <目錄>"
+
+#: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
 msgstr "yaourt {--stats}"
 
-#: ../../yaourt.sh.in:58
+#: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
 msgstr "首頁： http://archlinux.fr/yaourt-en"
 
@@ -181,18 +195,26 @@ msgid "show groups"
 msgstr "顯示群組"
 
 #: ../../yaourt.sh.in:166
-msgid "Informations for %s"
+msgid "Information for %s"
 msgstr "%s 的資訊"
 
-#: ../../yaourt.sh.in:206
+#: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
 msgstr "無法讀取檔案 %s"
 
-#: ../../yaourt.sh.in:230
+#: ../../yaourt.sh.in:233
+msgid "%s directory does not contain a PKGBUILD"
+msgstr "%s 不包含 PKGBUILD"
+
+#: ../../yaourt.sh.in:239
+msgid "Installing %s from local PKGBUILD"
+msgstr "從本地的 PKGBUILD 安裝 %s"
+
+#: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "輸入要安裝的套件號碼（例如：1 2 3 或 1-3）"
 
-#: ../../yaourt.sh.in:408
+#: ../../yaourt.sh.in:486
 msgid "get PKGBUILD"
 msgstr "取得 PKGBUILD"
 
@@ -212,53 +234,61 @@ msgstr "從來源檔案安裝 %s 。"
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "正在擷取 PKGBUILD 和本機來源..."
 
-#: ../../lib/abs.sh.in:134
+#: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
 msgstr "不在來源中的套件："
 
-#: ../../lib/abs.sh.in:162
+#: ../../lib/abs.sh.in:232
 msgid "not found"
 msgstr "找不到"
 
-#: ../../lib/abs.sh.in:180
+#: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
 msgstr "繼續更新？"
 
-#: ../../lib/abs.sh.in:181
+#: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]檢視套件詳細資訊   [M]手動選擇套件"
 
-#: ../../lib/abs.sh.in:203
+#: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "繼續更新？"
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:301
+msgid "Source targets"
+msgstr "來源目標"
+
+#: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
 msgstr "無法更新 %s"
 
-#: ../../lib/abs.sh.in:291
+#: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
 msgstr "僅套件更新（新版本）："
 
-#: ../../lib/abs.sh.in:292
+#: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
 msgstr "軟體更新（新版本）："
 
-#: ../../lib/abs.sh.in:293
+#: ../../lib/abs.sh.in:349
 msgid "New package :"
 msgstr "新套件："
 
-#: ../../lib/abs.sh.in:309 ../../lib/abs.sh.in:317
+#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
 msgstr "（被 %s 需要）"
 
-#: ../../lib/abs.sh.in:334 ../../lib/abs.sh.in:335
+#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
 msgstr "正在從套件列表安裝"
 
-#: ../../lib/abs.sh.in:388 ../../lib/abs.sh.in:389
+#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "正在更新 SVN/CVS/HG/GIT 來源的套件"
+
+#: ../../lib/abs.sh.in:454
+msgid "Targets"
+msgstr "目標"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -413,59 +443,143 @@ msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
 msgstr "AURUSEGIT 已設定，但找不到 git 指令。退回至 tarball。"
 
-#: ../../lib/aur.sh:31 ../../lib/aur.sh:55
+#: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
 msgstr "在 AUR 中找不到 %s 。"
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "Yes"
 msgstr "是"
 
-#: ../../lib/aur.sh:51
+#: ../../lib/aur.sh:55
 msgid "No"
 msgstr "否"
 
-#: ../../lib/aur.sh:159
+#: ../../lib/aur.sh:69
+msgid "Repository     "
+msgstr "套件庫"
+
+#: ../../lib/aur.sh:70
+msgid "Name           "
+msgstr "名稱"
+
+#: ../../lib/aur.sh:72
+msgid "Base Package   "
+msgstr "基礎套件"
+
+#: ../../lib/aur.sh:73
+msgid "Version        "
+msgstr "版本"
+
+#: ../../lib/aur.sh:74
+msgid "Description    "
+msgstr "描述"
+
+#: ../../lib/aur.sh:75
+msgid "Architecture   "
+msgstr "架構"
+
+#: ../../lib/aur.sh:76
+msgid "URL            "
+msgstr "URL 網址"
+
+#: ../../lib/aur.sh:77
+msgid "AUR URL        "
+msgstr "AUR URL 網址"
+
+#: ../../lib/aur.sh:79
+msgid "Keywords       "
+msgstr "關鍵字"
+
+#: ../../lib/aur.sh:80
+msgid "Licenses       "
+msgstr "授權條款"
+
+#: ../../lib/aur.sh:81
+msgid "Groups         "
+msgstr "群組"
+
+#: ../../lib/aur.sh:82
+msgid "Provides       "
+msgstr "提供"
+
+#: ../../lib/aur.sh:83
+msgid "Depends On     "
+msgstr "它依賴"
+
+#: ../../lib/aur.sh:84
+msgid "Optional Deps  "
+msgstr "可選依賴"
+
+#: ../../lib/aur.sh:85
+msgid "Conflicts With "
+msgstr "與它衝突"
+
+#: ../../lib/aur.sh:86
+msgid "Replaces       "
+msgstr "它會取代"
+
+#: ../../lib/aur.sh:87
+msgid "Maintainer     "
+msgstr "維護者"
+
+#: ../../lib/aur.sh:88
+msgid "Last update    "
+msgstr "最後更新"
+
+#: ../../lib/aur.sh:89
+msgid "Out Of Date    "
+msgstr "過期"
+
+#: ../../lib/aur.sh:90
+msgid "Votes          "
+msgstr "得票"
+
+#: ../../lib/aur.sh:91
+msgid "Popularity     "
+msgstr "人氣"
+
+#: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
 msgstr "正在檢查 %s 的得票狀態"
 
-#: ../../lib/aur.sh:162
+#: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
 msgstr "您已經為 %s 投票"
 
-#: ../../lib/aur.sh:165
+#: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
 msgstr "您想要為 %s 投票嗎？"
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
 msgstr "正在從 AUR 安裝 %s"
 
-#: ../../lib/aur.sh:183
+#: ../../lib/aur.sh:197
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "正在從 AUR 下載 %s 的 PKGBUILD..."
 
-#: ../../lib/aur.sh:188
+#: ../../lib/aur.sh:203
 msgid "This package is orphaned"
 msgstr "此套件已被棄置"
 
-#: ../../lib/aur.sh:189
+#: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "（不支援的套件：有潛在的風險！）"
 
-#: ../../lib/aur.sh:210
+#: ../../lib/aur.sh:225
 msgid "not found on AUR"
 msgstr "未在 AUR 中找到"
 
-#: ../../lib/aur.sh:217
+#: ../../lib/aur.sh:232
 msgid "up to date "
 msgstr "最新"
 
-#: ../../lib/aur.sh:218
+#: ../../lib/aur.sh:233
 msgid "flagged as out of date"
 msgstr "已標記為過期"
 
-#: ../../lib/aur.sh:227
+#: ../../lib/aur.sh:242
 msgid "Orphan"
 msgstr "被棄置的套件"
 
@@ -505,159 +619,155 @@ msgstr "Pacman 正被占用，請稍候。"
 msgid "synchronizing package databases"
 msgstr "正在同步套件資料庫"
 
-#: ../../lib/pacman.sh.in:71
+#: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
 msgstr "（忽略套件更新）"
 
-#: ../../lib/pkgbuild.sh.in:77
+#: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
 msgstr "無法讀取 PKGBUILD"
 
-#: ../../lib/pkgbuild.sh.in:81
+#: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
 msgstr "此 PKGBUILD 描述了一個分裂的套件。"
 
-#: ../../lib/pkgbuild.sh.in:82
+#: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
 msgstr "指定的套件選項未知"
 
-#: ../../lib/pkgbuild.sh.in:109
+#: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
 msgstr "%s 依賴："
 
-#: ../../lib/pkgbuild.sh.in:112 ../../lib/pkgbuild.sh.in:114
+#: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
 msgstr "（已安裝）"
 
-#: ../../lib/pkgbuild.sh.in:120 ../../lib/pkgbuild.sh.in:122
+#: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
 msgstr "（已找到套件）"
 
-#: ../../lib/pkgbuild.sh.in:125 ../../lib/pkgbuild.sh.in:127
+#: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
 msgstr "（正在從 AUR 構建）"
 
-#: ../../lib/pkgbuild.sh.in:163
+#: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
 msgstr "%s 衝突："
 
-#: ../../lib/pkgbuild.sh.in:231
+#: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
 msgstr "正在構建並安裝套件"
 
-#: ../../lib/pkgbuild.sh.in:247
+#: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
 msgstr "%s 已為最新。"
 
-#: ../../lib/pkgbuild.sh.in:255
+#: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
 msgstr "安裝或構建 %s 遺失的依賴性："
 
-#: ../../lib/pkgbuild.sh.in:263
+#: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
 msgstr "失敗前就已安裝依賴"
 
-#: ../../lib/pkgbuild.sh.in:272
-msgid "This PKGBUILD provides \" %b \""
-msgstr "這個 PKGBUILD 提供了「%b」"
-
-#: ../../lib/pkgbuild.sh.in:273
-msgid "Install only %s ?"
-msgstr "只安裝 %s ？"
-
-#: ../../lib/pkgbuild.sh.in:281
+#: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
 msgstr "Makepkg 無法構建 %s 。"
 
-#: ../../lib/pkgbuild.sh.in:295 ../../lib/pkgbuild.sh.in:298
+#: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
 msgstr "正在將 %s 匯出到目錄 %s 。"
 
-#: ../../lib/pkgbuild.sh.in:304
+#: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
 msgstr "繼續安裝 %s ？"
 
-#: ../../lib/pkgbuild.sh.in:305
+#: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]檢視套件內容   [c]以 namcap 檢查套件"
 
-#: ../../lib/pkgbuild.sh.in:311
+#: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "按任意鍵以繼續"
 
-#: ../../lib/pkgbuild.sh.in:320
+#: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
 msgstr "namcap 並未安裝"
 
-#: ../../lib/pkgbuild.sh.in:332
+#: ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
 msgstr "您的套件被儲存在 %s"
 
-#: ../../lib/pkgbuild.sh.in:333
+#: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
 msgstr "無法將套件複製到 %s 目錄"
 
-#: ../../lib/pkgbuild.sh.in:343
+#: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
 msgstr "無法刪除目錄 %s 。請以 root 權限移除它。"
 
-#: ../../lib/pkgbuild.sh.in:345
+#: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
 msgstr "無法建立目錄 %s 。"
 
-#: ../../lib/pkgbuild.sh.in:373
+#: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
 msgstr "繼續構建 %s ？"
 
-#: ../../lib/pkgbuild.sh.in:379
+#: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
 msgstr "重新構建 %s ？"
 
-#: ../../lib/pkgbuild.sh.in:429
+#: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "%s 目錄已存在。[R]取代、[C]變更為 %s、[S]略過？"
 
-#: ../../lib/pkgbuild.sh.in:436
+#: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "下載 %s 原始檔"
 
-#: ../../lib/util.sh.in:135
+#: ../../lib/pkgbuild.sh.in:506
+msgid "Copying files from %s to build directory..."
+msgstr "正在從 %s 複製檔案到構建目錄..."
+
+#: ../../lib/util.sh.in:159
 msgid "is not a directory"
 msgstr "不是一個目錄"
 
-#: ../../lib/util.sh.in:136
+#: ../../lib/util.sh.in:160
 msgid "is not writable"
 msgstr "並非可寫入"
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
 msgstr "編輯 %s ？"
 
-#: ../../lib/util.sh.in:181
+#: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "（按 \"A\" 以終止）"
 
-#: ../../lib/util.sh.in:184
+#: ../../lib/util.sh.in:208
 msgid "Aborted..."
 msgstr "已中止..."
 
-#: ../../lib/util.sh.in:190
+#: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
 msgstr "請在您的環境變量中加入 $VISUAL"
 
-#: ../../lib/util.sh.in:191
+#: ../../lib/util.sh.in:215
 msgid "for example:"
 msgstr "例如："
 
-#: ../../lib/util.sh.in:192
+#: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
 msgstr "（在 ~/.bashrc 中）"
 
-#: ../../lib/util.sh.in:193
+#: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
 msgstr "（以您愛好的編輯器取代 vim）"
 
-#: ../../lib/util.sh.in:195
+#: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
 msgstr "用於編輯 %s 的編輯器："
