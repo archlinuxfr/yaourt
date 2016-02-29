@@ -15,8 +15,8 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-22 20:20+0000\n"
-"Last-Translator: Pedro Román <roizheim@gmail.com>\n"
+"PO-Revision-Date: 2016-02-29 15:26+0000\n"
+"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Spanish (http://www.transifex.com/archlinuxfr/yaourt/language/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,6 +76,10 @@ msgstr "¿Quiere eliminar estos archivos?"
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(T: todos, sin confirmación)"
+
+#: ../../pacdiffviewer.sh.in:162
+msgid "YNS"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -255,6 +259,10 @@ msgstr "¿Continuar con la actualización?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]isualizar los detalles del paquete   Selección [M]anual de los paquetes"
 
+#: ../../lib/abs.sh.in:252
+msgid "YNVM"
+msgstr ""
+
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "¿Proceder con la actualización? "
@@ -370,6 +378,10 @@ msgstr "argumento erróneo"
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "¿Quiere eliminar estos paquetes (con las opciones -Rcs)? "
+
+#: ../../lib/alpm_query.sh:49
+msgid "YN"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -692,6 +704,10 @@ msgstr "Continuar la instalación de %s?"
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]isualizar los contenidos del paquete, [c]omprobar el paquete con namcap"
 
+#: ../../lib/pkgbuild.sh.in:325
+msgid "YNVC"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "Pulse cualquier tecla para continuar"
@@ -728,6 +744,10 @@ msgstr "¿Reiniciar la compilación de %s? "
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "El directorio %s ya existe. ¿[R]emplazar, [C]ambiar a %s, [S]altar ?"
 
+#: ../../lib/pkgbuild.sh.in:457
+msgid "RCS"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "Descargando las fuentes %s"
@@ -751,6 +771,10 @@ msgstr "¿Quiere editar %s?"
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "(\"A\" para anular)"
+
+#: ../../lib/util.sh.in:206
+msgid "YNA"
+msgstr ""
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

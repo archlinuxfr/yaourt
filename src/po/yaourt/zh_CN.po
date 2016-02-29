@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-21 20:32+0000\n"
+"PO-Revision-Date: 2016-02-29 15:26+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/archlinuxfr/yaourt/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -74,6 +74,10 @@ msgstr "你要删除这些文件吗？"
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "（S：未确认）"
+
+#: ../../pacdiffviewer.sh.in:162
+msgid "YNS"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -253,6 +257,10 @@ msgstr "继续升级？"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]查看详细内容 [M]手动选择软件包"
 
+#: ../../lib/abs.sh.in:252
+msgid "YNVM"
+msgstr ""
+
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "继续升级吗？"
@@ -368,6 +376,10 @@ msgstr "错误的参数"
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "你想要移除这些软件包（利用 -Rsc 选项）吗？"
+
+#: ../../lib/alpm_query.sh:49
+msgid "YN"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -690,6 +702,10 @@ msgstr "继续安装 %s ？"
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]查看包的内容 [c]用 namcap 检查"
 
+#: ../../lib/pkgbuild.sh.in:325
+msgid "YNVC"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "按任意键继续"
@@ -726,6 +742,10 @@ msgstr "重新构建 %s ?"
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "文件夹 %s 已经存在。 [R]覆盖，[C]更改为 %s，[S]跳过？"
 
+#: ../../lib/pkgbuild.sh.in:457
+msgid "RCS"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "下载 %s 源码"
@@ -749,6 +769,10 @@ msgstr "编辑 %s ？"
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "(\"A\" 忽略)"
+
+#: ../../lib/util.sh.in:206
+msgid "YNA"
+msgstr ""
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

@@ -14,7 +14,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-21 20:32+0000\n"
+"PO-Revision-Date: 2016-02-29 15:26+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Korean (http://www.transifex.com/archlinuxfr/yaourt/language/ko/)\n"
 "MIME-Version: 1.0\n"
@@ -75,6 +75,10 @@ msgstr "다음 파일들을 삭제하겠습니까?"
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(S: 확인 없음)"
+
+#: ../../pacdiffviewer.sh.in:162
+msgid "YNS"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -254,6 +258,10 @@ msgstr "업그레이드를 계속 하시겠습니까?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]꾸러미 상세 보기     [M]직접 꾸러미 선택하기"
 
+#: ../../lib/abs.sh.in:252
+msgid "YNVM"
+msgstr ""
+
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "업그레이드를 계속 진행하시겠습니까?"
@@ -369,6 +377,10 @@ msgstr "잘못된 인수"
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "이 꾸러미들을 (-Rcs 옵션으로) 삭제하길 원합니까?"
+
+#: ../../lib/alpm_query.sh:49
+msgid "YN"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -691,6 +703,10 @@ msgstr "%s 설치를 계속할까요?"
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]꾸러미 내용 보기       [c]namcap으로 꾸러미 검사"
 
+#: ../../lib/pkgbuild.sh.in:325
+msgid "YNVC"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "계속하려면 아무 키나 누르세요"
@@ -727,6 +743,10 @@ msgstr "%s 빌드를 다시 시작하겠습니까? "
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "%s 디렉터리는 이미 존재합니다. [R]교체, [C]%s로 변경, [S]넘어감?"
 
+#: ../../lib/pkgbuild.sh.in:457
+msgid "RCS"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "%s 소스를 내려 받는 중"
@@ -750,6 +770,10 @@ msgstr "%s 을(를) 편집하시겠습니까?"
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "(중단하려면 \"A\")"
+
+#: ../../lib/util.sh.in:206
+msgid "YNA"
+msgstr ""
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

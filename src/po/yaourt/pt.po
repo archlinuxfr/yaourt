@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-21 20:32+0000\n"
+"PO-Revision-Date: 2016-02-29 15:26+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Portuguese (http://www.transifex.com/archlinuxfr/yaourt/language/pt/)\n"
 "MIME-Version: 1.0\n"
@@ -71,6 +71,10 @@ msgstr "Deseja apagar estes ficheiros ?"
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
 msgstr "(S: sem confirmar)"
+
+#: ../../pacdiffviewer.sh.in:162
+msgid "YNS"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -250,6 +254,10 @@ msgstr "Continuar atualização ?"
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]er detalhes do pacote   [M]anualmente selecionar os pacotes"
 
+#: ../../lib/abs.sh.in:252
+msgid "YNVM"
+msgstr ""
+
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
 msgstr "Proceder com atualização? "
@@ -365,6 +373,10 @@ msgstr "argumento errado"
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Deseja remover estes pacotes (com opções -Rcs) ? "
+
+#: ../../lib/alpm_query.sh:49
+msgid "YN"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -687,6 +699,10 @@ msgstr "Continuar a instalação de %s ?"
 msgid "[v]iew package contents   [c]heck package with namcap"
 msgstr "[v]er conteúdo do pacote  verifi[c]ar pacote com namcap"
 
+#: ../../lib/pkgbuild.sh.in:325
+msgid "YNVC"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
 msgstr "Pressione qualquer tecla para continuar"
@@ -723,6 +739,10 @@ msgstr "Reiniciar a compilação de %s ? "
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "O diretório %s já existe. [S]ubstituir, [A]lterar para %s, [I]gnorar ?"
 
+#: ../../lib/pkgbuild.sh.in:457
+msgid "RCS"
+msgstr ""
+
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "Transferir fontes %s"
@@ -746,6 +766,10 @@ msgstr "Editar %s ?"
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
 msgstr "(\"A\" para abortar)"
+
+#: ../../lib/util.sh.in:206
+msgid "YNA"
+msgstr ""
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
