@@ -391,7 +391,7 @@ sync_packages() {
 			msg $(gettext 'Installing from a package list')
 		fi
 		AURVOTE=0
-		set -- `grep -o '^[^#[:space:]]*' "$1"`
+		set -- $(grep -o '^[^#[:space:]]*' "$1")
 	fi
 	[[ $1 ]] || return 0
 	# Install from arguments
