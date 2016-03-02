@@ -13,8 +13,8 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-29 15:26+0000\n"
-"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"PO-Revision-Date: 2016-03-01 15:56+0000\n"
+"Last-Translator: Davidmp <medipas@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/archlinuxfr/yaourt/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
-msgstr "Suprimeix tots els *.pac* que es trobin"
+msgstr "Elimina tots els *.pac* que es trobin"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
@@ -40,7 +40,7 @@ msgstr "Llistat seqüencial"
 
 #: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
-msgstr "Mostra les diferències"
+msgstr "Mostra'n les diferències"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "This help"
@@ -48,7 +48,7 @@ msgstr "Aquesta ajuda"
 
 #: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "Mostra la versió"
+msgstr "Mostra'n la versió"
 
 #: ../../pacdiffviewer.sh.in:70
 msgid "saving"
@@ -69,7 +69,7 @@ msgstr "Els fitxers següents no tenen versió original."
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
-msgstr "Voleu suprimir aquests fitxers?"
+msgstr "Voleu eliminar aquests fitxers?"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
@@ -77,7 +77,7 @@ msgstr "(T: tots, sense confirmació)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "SNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -111,7 +111,7 @@ msgstr "el pegat ha causat un error!"
 
 #: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
-msgstr "Introduïu el nombre: "
+msgstr "Escriviu-ne el número:"
 
 #: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
@@ -131,7 +131,7 @@ msgstr "operacions:"
 
 #: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (cerca patró|fitxer de paquet)"
+msgstr "yaourt (cerca el fitxer de patró|paquet)"
 
 #: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
@@ -163,7 +163,7 @@ msgstr "yaourt {-C}               [opcions]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
-msgstr "yaourt {-B --backup}      [carpeta on desar|fitxer de restauració]"
+msgstr "yaourt {-B --backup}      [directori on desar|fitxer de restauració]"
 
 #: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
@@ -187,7 +187,7 @@ msgstr "consulta els paquets"
 
 #: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
-msgstr "No s'ha instal·lat els paquets següents:"
+msgstr "No s'han instal·lat els paquets següents:"
 
 #: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
@@ -219,11 +219,11 @@ msgstr "S'instal·la %s des d'un PKGBUILD local"
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Introduïu el nombre dels paquets que s'ha d'instal·lar (exemples: 1 2 3 o 1-3)"
+msgstr "Escriviu el número dels paquets que s'han d'instal·lar (exemples: 1, 2, 3 o 1-3)"
 
 #: ../../yaourt.sh.in:486
 msgid "get PKGBUILD"
-msgstr "obté el PKGBUILD"
+msgstr "obtén el PKGBUILD"
 
 #: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
@@ -239,7 +239,7 @@ msgstr "Instal·la %s a partir de les fonts"
 
 #: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "S'està aconseguint el PKGBUILD i les fonts locals..."
+msgstr "S'estan obtenint el PKGBUILD i les fonts locals..."
 
 #: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
@@ -251,19 +251,19 @@ msgstr "no s'ha trobat"
 
 #: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
-msgstr "S'ha de continuar amb l'actualització?"
+msgstr "S'ha de continuar l'actualització?"
 
 #: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr "[V]isualització dels detalls del paquet   Selecció [M]anual dels paquets"
+msgstr "[V]isualitza els detalls del paquet.   Selecció [M]anual dels paquets."
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "SNVM"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
-msgstr "S'ha de procedir amb l'actualització?"
+msgstr "S'ha de procedir a l'actualització?"
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
@@ -275,7 +275,7 @@ msgstr "no s'ha pogut actualitzar %s"
 
 #: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
-msgstr "Només actualització de paquet (nou llençament):"
+msgstr "Només l'actualització del paquet (nou llançament):"
 
 #: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
@@ -283,7 +283,7 @@ msgstr "Actualització del programari (nova versió):"
 
 #: ../../lib/abs.sh.in:349
 msgid "New package :"
-msgstr "Nou paquet:"
+msgstr "Paquet nou:"
 
 #: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
@@ -319,11 +319,11 @@ msgstr "%s no és una còpia de seguretat de base de dades ALPM vàlida"
 
 #: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "Paquets nous instal·lats des de la còpia de seguretat:"
+msgstr "Paquets nous instal·lats després de la còpia de seguretat:"
 
 #: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Paquets suprimits o actualitzats des de la còpia de seguretat:"
+msgstr "Paquets eliminats o actualitzats després la còpia de seguretat:"
 
 #: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
@@ -335,7 +335,7 @@ msgstr "(es desarà la base de dades local a %s)"
 
 #: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Si voleu restaurar aquesta còpia de seguretat teclegeu \"sí\""
+msgstr "Si voleu restaurar aquesta còpia de seguretat, teclegeu \"sí\""
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
@@ -343,7 +343,7 @@ msgstr "sí"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "S'està suprimint la base de dades del pacman"
+msgstr "S'està eliminant la base de dades del pacman"
 
 #: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
@@ -355,15 +355,15 @@ msgstr "S'està comprovant la nova base de dades"
 
 #: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "La vostra còpia de seguretat no s'ha restaurat amb èxit"
+msgstr "La còpia de seguretat no s'ha restaurat amb èxit."
 
 #: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
-msgstr "La vostra còpia de seguretat s'ha restaurat amb èxit"
+msgstr "La còpia de seguretat s'ha restaurat amb èxit."
 
 #: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr "paquets que s'ha trobat"
+msgstr "paquets trobats"
 
 #: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
@@ -375,11 +375,11 @@ msgstr "argument erroni"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "Voleu suprimir aquests paquets (amb les opcions -Rcs)?"
+msgstr "Voleu eliminar aquests paquets (amb les opcions -Rcs)?"
 
 #: ../../lib/alpm_query.sh:49
 msgid "YN"
-msgstr ""
+msgstr "SN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -387,7 +387,7 @@ msgstr "Total de paquets instal·lats:"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Paquets instal·lats de forma explícita:"
+msgstr "Paquets instal·lats explícitament:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
@@ -403,15 +403,15 @@ msgstr "Hi ha %s paquets que ja no sembla que els utilitzi cap altre paquet:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Paquets que es mantenen:"
+msgstr "Paquets mantinguts:"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr "Paquets que s'ignoren:"
+msgstr "Paquets ignorats:"
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr "Grups que s'ignoren:"
+msgstr "Grups ignorats:"
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
@@ -431,7 +431,7 @@ msgstr "són paquets d'una compilació local o de l'AUR, sense suport"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Espai teòric - real que utilizen els paquets:"
+msgstr "Espai teòric - real que utilitzen els paquets:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -460,7 +460,7 @@ msgstr "L'AURUSEGIT està configurat però no es troba l'ordre de git. Es torna 
 
 #: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
-msgstr "No s'ha trobat %s a l'AUR"
+msgstr "No s'ha trobat %s a l'AUR."
 
 #: ../../lib/aur.sh:55
 msgid "Yes"
@@ -544,7 +544,7 @@ msgstr "Última actualització"
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr "Caducat"
+msgstr "Obsolet"
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
@@ -560,11 +560,11 @@ msgstr "S'està comprovant l'estat del vot per a %s"
 
 #: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
-msgstr "Ja heu votat per a %s"
+msgstr "Ja heu votat %s"
 
 #: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
-msgstr "Voleu votar per %s? "
+msgstr "Voleu votar %s?"
 
 #: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
@@ -580,7 +580,7 @@ msgstr "Aquest paquet és orfe"
 
 #: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr "(Paquet no suportat: podria ser perillós!)"
+msgstr "(Paquet sense suport: podria ser perillós!)"
 
 #: ../../lib/aur.sh:225
 msgid "not found on AUR"
@@ -624,15 +624,15 @@ msgstr "Paquets que ja no els requereix cap paquet instal·lat:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
-msgstr "S'està cercant els fitxers de configuració originals que es desaran"
+msgstr "S'estan cercant els fitxers de configuració originals que es desaran"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "S'està utilitzant el pacman, espereu."
+msgstr "S'està utilitzant el pacman; espereu, si us plau."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
-msgstr "s'està sincronitzant les bases de dades de paquets"
+msgstr "s'estan sincronitzant les bases de dades dels paquets"
 
 #: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
@@ -664,11 +664,11 @@ msgstr "(s'ha trobat el paquet)"
 
 #: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
-msgstr "(es compilarà des de l'AUR)"
+msgstr "(es compila des de l'AUR)"
 
 #: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
-msgstr "conflictes de %s:"
+msgstr "Conflictes de %s:"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
@@ -684,11 +684,11 @@ msgstr "Instal·la o compila les dependències que manquen per a %s:"
 
 #: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
-msgstr "S'ha instal·lat les dependències abans de la fallada"
+msgstr "S'han instal·lat les dependències abans de la fallada"
 
 #: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
-msgstr "Makepkg no ha pogut compilar %s."
+msgstr "El Makepkg no ha pogut compilar %s."
 
 #: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
@@ -700,11 +700,11 @@ msgstr "S'ha de continuar la instal·lació de %s?"
 
 #: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr "[v]isualitzeu els continguts del paquet   [c]omproveu el paquet amb namcap"
+msgstr "[v]isualitza els continguts del paquet   [c]omprova el paquet amb namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "SNVC"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -720,11 +720,11 @@ msgstr "Els vostres paquets s'han desat a %s"
 
 #: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
-msgstr "No s'ha pogut copiar els paquets a la carpeta %s"
+msgstr "No s'han pogut copiar els paquets a la carpeta %s"
 
 #: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "No s'ha pogut suprimir la carpeta %s. Suprimiu-la utilitzant drets d'usuari primari."
+msgstr "No s'ha pogut eliminar la carpeta %s. Elimineu-la utilitzant drets d'usuari primari."
 
 #: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
@@ -744,19 +744,19 @@ msgstr "El directori %s ja existeix. [R]eemplaça'l, [C]anvia'l a %s, [S]alta-ho
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
-msgstr "S'està baixant les fonts %s"
+msgstr "S'estan baixant les fonts %s"
 
 #: ../../lib/pkgbuild.sh.in:506
 msgid "Copying files from %s to build directory..."
-msgstr "Es copien fitxers de %s al directori de compilació..."
+msgstr "Es copien fitxers des de %s al directori de compilació..."
 
 #: ../../lib/util.sh.in:159
 msgid "is not a directory"
-msgstr "no és una carpeta"
+msgstr "no és un directori"
 
 #: ../../lib/util.sh.in:160
 msgid "is not writable"
@@ -772,7 +772,7 @@ msgstr "(\"I\" per interrompre)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "SNA"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
@@ -781,7 +781,7 @@ msgstr "S'ha interromput..."
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "Afegiu $VISUAL a les variables d'entorn"
+msgstr "Si us plau, afegiu $VISUAL a les variables d'entorn"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"

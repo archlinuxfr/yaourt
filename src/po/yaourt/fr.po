@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-29 15:29+0000\n"
+"PO-Revision-Date: 2016-02-29 16:16+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: French (http://www.transifex.com/archlinuxfr/yaourt/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -261,7 +261,7 @@ msgstr "[V]oir les détails.   Sélectionner les paquets [M]anuellement."
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "ONVM"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -746,7 +746,7 @@ msgstr "le répertoire %s existe déjà. [R]emplacer, [C]hanger en %s, [S]auter 
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"

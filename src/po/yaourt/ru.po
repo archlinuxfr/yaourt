@@ -8,14 +8,15 @@
 # Dmitry Korzhevin <dkorzhevin@lsupport.net>, 2012
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
 # Petr Zhizhin <piter.zh@gmail.com>, 2014
+# Roman Skrynski <nakkez@ya.ru>, 2016
 # Vladislav <nuklea@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-29 15:26+0000\n"
-"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"PO-Revision-Date: 2016-02-29 20:12+0000\n"
+"Last-Translator: Roman Skrynski <nakkez@ya.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/archlinuxfr/yaourt/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -473,7 +474,7 @@ msgstr "Нет"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Репозиторий"
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
@@ -485,15 +486,15 @@ msgstr ""
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr " Версия"
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Описание"
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Архитектура"
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
@@ -509,19 +510,19 @@ msgstr ""
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Лицензии"
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Группы"
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Предоставляет"
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Зависит от"
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "

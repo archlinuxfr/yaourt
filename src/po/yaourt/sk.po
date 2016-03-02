@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-29 15:26+0000\n"
+"PO-Revision-Date: 2016-02-29 16:31+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Slovak (http://www.transifex.com/archlinuxfr/yaourt/language/sk/)\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "(S: bez potvrdenia)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "ANS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -87,13 +87,13 @@ msgstr "**automatické zlúčenie**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Akcia: [U]praviť, [N]ahradiť, P[O]tlačiť, Po[K]račovať (predvolené), [P]rerušiť ?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Akcia: [U]praviť, [N]ahradiť, P[O]tlačiť, [Z]lúčiť, Po[K]račovať (predvolené), [P]rerušiť ?"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -257,7 +257,7 @@ msgstr "[Z]obraziť podrobnosti o balíku   [R]učne vybrať balíky"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "ANZR"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -265,7 +265,7 @@ msgstr "Pokračovať v aktualizácii? "
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Zdrojové ciele"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -297,7 +297,7 @@ msgstr "Aktualizuje sa balík SVN/CVS/HG/GIT"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Ciele"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -377,7 +377,7 @@ msgstr "Chcete odstrániť tieto balíky (s voľbami -Rcs)? "
 
 #: ../../lib/alpm_query.sh:49
 msgid "YN"
-msgstr ""
+msgstr "AN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -470,87 +470,87 @@ msgstr "Nie"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Repozitár "
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "Názov "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr ""
+msgstr "Základný balík "
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "Verzia "
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Popis "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Architektúra "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "URL "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "AUR URL "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr ""
+msgstr "Kľúčové slová "
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Licencie "
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Skupiny "
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Poskytuje "
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Závisí na "
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "Voliteľné záv. "
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "V konflikte s "
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Nahrádza       "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Správca "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Aktualizovaný dňa "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Zastaralý "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Hlasy "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr ""
+msgstr "Obľúbenosť"
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
@@ -702,7 +702,7 @@ msgstr "[z]obraziť obsah balíka   [s]kontrolovať balík s nástrojom namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "ANZS"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -742,7 +742,7 @@ msgstr "Adresár %s už existuje. [N]ahradiť, [Z]meniť na %s, [P]reskočiť ?"
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "NZP"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
@@ -770,7 +770,7 @@ msgstr "(\"P\" na prerušenie)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "ANP"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
