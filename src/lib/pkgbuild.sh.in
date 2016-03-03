@@ -496,12 +496,9 @@ package_pkgbuild_only() {
 	init_build_dir "$YTMPDIR" || return 1
 
 	# Glob files from YPKGBUILDDIR and copy them to $YTMPDIR
-	local YFILES="$YPKGBUILDDIR/PKGBUILD"
-	local add_files="$(find "$YPKGBUILDDIR/"*.install -type f 2>>/dev/null)"
-	[[ $? ]] && YFILES+=" $add_files"
-	unset add_files
-	local add_files="$(find "$YPKGBUILDDIR/"*.patch -type f 2>>/dev/null)"
-	[[ $? ]] && YFILES+=" $add_files"
+	local YFILES=("$YPKGBUILDDIR/PKGBUILD")
+	YFILES+=($(find "$YPKGBUILDDIR/"*.install -type f 2>/dev/null))
+	YFILES+=($(find "$YPKGBUILDDIR/"*.patch   -type f 2>/dev/null))
 
 	msg $(_gettext "Copying files from %s to build directory..." "$YPKGBUILDDIR")
 	cp -v ${YFILES[@]} "$YTMPDIR"
