@@ -356,7 +356,7 @@ while [[ $1 ]]; do
 		-p|--print)         PRINT=1; FILE=1; program_arg $A_PQ $1;;
 		-q|--quiet)         QUIET=1; DETAILUPGRADE=0; program_arg $((A_PS | A_PQ)) $1;;
 		-r|--root)          program_arg $((A_PC | A_PKC)) $1 "$2"; shift;;
-		-s|--search)        SEARCH=1; program_arg $A_PQ $1;;
+		-s|--search)        SEARCH=1;;
 		-t|--unrequired)    UNREQUIRED=1; program_arg $A_PQ $1;;
 		-u|--upgrades)      (( UPGRADES ++ )); program_arg $A_PQ $1;;
 		-V|--version)       version; exit 0;;
