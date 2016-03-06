@@ -4,14 +4,14 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Bruno Guerreiro <american.jesus.pt@gmail.com>, 2013,2015
+# Bruno Guerreiro <american.jesus.pt@gmail.com>, 2013,2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-29 16:26+0000\n"
-"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/archlinuxfr/yaourt/language/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,7 +74,7 @@ msgstr "(S: sem confirmar)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "SNI"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -86,12 +86,20 @@ msgstr "**junção automática**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [C]ontinuar (padrão), [A]bortar ?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
+msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [J]untar, [C]ontinuar (padrão), [A]bortar ?"
+
+#: ../../pacdiffviewer.sh.in:190
+msgid "ERSCA"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:191
+msgid "ERSCAM"
 msgstr ""
 
 #: ../../pacdiffviewer.sh.in:201
@@ -156,7 +164,7 @@ msgstr "yaourt {-U --upgrade}     [opções] <pacote(s)>"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr ""
+msgstr "yaourt {-C}               [opções]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
@@ -168,7 +176,7 @@ msgstr "yaourt {-G --getpkgbuild} [opções] <pacote(s)>"
 
 #: ../../yaourt.sh.in:53
 msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
-msgstr ""
+msgstr "yaourt {-P --pkgbuild}    [-i --install] <diretório>"
 
 #: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
@@ -200,7 +208,7 @@ msgstr "mostrar grupos"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "Informação para %s"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -208,17 +216,17 @@ msgstr "Não é possível ler %s"
 
 #: ../../yaourt.sh.in:233
 msgid "%s directory does not contain a PKGBUILD"
-msgstr ""
+msgstr "diretório %s não contem um PKGBUILD"
 
 #: ../../yaourt.sh.in:239
 msgid "Installing %s from local PKGBUILD"
-msgstr ""
+msgstr "A instalar %s a partir do PKGBUILD local"
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Escolha nº de pacotes a ser instalados (ex: 1 2 3 or 1-3)"
 
-#: ../../yaourt.sh.in:486
+#: ../../yaourt.sh.in:488
 msgid "get PKGBUILD"
 msgstr "obter PKGBUILD"
 
@@ -256,7 +264,7 @@ msgstr "[V]er detalhes do pacote   [M]anualmente selecionar os pacotes"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "YNVM"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -264,7 +272,7 @@ msgstr "Proceder com atualização? "
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Objetos fonte"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -296,7 +304,7 @@ msgstr "a atualizar pacote SVN/CVS/HG/GIT"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Objetos"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -374,9 +382,9 @@ msgstr "argumento errado"
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Deseja remover estes pacotes (com opções -Rcs) ? "
 
-#: ../../lib/alpm_query.sh:49
+#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "SN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -469,87 +477,87 @@ msgstr "Não"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Repositório        "
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "Nome               "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr ""
+msgstr "Pacote base        "
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "Versão             "
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Descrição          "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Arquitectura       "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "URL                "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "AUR URL            "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr ""
+msgstr "Palavras-chave     "
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Licenças           "
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Grupos             "
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Fornece            "
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Depende De         "
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "Deps opcionais     "
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "Conflitos Com      "
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Substitui          "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Responsável        "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Ultima atualização "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Desatualizado      "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Votos              "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr ""
+msgstr "Popularidade       "
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
@@ -701,7 +709,7 @@ msgstr "[v]er conteúdo do pacote  verifi[c]ar pacote com namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "SNVC"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -741,15 +749,15 @@ msgstr "O diretório %s já existe. [S]ubstituir, [A]lterar para %s, [I]gnorar ?
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "SAI"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "Transferir fontes %s"
 
-#: ../../lib/pkgbuild.sh.in:506
+#: ../../lib/pkgbuild.sh.in:503
 msgid "Copying files from %s to build directory..."
-msgstr ""
+msgstr "A copiar ficheiros de %s para diretório de compilação..."
 
 #: ../../lib/util.sh.in:159
 msgid "is not a directory"
@@ -769,7 +777,7 @@ msgstr "(\"A\" para abortar)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "SNA"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

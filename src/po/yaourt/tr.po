@@ -6,14 +6,14 @@
 # Translators:
 # Ekin Dursun <ekindursun@gmail.com>, 2013
 # Ekin Dursun <ekindursun@gmail.com>, 2012
-# Özgür Sarıer <ozgursarier1011601115@gmail.com>, 2013
+# Özgür Sarıer <ozgursarier1011601115@gmail.com>, 2013,2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-02-29 15:26+0000\n"
-"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"PO-Revision-Date: 2016-03-05 10:19+0000\n"
+"Last-Translator: Özgür Sarıer <ozgursarier1011601115@gmail.com>\n"
 "Language-Team: Turkish (http://www.transifex.com/archlinuxfr/yaourt/language/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +76,7 @@ msgstr "(onaylamamak için \"S\")"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "EHS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -88,13 +88,21 @@ msgstr "**otomatik birleştirme**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Eylem: [D]üzenle, D[E]ğiştir, [B]askıla, De[V]am et (öntanımlı), İp[T]al et ?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Eylem: [D]üzenle, D[E]ğiştir, [B]askıla, Bir[L]eştir, De[V]am et (öntanımlı), İp[T]al et ?"
+
+#: ../../pacdiffviewer.sh.in:190
+msgid "ERSCA"
+msgstr "DEBVT"
+
+#: ../../pacdiffviewer.sh.in:191
+msgid "ERSCAM"
+msgstr "DEBVTL"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -158,7 +166,7 @@ msgstr "yaourt {-U --upgrade} [seçenekler] <paket(ler)>"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr ""
+msgstr "yaourt {-C}               [seçenekler]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
@@ -170,7 +178,7 @@ msgstr "yaourt {-G --getpkgbuild} [seçenekler] <paket(ler)>"
 
 #: ../../yaourt.sh.in:53
 msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
-msgstr ""
+msgstr "yaourt {-P --pkgbuild}    [-i --install] <dizin>"
 
 #: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
@@ -202,7 +210,7 @@ msgstr "grupları göster"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "%s için bilgiler"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -210,17 +218,17 @@ msgstr "%s adlı dosya okunamadı"
 
 #: ../../yaourt.sh.in:233
 msgid "%s directory does not contain a PKGBUILD"
-msgstr ""
+msgstr "%s dizini bir PKGBUILD içermiyor"
 
 #: ../../yaourt.sh.in:239
 msgid "Installing %s from local PKGBUILD"
-msgstr ""
+msgstr "%s AUR'dan yükleniyor"
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
 msgstr "Yüklenecek paketlerin sıra numarasını girin (örn: 1 2 3 veya 1-3)"
 
-#: ../../yaourt.sh.in:486
+#: ../../yaourt.sh.in:488
 msgid "get PKGBUILD"
 msgstr "PKGBUILD' i al"
 
@@ -258,7 +266,7 @@ msgstr "Paket ayrıntılarına [B]ak - Paketleri elle [S]eç"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "EHBS"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -266,7 +274,7 @@ msgstr "Yükseltmeye devam edilsin mi? "
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Kaynak hedefleri"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -298,7 +306,7 @@ msgstr "SVN/CVS/HG/GIT paketleri güncelleniyor"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Hedefler"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -376,9 +384,9 @@ msgstr " yanlış değişken"
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Bu paketleri kaldırmak istiyor musunuz (-Rcs seçenekleriyle) ? "
 
-#: ../../lib/alpm_query.sh:49
+#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "EH"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -398,7 +406,7 @@ msgstr "Güncel olmayan paketler:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "%s paket görünüşe göre artık diğer paketler tarafından kullanılmıyor:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -430,7 +438,7 @@ msgstr "desteklenmeyen yerel inşa veya AUR paketleridir."
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr ""
+msgstr "Paketler tarafından kullanılan Teorik - Gerçek alan:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -438,7 +446,7 @@ msgstr "ilerleme:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr ""
+msgstr "Paketler tarafından kullanılan teorik alan:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -455,7 +463,7 @@ msgstr "Önbelleğe indirilen dosyaların src klasöründe kapladığı alan:"
 #: ../../lib/aur.sh:20
 msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
-msgstr ""
+msgstr "AURUSEGIT tanımlanmış fakat \"git\" yüklü değil. Arşiv dosyasına geri dönülüyor."
 
 #: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
@@ -471,87 +479,87 @@ msgstr "Hayır"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Depo     "
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "İsim           "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr ""
+msgstr "Temel Paket    "
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "Sürüm        "
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Açıklama       "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Mimari         "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "Bağlantısı     "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "AUR Bağlantısı "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr ""
+msgstr "Etiketler      "
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Lisans         "
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Gruplar        "
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Sağladıkları   "
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Bağımlılıklar  "
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "İsteğe Bağlı Bağımlılıklar"
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "Çakıştıkları   "
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Yerine Geleceği       "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Sorumlu        "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Son güncelleme "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Eski sürüm mü? "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Oy             "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr ""
+msgstr "Rağbet         "
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
@@ -643,7 +651,7 @@ msgstr "PKGBUILD okunamadı"
 
 #: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
-msgstr ""
+msgstr "Bu PKGBUILD parçalı bir paket yapısı tanımlıyor."
 
 #: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
@@ -703,7 +711,7 @@ msgstr "Paket içeriğine [B]ak - Paketleri namcap ile [D]enetle"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "EHBD"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -739,19 +747,19 @@ msgstr "%s yeniden inşa edilsin mi ? "
 
 #: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr ""
+msgstr "%s adlı dizin zaten var. [Y]er Değiştir, %s olarak [D]eğiştir, [A]tla ?"
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "YDA"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
 msgstr "%s'in kaynak kodlarını indir"
 
-#: ../../lib/pkgbuild.sh.in:506
+#: ../../lib/pkgbuild.sh.in:503
 msgid "Copying files from %s to build directory..."
-msgstr ""
+msgstr "Dosyalar %s 'den inşa dizinine kopyalanıyor..."
 
 #: ../../lib/util.sh.in:159
 msgid "is not a directory"
@@ -771,7 +779,7 @@ msgstr "(iptal etmek için \"T\")"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "EHT"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
@@ -780,7 +788,7 @@ msgstr "İptal Edildi..."
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr ""
+msgstr "Lütfen çevre değişkenleriniz arasına $VISUAL 'ı ekleyiniz."
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"

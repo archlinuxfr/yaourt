@@ -1,21 +1,23 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
-#, fuzzy
+# yaourt default.po file
+# Copyright (C) 2010-2016
+# This file is distributed under the same license as the yaourt package.
+# Tuxce <tuxce.net@gmail.com>, 2010-2015
+# 
+# Translators:
+# Kristján Magnússon, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-29 16:10+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Project-Id-Version: yaourt\n"
+"Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
+"POT-Creation-Date: 2016-02-21 21:05+0100\n"
+"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
+"Language-Team: Icelandic (http://www.transifex.com/archlinuxfr/yaourt/language/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: is\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);\n"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
@@ -39,7 +41,7 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "This help"
-msgstr ""
+msgstr "Þessi hjálp"
 
 #: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
@@ -47,16 +49,16 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr ""
+msgstr "Vista"
 
 #: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
 msgid "found"
-msgstr ""
+msgstr "Fundið"
 
 #: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr ""
+msgstr "skrár sem eru munaðarlausar"
 
 #: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
@@ -64,7 +66,7 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
-msgstr ""
+msgstr "Viltu eyða þessar skrár ?"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
@@ -76,10 +78,28 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
-msgstr ""
+msgstr "**sama skrá**"
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:188
+msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:189
+msgid ""
+"Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
+"[A]bort ?"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:190
+msgid "ERSCA"
+msgstr ""
+
+#: ../../pacdiffviewer.sh.in:191
+msgid "ERSCAM"
 msgstr ""
 
 #: ../../pacdiffviewer.sh.in:201
@@ -88,7 +108,7 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
-msgstr ""
+msgstr "Virkja ?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
@@ -104,7 +124,7 @@ msgstr ""
 
 #: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
-msgstr ""
+msgstr "Eftirfarandi er %s hjálp :"
 
 #: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
@@ -164,7 +184,7 @@ msgstr ""
 
 #: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
-msgstr ""
+msgstr "heimasíða: http://archlinux.fr/yaourt-en"
 
 #: ../../yaourt.sh.in:117
 msgid "query packages"
@@ -184,7 +204,7 @@ msgstr ""
 
 #: ../../yaourt.sh.in:147
 msgid "show groups"
-msgstr ""
+msgstr "sýna hópa"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
@@ -192,7 +212,7 @@ msgstr ""
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
-msgstr ""
+msgstr "Gat ekki lesið %s skrá"
 
 #: ../../yaourt.sh.in:233
 msgid "%s directory does not contain a PKGBUILD"
@@ -232,7 +252,7 @@ msgstr ""
 
 #: ../../lib/abs.sh.in:232
 msgid "not found"
-msgstr ""
+msgstr "ekki fundið"
 
 #: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
@@ -256,7 +276,7 @@ msgstr ""
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
-msgstr ""
+msgstr "gat ekki uppfært %s"
 
 #: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
@@ -268,11 +288,11 @@ msgstr ""
 
 #: ../../lib/abs.sh.in:349
 msgid "New package :"
-msgstr ""
+msgstr "Nýir pakkar :"
 
 #: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
-msgstr ""
+msgstr "(þarfnast fyrir %s)"
 
 #: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
@@ -324,7 +344,7 @@ msgstr ""
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
-msgstr ""
+msgstr "já"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
@@ -362,6 +382,10 @@ msgstr ""
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr ""
 
+#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
+msgid "YN"
+msgstr ""
+
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
 msgstr ""
@@ -388,11 +412,11 @@ msgstr ""
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr ""
+msgstr "Hunsaðir pakkar:"
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr ""
+msgstr "Hunsaðir hópar:"
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
@@ -404,7 +428,7 @@ msgstr ""
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr ""
+msgstr "aðrir"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
@@ -441,15 +465,15 @@ msgstr ""
 
 #: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
-msgstr ""
+msgstr "%s ekki fundið í AUR."
 
 #: ../../lib/aur.sh:55
 msgid "Yes"
-msgstr ""
+msgstr "Já"
 
 #: ../../lib/aur.sh:55
 msgid "No"
-msgstr ""
+msgstr "Nei"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
@@ -557,7 +581,7 @@ msgstr ""
 
 #: ../../lib/aur.sh:203
 msgid "This package is orphaned"
-msgstr ""
+msgstr "Þessi pakki er munaðarlaus"
 
 #: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
@@ -565,7 +589,7 @@ msgstr ""
 
 #: ../../lib/aur.sh:225
 msgid "not found on AUR"
-msgstr ""
+msgstr "ekki fundið í AUR"
 
 #: ../../lib/aur.sh:232
 msgid "up to date "
@@ -577,27 +601,27 @@ msgstr ""
 
 #: ../../lib/aur.sh:242
 msgid "Orphan"
-msgstr ""
+msgstr "Munaðarlaus"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
-msgstr ""
+msgstr "[J/n]"
 
 #: ../../lib/io.sh:99
 msgid "[y/N]"
-msgstr ""
+msgstr "[j/N]"
 
 #: ../../lib/io.sh:100
 msgid "[y/n]"
-msgstr ""
+msgstr "[j/n]"
 
 #: ../../lib/io.sh:155
 msgid "WARNING: "
-msgstr ""
+msgstr "AÐVÖRUN:"
 
 #: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr ""
+msgstr "VILLA:"
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
@@ -637,11 +661,11 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
-msgstr ""
+msgstr "(þegar uppsett)"
 
 #: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
-msgstr ""
+msgstr "(pakki fundinn)"
 
 #: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
@@ -649,7 +673,7 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
-msgstr ""
+msgstr "%s ágreiningur:"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
@@ -689,7 +713,7 @@ msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
-msgstr ""
+msgstr "Ýttu á hvaða takka til að halda áfram"
 
 #: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
@@ -731,7 +755,7 @@ msgstr ""
 msgid "Download %s sources"
 msgstr ""
 
-#: ../../lib/pkgbuild.sh.in:506
+#: ../../lib/pkgbuild.sh.in:503
 msgid "Copying files from %s to build directory..."
 msgstr ""
 
@@ -745,11 +769,11 @@ msgstr ""
 
 #: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
-msgstr ""
+msgstr "Breyta %s ?"
 
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
-msgstr ""
+msgstr "(\"A\" til að hætta við)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
@@ -770,7 +794,7 @@ msgstr ""
 
 #: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
-msgstr ""
+msgstr "(inn í ~/.bashrc)"
 
 #: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
@@ -778,4 +802,4 @@ msgstr ""
 
 #: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
-msgstr ""
+msgstr "Breyta %s með:"
