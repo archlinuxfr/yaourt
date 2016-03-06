@@ -340,8 +340,8 @@ install_package() {
 				fi
 				echo
 				;;
-			N)	failed=1; break;;
-			*)	break;;
+			Y)	break;;
+			*)	failed=1; break;;
 		esac
 	done
 	(( ! failed )) &&
@@ -374,11 +374,11 @@ custom_pkg() {
 # on success, call install_package
 # Usage: package_loop ($pkgname, $trust)
 #   $pkgname: name of package
-#	$trust: 1: default answer for editing: Y (for abs)
+#	$trust: 1: default answer for editing: N (for abs)
 package_loop() {
 	local pl_pkgname=$1
 	local trust=${2:-0}
-	local default_answer=1
+	local answer default_answer=1
 	local ret=0 failed=0
 	declare -a PKGBUILD_DEPS PKGBUILD_DEPS_INSTALLED \
 	           PKGBUILD_CONFLICTS PKGBUILD_VARS
@@ -396,7 +396,8 @@ package_loop() {
 		case "$ret" in
 			0|2) break ;;
 			1)	prompt "$(_gettext 'Restart building %s ? ' "$pl_pkgname")$(yes_no 2)"
-				builduseragrees "YN" "N" && { failed=1; break; }
+				answer=$(builduserinput "YN" "N")
+				[[ $answer = "Y" ]] || { failed=1; break; }
 				;;
 			*) return 99 ;; # should never execute
 		esac
@@ -455,8 +456,11 @@ get_pkgbuild() {
 			local newdir=$(mktemp --dry-run --tmpdir="." "$pkgdir.XXX")
 			prompt2 "$(_gettext '%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?' "$pkgdir" "$newdir")"
 			local answer=$(userinput "RCS" "R")
-			[[ $answer = "S" ]] && continue
-			[[ $answer = "C" ]] && pkgdir=$newdir
+			case $answer in
+				R) :;;
+				C) pkgdir=$newdir;;
+				*) continue;;
+			esac
 		fi
 		mkdir -p "$pkgdir"
 		cd "$pkgdir" || continue

@@ -43,10 +43,13 @@ search_pkgs_which() {
 
 # searching for packages installed as dependecy from another packages, but not required anymore
 search_forgotten_orphans() {
+	local answer
+
 	AURSEARCH=0 search 0 1; ret=$?
 	[[ ! $PKGSFOUND ]] && return $ret
 	prompt "$(gettext 'Do you want to remove these packages (with -Rcs options) ? ') $(yes_no 2)"
-	useragrees "YN" "N" || su_pacman -Rcs "${PKGSFOUND[@]#*/}"
+	answer=$(userinput "YN" "N")
+	[[ $answer = "Y" ]] && su_pacman -Rcs "${PKGSFOUND[@]#*/}"
 }
 
 # vim: set ts=4 sw=4 noet:
