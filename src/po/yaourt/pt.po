@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 09:20+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Portuguese (http://www.transifex.com/archlinuxfr/yaourt/language/pt/)\n"
 "MIME-Version: 1.0\n"
@@ -96,11 +96,11 @@ msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [J]untar, [C]ontinuar (padr�
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "ERSCA"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "ERSCAJ"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "

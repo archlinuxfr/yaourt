@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 10:25+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/archlinuxfr/yaourt/language/ro/)\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "(S: fără confirmare)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "DNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -87,21 +87,21 @@ msgstr "**autofuzionare**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Acțiune: [E]ditare, Î[n]locuire, [S]uprimare, [C]ontinuare (implicit), [R]enunțare?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Acțiune: [E]ditare, Î[n]locuire, [S]uprimare, [F]uziune, [C]ontinuare (implicit), [R]enunțare?"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "ENSCR"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "ENSCRF"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -209,7 +209,7 @@ msgstr "arată grupele"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "Informații pentru %s"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -265,7 +265,7 @@ msgstr "[V]edere detalii ale pachetelor - Selectare [M]anuală a pachetelor"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "DNVM"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -273,7 +273,7 @@ msgstr "Continuați actualizarea?"
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Ținte sursă"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -305,7 +305,7 @@ msgstr "se actualizează pachet SVN/CVS/HG/GIT"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Ținte"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -385,7 +385,7 @@ msgstr "Vreți să ștergeți aceste pachete (cu opțiuni -Rcs)?"
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "DN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -405,7 +405,7 @@ msgstr "Pachete învechite:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "Unde %s pachete nu par a mai fi folosite de oricare alte pachete:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -478,11 +478,11 @@ msgstr "Nu"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Depozit"
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "Nume"
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
@@ -490,23 +490,23 @@ msgstr ""
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "Versiune"
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Descriere"
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Arhitectură"
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "URL"
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "URL AUR"
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
@@ -514,47 +514,47 @@ msgstr ""
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Licențe"
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Grupe"
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Furnizează"
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Depinde de"
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "Dependințe Opționale"
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "Conflict cu"
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Înlocuiește"
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Responsabil"
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Ultima actualizare"
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Învechit"
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Voturi"
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
@@ -650,7 +650,7 @@ msgstr "Nu se poate citi PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
-msgstr ""
+msgstr "Acest PKGBUILD descrie un pachet împărțit."
 
 #: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
@@ -710,7 +710,7 @@ msgstr "[v]edere detalii ale pachetelor - verificare [p]achet cu namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "DNVP"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -750,7 +750,7 @@ msgstr "directorul %s există deja. [R] Înlocuiește, [C] Schimbă în %s, [S]a
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
@@ -778,7 +778,7 @@ msgstr "(„R” pentru renunțare)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "DNR"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

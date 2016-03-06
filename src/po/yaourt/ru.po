@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 10:33+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Russian (http://www.transifex.com/archlinuxfr/yaourt/language/ru/)\n"
 "MIME-Version: 1.0\n"
@@ -91,21 +91,21 @@ msgstr "**автослияние**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Действия: [E]редактировать, [R]заменить, [S]подавить, [C]продолжить (по умолчанию), [A]отменить ?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Действия: [E]редактировать, [R]заменить, [S]подавить, [M]слить, [C]продолжить (по умолчанию), [A]отменить ?"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "ERSCA"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "ERSCAM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -213,7 +213,7 @@ msgstr "показать группы"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "Информация по %s"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -277,7 +277,7 @@ msgstr "Продолжить обновление? "
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Целевые исходники"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -309,7 +309,7 @@ msgstr "установка пакета SVN/CVS/HG/GIT"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Цели"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -409,7 +409,7 @@ msgstr "Пакеты, требующие обновления:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "Где, вероятно, %s пакетов не используется более ни одним пакетом:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -486,7 +486,7 @@ msgstr "Репозиторий"
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "Имя            "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
@@ -506,11 +506,11 @@ msgstr "Архитектура"
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "Ссылка         "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "Ссылка на AUR  "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
@@ -538,27 +538,27 @@ msgstr ""
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "Конфликтует с  "
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Заменяет       "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Разработчик    "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Последние обновленные   "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Устаревшие     "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Голоса         "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
@@ -791,7 +791,7 @@ msgstr "Отменено..."
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr ""
+msgstr "Пожалуйста, добавьте $VISUAL к переменным окружения"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"

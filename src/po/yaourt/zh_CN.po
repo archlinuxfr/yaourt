@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 10:32+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Chinese (China) (http://www.transifex.com/archlinuxfr/yaourt/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "（S：未确认）"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "YNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -89,21 +89,21 @@ msgstr "** 自动合并 **"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "操作：[E]编辑，[R]替换，[S]忽略，[C]继续（默认），[A]中断？"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "操作：[E]编辑，[R]替换，[S]忽略，[M]合并，[C]继续（默认），[A]中断？"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "ERSCA"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "ERSCAM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -211,7 +211,7 @@ msgstr "显示组"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "%s 的信息"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -267,7 +267,7 @@ msgstr "[V]查看详细内容 [M]手动选择软件包"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "YNVM"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -275,7 +275,7 @@ msgstr "继续升级吗？"
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "安装目标"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -307,7 +307,7 @@ msgstr "更新 SVN/CVS/HG/GIT 源的软件包"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "目标"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -387,7 +387,7 @@ msgstr "你想要移除这些软件包（利用 -Rsc 选项）吗？"
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "YN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -480,11 +480,11 @@ msgstr "否"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "源             "
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "名称           "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
@@ -492,23 +492,23 @@ msgstr ""
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "版本           "
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "描述           "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "架构           "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "URL            "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "AUR URL        "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
@@ -516,47 +516,47 @@ msgstr ""
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "许可证         "
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "软件组         "
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "提供           "
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "依赖于         "
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "可选依赖       "
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "冲突           "
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "取代           "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "维护者         "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "上次更新       "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "过时           "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "投票           "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
@@ -712,7 +712,7 @@ msgstr "[v]查看包的内容 [c]用 namcap 检查"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "YNVC"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -752,7 +752,7 @@ msgstr "文件夹 %s 已经存在。 [R]覆盖，[C]更改为 %s，[S]跳过？"
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
@@ -780,7 +780,7 @@ msgstr "(\"A\" 忽略)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "YNA"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

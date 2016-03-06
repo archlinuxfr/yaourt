@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 10:26+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Serbian (http://www.transifex.com/archlinuxfr/yaourt/language/sr/)\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +74,7 @@ msgstr "(П: без потврде)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "ДНП"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -86,21 +86,21 @@ msgstr "**ауто-спајање**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Акције: [И]змени, [З]амени, [П]отисни, [Н]астави (подразумевано), [О]дустани?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Акције: [И]змени, [З]амени, [П]отисни, [С]поји, [Н]астави (подразумевано), [О]дустани?"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "ИЗПНО"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "ИЗПНОС"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -208,7 +208,7 @@ msgstr "прикажи групе"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "Информације о %s"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -264,7 +264,7 @@ msgstr "[П]огледај детаље пакета   [Р]учно изабер
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "ДНПР"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -272,7 +272,7 @@ msgstr "Настави са ажурирањем? "
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Циљеви од изворног кода"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -304,7 +304,7 @@ msgstr "ажурирам SVN/CVS/HG/GIT пакет"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Циљеви"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -384,7 +384,7 @@ msgstr "Да ли желите да уклоните ове пакете (са -
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "ДН"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -404,7 +404,7 @@ msgstr "Неажурни пакети:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "Чини се да %s пакета више не користи ни један пакет:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -436,7 +436,7 @@ msgstr "су локално изграђени пакети или неподр�
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr ""
+msgstr "Теоријски - Стварни простор заузет пакетима:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
@@ -444,7 +444,7 @@ msgstr "прогрес:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr ""
+msgstr "Теоријски простор заузет пакетима:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
@@ -477,11 +477,11 @@ msgstr "Не"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Складиште      "
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "Име            "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
@@ -489,23 +489,23 @@ msgstr ""
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "Верзија        "
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Опис           "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Архитектура    "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "УРЛ            "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "AUR УРЛ        "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
@@ -513,47 +513,47 @@ msgstr ""
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Лиценце        "
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Групе          "
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Омогућава      "
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Зависи од      "
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "Опционе Зав.   "
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "Сукобљава се са"
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Мења           "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Одржавалац     "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Ажурирано      "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Неажуран       "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Гласови        "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
@@ -649,7 +649,7 @@ msgstr "Немогуће прочитати PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
-msgstr ""
+msgstr "Овај PKGBUILD описује подељени пакет."
 
 #: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
@@ -709,7 +709,7 @@ msgstr "погледај [с]адржај пакета    [п]ровери па�
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "ДНСП"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -777,7 +777,7 @@ msgstr "(„П“ за прекид)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "ДНП"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
@@ -786,7 +786,7 @@ msgstr "Прекинуто…"
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr ""
+msgstr "Молимо додајте $VISUAL у ваше променљиве окружења"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"

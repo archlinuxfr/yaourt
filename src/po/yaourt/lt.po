@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 09:27+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Lithuanian (http://www.transifex.com/archlinuxfr/yaourt/language/lt/)\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "(S: nepatvirtinti)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "TNS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -89,21 +89,21 @@ msgstr "**auto sujungimas**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Veiksmas: [R]edaguoti, [P]akeisti, [N]ustelbti, [T]ęsti (numatytasis), [A]tšaukti ?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Veiksmas: [R]edaguoti, [P]akeisti, [N]ustelbti, [S]ujungti, [T]ęsti (numatytasis), [A]tšaukti ?"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "RPNTA"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "RPNTAS"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -267,7 +267,7 @@ msgstr "[P]eržiūrėti paketo detales   [R]ankiniu būdu pasirinkti paketus"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "TNPR"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -387,7 +387,7 @@ msgstr "Ar norite pašalinti šiuos paketus (su -Rcs parinktimi)?"
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "TN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -712,7 +712,7 @@ msgstr "[p]eržiūrėti paketo turinį   t[i]krinti paketą su namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "TNPI"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -780,7 +780,7 @@ msgstr "(„A“ atšaukti)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "TNA"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

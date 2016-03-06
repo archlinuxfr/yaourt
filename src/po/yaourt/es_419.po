@@ -13,7 +13,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-06 10:27+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Spanish (Latin America) (http://www.transifex.com/archlinuxfr/yaourt/language/es_419/)\n"
 "MIME-Version: 1.0\n"
@@ -77,7 +77,7 @@ msgstr "(T: todos, sin confirmación)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "SNT"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -89,21 +89,21 @@ msgstr "**unión automática**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr ""
+msgstr "Acción: ¿[E]ditar, [R]emplazar, [S]uprimir, [C]ontinuar (por omisión) o [I]nterrumpir?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Acción: ¿[E]ditan, [R]eemplazar, [S]uprimir, [F]usionar, [C]ontinuar (por omisión) o [I]nterrumpir?"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr ""
+msgstr "ERSCI"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr ""
+msgstr "ERSCIF"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -211,7 +211,7 @@ msgstr "mostrar los grupos"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr ""
+msgstr "Información acerca de %s"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
@@ -267,7 +267,7 @@ msgstr "[V]isualizar los detalles del paquete   Selección [M]anual de los paque
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "SNVM"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -275,7 +275,7 @@ msgstr "¿Proceder con la actualización? "
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr ""
+msgstr "Objetivos de la fuente"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
@@ -307,7 +307,7 @@ msgstr "actualizando paquete SVN/CVS/HG/GIT"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr ""
+msgstr "Objetivos"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
@@ -387,7 +387,7 @@ msgstr "¿Quiere eliminar estos paquetes (con las opciones -Rcs)? "
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "SN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -407,7 +407,7 @@ msgstr "Paquetes desactualizados:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr ""
+msgstr "Hay %s paquete(s) que no parece(n) ser usado(s) por otro(s) paquete(s):"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -480,11 +480,11 @@ msgstr "No"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr ""
+msgstr "Repositorio"
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr ""
+msgstr "Nombre"
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
@@ -492,23 +492,23 @@ msgstr ""
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr ""
+msgstr "Versión"
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr ""
+msgstr "Descripción    "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr ""
+msgstr "Arquitectura   "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr ""
+msgstr "Dirección URL"
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr ""
+msgstr "Dirección URL en el AUR"
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
@@ -516,47 +516,47 @@ msgstr ""
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr ""
+msgstr "Licencias"
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr ""
+msgstr "Grupos"
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr ""
+msgstr "Provee"
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr ""
+msgstr "Depende de"
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr ""
+msgstr "Depende opcionalmente en"
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr ""
+msgstr "En conflicto con"
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr ""
+msgstr "Remplaza       "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr ""
+msgstr "Encargado"
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr ""
+msgstr "Última actualización    "
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr ""
+msgstr "Desactualizado"
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr ""
+msgstr "Votos"
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
@@ -712,7 +712,7 @@ msgstr "[v]isualizar los contenidos del paquete, [c]omprobar el paquete con namc
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr ""
+msgstr "SNVC"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -752,7 +752,7 @@ msgstr "El directorio %s ya existe. ¿[R]emplazar, [C]ambiar a %s o [S]altar?"
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "RCS"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
@@ -780,7 +780,7 @@ msgstr "(«A» para anular)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "SNA"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
@@ -789,7 +789,7 @@ msgstr "Anulada..."
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr ""
+msgstr "Añada $VISUAL a sus variables de entorno"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"
