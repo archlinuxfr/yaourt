@@ -402,10 +402,10 @@ package_loop() {
 		esac
 	done
 	(( ! ret )) && (( ! failed )) &&
-	  ( [[ $MAJOR == "pkgbuild" ]] && (( YPKGBUILD_INSTALL )) || ! [[ $MAJOR == "pkgbuild" ]] ) &&
+	  ( [[ $MAJOR == "pkgbuild" ]] && (( INSTALL )) || ! [[ $MAJOR == "pkgbuild" ]] ) &&
 	    { install_package || failed=1; }
 
-	[[ $MAJOR == "pkgbuild" ]] && (( ! YPKGBUILD_INSTALL )) && cp -v "$YPKGDEST/"*.pkg.* $YPKGBUILDDIR
+	[[ $MAJOR == "pkgbuild" ]] && (( ! INSTALL )) && cp -v "$YPKGDEST/"*.pkg.* $YPKGBUILDDIR
 	rm -r "$YPKGDEST"
 	return $failed
 }
@@ -484,8 +484,9 @@ get_pkgbuild() {
 }
 
 
-# Call package_pkgbuild_only for building a PKGBUILD in the current directory until success or abort
-# on success, call install_package, if YPKGBUILD_INSTALL was specified with -i
+# Call package_pkgbuild_only for building a PKGBUILD in the current directory
+# until success or abort. On success, call install_package, if INSTALL was
+# specified with -i
 # Usage: package_pkgbuild_only ($pkgname)
 #   $pkgname: name of package
 package_pkgbuild_only() {
