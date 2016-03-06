@@ -378,7 +378,6 @@ while [[ $1 ]]; do
 		--file)             [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		--force)            FORCE=1;;
 		--gpgdir)           program_arg $A_PC $1 "$2"; shift;;
-		--holdver)          program_arg $A_M $1;;
 		--hookdir)          program_arg $A_PC $1 "$2"; shift;;
 		--ignore)           program_arg $A_PS $1 "$2"; shift; IGNOREPKG+=(${1//,/ });;
 		--ignoregroup)      program_arg $A_PS $1 "$2"; shift; IGNOREGRP+=(${1//,/ });;
@@ -396,6 +395,7 @@ while [[ $1 ]]; do
 
 		# makepkg options
 		-A|--ignorearch)    program_arg $A_M $1;;
+		--holdver)          program_arg $A_M $1;;
 
 		# Yaourt options
 		-)                  break;; # support smth like echo package | yaourt -S -
