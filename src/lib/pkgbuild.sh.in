@@ -265,7 +265,7 @@ build_package() {
 	# install deps from abs (build or download) as depends
 	if [[ $PKGBUILD_DEPS ]]; then
 		msg $(_gettext 'Install or build missing dependencies for %s:' "$pkgbase")
-		if ! SP_ARG="--asdeps" sync_packages "${PKGBUILD_DEPS[@]}"; then
+		if ! SP_ARG="--asdeps" INSTALL=1 sync_packages "${PKGBUILD_DEPS[@]}"; then
 			local _deps_left=( $(pacman_parse -T "${PKGBUILD_DEPS[@]}") )
 			local _deps_installed=()
 			for _deps in "${PKGBUILD_DEPS[@]}"; do

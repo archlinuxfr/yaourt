@@ -492,7 +492,7 @@ case "$MAJOR" in
 
 	# yaourt -P
 	pkgbuild)
-		load_lib pkgbuild util misc
+		load_lib abs aur misc pkgbuild util
 		yaourt_pkgbuild
 		;;
 
