@@ -11,7 +11,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-03 23:59+0000\n"
+"PO-Revision-Date: 2016-03-08 21:26+0000\n"
 "Last-Translator: tuxce <tuxce.net@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/archlinuxfr/yaourt/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -75,7 +75,7 @@ msgstr "(S: bez potvrzení)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr ""
+msgstr "ANS"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
@@ -265,7 +265,7 @@ msgstr "[Z]obrazit detail balíčku [R]učně vybrat balíčky"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr ""
+msgstr "ANZR"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
@@ -385,7 +385,7 @@ msgstr "Chcete odstranit tyto balíky (s volbou -Rcs) ?"
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr ""
+msgstr "AN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -750,7 +750,7 @@ msgstr "Adresář %s už existuje. [N]ahradit, [Z]měnit na %s, [P]řeskočit ?"
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr ""
+msgstr "NZP"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
@@ -778,7 +778,7 @@ msgstr "(\"P\" pro přerušení)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr ""
+msgstr "ANP"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
