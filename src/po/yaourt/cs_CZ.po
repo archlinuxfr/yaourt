@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-12 11:23+0000\n"
+"PO-Revision-Date: 2016-03-12 11:43+0000\n"
 "Last-Translator: Martin Kříž <liberte.czech@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/archlinuxfr/yaourt/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -98,11 +98,11 @@ msgstr "Akce: [U]pravit, [N]ahradit, P[O]tlačit, [S]loučit, Po[K]račovat (př
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr "ERSCA"
+msgstr "UNOKP"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr "ERSCAM"
+msgstr "UNOKPS"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
@@ -314,23 +314,23 @@ msgstr "Ukládá se pacman databáze do %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "Databáze Pacmana úspěšně uložena do %s"
+msgstr "Databáze Pacmana byla úspěšně uložena do %s"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Analýza záložního souboru"
+msgstr "Anlyzuje se soubor ze zálohy"
 
 #: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr "%s není platná záloha alpm databáze"
+msgstr "%s není platnou zálohou databáze alpm"
 
 #: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "Nové balíčky byly nainstalovány od poslední zálohy:"
+msgstr "Nové balíčky byly nainstalovány od vytvoření zálohy:"
 
 #: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Balíčky byly odstraněny nebo aktualizovány ze zálohy:"
+msgstr "Balíčky byly odstraněny nebo aktualizovány od vytvoření zálohy:"
 
 #: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
@@ -350,11 +350,11 @@ msgstr "ano"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "Odstraňuje sa pacman DB"
+msgstr "Odstraňuje se pacman DB"
 
 #: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr "Kopíruje sa záloha"
+msgstr "Kopíruje se záloha"
 
 #: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
@@ -362,11 +362,11 @@ msgstr "Testuje se nová databáze"
 
 #: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "Vaše záloha nebyla úspěšně obnovená"
+msgstr "Vaše záloha nebyla úspěšně obnovena"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
-msgstr "Vaša záloha byla úspěšně obnovená"
+msgstr "Vaše záloha byla úspěšně obnovená"
 
 #: ../../lib/alpm_backup.sh:68
 msgid "packages found"
@@ -378,7 +378,7 @@ msgstr "(předchozí databáze je uložená v %s)"
 
 #: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
-msgstr "špatný argument"
+msgstr "nesprávný argument"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
@@ -398,7 +398,7 @@ msgstr "Výlučně nainstalované balíky:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
-msgstr "Balíky instalované jako závislosti kvůli spuštění jiných balíkov:"
+msgstr "Balíky instalované jako závislosti kvůli spuštění jiných balíků:"
 
 #: ../../lib/alpm_stats.sh:52
 msgid "Packages out of date:"
@@ -406,7 +406,7 @@ msgstr "Zastaralé balíky:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "Kde %s balíky se nezdají být používány nějakým balíkem:"
+msgstr "Kde %s balíky se zdají být nepoužívány jiným balíkem:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
@@ -426,7 +426,7 @@ msgstr "Počet konfigurovaných repozitářů:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Balíky repozitářů (uspořádané podle priority pacmanu)"
+msgstr "Balíky podle repozitářů (uspořádané podle priority pacmanu)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
@@ -438,7 +438,7 @@ msgstr "jsou balíky z lokálního sestavení nebo nepodporované repozitářem 
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Teoreticky - skutečně využité místo balíčky:"
+msgstr "Teoreticky - balíčky skutečně využité místo:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
