@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-04 08:39+0000\n"
+"PO-Revision-Date: 2016-03-10 10:09+0000\n"
 "Last-Translator: Pedro Román <roizheim@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/archlinuxfr/yaourt/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -229,7 +229,7 @@ msgstr "Instalando %s desde el PKGBUILD local"
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Introduzca el número de los paquetes desea instalar (ejemplos: 1 2 3 ó 1-3)"
+msgstr "Introduzca el número de los paquetes que desea instalar (ejemplos: 1 2 3 ó 1-3)"
 
 #: ../../yaourt.sh.in:488
 msgid "get PKGBUILD"
@@ -313,7 +313,7 @@ msgstr "Paquetes"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Salvando la base de datos de pacman en %s"
+msgstr "Guardando la base de datos de pacman en %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
@@ -341,11 +341,11 @@ msgstr "¡Atención! ¿Quiere restaurar esta copia de seguridad?"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
-msgstr "(se guardará la base de datos local en %s)"
+msgstr "(la base de datos local se guardará en %s)"
 
 #: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Si quiere restaurar esta copia de seguridad teclee \"sí\""
+msgstr "Si quiere restaurar esta copia de seguridad teclee «sí»"
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
@@ -542,7 +542,7 @@ msgstr "En conflicto con "
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr "Remplaza       "
+msgstr "Remplaza a      "
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
@@ -706,7 +706,7 @@ msgstr "Exportando %s al directorio %s"
 
 #: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
-msgstr "Continuar la instalación de %s?"
+msgstr "¿Continuar la instalación de %s?"
 
 #: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
@@ -742,7 +742,7 @@ msgstr "No se puede crear el directorio %s."
 
 #: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
-msgstr "Continuar compilando %s? "
+msgstr "¿Continuar compilando %s? "
 
 #: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
@@ -778,7 +778,7 @@ msgstr "¿Quiere editar %s?"
 
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
-msgstr "(\"A\" para anular)"
+msgstr "(«A» para anular)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
