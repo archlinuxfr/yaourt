@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-05 22:22+0000\n"
+"PO-Revision-Date: 2016-03-13 21:39+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: French (http://www.transifex.com/archlinuxfr/yaourt/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -714,7 +714,7 @@ msgstr "[A]fficher le contenu du paquet   [V]érifier avec namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr "ONAC"
+msgstr "ONAV"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"

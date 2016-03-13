@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-12 11:43+0000\n"
+"PO-Revision-Date: 2016-03-12 13:44+0000\n"
 "Last-Translator: Martin Kříž <liberte.czech@gmail.com>\n"
 "Language-Team: Czech (Czech Republic) (http://www.transifex.com/archlinuxfr/yaourt/language/cs_CZ/)\n"
 "MIME-Version: 1.0\n"
@@ -635,11 +635,11 @@ msgstr "Hledají se původní konfigurační soubory pro uložení"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman je teď používán, prosím počkejte."
+msgstr "Pacman je momentálně používán, prosím počkejte."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
-msgstr "synchronizace databází balíčků"
+msgstr "synchronizuje se databáze balíčků"
 
 #: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
@@ -659,7 +659,7 @@ msgstr "Konkrétní možnosti balíčku nejsou známé"
 
 #: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
-msgstr "%s závislostí:"
+msgstr "Závislosti balíčku %s:"
 
 #: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
@@ -691,7 +691,7 @@ msgstr "Instalace nebo sestavení chybějících závislostí pro balík %s:"
 
 #: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
-msgstr "Závislosti byly nainstalovány před výpadkem napájení"
+msgstr "Závislosti byly nainstalovány před pádem systému"
 
 #: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
@@ -711,11 +711,11 @@ msgstr "[z]obrazit obsah balíku   [z]kontrolovat balík s nástrojem namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr "YNVC"
+msgstr "ANVC"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
-msgstr "Stiskněte kteroukoli z kláves k pokračování"
+msgstr "Stiskněte kteroukoli z kláves pro pokračování"
 
 #: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
@@ -727,11 +727,11 @@ msgstr "Vaše balíky jsou uložené v %s"
 
 #: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
-msgstr "Není možné zkopírovat balíky do %s adresáře"
+msgstr "Není možné zkopírovat balíky do adresáře %s"
 
 #: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "Není možné odstranit adresář %s. Prosím, odstraňte ho použitím správcovských privilegií."
+msgstr "Není možné odstranit adresář %s. Prosím, odstraňte ho s použitím oprávnění správce."
 
 #: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
@@ -767,7 +767,7 @@ msgstr "není adresář"
 
 #: ../../lib/util.sh.in:160
 msgid "is not writable"
-msgstr "není povolen zápis"
+msgstr "nemůže zapisovat"
 
 #: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
@@ -788,7 +788,7 @@ msgstr "Přerušení..."
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "Prosím, přidejte $VISUAL do proměnných vašeho prostředí"
+msgstr "Prosím, přidejte proměnnou $VISUAL do proměnných vašeho prostředí"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"

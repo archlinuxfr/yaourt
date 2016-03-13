@@ -15,7 +15,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-10 10:09+0000\n"
+"PO-Revision-Date: 2016-03-13 15:36+0000\n"
 "Last-Translator: Pedro Román <roizheim@gmail.com>\n"
 "Language-Team: Spanish (http://www.transifex.com/archlinuxfr/yaourt/language/es/)\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,7 @@ msgstr ""
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
-msgstr "Eliminar todos los *.pac* que se encuentren"
+msgstr "Eliminar todos los archivos *.pac* que se encuentren"
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
