@@ -181,6 +181,7 @@ yaourt_sync() {
 yaourt_upgrade () {
 	[[ $ARGS ]] || pacman_cmd 2
 	local depends=( $(pkgquery -Qpif '%D' "${ARGS[@]}") )
+	[[ $depends == "-" ]] && depends=""
 	depends=( $(pacman_parse -T "${depends[@]}") )
 	if [[ $depends ]]; then
 		load_lib abs aur
