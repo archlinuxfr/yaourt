@@ -46,12 +46,12 @@ aur_show_info() {
 
 # Grab info for package on AUR Unsupported
 info_from_aur() {
-	local pkgname=$1 id votes outofdate maintainer popularity last_mod pkgbuild_url \
-		keywords licenses pkgver pkgdesc url
+	local pkgname=$1 id votes outofdate maintainer first_sub last_mod popularity \
+		pkgbuild_url keywords licenses pkgver pkgdesc url
 	title "Searching info on AUR for $pkgname"
-	IFS='|' read id votes outofdate maintainer last_mod popularity pkgbuild_url \
-		keywords licenses pkgver pkgdesc url \
-		< <(pkgquery -Aif '%i|%w|%o|%m|%L|%p|%u|%K|%e|%v|%d|%U' "$pkgname")
+	IFS='|' read id votes outofdate maintainer first_sub last_mod popularity \
+		pkgbuild_url keywords licenses pkgver pkgdesc url \
+		< <(pkgquery -Aif '%i|%w|%o|%m|%S|%L|%p|%u|%K|%e|%v|%d|%U' "$pkgname")
 	((outofdate)) && outofdate="$(gettext Yes)" || outofdate="$(gettext No)"
 	local tmpfile=$(mktemp --tmpdir="$YAOURTTMPDIR")
 	local pkgbase=${pkgbuild_url#*/snapshot/}; pkgbase=${pkgbase%.tar.gz}
@@ -85,6 +85,7 @@ info_from_aur() {
 	aur_show_info "Conflicts With " "${conflicts[*]}"
 	aur_show_info "Replaces       " "${replaces[*]}"
 	aur_show_info "Maintainer     " "$maintainer"
+	aur_show_info "First submit   " "$(date +"%c" --date "@$first_sub")"
 	aur_show_info "Last update    " "$(date +"%c" --date "@$last_mod")"
 	aur_show_info "Out Of Date    " "$outofdate"
 	aur_show_info "Votes          " "$votes"
