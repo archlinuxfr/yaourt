@@ -466,6 +466,7 @@ case "$MAJOR" in
 	# yaourt -C
 	clean)
 		(( CLEAN )) && _arg="-c" || _arg=""
+		(( NOCONFIRM )) || _arg+=" --confirm"
 		launch_with_su bash -c "DIFFEDITCMD=\"$DIFFEDITCMD\" pacdiffviewer $_arg"
 		;;
 
