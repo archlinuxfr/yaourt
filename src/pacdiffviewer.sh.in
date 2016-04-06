@@ -259,6 +259,7 @@ while [[ $1 ]]; do
 		-s) SEQUENTIAL=1;;
 		-d) DIFF=1;;
 		--backup|-b) action=backup;;
+		--confirm) NOCONFIRM=0;;
 		-c)	action=clean;;
 		-*) usage $1;;
 	esac
