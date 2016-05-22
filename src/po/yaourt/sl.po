@@ -4,144 +4,139 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Ferran Rius Riu <friusriu@gmail.com>, 2012
-# Ferran Rius Riu <friusriu@gmail.com>, 2012
-# Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
-# Pablo Roberto “Jristz” Lezaeta Reyes <prflr88@gmail.com>, 2012-2013
-# Pablo Roberto “Jristz” Lezaeta Reyes <prflr88@gmail.com>, 2013
-# Pedro Román <roizheim@gmail.com>, 2014-2016
+# Martin Kraner <doublexslo@yahoo.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-18 09:26+0000\n"
-"Last-Translator: Pedro Román <roizheim@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/archlinuxfr/yaourt/language/es/)\n"
+"PO-Revision-Date: 2016-03-20 12:34+0000\n"
+"Last-Translator: Martin Kraner <doublexslo@yahoo.com>\n"
+"Language-Team: Slovenian (http://www.transifex.com/archlinuxfr/yaourt/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
-msgstr "Eliminar todos los archivos *.pac* que se encuentren"
+msgstr "Izbriši vse najdene *.pac* datoteke."
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
-msgstr "Guardar todas las copias de seguridad de los paquetes para una futura fusión"
+msgstr "Shrani vse varnostne kopije paketov za poznejši merge."
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
-msgstr "Utilícelo con la copia de seguridad para no tener mensajes de salida"
+msgstr "Uporabi z varnostno kopijo, da ne izpisuje sporočila"
 
 #: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
-msgstr "Listado secuencial"
+msgstr "Zaporedni seznam"
 
 #: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
-msgstr "Mostrar las diferencias"
+msgstr "Prikaži diff"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "This help"
-msgstr "Esta ayuda"
+msgstr "Ta pomoč"
 
 #: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "Mostrar la versión"
+msgstr "Prikaži različico"
 
 #: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr "guardando"
+msgstr "shranjujem"
 
 #: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
 msgid "found"
-msgstr "encontrado"
+msgstr "najdenih"
 
 #: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr "los archivos son huérfanos"
+msgstr "datotek je osirotelih"
 
 #: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr "Los archivos siguientes no tienen versión original."
+msgstr "Naslednje datoteke nimajo izvorne različice."
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
-msgstr "¿Quiere eliminar estos archivos?"
+msgstr "Želite izbrisati te datoteke?"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
-msgstr "(T: todos, sin confirmación)"
+msgstr "(I: ne potrjuj)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr "SNT"
+msgstr "DNI"
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
-msgstr "**el mismo archivo**"
+msgstr "**ista datoteka**"
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
-msgstr "**fusión automática**"
+msgstr "**automerge**"
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Acción: ¿[E]ditar, [R]emplazar, [S]uprimir, [C]ontinuar (por defecto), [A]nular ?"
+msgstr "Dejanja: [U]redi, [Z]amenjaj, [I]gnoriraj, [N]adaljuj (privzeto), [P]rekliči?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr "Acción: ¿[E]ditar, [R]emplazar, [S]uprimir, [F]usionar, [C]ontinuar (por defecto), [A]nular ?"
+msgstr "Dejanja: [U]redi, [Z]amenjaj, [I]gnoriraj, [M]erge, [N]adaljuj (privzeto), [P]rekliči?"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr "ERSCA"
+msgstr "UZINP"
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr "ERSCAF"
+msgstr "UZINPM"
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
-msgstr "Parche: "
+msgstr "Patch: "
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
-msgstr "¿Aplicar?"
+msgstr "Uveljavim ?"
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr "¡el parche ha devuelto un error!"
+msgstr "patch je vrnil napako!"
 
 #: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
-msgstr "Introduzca nº: "
+msgstr "Vpišite št.:"
 
 #: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
-msgstr "Yaourt no es compatible con --help para una opción particular."
+msgstr "Yaourt ne podpira --help za to možnost."
 
 #: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
-msgstr "La ayuda de %s se muestra a continuación:"
+msgstr "Sledeče je pomoč za %s:"
 
 #: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
-msgstr "Uso: yaourt <operación> [...]"
+msgstr "Uporaba: yaourt <operacija> [...]"
 
 #: ../../yaourt.sh.in:42
 msgid "operations:"
-msgstr "operaciones:"
+msgstr "operacije:"
 
 #: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (buscar patrón|paquete)"
+msgstr "yaourt (iskalni vzorec|datoteka paketa)"
 
 #: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
@@ -153,35 +148,35 @@ msgstr "yaourt {-V --version}"
 
 #: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
-msgstr "yaourt {-Q --query} [opciones] [paquete(s)]"
+msgstr "yaourt {-Q --query}       [možnosti] [paket(i)]"
 
 #: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
-msgstr "yaourt {-R --remove} [opciones] <paquete(s)>"
+msgstr "yaourt {-R --remove}      [možnosti] <paket(i)>"
 
 #: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
-msgstr "yaourt {-S --sync} [opciones] [paquete(s)]"
+msgstr "yaourt {-S --sync}        [možnosti] [paket(i)]"
 
 #: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
-msgstr "yaourt {-U --upgrade} [opciones] <paquete(s)>"
+msgstr "yaourt {-U --upgrade}     [options] <paket(i)>"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C}               [opciones]"
+msgstr "yaourt {-C}               [možnosti]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
-msgstr "yaourt {-B --backup} [directorio de destino|archivo de restauración]"
+msgstr "yaourt {-B --backup}      [shranjevalna mapa | obnovitvena datoteka]"
 
 #: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
-msgstr "yaourt {-G --getpkgbuild} [opciones] <paquete(s)>"
+msgstr "yaourt {-G --getpkgbuild} [možnosti] <paket(i)>"
 
 #: ../../yaourt.sh.in:53
 msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
-msgstr "yaourt {-P --pkgbuild}    [-i --install] <directorio>"
+msgstr "yaourt {-P --pkgbuild}    [-i --install] <mapa>"
 
 #: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
@@ -189,622 +184,622 @@ msgstr "yaourt {--stats}"
 
 #: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
-msgstr "página web: http://archlinux.fr/yaourt-en"
+msgstr "domača stran: http://archlinux.fr/yaourt-en"
 
 #: ../../yaourt.sh.in:117
 msgid "query packages"
-msgstr "consultar los paquetes"
+msgstr "išči pakete"
 
 #: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
-msgstr "No se han instalado los paquetes siguientes:"
+msgstr "Sledeči paketi niso bili nameščeni:"
 
 #: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
-msgstr "listado de todos los paquetes en lo(s) repocitorio(s)"
+msgstr "prikazujem vse pakete v skladiščih"
 
 #: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
-msgstr "Listado de todos los paquetes en lo(s) repositorio(s)"
+msgstr "Prikazujem vse pakete v skladiščih"
 
 #: ../../yaourt.sh.in:147
 msgid "show groups"
-msgstr "mostrar los grupos"
+msgstr "prikaži skupine"
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr "Información para %s"
+msgstr "Informacije za %s"
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
-msgstr "No se puede leer el archivo %s"
+msgstr "Ni bilo mogoče brati datoteke %s"
 
 #: ../../yaourt.sh.in:233
 msgid "%s directory does not contain a PKGBUILD"
-msgstr "El directorio %s no contiene un PKGBUILD"
+msgstr "mapa %s ne vsebuje PKGBUILD"
 
 #: ../../yaourt.sh.in:239
 msgid "Installing %s from local PKGBUILD"
-msgstr "Instalando %s desde el PKGBUILD local"
+msgstr "Nameščam %s iz lokalnega PKGBUILD"
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Introduzca el número de los paquetes que desea instalar (ejemplos: 1 2 3 ó 1-3)"
+msgstr "Vnesite št. paketa ali paketov za namestitev (npr.: 1 2 3 or 1-3)"
 
 #: ../../yaourt.sh.in:488
 msgid "get PKGBUILD"
-msgstr "obtener el PKGBUILD"
+msgstr "pridobi PKGBUILD"
 
 #: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
-msgstr "Descargar el fichero abs"
+msgstr "Prenesi abs arhiv"
 
 #: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
-msgstr "Compilando %s a partir de las fuentes"
+msgstr "Gradim %s iz virov."
 
 #: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
-msgstr "Instalar %s a partir de las fuentes"
+msgstr "Namesti %s iz virov"
 
 #: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "Obteniendo el PKGBUILD y las fuentes locales..."
+msgstr "Pridobivam PKGBUILD in lokalne vire..."
 
 #: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
-msgstr "Paquetes externos: "
+msgstr "Tuji paketi:"
 
 #: ../../lib/abs.sh.in:232
 msgid "not found"
-msgstr "no encontrado"
+msgstr "ni najdeno"
 
 #: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
-msgstr "¿Continuar con la actualización?"
+msgstr "Nadaljuj nadgradnjo ?"
 
 #: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr "[V]isualizar los detalles del paquete   Selección [M]anual de los paquetes"
+msgstr "[P]oglej podrobnosti paketa   [R]očno izberi pakete"
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr "SNVM"
+msgstr "DNPR"
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
-msgstr "¿Proceder con la actualización? "
+msgstr "Začni z nadgradnjo?"
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr "Paquetes fuentes"
+msgstr "Cilji iz virov"
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
-msgstr "no se puede actualizar %s"
+msgstr "ni bilo mogoče posodobiti %s"
 
 #: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
-msgstr "Solamente actualizaciones de paquetes (nueva publicación):"
+msgstr "Paket samo za posodobitev (nova izdaja)"
 
 #: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
-msgstr "Actualización de los programas (nueva versión):"
+msgstr "Nadgraditev programske opreme (nova različica)"
 
 #: ../../lib/abs.sh.in:349
 msgid "New package :"
-msgstr "Nuevo paquete:"
+msgstr "Nov paket :"
 
 #: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
-msgstr "(requerido por %s)"
+msgstr "(zahtevan od %s)"
 
 #: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
-msgstr "Instalando desde una lista de paquetes"
+msgstr "Nameščam iz seznama paketov"
 
 #: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
-msgstr "actualizando paquete SVN/CVS/HG/GIT"
+msgstr "posodabljam SVN/CVS/HG/GIT paket"
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr "Paquetes"
+msgstr "Cilji"
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Guardando la base de datos de pacman en %s"
+msgstr "Shranjujem pacman bazo v %s"
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "Base de datos de pacman guardada con éxito en %s"
+msgstr "Pacman baza uspešno shranjena v %s"
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Analizando la copia de seguridad"
+msgstr "Analiziran datoteko varnostne kopije"
 
 #: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr "%s no es una copia de seguridad de base de datos ALPM válida"
+msgstr "%s ni veljavna varnostna kopija alpm baze"
 
 #: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "Paquetes nuevos instalados desde la copia de seguridad:"
+msgstr "Novi paketi nameščeni od zadnje varnostne kopije:"
 
 #: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Paquetes eliminados o actualizados desde la copia de seguridad:"
+msgstr "Paketi odstranjeni ali nadgrajeni od zadnje varnostne kopije:"
 
 #: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
-msgstr "¡Atención! ¿Quiere restaurar esta copia de seguridad?"
+msgstr "Opozorilo! Želite obnoviti to varnostno kopijo?"
 
 #: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
-msgstr "(la base de datos local se guardará en %s)"
+msgstr "(lokalna baza bo shranjena v %s)"
 
 #: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Si quiere restaurar esta copia de seguridad teclee «sí»"
+msgstr "Če želite obnoviti to varnostno kopijo, vnesite \"da\""
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
-msgstr "sí"
+msgstr "da"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "Eliminando la base de datos de pacman"
+msgstr "Brišem pacman bazo"
 
 #: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr "Copiando la copia de seguridad"
+msgstr "Kopiram varnostno kopijo"
 
 #: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
-msgstr "Comprobando la nueva base de datos"
+msgstr "Testiram novo bazo"
 
 #: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "Su copia de seguridad no se ha restaurado con éxito"
+msgstr "Vaša varnostna kopija ni bila uspešno obnovljena"
 
 #: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
-msgstr "Su copia de seguridad se ha restaurado con éxito"
+msgstr "Vaša varnostna kopija je bila uspešno obnovljena"
 
 #: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr "paquetes encontrados"
+msgstr "paketov najdenih"
 
 #: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr "(base de datos antigua guardada en %s)"
+msgstr "(stara baza je shranjena v %s)"
 
 #: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
-msgstr "argumento erróneo"
+msgstr "napačen argument"
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "¿Quiere eliminar estos paquetes (con las opciones -Rcs)? "
+msgstr "Želite odstraniti te pakete (z -Rcs možnostmi) ?"
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr "SN"
+msgstr "DN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
-msgstr "Paquetes instalados en total:"
+msgstr "Skupno nameščenih paketov:"
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Paquetes instalados explícitamente:"
+msgstr "Eksplicitno nameščeni paketi:"
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
-msgstr "Paquetes instalados como dependencias para ejecutar otros paquetes:"
+msgstr "Paketi nameščeni kot odvisnosti za izvajanje drugih paketov:"
 
 #: ../../lib/alpm_stats.sh:52
 msgid "Packages out of date:"
-msgstr "Paquetes desactualizados:"
+msgstr "Zastarani paketi:"
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "Al parecer los paquetes %s ya no son requeridos por ningún otro paquete instalado:"
+msgstr "Kjer %s paketi izgledajo, da niso več v uporabi od nobenega paketa:"
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Paquetes a mantener:"
+msgstr "Zadržani paketi:"
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr "Paquetes a ignorar:"
+msgstr "Ignorirani paketi:"
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr "Grupos a ignorar:"
+msgstr "Ignorirane skupine:"
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
-msgstr "Número de repositorios configurados:"
+msgstr "Število konfiguriranih skladišč:"
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Paquetes por repositorio (ordenados por prioridad de pacman)"
+msgstr "Paketi po skladiščih (urejeni po pacmanovi prioriteti)"
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr "otros"
+msgstr "ostali"
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr "son paquetes de una compilación local o de AUR, sin soporte"
+msgstr "ali so paketi iz lokalnega grajenja ali AUR nepodprti"
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Espacio teórico-real que ocupan los paquetes:"
+msgstr "Teoretično - Dejanska velikost zasedena z strani paketov:"
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
-msgstr "progreso:"
+msgstr "napredek:"
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Espacio teórico que ocupan los paquetes:"
+msgstr "Teoretična velikost zasedena od paketov:"
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr "Espacio real que utilizan los paquetes:"
+msgstr "Dejanska velikost zasedena od paketov:"
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr "Espacio utilizado en la caché por paquetes descargados (cachedir):"
+msgstr "Prostor zaseden od paketov prenesenih v pomnilnik (cachedir):"
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr "Espacio utilizado en la caché por las fuentes descargadas:"
+msgstr "Prostor zaseden od virov prenesenih v pomnilnik:"
 
 #: ../../lib/aur.sh:20
 msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
-msgstr "AURUSEGIT está establecido pero la orden git no se encuentra. No se pueden recuperar los archivos comprimidos (tarballs)."
+msgstr "AURUSEGIT je nastavljen ampak git ukaz ni bil najden. Vračam na uporabo tarball arhivov."
 
 #: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
-msgstr "No se encuentra %s en AUR"
+msgstr "%s ni bil najden v AUR."
 
 #: ../../lib/aur.sh:55
 msgid "Yes"
-msgstr "Sí"
+msgstr "Da"
 
 #: ../../lib/aur.sh:55
 msgid "No"
-msgstr "No"
+msgstr "Ne"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr "Repositorio     "
+msgstr "Skladišče"
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr "Nombre           "
+msgstr "Ime"
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr "Paquete básico   "
+msgstr "Osnovni paket"
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr "Versión        "
+msgstr "Različica"
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr "Descripción    "
+msgstr "Opis"
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr "Arquitectura   "
+msgstr "Arhitektura"
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr "URL            "
+msgstr "URL"
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr "URL de AUR        "
+msgstr "AUR URL"
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr "Palabras claves       "
+msgstr "Ključne besede"
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr "Licencias       "
+msgstr "Licence"
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr "Grupos         "
+msgstr "Skupine"
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr "Aportado por       "
+msgstr "Zagotavlja"
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr "Depende de     "
+msgstr "Je odvisno od"
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr "Dependencias opcionales  "
+msgstr "Neobvezne odvisnosti"
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr "En conflicto con "
+msgstr "Je v sporu z"
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr "Remplaza a      "
+msgstr "Nadomesti"
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr "Mantenedor     "
+msgstr "Vzdrževalec"
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr "Última actualización    "
+msgstr "Zadnja posodobitev"
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr "Desactualizado    "
+msgstr "Zastarano"
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr "Votos          "
+msgstr "Glasovi"
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr "Popularidad     "
+msgstr "Popularnost"
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
-msgstr "Comprobando la votación para %s"
+msgstr "Preverjan status glasov za %s"
 
 #: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
-msgstr "Ya ha votado por %s"
+msgstr "Ste že glasovali za %s"
 
 #: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
-msgstr "¿Quiere votar por %s? "
+msgstr "Želite glasovati za %s ?"
 
 #: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
-msgstr "Instalando %s desde AUR"
+msgstr "Nameščam %s z AUR"
 
 #: ../../lib/aur.sh:197
 msgid "Downloading %s PKGBUILD from AUR..."
-msgstr "Descargando PKGBUILD para %s desde AUR..."
+msgstr "Prenašam %s PKGBUILD iz AUR"
 
 #: ../../lib/aur.sh:203
 msgid "This package is orphaned"
-msgstr "Este paquete está huérfano"
+msgstr "Ta paket je osirotel"
 
 #: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr "(Paquete sin soporte: ¡podría ser peligroso!)"
+msgstr "( Nepodprti paket: Morebitno nevarno ! )"
 
 #: ../../lib/aur.sh:225
 msgid "not found on AUR"
-msgstr "no se encuentra en AUR"
+msgstr "ni najdeno v AUR"
 
 #: ../../lib/aur.sh:232
 msgid "up to date "
-msgstr "actualizado"
+msgstr "posodobljeno"
 
 #: ../../lib/aur.sh:233
 msgid "flagged as out of date"
-msgstr "marcado como desactualizado"
+msgstr "označeno kot zastarelo"
 
 #: ../../lib/aur.sh:242
 msgid "Orphan"
-msgstr "Huérfano"
+msgstr "Sirota"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
-msgstr "[S/n]"
+msgstr "[D/n]"
 
 #: ../../lib/io.sh:99
 msgid "[y/N]"
-msgstr "[s/N]"
+msgstr "[d/N]"
 
 #: ../../lib/io.sh:100
 msgid "[y/n]"
-msgstr "[s/n]"
+msgstr "[d/n]"
 
 #: ../../lib/io.sh:155
 msgid "WARNING: "
-msgstr "AVISO: "
+msgstr "OPOZORILO:"
 
 #: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr "ERROR: "
+msgstr "NAPAKA:"
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Paquetes que ya no los requiere ningún paquete instalado:"
+msgstr "Paketi, ki niso več zahtevani z strani nobenega paketa:"
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
-msgstr "Buscando los archivos de configuración originales para guardar"
+msgstr "Iščen za izvorne nastavitvene datoteke za shranjevanje"
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman está en uso, espere por favor."
+msgstr "Pacman je trenutno že v uporabi, prosimo počakajte."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
-msgstr "sincronizando las bases de datos de los paquetes"
+msgstr "sinhroniziram baze paketov"
 
 #: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
-msgstr "(ignorando la actualización de paquetes)"
+msgstr "(ignoriram posodobitev paketa)"
 
 #: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
-msgstr "No se puede leer PKGBUILD"
+msgstr "Ni mogoče brati PKGBUILD"
 
 #: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
-msgstr "Este PKGBUILD describe un paquete dividido."
+msgstr "Ta PKGBUILD opisuje razdeljen paket."
 
 #: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
-msgstr "Las opciones específicas del paquete son desconocidas"
+msgstr "Specifične možnosti paketa so neznane"
 
 #: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
-msgstr "dependencias de %s:"
+msgstr "%s odvisnosti:"
 
 #: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
-msgstr "(ya instalado)"
+msgstr "(že nameščeno)"
 
 #: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
-msgstr "(paquete encontrado)"
+msgstr "(paket najden)"
 
 #: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
-msgstr "(compilando desde AUR)"
+msgstr "(gradim iz AUR)"
 
 #: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
-msgstr "conflictos de %s:"
+msgstr "%s spori:"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
-msgstr "Compilando e instalando el paquete"
+msgstr "Gradim in nameščam paket"
 
 #: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
-msgstr "%s ya está actualizado."
+msgstr "%s je že posodobljen."
 
 #: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
-msgstr "Instalar o compilar las dependencias que faltan para %s:"
+msgstr "Namesti ali izgradi manjkajoče odvisnosti za %s:"
 
 #: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
-msgstr "Las dependencias se instalaron antes del fallo"
+msgstr "Odvisnosti so bile nameščene pred napako"
 
 #: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
-msgstr "Makepkg no ha podido compilar %s."
+msgstr "Makepkg ni mogel zgraditi %s."
 
 #: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
-msgstr "Exportando %s al directorio %s"
+msgstr "Izvažam %s v mapo %s"
 
 #: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
-msgstr "¿Continuar la instalación de %s?"
+msgstr "Nadaljujem z nameščanjem %s ?"
 
 #: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr "[v]isualizar los contenidos del paquete, [c]omprobar el paquete con namcap"
+msgstr "[p]prikaži vsebino paketa   p[r]everi paket z namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr "SNVC"
+msgstr "DNPR"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
-msgstr "Pulse cualquier tecla para continuar"
+msgstr "Pritisnite katerokoli tipko za nadaljevanje"
 
 #: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
-msgstr "namcap no está instalado"
+msgstr "namcap ni nameščen"
 
 #: ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
-msgstr "Sus paquetes se han guardado en %s"
+msgstr "Vaši paketi so shranjeni v %s"
 
 #: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
-msgstr "No se pueden copiar los paquetes al directorio %s"
+msgstr "Ni bilo mogoče kopirati pakete v mapo %s"
 
 #: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "No se puede borrar el directorio %s. Bórrelo utilizando privilegios de administrador (root)."
+msgstr "Ni bilo mogoče izbrisati mapo %s. Prosimo izbrišite jo z root privilegiji."
 
 #: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
-msgstr "No se puede crear el directorio %s."
+msgstr "Ni bilo mogoče ustvariti mape %s."
 
 #: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
-msgstr "¿Continuar compilando %s? "
+msgstr "Nadaljujem z grajenjem %s ?"
 
 #: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
-msgstr "¿Reiniciar la compilación de %s? "
+msgstr "Ponovim grajenje %s ?"
 
 #: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "El directorio %s ya existe. ¿[R]emplazar, [C]ambiar a %s, [S]altar ?"
+msgstr "mapa %s že obstaja. [Z]amenjaj, [S]premeni v %s, [P]reskoči ?"
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr "RCS"
+msgstr "ZSP"
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
-msgstr "Descargando las fuentes %s"
+msgstr "Prenesi %s vire"
 
 #: ../../lib/pkgbuild.sh.in:503
 msgid "Copying files from %s to build directory..."
-msgstr "Copiando archivos desde %s al directorio de compilación..."
+msgstr "Kopiram datoteke iz %s v mapo za grajenje..."
 
 #: ../../lib/util.sh.in:159
 msgid "is not a directory"
-msgstr "no es un directorio"
+msgstr "ni mapa"
 
 #: ../../lib/util.sh.in:160
 msgid "is not writable"
-msgstr "no es de escritura"
+msgstr "ni mogoče pisati"
 
 #: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
-msgstr "¿Quiere editar %s?"
+msgstr "Uredi %s ?"
 
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
-msgstr "(«A» para anular)"
+msgstr "(\"P\" za prekliči)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr "SNA"
+msgstr "DNP"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
-msgstr "Anulada..."
+msgstr "Preklicano..."
 
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "Por favor, añada $VISUAL a las variables de entorno"
+msgstr "Prosimo dodajte $VISUAL v vaše spremenljivke okolja"
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"
-msgstr "por ejemplo:"
+msgstr "na primer:"
 
 #: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
-msgstr "(en ~/.bashrc)"
+msgstr "(in ~/.bashrc)"
 
 #: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
-msgstr "(remplace vim por su editor preferido)"
+msgstr "(zamenjaj vim z vašim najljubšim urejevalnikom)"
 
 #: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
-msgstr "Editar %s con: "
+msgstr "Uredi %s z:"

@@ -4,807 +4,802 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
-# Ferran Rius Riu <friusriu@gmail.com>, 2012
-# Ferran Rius Riu <friusriu@gmail.com>, 2012
-# Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
-# Pablo Roberto “Jristz” Lezaeta Reyes <prflr88@gmail.com>, 2012-2013
-# Pablo Roberto “Jristz” Lezaeta Reyes <prflr88@gmail.com>, 2013
-# Pedro Román <roizheim@gmail.com>, 2014-2016
+# gyeben <gyonkibendeguz@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-18 09:26+0000\n"
-"Last-Translator: Pedro Román <roizheim@gmail.com>\n"
-"Language-Team: Spanish (http://www.transifex.com/archlinuxfr/yaourt/language/es/)\n"
+"PO-Revision-Date: 2016-05-19 11:44+0000\n"
+"Last-Translator: gyeben <gyonkibendeguz@gmail.com>\n"
+"Language-Team: Hungarian (http://www.transifex.com/archlinuxfr/yaourt/language/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
+"Language: hu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../../pacdiffviewer.sh.in:42
 msgid "Delete all *.pac* found"
-msgstr "Eliminar todos los archivos *.pac* que se encuentren"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:43
 msgid "Save all packages backup files for a later merge"
-msgstr "Guardar todas las copias de seguridad de los paquetes para una futura fusión"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:44
 msgid "Use with backup to not output messages"
-msgstr "Utilícelo con la copia de seguridad para no tener mensajes de salida"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:45
 msgid "Sequential listing"
-msgstr "Listado secuencial"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:46
 msgid "Display diff"
-msgstr "Mostrar las diferencias"
+msgstr "Eltérések mutatása"
 
 #: ../../pacdiffviewer.sh.in:47
 msgid "This help"
-msgstr "Esta ayuda"
+msgstr "Ezen súgó"
 
 #: ../../pacdiffviewer.sh.in:48
 msgid "Show version"
-msgstr "Mostrar la versión"
+msgstr "Verzió mutatása"
 
 #: ../../pacdiffviewer.sh.in:70
 msgid "saving"
-msgstr "guardando"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:102 ../../pacdiffviewer.sh.in:103
 #: ../../pacdiffviewer.sh.in:104
 msgid "found"
-msgstr "encontrado"
+msgstr "található"
 
 #: ../../pacdiffviewer.sh.in:105
 msgid "files are orphans"
-msgstr "los archivos son huérfanos"
+msgstr "fájl árva"
 
 #: ../../pacdiffviewer.sh.in:157
 msgid "The following files have no original version."
-msgstr "Los archivos siguientes no tienen versión original."
+msgstr "A következő fájloknak nincs eredeti verziója."
 
 #: ../../pacdiffviewer.sh.in:160
 msgid "Do you want to delete these files ?"
-msgstr "¿Quiere eliminar estos archivos?"
+msgstr "Törölni akarja ezeket a fájlokat?"
 
 #: ../../pacdiffviewer.sh.in:161
 msgid "(S: no confirm)"
-msgstr "(T: todos, sin confirmación)"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr "SNT"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:180
 msgid "**same file**"
-msgstr "**el mismo archivo**"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:184
 msgid "**automerge**"
-msgstr "**fusión automática**"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:188
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
-msgstr "Acción: ¿[E]ditar, [R]emplazar, [S]uprimir, [C]ontinuar (por defecto), [A]nular ?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:189
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr "Acción: ¿[E]ditar, [R]emplazar, [S]uprimir, [F]usionar, [C]ontinuar (por defecto), [A]nular ?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCA"
-msgstr "ERSCA"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:191
 msgid "ERSCAM"
-msgstr "ERSCAF"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:201
 msgid "Patch: "
-msgstr "Parche: "
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:204
 msgid "Apply ?"
-msgstr "¿Aplicar?"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:207
 msgid "patch returned an error!"
-msgstr "¡el parche ha devuelto un error!"
+msgstr ""
 
 #: ../../pacdiffviewer.sh.in:229
 msgid "Enter n° : "
-msgstr "Introduzca nº: "
+msgstr ""
 
 #: ../../yaourt.sh.in:35
 msgid "Yaourt does not support --help for a particular option."
-msgstr "Yaourt no es compatible con --help para una opción particular."
+msgstr ""
 
 #: ../../yaourt.sh.in:36
 msgid "The following is %s help :"
-msgstr "La ayuda de %s se muestra a continuación:"
+msgstr ""
 
 #: ../../yaourt.sh.in:41
 msgid "Usage: yaourt <operation> [...]"
-msgstr "Uso: yaourt <operación> [...]"
+msgstr ""
 
 #: ../../yaourt.sh.in:42
 msgid "operations:"
-msgstr "operaciones:"
+msgstr ""
 
 #: ../../yaourt.sh.in:43
 msgid "yaourt (search pattern|package file)"
-msgstr "yaourt (buscar patrón|paquete)"
+msgstr ""
 
 #: ../../yaourt.sh.in:44
 msgid "yaourt {-h --help}"
-msgstr "yaourt {-h --help}"
+msgstr ""
 
 #: ../../yaourt.sh.in:45
 msgid "yaourt {-V --version}"
-msgstr "yaourt {-V --version}"
+msgstr ""
 
 #: ../../yaourt.sh.in:46
 msgid "yaourt {-Q --query}       [options] [package(s)]"
-msgstr "yaourt {-Q --query} [opciones] [paquete(s)]"
+msgstr ""
 
 #: ../../yaourt.sh.in:47
 msgid "yaourt {-R --remove}      [options] <package(s)>"
-msgstr "yaourt {-R --remove} [opciones] <paquete(s)>"
+msgstr ""
 
 #: ../../yaourt.sh.in:48
 msgid "yaourt {-S --sync}        [options] [package(s)]"
-msgstr "yaourt {-S --sync} [opciones] [paquete(s)]"
+msgstr ""
 
 #: ../../yaourt.sh.in:49
 msgid "yaourt {-U --upgrade}     [options] <package(s)>"
-msgstr "yaourt {-U --upgrade} [opciones] <paquete(s)>"
+msgstr ""
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C}               [opciones]"
+msgstr ""
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
-msgstr "yaourt {-B --backup} [directorio de destino|archivo de restauración]"
+msgstr ""
 
 #: ../../yaourt.sh.in:52
 msgid "yaourt {-G --getpkgbuild} [options] <package(s)>"
-msgstr "yaourt {-G --getpkgbuild} [opciones] <paquete(s)>"
+msgstr ""
 
 #: ../../yaourt.sh.in:53
 msgid "yaourt {-P --pkgbuild}    [-i --install] <directory>"
-msgstr "yaourt {-P --pkgbuild}    [-i --install] <directorio>"
+msgstr ""
 
 #: ../../yaourt.sh.in:54
 msgid "yaourt {--stats}"
-msgstr "yaourt {--stats}"
+msgstr ""
 
 #: ../../yaourt.sh.in:59
 msgid "homepage: http://archlinux.fr/yaourt-en"
-msgstr "página web: http://archlinux.fr/yaourt-en"
+msgstr ""
 
 #: ../../yaourt.sh.in:117
 msgid "query packages"
-msgstr "consultar los paquetes"
+msgstr ""
 
 #: ../../yaourt.sh.in:131
 msgid "Following packages have not been installed:"
-msgstr "No se han instalado los paquetes siguientes:"
+msgstr "A következő csomagok nem lett telepítve:"
 
 #: ../../yaourt.sh.in:144
 msgid "listing all packages in repo(s)"
-msgstr "listado de todos los paquetes en lo(s) repocitorio(s)"
+msgstr "a csomagtároló(k)ban lévő összes csomag listázása"
 
 #: ../../yaourt.sh.in:145
 msgid "Listing all packages in repo(s)"
-msgstr "Listado de todos los paquetes en lo(s) repositorio(s)"
+msgstr "A csomagtároló(k)ban lévő összes csomag listázása"
 
 #: ../../yaourt.sh.in:147
 msgid "show groups"
-msgstr "mostrar los grupos"
+msgstr ""
 
 #: ../../yaourt.sh.in:166
 msgid "Information for %s"
-msgstr "Información para %s"
+msgstr ""
 
 #: ../../yaourt.sh.in:207
 msgid "Unable to read %s file"
-msgstr "No se puede leer el archivo %s"
+msgstr "%s fájl olvasása sikertelen"
 
 #: ../../yaourt.sh.in:233
 msgid "%s directory does not contain a PKGBUILD"
-msgstr "El directorio %s no contiene un PKGBUILD"
+msgstr ""
 
 #: ../../yaourt.sh.in:239
 msgid "Installing %s from local PKGBUILD"
-msgstr "Instalando %s desde el PKGBUILD local"
+msgstr ""
 
 #: ../../yaourt.sh.in:252
 msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Introduzca el número de los paquetes que desea instalar (ejemplos: 1 2 3 ó 1-3)"
+msgstr ""
 
 #: ../../yaourt.sh.in:488
 msgid "get PKGBUILD"
-msgstr "obtener el PKGBUILD"
+msgstr ""
 
 #: ../../lib/abs.sh.in:68
 msgid "Download abs archive"
-msgstr "Descargar el fichero abs"
+msgstr ""
 
 #: ../../lib/abs.sh.in:97
 msgid "Building %s from sources."
-msgstr "Compilando %s a partir de las fuentes"
+msgstr "%s lefordítása forrásból."
 
 #: ../../lib/abs.sh.in:98
 msgid "Install %s from sources"
-msgstr "Instalar %s a partir de las fuentes"
+msgstr "%s telepítése forrásból"
 
 #: ../../lib/abs.sh.in:100
 msgid "Retrieving PKGBUILD and local sources..."
-msgstr "Obteniendo el PKGBUILD y las fuentes locales..."
+msgstr "PKGBUILD és helyi források beszerzése..."
 
 #: ../../lib/abs.sh.in:177
 msgid "Foreign packages: "
-msgstr "Paquetes externos: "
+msgstr "Idegen csomagok:"
 
 #: ../../lib/abs.sh.in:232
 msgid "not found"
-msgstr "no encontrado"
+msgstr "nem található"
 
 #: ../../lib/abs.sh.in:250
 msgid "Continue upgrade ?"
-msgstr "¿Continuar con la actualización?"
+msgstr "Folytatja a frissítést?"
 
 #: ../../lib/abs.sh.in:251
 msgid "[V]iew package detail   [M]anually select packages"
-msgstr "[V]isualizar los detalles del paquete   Selección [M]anual de los paquetes"
+msgstr ""
 
 #: ../../lib/abs.sh.in:252
 msgid "YNVM"
-msgstr "SNVM"
+msgstr ""
 
 #: ../../lib/abs.sh.in:273
 msgid "Proceed with upgrade? "
-msgstr "¿Proceder con la actualización? "
+msgstr "Folytatja a frissítést?"
 
 #: ../../lib/abs.sh.in:301
 msgid "Source targets"
-msgstr "Paquetes fuentes"
+msgstr ""
 
 #: ../../lib/abs.sh.in:328
 msgid "unable to update %s"
-msgstr "no se puede actualizar %s"
+msgstr "%s frissítése sikertelen"
 
 #: ../../lib/abs.sh.in:347
 msgid "Package upgrade only (new release):"
-msgstr "Solamente actualizaciones de paquetes (nueva publicación):"
+msgstr ""
 
 #: ../../lib/abs.sh.in:348
 msgid "Software upgrade (new version) :"
-msgstr "Actualización de los programas (nueva versión):"
+msgstr "Szoftverfrissítés (új verzió) :"
 
 #: ../../lib/abs.sh.in:349
 msgid "New package :"
-msgstr "Nuevo paquete:"
+msgstr "Új csomag :"
 
 #: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
 msgid "(required by %s)"
-msgstr "(requerido por %s)"
+msgstr ""
 
 #: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
 msgid "Installing from a package list"
-msgstr "Instalando desde una lista de paquetes"
+msgstr ""
 
 #: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
 msgid "upgrading SVN/CVS/HG/GIT package"
-msgstr "actualizando paquete SVN/CVS/HG/GIT"
+msgstr ""
 
 #: ../../lib/abs.sh.in:454
 msgid "Targets"
-msgstr "Paquetes"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:10 ../../lib/alpm_backup.sh:11
 msgid "Saving pacman database in %s"
-msgstr "Guardando la base de datos de pacman en %s"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:13
 msgid "Pacman database successfully saved in %s"
-msgstr "Base de datos de pacman guardada con éxito en %s"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:19 ../../lib/alpm_backup.sh:20
 msgid "Analysing backup file"
-msgstr "Analizando la copia de seguridad"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:30
 msgid "%s is not a valid alpm database backup"
-msgstr "%s no es una copia de seguridad de base de datos ALPM válida"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:45
 msgid "New packages installed since backup:"
-msgstr "Paquetes nuevos instalados desde la copia de seguridad:"
+msgstr "A biztonsági mentés óta telepített új csomagok:"
 
 #: ../../lib/alpm_backup.sh:48
 msgid "Packages removed or ugpraded since backup:"
-msgstr "Paquetes eliminados o actualizados desde la copia de seguridad:"
+msgstr "A biztonsági mentés óta eltávolított vagy frissített csomagok:"
 
 #: ../../lib/alpm_backup.sh:51 ../../lib/alpm_backup.sh:52
 msgid "Warning! Do you want to restore this backup ?"
-msgstr "¡Atención! ¿Quiere restaurar esta copia de seguridad?"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:53
 msgid "(local db will be saved in %s)"
-msgstr "(la base de datos local se guardará en %s)"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:54
 msgid "If you want to restore this backup, type \"yes\""
-msgstr "Si quiere restaurar esta copia de seguridad teclee «sí»"
+msgstr "Ha vissza akarja állítani ezt a biztonsági mentést, írja be, hogy \"igen\""
 
 #: ../../lib/alpm_backup.sh:56
 msgid "yes"
-msgstr "sí"
+msgstr "igen"
 
 #: ../../lib/alpm_backup.sh:57
 msgid "Deleting pacman DB"
-msgstr "Eliminando la base de datos de pacman"
+msgstr "pacman adatbázis törlése"
 
 #: ../../lib/alpm_backup.sh:59
 msgid "Copying backup"
-msgstr "Copiando la copia de seguridad"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:62
 msgid "Testing the new database"
-msgstr "Comprobando la nueva base de datos"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:65
 msgid "Your backup is not successfully restored"
-msgstr "Su copia de seguridad no se ha restaurado con éxito"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:67
 msgid "Your backup has been successfully restored"
-msgstr "Su copia de seguridad se ha restaurado con éxito"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:68
 msgid "packages found"
-msgstr "paquetes encontrados"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:70
 msgid "(old database is saved in %s)"
-msgstr "(base de datos antigua guardada en %s)"
+msgstr ""
 
 #: ../../lib/alpm_backup.sh:82
 msgid "wrong argument"
-msgstr "argumento erróneo"
+msgstr ""
 
 #: ../../lib/alpm_query.sh:48
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "¿Quiere eliminar estos paquetes (con las opciones -Rcs)? "
+msgstr ""
 
 #: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
 msgid "YN"
-msgstr "SN"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
-msgstr "Paquetes instalados en total:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:50
 msgid "Explicitly installed packages:"
-msgstr "Paquetes instalados explícitamente:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:51
 msgid "Packages installed as dependencies to run other packages:"
-msgstr "Paquetes instalados como dependencias para ejecutar otros paquetes:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:52
 msgid "Packages out of date:"
-msgstr "Paquetes desactualizados:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:54
 msgid "Where %s packages seem to no longer be in use by any package:"
-msgstr "Al parecer los paquetes %s ya no son requeridos por ningún otro paquete instalado:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:57
 msgid "Hold packages:"
-msgstr "Paquetes a mantener:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:58
 msgid "Ignored packages:"
-msgstr "Paquetes a ignorar:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:59
 msgid "Ignored groups:"
-msgstr "Grupos a ignorar:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:65
 msgid "Number of configured repositories:"
-msgstr "Número de repositorios configurados:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:66
 msgid "Packages by repositories (ordered by pacmans priority)"
-msgstr "Paquetes por repositorio (ordenados por prioridad de pacman)"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:74 ../../lib/alpm_stats.sh:80
 msgid "others"
-msgstr "otros"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:80
 msgid "are packages from local build or AUR Unsupported"
-msgstr "son paquetes de una compilación local o de AUR, sin soporte"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:88
 msgid "Theoretical - Real space used by packages:"
-msgstr "Espacio teórico-real que ocupan los paquetes:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:89
 msgid "progression:"
-msgstr "progreso:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:98
 msgid "Theoretical space used by packages:"
-msgstr "Espacio teórico que ocupan los paquetes:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:99
 msgid "Real space used by packages:"
-msgstr "Espacio real que utilizan los paquetes:"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:103
 msgid "Space used by pkg downloaded in cache (cachedir):"
-msgstr "Espacio utilizado en la caché por paquetes descargados (cachedir):"
+msgstr ""
 
 #: ../../lib/alpm_stats.sh:105
 msgid "Space used by src downloaded in cache:"
-msgstr "Espacio utilizado en la caché por las fuentes descargadas:"
+msgstr ""
 
 #: ../../lib/aur.sh:20
 msgid ""
 "AURUSEGIT is set but git command is not found. Falling back to tarballs."
-msgstr "AURUSEGIT está establecido pero la orden git no se encuentra. No se pueden recuperar los archivos comprimidos (tarballs)."
+msgstr ""
 
 #: ../../lib/aur.sh:32 ../../lib/aur.sh:60
 msgid "%s not found in AUR."
-msgstr "No se encuentra %s en AUR"
+msgstr "%s nem található az AUR-ban."
 
 #: ../../lib/aur.sh:55
 msgid "Yes"
-msgstr "Sí"
+msgstr "Igen"
 
 #: ../../lib/aur.sh:55
 msgid "No"
-msgstr "No"
+msgstr "Nem"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr "Repositorio     "
+msgstr "Csomagtároló"
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
-msgstr "Nombre           "
+msgstr "Név"
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr "Paquete básico   "
+msgstr "Alapcsomag"
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr "Versión        "
+msgstr "Verzió"
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr "Descripción    "
+msgstr "Leírás"
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr "Arquitectura   "
+msgstr "Architektúra"
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
-msgstr "URL            "
+msgstr "Webcím"
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr "URL de AUR        "
+msgstr "AUR webcím"
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr "Palabras claves       "
+msgstr "Kulcsszavak"
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr "Licencias       "
+msgstr "Licencek"
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr "Grupos         "
+msgstr "Csoportok"
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr "Aportado por       "
+msgstr ""
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr "Depende de     "
+msgstr ""
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr "Dependencias opcionales  "
+msgstr ""
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
-msgstr "En conflicto con "
+msgstr ""
 
 #: ../../lib/aur.sh:86
 msgid "Replaces       "
-msgstr "Remplaza a      "
+msgstr ""
 
 #: ../../lib/aur.sh:87
 msgid "Maintainer     "
-msgstr "Mantenedor     "
+msgstr ""
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr "Última actualización    "
+msgstr "Utolsó frissítés"
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr "Desactualizado    "
+msgstr "Elavuit"
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
-msgstr "Votos          "
+msgstr ""
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr "Popularidad     "
+msgstr "Népszerűség"
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
-msgstr "Comprobando la votación para %s"
+msgstr ""
 
 #: ../../lib/aur.sh:176
 msgid "You have already voted for %s"
-msgstr "Ya ha votado por %s"
+msgstr ""
 
 #: ../../lib/aur.sh:179
 msgid "Do you want to vote for %s ? "
-msgstr "¿Quiere votar por %s? "
+msgstr ""
 
 #: ../../lib/aur.sh:193
 msgid "Installing %s from AUR"
-msgstr "Instalando %s desde AUR"
+msgstr ""
 
 #: ../../lib/aur.sh:197
 msgid "Downloading %s PKGBUILD from AUR..."
-msgstr "Descargando PKGBUILD para %s desde AUR..."
+msgstr "%s PKGBUILD letöltése az AUR-ból..."
 
 #: ../../lib/aur.sh:203
 msgid "This package is orphaned"
-msgstr "Este paquete está huérfano"
+msgstr ""
 
 #: ../../lib/aur.sh:204
 msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr "(Paquete sin soporte: ¡podría ser peligroso!)"
+msgstr "( Nem támogatott csomag: potenciálisan veszélyes! )"
 
 #: ../../lib/aur.sh:225
 msgid "not found on AUR"
-msgstr "no se encuentra en AUR"
+msgstr "nem található az AUR-on"
 
 #: ../../lib/aur.sh:232
 msgid "up to date "
-msgstr "actualizado"
+msgstr "naprakész"
 
 #: ../../lib/aur.sh:233
 msgid "flagged as out of date"
-msgstr "marcado como desactualizado"
+msgstr "elavultnak jelölt"
 
 #: ../../lib/aur.sh:242
 msgid "Orphan"
-msgstr "Huérfano"
+msgstr "Árva"
 
 #: ../../lib/io.sh:98
 msgid "[Y/n]"
-msgstr "[S/n]"
+msgstr ""
 
 #: ../../lib/io.sh:99
 msgid "[y/N]"
-msgstr "[s/N]"
+msgstr ""
 
 #: ../../lib/io.sh:100
 msgid "[y/n]"
-msgstr "[s/n]"
+msgstr ""
 
 #: ../../lib/io.sh:155
 msgid "WARNING: "
-msgstr "AVISO: "
+msgstr "FIGYELMEZTETÉS:"
 
 #: ../../lib/io.sh:164
 msgid "ERROR: "
-msgstr "ERROR: "
+msgstr "HIBA:"
 
 #: ../../lib/misc.sh:28
 msgid "Packages no longer required by any installed package:"
-msgstr "Paquetes que ya no los requiere ningún paquete instalado:"
+msgstr ""
 
 #: ../../lib/misc.sh:37
 msgid "Searching for original config files to save"
-msgstr "Buscando los archivos de configuración originales para guardar"
+msgstr ""
 
 #: ../../lib/pacman.sh.in:36
 msgid "Pacman is currently in use, please wait."
-msgstr "Pacman está en uso, espere por favor."
+msgstr "A pacman jelenleg használatban van, kérem, várjon."
 
 #: ../../lib/pacman.sh.in:58
 msgid "synchronizing package databases"
-msgstr "sincronizando las bases de datos de los paquetes"
+msgstr "csomagadatbázisok szinkronizálása"
 
 #: ../../lib/pacman.sh.in:70
 msgid "(ignoring package upgrade)"
-msgstr "(ignorando la actualización de paquetes)"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:94
 msgid "Unable to read PKGBUILD"
-msgstr "No se puede leer PKGBUILD"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:98
 msgid "This PKGBUILD describes a split package."
-msgstr "Este PKGBUILD describe un paquete dividido."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:99
 msgid "Specific package options are unknown"
-msgstr "Las opciones específicas del paquete son desconocidas"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:121
 msgid "%s dependencies:"
-msgstr "dependencias de %s:"
+msgstr "%s függőségek:"
 
 #: ../../lib/pkgbuild.sh.in:124 ../../lib/pkgbuild.sh.in:126
 msgid "(already installed)"
-msgstr "(ya instalado)"
+msgstr "(már telepítve van)"
 
 #: ../../lib/pkgbuild.sh.in:132 ../../lib/pkgbuild.sh.in:134
 msgid "(package found)"
-msgstr "(paquete encontrado)"
+msgstr "(csomag található)"
 
 #: ../../lib/pkgbuild.sh.in:137 ../../lib/pkgbuild.sh.in:139
 msgid "(building from AUR)"
-msgstr "(compilando desde AUR)"
+msgstr "(fordítás AUR-ból)"
 
 #: ../../lib/pkgbuild.sh.in:175
 msgid "%s conflicts:"
-msgstr "conflictos de %s:"
+msgstr "%s ütközés:"
 
 #: ../../lib/pkgbuild.sh.in:243
 msgid "Building and installing package"
-msgstr "Compilando e instalando el paquete"
+msgstr "Csomag lefordítása és telepítése"
 
 #: ../../lib/pkgbuild.sh.in:259
 msgid "%s is already up to date."
-msgstr "%s ya está actualizado."
+msgstr "%s már naprakész."
 
 #: ../../lib/pkgbuild.sh.in:267
 msgid "Install or build missing dependencies for %s:"
-msgstr "Instalar o compilar las dependencias que faltan para %s:"
+msgstr "%s hiányzó függőségeinek telepítése vagy lefordítása:"
 
 #: ../../lib/pkgbuild.sh.in:275
 msgid "Dependencies have been installed before the failure"
-msgstr "Las dependencias se instalaron antes del fallo"
+msgstr "A függőségek telepítve lettek a hiba előtt"
 
 #: ../../lib/pkgbuild.sh.in:286
 msgid "Makepkg was unable to build %s."
-msgstr "Makepkg no ha podido compilar %s."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:314 ../../lib/pkgbuild.sh.in:317
 msgid "Exporting %s to %s directory"
-msgstr "Exportando %s al directorio %s"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
-msgstr "¿Continuar la instalación de %s?"
+msgstr "Folytatja %s telepítését?"
 
 #: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
-msgstr "[v]isualizar los contenidos del paquete, [c]omprobar el paquete con namcap"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr "SNVC"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
-msgstr "Pulse cualquier tecla para continuar"
+msgstr "Nyomja meg bármely billentyűt a folytatáshoz"
 
 #: ../../lib/pkgbuild.sh.in:339
 msgid "namcap is not installed"
-msgstr "namcap no está instalado"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:351
 msgid "Your packages are saved in %s"
-msgstr "Sus paquetes se han guardado en %s"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:352
 msgid "Unable to copy packages to %s directory"
-msgstr "No se pueden copiar los paquetes al directorio %s"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "No se puede borrar el directorio %s. Bórrelo utilizando privilegios de administrador (root)."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
-msgstr "No se puede crear el directorio %s."
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:392
 msgid "Continue building %s ? "
-msgstr "¿Continuar compilando %s? "
+msgstr "Folytatja %s fordítását?"
 
 #: ../../lib/pkgbuild.sh.in:398
 msgid "Restart building %s ? "
-msgstr "¿Reiniciar la compilación de %s? "
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:456
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "El directorio %s ya existe. ¿[R]emplazar, [C]ambiar a %s, [S]altar ?"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:457
 msgid "RCS"
-msgstr "RCS"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:463
 msgid "Download %s sources"
-msgstr "Descargando las fuentes %s"
+msgstr ""
 
 #: ../../lib/pkgbuild.sh.in:503
 msgid "Copying files from %s to build directory..."
-msgstr "Copiando archivos desde %s al directorio de compilación..."
+msgstr ""
 
 #: ../../lib/util.sh.in:159
 msgid "is not a directory"
-msgstr "no es un directorio"
+msgstr ""
 
 #: ../../lib/util.sh.in:160
 msgid "is not writable"
-msgstr "no es de escritura"
+msgstr ""
 
 #: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
-msgstr "¿Quiere editar %s?"
+msgstr "Megnyissam szerkesztésre ezt: %s?"
 
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
-msgstr "(«A» para anular)"
+msgstr ""
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr "SNA"
+msgstr ""
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."
-msgstr "Anulada..."
+msgstr ""
 
 #: ../../lib/util.sh.in:214
 #, sh-format
 msgid "Please add $VISUAL to your environment variables"
-msgstr "Por favor, añada $VISUAL a las variables de entorno"
+msgstr ""
 
 #: ../../lib/util.sh.in:215
 msgid "for example:"
-msgstr "por ejemplo:"
+msgstr ""
 
 #: ../../lib/util.sh.in:216
 msgid "(in ~/.bashrc)"
-msgstr "(en ~/.bashrc)"
+msgstr ""
 
 #: ../../lib/util.sh.in:217
 msgid "(replace vim with your favorite editor)"
-msgstr "(remplace vim por su editor preferido)"
+msgstr ""
 
 #: ../../lib/util.sh.in:219
 msgid "Edit %s with: "
-msgstr "Editar %s con: "
+msgstr ""

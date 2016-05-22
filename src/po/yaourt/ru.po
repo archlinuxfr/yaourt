@@ -6,7 +6,8 @@
 # Translators:
 # Artem Vorotnikov <artem@vorotnikov.me>, 2014
 # Dmitry Korzhevin <dkorzhevin@lsupport.net>, 2012
-# Igor Z <f2404@yandex.ru>, 2016
+# Igor <f2404@yandex.ru>, 2016
+# Igor <f2404@yandex.ru>, 2016
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
 # Petr Zhizhin <piter.zh@gmail.com>, 2014
 # Roman Skrynski <nakkez@ya.ru>, 2016
@@ -16,8 +17,8 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-09 13:12+0000\n"
-"Last-Translator: Igor Z <f2404@yandex.ru>\n"
+"PO-Revision-Date: 2016-04-17 07:11+0000\n"
+"Last-Translator: Igor <f2404@yandex.ru>\n"
 "Language-Team: Russian (http://www.transifex.com/archlinuxfr/yaourt/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -170,7 +171,7 @@ msgstr "yaourt {-U --upgrade}        [опции] <пакет(ы)>"
 
 #: ../../yaourt.sh.in:50
 msgid "yaourt {-C}               [options]"
-msgstr "yaourt {-C} [опции]"
+msgstr "yaourt {-C}                  [опции]"
 
 #: ../../yaourt.sh.in:51
 msgid "yaourt {-B --backup}      [save directory|restore file]"
@@ -483,7 +484,7 @@ msgstr "Нет"
 
 #: ../../lib/aur.sh:69
 msgid "Repository     "
-msgstr "Репозиторий"
+msgstr "Репозиторий    "
 
 #: ../../lib/aur.sh:70
 msgid "Name           "
@@ -491,19 +492,19 @@ msgstr "Имя            "
 
 #: ../../lib/aur.sh:72
 msgid "Base Package   "
-msgstr "Базовый пакет"
+msgstr "Базовый пакет  "
 
 #: ../../lib/aur.sh:73
 msgid "Version        "
-msgstr " Версия"
+msgstr "Версия         "
 
 #: ../../lib/aur.sh:74
 msgid "Description    "
-msgstr "Описание"
+msgstr "Описание       "
 
 #: ../../lib/aur.sh:75
 msgid "Architecture   "
-msgstr "Архитектура"
+msgstr "Архитектура    "
 
 #: ../../lib/aur.sh:76
 msgid "URL            "
@@ -511,31 +512,31 @@ msgstr "Ссылка         "
 
 #: ../../lib/aur.sh:77
 msgid "AUR URL        "
-msgstr "Ссылка в AUR  "
+msgstr "Ссылка в AUR   "
 
 #: ../../lib/aur.sh:79
 msgid "Keywords       "
-msgstr "Ключевые слова"
+msgstr "Ключевые слова "
 
 #: ../../lib/aur.sh:80
 msgid "Licenses       "
-msgstr "Лицензии"
+msgstr "Лицензии       "
 
 #: ../../lib/aur.sh:81
 msgid "Groups         "
-msgstr "Группы"
+msgstr "Группы         "
 
 #: ../../lib/aur.sh:82
 msgid "Provides       "
-msgstr "Предоставляет"
+msgstr "Предоставляет  "
 
 #: ../../lib/aur.sh:83
 msgid "Depends On     "
-msgstr "Зависит от"
+msgstr "Зависит от     "
 
 #: ../../lib/aur.sh:84
 msgid "Optional Deps  "
-msgstr "Опциональные зависимости"
+msgstr "Опц зависимости"
 
 #: ../../lib/aur.sh:85
 msgid "Conflicts With "
@@ -551,11 +552,11 @@ msgstr "Разработчик    "
 
 #: ../../lib/aur.sh:88
 msgid "Last update    "
-msgstr "Последние обновленные   "
+msgstr "Посл обновление"
 
 #: ../../lib/aur.sh:89
 msgid "Out Of Date    "
-msgstr "Устаревшие     "
+msgstr "Устарел        "
 
 #: ../../lib/aur.sh:90
 msgid "Votes          "
@@ -563,7 +564,7 @@ msgstr "Голоса         "
 
 #: ../../lib/aur.sh:91
 msgid "Popularity     "
-msgstr "Популярность"
+msgstr "Популярность   "
 
 #: ../../lib/aur.sh:173
 msgid "Checking vote status for %s"
