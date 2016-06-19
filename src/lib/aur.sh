@@ -155,6 +155,7 @@ END {
 # For devel packages compare the last two revisions as a fallback.
 aur_git_diff() {
 	local lrev rev
+	((NOCONFIRM)) && local _pager='--no-pager'
 
 	# Search git revision matching the local version of the package
 	while read rev; do
@@ -163,7 +164,7 @@ aur_git_diff() {
 	done < <(git rev-list HEAD -- .SRCINFO)
 
 	echo
-	git diff ${lrev:-HEAD^}..HEAD -- PKGBUILD
+	git ${_pager} diff ${lrev:-HEAD^}..HEAD -- PKGBUILD
 	echo
 }
 
