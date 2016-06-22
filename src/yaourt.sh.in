@@ -384,7 +384,7 @@ while [[ $1 ]]; do
 		--nocolor)          USECOLOR=0;;
 		--noconfirm)        NOCONFIRM=1;;
 		--confirm)          NOCONFIRM=0;;
-		--edit)				EDITFILES=1;;
+		--edit)             EDITFILES=1;;
 		--nodeps)           program_arg $((A_PS | A_M)) $1;;
 		--noprogressbar)    program_arg $A_PC $1;;
 		--noscriptlet)      program_arg $A_PC $1;;
