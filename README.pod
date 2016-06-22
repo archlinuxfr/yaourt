@@ -101,6 +101,10 @@ Don't ask for confirmation.
 
 Always ask for confirmation, even when the configuration says otherwise.
 
+=item B<--edit>
+
+Always edit files, even when the configuration says otherwise.
+
 =item B<--pager>
 
 Use I<$PAGER> to show search results.
