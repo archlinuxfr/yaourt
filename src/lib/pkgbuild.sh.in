@@ -366,7 +366,8 @@ init_build_dir() {
 }
 
 custom_pkg() {
-	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "@sysconfdir@/customizepkg.d/$1" ]] && return 0
+	LOCALCONFIGDIR=${CUSTOMIZEPKG_CONFIG:-${HOME}/.customizepkg}
+	(( CUSTOMIZEPKGINSTALLED )) && [[ -f "@sysconfdir@/customizepkg.d/$1" || -f "$LOCALCONFIGDIR/$1" ]] && return 0
 	return 1
 }
 
