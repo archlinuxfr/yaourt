@@ -345,7 +345,7 @@ while [[ $1 ]]; do
 		-e|--explicit)      program_arg $A_PQ $1;;
 		-g|--groups)        GROUP=1; program_arg $A_PQ $1;;
 		-h|--help)          usage; exit 0;;
-		-i)                 [[ $MAJOR = "pkgbuild" ]] && INSTALL=1 || { INFO=1; program_arg $((A_PQ | A_PS)) $1; };;
+		-i)                 [[ $MAJOR = "pkgbuild" ]] && INSTALL_FLAG=1 || { INFO=1; program_arg $((A_PQ | A_PS)) $1; };;
 		-k|--check)         [[ ! $PACMAN_CMD ]] && PACMAN_CMD=0;;
 		-l|--list)          LIST=1; program_arg $A_PQ $1;;
 		-m|--foreign)       FOREIGN=1; program_arg $A_PQ $1;;
@@ -409,7 +409,7 @@ while [[ $1 ]]; do
 		--devel)            DEVEL=1;;
 		--export)           EXPORT=1; EXPORTSRC=1; shift; EXPORTDIR="$1";;
 		--insecure)         program_arg $((A_PKC | A_CC)) $1;;
-		--install)          INSTALL=1;;
+		--install)          INSTALL_FLAG=1;;
 		--m-arg)            program_arg $A_M "$2"; shift;;
 		--maintainer)       program_arg $A_PQ $1;;
 		--nameonly)         program_arg $A_PQ $1;;
