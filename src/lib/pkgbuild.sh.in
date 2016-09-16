@@ -407,7 +407,7 @@ package_loop() {
 	  ( [[ $MAJOR == "pkgbuild" ]] && (( INSTALL_FLAG )) || ! [[ $MAJOR == "pkgbuild" ]] ) &&
 	    { install_package || failed=1; }
 
-	[[ $MAJOR == "pkgbuild" ]] && (( ! INSTALL_FLAG )) && cp -v "$YPKGDEST/"*.pkg.* $YPKGBUILDDIR
+	[[ $MAJOR == "pkgbuild" ]] && (( ! INSTALL_FLAG )) && cp -v "$YPKGDEST/"*.pkg.* "$YPKGBUILDDIR"
 	rm -r "$YPKGDEST"
 	return $failed
 }
@@ -503,11 +503,12 @@ package_pkgbuild_only() {
 
 	# Glob files from YPKGBUILDDIR and copy them to $YTMPDIR
 	local YFILES=("$YPKGBUILDDIR/PKGBUILD")
-	YFILES+=($(find "$YPKGBUILDDIR/"*.install -type f 2>/dev/null))
-	YFILES+=($(find "$YPKGBUILDDIR/"*.patch   -type f 2>/dev/null))
+	for file in "$YPKGBUILDDIR/"*.{install,patch}; do
+		[[ -f $file ]] && YFILES+=("$file")
+	done
 
 	msg $(_gettext "Copying files from %s to build directory..." "$YPKGBUILDDIR")
-	cp -v ${YFILES[@]} "$YTMPDIR"
+	cp -v "${YFILES[@]}" "$YTMPDIR"
 	echo
 
 	package_loop "$YPKG" 1 || manage_error "$YPKG" ||
