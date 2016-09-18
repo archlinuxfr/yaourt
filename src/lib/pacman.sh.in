@@ -57,6 +57,7 @@ pacman_refresh() {
 	local _arg
 	title $(gettext 'synchronizing package databases')
 	(( $1 > 1 )) && _arg="-Syy" || _arg="-Sy"
+	(( $HIDEPROGRESS )) && _arg="$_arg --noprogressbar"
 	su_pacman $_arg || exit $?
 }
 

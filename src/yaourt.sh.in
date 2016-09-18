@@ -386,7 +386,7 @@ while [[ $1 ]]; do
 		--confirm)          NOCONFIRM=0;;
 		--edit)             EDITFILES=1;;
 		--nodeps)           program_arg $((A_PS | A_M)) $1;;
-		--noprogressbar)    program_arg $A_PC $1;;
+		--noprogressbar)    program_arg $((A_PS | A_PU)) $1; HIDEPROGRESS=1;;
 		--noscriptlet)      program_arg $A_PC $1;;
 		--print-format)     ((PRINT++));; # --print-format needs --print
 		--sysupgrade)       SYSUPGRADE=1; (( UPGRADES ++ ));;
