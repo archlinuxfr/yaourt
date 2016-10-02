@@ -180,9 +180,15 @@ yaourt_sync() {
 # Handle -U,--upgrade
 yaourt_upgrade () {
 	[[ $ARGS ]] || pacman_cmd 2
-	local depends=( $(pkgquery -Qpif '%D' "${ARGS[@]}") )
-	[[ $depends == "-" ]] && depends=""
-	depends=( $(pacman_parse -T "${depends[@]}") )
+
+	# Handle package(s) dependencies only if -d is specified less than
+	# twice on the command line
+	if ((DEPENDS < 2)); then
+	    local depends=( $(pkgquery -Qpif '%D' "${ARGS[@]}") )
+	    [[ $depends == "-" ]] && depends=""
+	    depends=( $(pacman_parse -T "${depends[@]}") )
+	fi
+
 	if [[ $depends ]]; then
 		load_lib abs aur
 		SP_ARG="--asdeps" sync_packages "${depends[@]}"
