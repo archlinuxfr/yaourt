@@ -1,5 +1,5 @@
 # yaourt default.po file
-# Copyright (C) 2010-2016
+# Copyright (C) 2010-2017
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
@@ -7,14 +7,15 @@
 # Ferran Rius Riu <friusriu@gmail.com>, 2014
 # Ferran Rius Riu <friusriu@gmail.com>, 2012
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
-# Davidmp <medipas@gmail.com>, 2016
+# larchunix, 2016
+# Davidmp <medipas@gmail.com>, 2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-06 09:13+0000\n"
-"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
+"PO-Revision-Date: 2017-06-12 14:29+0000\n"
+"Last-Translator: Davidmp <medipas@gmail.com>\n"
 "Language-Team: Catalan (http://www.transifex.com/archlinuxfr/yaourt/language/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,47 +78,47 @@ msgstr "(T: tots, sense confirmació)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr "SNS"
+msgstr "SNC"
 
-#: ../../pacdiffviewer.sh.in:180
+#: ../../pacdiffviewer.sh.in:179
 msgid "**same file**"
 msgstr "**el mateix fitxer**"
 
-#: ../../pacdiffviewer.sh.in:184
+#: ../../pacdiffviewer.sh.in:183
 msgid "**automerge**"
 msgstr "**fusió automàtica**"
 
-#: ../../pacdiffviewer.sh.in:188
+#: ../../pacdiffviewer.sh.in:187
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 msgstr "Acció: [E]dita, [R]eemplaça, [S]uprimeix, [C]ontinua (per defecte), [A]vorta ?"
 
-#: ../../pacdiffviewer.sh.in:189
+#: ../../pacdiffviewer.sh.in:188
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
 msgstr "Acció: [E]dita, [R]eemplaça, [S]uprimeix, [M]escla, [C]ontinua (per defecte), [A]vorta ?"
 
-#: ../../pacdiffviewer.sh.in:190
+#: ../../pacdiffviewer.sh.in:189
 msgid "ERSCA"
 msgstr "ERSCA"
 
-#: ../../pacdiffviewer.sh.in:191
+#: ../../pacdiffviewer.sh.in:190
 msgid "ERSCAM"
 msgstr "ERSCAM"
 
-#: ../../pacdiffviewer.sh.in:201
+#: ../../pacdiffviewer.sh.in:200
 msgid "Patch: "
 msgstr "Pegat: "
 
-#: ../../pacdiffviewer.sh.in:204
+#: ../../pacdiffviewer.sh.in:203
 msgid "Apply ?"
 msgstr "S'ha d'aplicar?"
 
-#: ../../pacdiffviewer.sh.in:207
+#: ../../pacdiffviewer.sh.in:206
 msgid "patch returned an error!"
 msgstr "el pegat ha causat un error!"
 
-#: ../../pacdiffviewer.sh.in:229
+#: ../../pacdiffviewer.sh.in:228
 msgid "Enter n° : "
 msgstr "Escriviu-ne el número:"
 
@@ -213,99 +214,95 @@ msgstr "mostra els grups"
 msgid "Information for %s"
 msgstr "Informació per a %s"
 
-#: ../../yaourt.sh.in:207
+#: ../../yaourt.sh.in:214
 msgid "Unable to read %s file"
 msgstr "No es pot llegir el fitxer %s"
 
-#: ../../yaourt.sh.in:233
+#: ../../yaourt.sh.in:240
 msgid "%s directory does not contain a PKGBUILD"
 msgstr "El directori %s no conté un PKGBUILD."
 
-#: ../../yaourt.sh.in:239
+#: ../../yaourt.sh.in:246
 msgid "Installing %s from local PKGBUILD"
 msgstr "S'instal·la %s des d'un PKGBUILD local"
 
-#: ../../yaourt.sh.in:252
-msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Escriviu el número dels paquets que s'han d'instal·lar (exemples: 1, 2, 3 o 1-3)"
+#: ../../yaourt.sh.in:259
+msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
+msgstr "Escriviu el número dels paquets que s'han d'instal·lar (per exemple: 1, 2, 3 o 1-3)"
 
-#: ../../yaourt.sh.in:488
+#: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"
 msgstr "obtén el PKGBUILD"
 
-#: ../../lib/abs.sh.in:68
-msgid "Download abs archive"
-msgstr "Baixa l'arxiu abs"
-
-#: ../../lib/abs.sh.in:97
+#: ../../lib/abs.sh.in:49
 msgid "Building %s from sources."
 msgstr "S'està compilant %s a partir de les fonts"
 
-#: ../../lib/abs.sh.in:98
+#: ../../lib/abs.sh.in:50
 msgid "Install %s from sources"
 msgstr "Instal·la %s a partir de les fonts"
 
-#: ../../lib/abs.sh.in:100
+#: ../../lib/abs.sh.in:52
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "S'estan obtenint el PKGBUILD i les fonts locals..."
 
-#: ../../lib/abs.sh.in:177
+#: ../../lib/abs.sh.in:129
 msgid "Foreign packages: "
 msgstr "Paquets aliens: "
 
-#: ../../lib/abs.sh.in:232
+#: ../../lib/abs.sh.in:184
 msgid "not found"
 msgstr "no s'ha trobat"
 
-#: ../../lib/abs.sh.in:250
+#: ../../lib/abs.sh.in:202
 msgid "Continue upgrade ?"
 msgstr "S'ha de continuar l'actualització?"
 
-#: ../../lib/abs.sh.in:251
+#: ../../lib/abs.sh.in:203
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]isualitza els detalls del paquet.   Selecció [M]anual dels paquets."
 
-#: ../../lib/abs.sh.in:252
+#: ../../lib/abs.sh.in:204
 msgid "YNVM"
 msgstr "SNVM"
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:225
 msgid "Proceed with upgrade? "
 msgstr "S'ha de procedir a l'actualització?"
 
-#: ../../lib/abs.sh.in:301
+#: ../../lib/abs.sh.in:253
 msgid "Source targets"
 msgstr "Destinacions font"
 
-#: ../../lib/abs.sh.in:328
+#: ../../lib/abs.sh.in:280
 msgid "unable to update %s"
 msgstr "no s'ha pogut actualitzar %s"
 
-#: ../../lib/abs.sh.in:347
+#: ../../lib/abs.sh.in:299
 msgid "Package upgrade only (new release):"
 msgstr "Només l'actualització del paquet (nou llançament):"
 
-#: ../../lib/abs.sh.in:348
+#: ../../lib/abs.sh.in:300
 msgid "Software upgrade (new version) :"
 msgstr "Actualització del programari (nova versió):"
 
-#: ../../lib/abs.sh.in:349
+#: ../../lib/abs.sh.in:301
 msgid "New package :"
 msgstr "Paquet nou:"
 
-#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
+#: ../../lib/abs.sh.in:317 ../../lib/abs.sh.in:325
 msgid "(required by %s)"
 msgstr "(requerit per %s)"
 
-#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
+#: ../../lib/abs.sh.in:342 ../../lib/abs.sh.in:343
 msgid "Installing from a package list"
 msgstr "S'està instal·lant des d'una llista de paquets"
 
-#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
+#: ../../lib/abs.sh.in:396 ../../lib/abs.sh.in:397
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "s'està actualitzant el paquet SVN/CVS/HG/GIT"
 
-#: ../../lib/abs.sh.in:454
+#: ../../lib/abs.sh.in:406
 msgid "Targets"
 msgstr "Destinacions"
 
@@ -381,11 +378,11 @@ msgstr "(s'ha desat la base de dades antiga a %s)"
 msgid "wrong argument"
 msgstr "argument erroni"
 
-#: ../../lib/alpm_query.sh:48
+#: ../../lib/alpm_query.sh:50
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Voleu eliminar aquests paquets (amb les opcions -Rcs)?"
 
-#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
+#: ../../lib/alpm_query.sh:51 ../../lib/pkgbuild.sh.in:400
 msgid "YN"
 msgstr "SN"
 
@@ -547,82 +544,86 @@ msgid "Maintainer     "
 msgstr "Mantenidor"
 
 #: ../../lib/aur.sh:88
+msgid "First submit   "
+msgstr "Primera tramesa   "
+
+#: ../../lib/aur.sh:89
 msgid "Last update    "
 msgstr "Última actualització"
 
-#: ../../lib/aur.sh:89
+#: ../../lib/aur.sh:90
 msgid "Out Of Date    "
 msgstr "Obsolet"
 
-#: ../../lib/aur.sh:90
+#: ../../lib/aur.sh:91
 msgid "Votes          "
 msgstr "Vots"
 
-#: ../../lib/aur.sh:91
+#: ../../lib/aur.sh:92
 msgid "Popularity     "
 msgstr "Popularitat"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:175
 msgid "Checking vote status for %s"
 msgstr "S'està comprovant l'estat del vot per a %s"
 
-#: ../../lib/aur.sh:176
+#: ../../lib/aur.sh:178
 msgid "You have already voted for %s"
 msgstr "Ja heu votat %s"
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:181
 msgid "Do you want to vote for %s ? "
 msgstr "Voleu votar %s?"
 
-#: ../../lib/aur.sh:193
+#: ../../lib/aur.sh:195
 msgid "Installing %s from AUR"
 msgstr "S'està instal·lant %s des de l'AUR"
 
-#: ../../lib/aur.sh:197
+#: ../../lib/aur.sh:199
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "S'està baixant el PKGBUILD des de l'AUR..."
 
-#: ../../lib/aur.sh:203
+#: ../../lib/aur.sh:205
 msgid "This package is orphaned"
 msgstr "Aquest paquet és orfe"
 
-#: ../../lib/aur.sh:204
+#: ../../lib/aur.sh:206
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "(Paquet sense suport: podria ser perillós!)"
 
-#: ../../lib/aur.sh:225
+#: ../../lib/aur.sh:227
 msgid "not found on AUR"
 msgstr "no s'ha trobat a l'AUR"
 
-#: ../../lib/aur.sh:232
+#: ../../lib/aur.sh:234
 msgid "up to date "
 msgstr "actualitzat"
 
-#: ../../lib/aur.sh:233
+#: ../../lib/aur.sh:235
 msgid "flagged as out of date"
 msgstr "marcat com a obsolet"
 
-#: ../../lib/aur.sh:242
+#: ../../lib/aur.sh:244
 msgid "Orphan"
 msgstr "Orfe"
 
-#: ../../lib/io.sh:98
+#: ../../lib/io.sh:101
 msgid "[Y/n]"
 msgstr "[S/n]"
 
-#: ../../lib/io.sh:99
+#: ../../lib/io.sh:102
 msgid "[y/N]"
 msgstr "[s/N]"
 
-#: ../../lib/io.sh:100
+#: ../../lib/io.sh:103
 msgid "[y/n]"
 msgstr "[s/n]"
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:158
 msgid "WARNING: "
 msgstr "AVÍS:"
 
-#: ../../lib/io.sh:164
+#: ../../lib/io.sh:167
 msgid "ERROR: "
 msgstr "ERROR:"
 
@@ -642,7 +643,7 @@ msgstr "S'està utilitzant el pacman; espereu, si us plau."
 msgid "synchronizing package databases"
 msgstr "s'estan sincronitzant les bases de dades dels paquets"
 
-#: ../../lib/pacman.sh.in:70
+#: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
 msgstr "(s'està ignorant l'actualització de paquets)"
 
@@ -738,27 +739,27 @@ msgstr "No s'ha pogut eliminar la carpeta %s. Elimineu-la utilitzant drets d'usu
 msgid "Unable to create directory %s."
 msgstr "No s'ha pogut crear la carpeta %s."
 
-#: ../../lib/pkgbuild.sh.in:392
+#: ../../lib/pkgbuild.sh.in:393
 msgid "Continue building %s ? "
 msgstr "S'ha de continuar compilant %s?"
 
-#: ../../lib/pkgbuild.sh.in:398
+#: ../../lib/pkgbuild.sh.in:399
 msgid "Restart building %s ? "
 msgstr "S'ha de reiniciar la compilació de %s?"
 
-#: ../../lib/pkgbuild.sh.in:456
+#: ../../lib/pkgbuild.sh.in:458
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "El directori %s ja existeix. [R]eemplaça'l, [C]anvia'l a %s, [S]alta-ho?"
 
-#: ../../lib/pkgbuild.sh.in:457
+#: ../../lib/pkgbuild.sh.in:459
 msgid "RCS"
-msgstr "RCS"
+msgstr "RCO"
 
-#: ../../lib/pkgbuild.sh.in:463
+#: ../../lib/pkgbuild.sh.in:468
 msgid "Download %s sources"
 msgstr "S'estan baixant les fonts %s"
 
-#: ../../lib/pkgbuild.sh.in:503
+#: ../../lib/pkgbuild.sh.in:510
 msgid "Copying files from %s to build directory..."
 msgstr "Es copien fitxers des de %s al directori de compilació..."
 

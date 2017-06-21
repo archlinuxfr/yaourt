@@ -1,17 +1,18 @@
 # yaourt default.po file
-# Copyright (C) 2010-2016
+# Copyright (C) 2010-2017
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# larchunix, 2016
 # Martin Kraner <doublexslo@yahoo.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-20 12:34+0000\n"
-"Last-Translator: Martin Kraner <doublexslo@yahoo.com>\n"
+"PO-Revision-Date: 2017-06-09 19:04+0000\n"
+"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Slovenian (http://www.transifex.com/archlinuxfr/yaourt/language/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,45 +77,45 @@ msgstr "(I: ne potrjuj)"
 msgid "YNS"
 msgstr "DNI"
 
-#: ../../pacdiffviewer.sh.in:180
+#: ../../pacdiffviewer.sh.in:179
 msgid "**same file**"
 msgstr "**ista datoteka**"
 
-#: ../../pacdiffviewer.sh.in:184
+#: ../../pacdiffviewer.sh.in:183
 msgid "**automerge**"
 msgstr "**automerge**"
 
-#: ../../pacdiffviewer.sh.in:188
+#: ../../pacdiffviewer.sh.in:187
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 msgstr "Dejanja: [U]redi, [Z]amenjaj, [I]gnoriraj, [N]adaljuj (privzeto), [P]rekliči?"
 
-#: ../../pacdiffviewer.sh.in:189
+#: ../../pacdiffviewer.sh.in:188
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
 msgstr "Dejanja: [U]redi, [Z]amenjaj, [I]gnoriraj, [M]erge, [N]adaljuj (privzeto), [P]rekliči?"
 
-#: ../../pacdiffviewer.sh.in:190
+#: ../../pacdiffviewer.sh.in:189
 msgid "ERSCA"
 msgstr "UZINP"
 
-#: ../../pacdiffviewer.sh.in:191
+#: ../../pacdiffviewer.sh.in:190
 msgid "ERSCAM"
 msgstr "UZINPM"
 
-#: ../../pacdiffviewer.sh.in:201
+#: ../../pacdiffviewer.sh.in:200
 msgid "Patch: "
 msgstr "Patch: "
 
-#: ../../pacdiffviewer.sh.in:204
+#: ../../pacdiffviewer.sh.in:203
 msgid "Apply ?"
 msgstr "Uveljavim ?"
 
-#: ../../pacdiffviewer.sh.in:207
+#: ../../pacdiffviewer.sh.in:206
 msgid "patch returned an error!"
 msgstr "patch je vrnil napako!"
 
-#: ../../pacdiffviewer.sh.in:229
+#: ../../pacdiffviewer.sh.in:228
 msgid "Enter n° : "
 msgstr "Vpišite št.:"
 
@@ -210,99 +211,95 @@ msgstr "prikaži skupine"
 msgid "Information for %s"
 msgstr "Informacije za %s"
 
-#: ../../yaourt.sh.in:207
+#: ../../yaourt.sh.in:214
 msgid "Unable to read %s file"
 msgstr "Ni bilo mogoče brati datoteke %s"
 
-#: ../../yaourt.sh.in:233
+#: ../../yaourt.sh.in:240
 msgid "%s directory does not contain a PKGBUILD"
 msgstr "mapa %s ne vsebuje PKGBUILD"
 
-#: ../../yaourt.sh.in:239
+#: ../../yaourt.sh.in:246
 msgid "Installing %s from local PKGBUILD"
 msgstr "Nameščam %s iz lokalnega PKGBUILD"
 
-#: ../../yaourt.sh.in:252
-msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Vnesite št. paketa ali paketov za namestitev (npr.: 1 2 3 or 1-3)"
+#: ../../yaourt.sh.in:259
+msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
+msgstr ""
 
-#: ../../yaourt.sh.in:488
+#: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"
 msgstr "pridobi PKGBUILD"
 
-#: ../../lib/abs.sh.in:68
-msgid "Download abs archive"
-msgstr "Prenesi abs arhiv"
-
-#: ../../lib/abs.sh.in:97
+#: ../../lib/abs.sh.in:49
 msgid "Building %s from sources."
 msgstr "Gradim %s iz virov."
 
-#: ../../lib/abs.sh.in:98
+#: ../../lib/abs.sh.in:50
 msgid "Install %s from sources"
 msgstr "Namesti %s iz virov"
 
-#: ../../lib/abs.sh.in:100
+#: ../../lib/abs.sh.in:52
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Pridobivam PKGBUILD in lokalne vire..."
 
-#: ../../lib/abs.sh.in:177
+#: ../../lib/abs.sh.in:129
 msgid "Foreign packages: "
 msgstr "Tuji paketi:"
 
-#: ../../lib/abs.sh.in:232
+#: ../../lib/abs.sh.in:184
 msgid "not found"
 msgstr "ni najdeno"
 
-#: ../../lib/abs.sh.in:250
+#: ../../lib/abs.sh.in:202
 msgid "Continue upgrade ?"
 msgstr "Nadaljuj nadgradnjo ?"
 
-#: ../../lib/abs.sh.in:251
+#: ../../lib/abs.sh.in:203
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[P]oglej podrobnosti paketa   [R]očno izberi pakete"
 
-#: ../../lib/abs.sh.in:252
+#: ../../lib/abs.sh.in:204
 msgid "YNVM"
 msgstr "DNPR"
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:225
 msgid "Proceed with upgrade? "
 msgstr "Začni z nadgradnjo?"
 
-#: ../../lib/abs.sh.in:301
+#: ../../lib/abs.sh.in:253
 msgid "Source targets"
 msgstr "Cilji iz virov"
 
-#: ../../lib/abs.sh.in:328
+#: ../../lib/abs.sh.in:280
 msgid "unable to update %s"
 msgstr "ni bilo mogoče posodobiti %s"
 
-#: ../../lib/abs.sh.in:347
+#: ../../lib/abs.sh.in:299
 msgid "Package upgrade only (new release):"
 msgstr "Paket samo za posodobitev (nova izdaja)"
 
-#: ../../lib/abs.sh.in:348
+#: ../../lib/abs.sh.in:300
 msgid "Software upgrade (new version) :"
 msgstr "Nadgraditev programske opreme (nova različica)"
 
-#: ../../lib/abs.sh.in:349
+#: ../../lib/abs.sh.in:301
 msgid "New package :"
 msgstr "Nov paket :"
 
-#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
+#: ../../lib/abs.sh.in:317 ../../lib/abs.sh.in:325
 msgid "(required by %s)"
 msgstr "(zahtevan od %s)"
 
-#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
+#: ../../lib/abs.sh.in:342 ../../lib/abs.sh.in:343
 msgid "Installing from a package list"
 msgstr "Nameščam iz seznama paketov"
 
-#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
+#: ../../lib/abs.sh.in:396 ../../lib/abs.sh.in:397
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "posodabljam SVN/CVS/HG/GIT paket"
 
-#: ../../lib/abs.sh.in:454
+#: ../../lib/abs.sh.in:406
 msgid "Targets"
 msgstr "Cilji"
 
@@ -378,11 +375,11 @@ msgstr "(stara baza je shranjena v %s)"
 msgid "wrong argument"
 msgstr "napačen argument"
 
-#: ../../lib/alpm_query.sh:48
+#: ../../lib/alpm_query.sh:50
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Želite odstraniti te pakete (z -Rcs možnostmi) ?"
 
-#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
+#: ../../lib/alpm_query.sh:51 ../../lib/pkgbuild.sh.in:400
 msgid "YN"
 msgstr "DN"
 
@@ -544,82 +541,86 @@ msgid "Maintainer     "
 msgstr "Vzdrževalec"
 
 #: ../../lib/aur.sh:88
+msgid "First submit   "
+msgstr ""
+
+#: ../../lib/aur.sh:89
 msgid "Last update    "
 msgstr "Zadnja posodobitev"
 
-#: ../../lib/aur.sh:89
+#: ../../lib/aur.sh:90
 msgid "Out Of Date    "
 msgstr "Zastarano"
 
-#: ../../lib/aur.sh:90
+#: ../../lib/aur.sh:91
 msgid "Votes          "
 msgstr "Glasovi"
 
-#: ../../lib/aur.sh:91
+#: ../../lib/aur.sh:92
 msgid "Popularity     "
 msgstr "Popularnost"
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:175
 msgid "Checking vote status for %s"
 msgstr "Preverjan status glasov za %s"
 
-#: ../../lib/aur.sh:176
+#: ../../lib/aur.sh:178
 msgid "You have already voted for %s"
 msgstr "Ste že glasovali za %s"
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:181
 msgid "Do you want to vote for %s ? "
 msgstr "Želite glasovati za %s ?"
 
-#: ../../lib/aur.sh:193
+#: ../../lib/aur.sh:195
 msgid "Installing %s from AUR"
 msgstr "Nameščam %s z AUR"
 
-#: ../../lib/aur.sh:197
+#: ../../lib/aur.sh:199
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "Prenašam %s PKGBUILD iz AUR"
 
-#: ../../lib/aur.sh:203
+#: ../../lib/aur.sh:205
 msgid "This package is orphaned"
 msgstr "Ta paket je osirotel"
 
-#: ../../lib/aur.sh:204
+#: ../../lib/aur.sh:206
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Nepodprti paket: Morebitno nevarno ! )"
 
-#: ../../lib/aur.sh:225
+#: ../../lib/aur.sh:227
 msgid "not found on AUR"
 msgstr "ni najdeno v AUR"
 
-#: ../../lib/aur.sh:232
+#: ../../lib/aur.sh:234
 msgid "up to date "
 msgstr "posodobljeno"
 
-#: ../../lib/aur.sh:233
+#: ../../lib/aur.sh:235
 msgid "flagged as out of date"
 msgstr "označeno kot zastarelo"
 
-#: ../../lib/aur.sh:242
+#: ../../lib/aur.sh:244
 msgid "Orphan"
 msgstr "Sirota"
 
-#: ../../lib/io.sh:98
+#: ../../lib/io.sh:101
 msgid "[Y/n]"
 msgstr "[D/n]"
 
-#: ../../lib/io.sh:99
+#: ../../lib/io.sh:102
 msgid "[y/N]"
 msgstr "[d/N]"
 
-#: ../../lib/io.sh:100
+#: ../../lib/io.sh:103
 msgid "[y/n]"
 msgstr "[d/n]"
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:158
 msgid "WARNING: "
 msgstr "OPOZORILO:"
 
-#: ../../lib/io.sh:164
+#: ../../lib/io.sh:167
 msgid "ERROR: "
 msgstr "NAPAKA:"
 
@@ -639,7 +640,7 @@ msgstr "Pacman je trenutno že v uporabi, prosimo počakajte."
 msgid "synchronizing package databases"
 msgstr "sinhroniziram baze paketov"
 
-#: ../../lib/pacman.sh.in:70
+#: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
 msgstr "(ignoriram posodobitev paketa)"
 
@@ -729,33 +730,33 @@ msgstr "Ni bilo mogoče kopirati pakete v mapo %s"
 
 #: ../../lib/pkgbuild.sh.in:362
 msgid "Unable to delete directory %s. Please remove it using root privileges."
-msgstr "Ni bilo mogoče izbrisati mapo %s. Prosimo izbrišite jo z root privilegiji."
+msgstr "Ni bilo mogoče izbrisati mape %s. Prosimo izbrišite jo z root privilegiji."
 
 #: ../../lib/pkgbuild.sh.in:364
 msgid "Unable to create directory %s."
 msgstr "Ni bilo mogoče ustvariti mape %s."
 
-#: ../../lib/pkgbuild.sh.in:392
+#: ../../lib/pkgbuild.sh.in:393
 msgid "Continue building %s ? "
 msgstr "Nadaljujem z grajenjem %s ?"
 
-#: ../../lib/pkgbuild.sh.in:398
+#: ../../lib/pkgbuild.sh.in:399
 msgid "Restart building %s ? "
 msgstr "Ponovim grajenje %s ?"
 
-#: ../../lib/pkgbuild.sh.in:456
+#: ../../lib/pkgbuild.sh.in:458
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "mapa %s že obstaja. [Z]amenjaj, [S]premeni v %s, [P]reskoči ?"
 
-#: ../../lib/pkgbuild.sh.in:457
+#: ../../lib/pkgbuild.sh.in:459
 msgid "RCS"
 msgstr "ZSP"
 
-#: ../../lib/pkgbuild.sh.in:463
+#: ../../lib/pkgbuild.sh.in:468
 msgid "Download %s sources"
 msgstr "Prenesi %s vire"
 
-#: ../../lib/pkgbuild.sh.in:503
+#: ../../lib/pkgbuild.sh.in:510
 msgid "Copying files from %s to build directory..."
 msgstr "Kopiram datoteke iz %s v mapo za grajenje..."
 

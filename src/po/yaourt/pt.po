@@ -1,17 +1,18 @@
 # yaourt default.po file
-# Copyright (C) 2010-2016
+# Copyright (C) 2010-2017
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
 # Bruno Guerreiro <american.jesus.pt@gmail.com>, 2013,2015-2016
+# larchunix, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-03-06 09:20+0000\n"
-"Last-Translator: tuxce <tuxce.net@gmail.com>\n"
+"PO-Revision-Date: 2017-06-09 19:04+0000\n"
+"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Portuguese (http://www.transifex.com/archlinuxfr/yaourt/language/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,45 +77,45 @@ msgstr "(S: sem confirmar)"
 msgid "YNS"
 msgstr "SNI"
 
-#: ../../pacdiffviewer.sh.in:180
+#: ../../pacdiffviewer.sh.in:179
 msgid "**same file**"
 msgstr "**mesmo ficheiro**"
 
-#: ../../pacdiffviewer.sh.in:184
+#: ../../pacdiffviewer.sh.in:183
 msgid "**automerge**"
 msgstr "**junção automática**"
 
-#: ../../pacdiffviewer.sh.in:188
+#: ../../pacdiffviewer.sh.in:187
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [C]ontinuar (padrão), [A]bortar ?"
 
-#: ../../pacdiffviewer.sh.in:189
+#: ../../pacdiffviewer.sh.in:188
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
 msgstr "Ação: [E]ditar, Substitui[R], [S]uprimir, [J]untar, [C]ontinuar (padrão), [A]bortar ?"
 
-#: ../../pacdiffviewer.sh.in:190
+#: ../../pacdiffviewer.sh.in:189
 msgid "ERSCA"
 msgstr "ERSCA"
 
-#: ../../pacdiffviewer.sh.in:191
+#: ../../pacdiffviewer.sh.in:190
 msgid "ERSCAM"
 msgstr "ERSCAJ"
 
-#: ../../pacdiffviewer.sh.in:201
+#: ../../pacdiffviewer.sh.in:200
 msgid "Patch: "
 msgstr "Patch: "
 
-#: ../../pacdiffviewer.sh.in:204
+#: ../../pacdiffviewer.sh.in:203
 msgid "Apply ?"
 msgstr "Aplicar ?"
 
-#: ../../pacdiffviewer.sh.in:207
+#: ../../pacdiffviewer.sh.in:206
 msgid "patch returned an error!"
 msgstr "patch voltou em erro!"
 
-#: ../../pacdiffviewer.sh.in:229
+#: ../../pacdiffviewer.sh.in:228
 msgid "Enter n° : "
 msgstr "Digite nº : "
 
@@ -210,99 +211,95 @@ msgstr "mostrar grupos"
 msgid "Information for %s"
 msgstr "Informação para %s"
 
-#: ../../yaourt.sh.in:207
+#: ../../yaourt.sh.in:214
 msgid "Unable to read %s file"
 msgstr "Não é possível ler %s"
 
-#: ../../yaourt.sh.in:233
+#: ../../yaourt.sh.in:240
 msgid "%s directory does not contain a PKGBUILD"
 msgstr "diretório %s não contem um PKGBUILD"
 
-#: ../../yaourt.sh.in:239
+#: ../../yaourt.sh.in:246
 msgid "Installing %s from local PKGBUILD"
 msgstr "A instalar %s a partir do PKGBUILD local"
 
-#: ../../yaourt.sh.in:252
-msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Escolha nº de pacotes a ser instalados (ex: 1 2 3 or 1-3)"
+#: ../../yaourt.sh.in:259
+msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
+msgstr ""
 
-#: ../../yaourt.sh.in:488
+#: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"
 msgstr "obter PKGBUILD"
 
-#: ../../lib/abs.sh.in:68
-msgid "Download abs archive"
-msgstr "Transferir arquivo abs"
-
-#: ../../lib/abs.sh.in:97
+#: ../../lib/abs.sh.in:49
 msgid "Building %s from sources."
 msgstr "Compilar %s do código fonte."
 
-#: ../../lib/abs.sh.in:98
+#: ../../lib/abs.sh.in:50
 msgid "Install %s from sources"
 msgstr "Instalar %s do código fonte"
 
-#: ../../lib/abs.sh.in:100
+#: ../../lib/abs.sh.in:52
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "A recuperar PKGBUILD e código fonte local..."
 
-#: ../../lib/abs.sh.in:177
+#: ../../lib/abs.sh.in:129
 msgid "Foreign packages: "
 msgstr "Pacotes externos: "
 
-#: ../../lib/abs.sh.in:232
+#: ../../lib/abs.sh.in:184
 msgid "not found"
 msgstr "não encontrado"
 
-#: ../../lib/abs.sh.in:250
+#: ../../lib/abs.sh.in:202
 msgid "Continue upgrade ?"
 msgstr "Continuar atualização ?"
 
-#: ../../lib/abs.sh.in:251
+#: ../../lib/abs.sh.in:203
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]er detalhes do pacote   [M]anualmente selecionar os pacotes"
 
-#: ../../lib/abs.sh.in:252
+#: ../../lib/abs.sh.in:204
 msgid "YNVM"
 msgstr "YNVM"
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:225
 msgid "Proceed with upgrade? "
 msgstr "Proceder com atualização? "
 
-#: ../../lib/abs.sh.in:301
+#: ../../lib/abs.sh.in:253
 msgid "Source targets"
 msgstr "Objetos fonte"
 
-#: ../../lib/abs.sh.in:328
+#: ../../lib/abs.sh.in:280
 msgid "unable to update %s"
 msgstr "incapaz de atualizar %s"
 
-#: ../../lib/abs.sh.in:347
+#: ../../lib/abs.sh.in:299
 msgid "Package upgrade only (new release):"
 msgstr "Somente atualização de pacote (nova versão):"
 
-#: ../../lib/abs.sh.in:348
+#: ../../lib/abs.sh.in:300
 msgid "Software upgrade (new version) :"
 msgstr "Atualização de pacote (nova versão) :"
 
-#: ../../lib/abs.sh.in:349
+#: ../../lib/abs.sh.in:301
 msgid "New package :"
 msgstr "Novo pacote :"
 
-#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
+#: ../../lib/abs.sh.in:317 ../../lib/abs.sh.in:325
 msgid "(required by %s)"
 msgstr "(necessário para %s)"
 
-#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
+#: ../../lib/abs.sh.in:342 ../../lib/abs.sh.in:343
 msgid "Installing from a package list"
 msgstr "A instalar de uma lista de pacotes"
 
-#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
+#: ../../lib/abs.sh.in:396 ../../lib/abs.sh.in:397
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "a atualizar pacote SVN/CVS/HG/GIT"
 
-#: ../../lib/abs.sh.in:454
+#: ../../lib/abs.sh.in:406
 msgid "Targets"
 msgstr "Objetos"
 
@@ -378,11 +375,11 @@ msgstr "(base de dados antiga está gravada em %s)"
 msgid "wrong argument"
 msgstr "argumento errado"
 
-#: ../../lib/alpm_query.sh:48
+#: ../../lib/alpm_query.sh:50
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Deseja remover estes pacotes (com opções -Rcs) ? "
 
-#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
+#: ../../lib/alpm_query.sh:51 ../../lib/pkgbuild.sh.in:400
 msgid "YN"
 msgstr "SN"
 
@@ -544,82 +541,86 @@ msgid "Maintainer     "
 msgstr "Responsável        "
 
 #: ../../lib/aur.sh:88
+msgid "First submit   "
+msgstr ""
+
+#: ../../lib/aur.sh:89
 msgid "Last update    "
 msgstr "Ultima atualização "
 
-#: ../../lib/aur.sh:89
+#: ../../lib/aur.sh:90
 msgid "Out Of Date    "
 msgstr "Desatualizado      "
 
-#: ../../lib/aur.sh:90
+#: ../../lib/aur.sh:91
 msgid "Votes          "
 msgstr "Votos              "
 
-#: ../../lib/aur.sh:91
+#: ../../lib/aur.sh:92
 msgid "Popularity     "
 msgstr "Popularidade       "
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:175
 msgid "Checking vote status for %s"
 msgstr "Verificar o estado do voto para %s"
 
-#: ../../lib/aur.sh:176
+#: ../../lib/aur.sh:178
 msgid "You have already voted for %s"
 msgstr "Já votou em %s"
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:181
 msgid "Do you want to vote for %s ? "
 msgstr "Deseja votar em %s ? "
 
-#: ../../lib/aur.sh:193
+#: ../../lib/aur.sh:195
 msgid "Installing %s from AUR"
 msgstr "A instalar %s do AUR"
 
-#: ../../lib/aur.sh:197
+#: ../../lib/aur.sh:199
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "A transferir PKGBUILD %s do AUR..."
 
-#: ../../lib/aur.sh:203
+#: ../../lib/aur.sh:205
 msgid "This package is orphaned"
 msgstr "Este pacote está órfão"
 
-#: ../../lib/aur.sh:204
+#: ../../lib/aur.sh:206
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Pacote incompatível: Potencialmente perigoso ! )"
 
-#: ../../lib/aur.sh:225
+#: ../../lib/aur.sh:227
 msgid "not found on AUR"
 msgstr "não encontrado no AUR"
 
-#: ../../lib/aur.sh:232
+#: ../../lib/aur.sh:234
 msgid "up to date "
 msgstr "atualizado "
 
-#: ../../lib/aur.sh:233
+#: ../../lib/aur.sh:235
 msgid "flagged as out of date"
 msgstr "sinalizado como desatualizado"
 
-#: ../../lib/aur.sh:242
+#: ../../lib/aur.sh:244
 msgid "Orphan"
 msgstr "Órfão"
 
-#: ../../lib/io.sh:98
+#: ../../lib/io.sh:101
 msgid "[Y/n]"
 msgstr "[S/n]"
 
-#: ../../lib/io.sh:99
+#: ../../lib/io.sh:102
 msgid "[y/N]"
 msgstr "[s/N]"
 
-#: ../../lib/io.sh:100
+#: ../../lib/io.sh:103
 msgid "[y/n]"
 msgstr "[s/n]"
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:158
 msgid "WARNING: "
 msgstr "ATENÇÃO: "
 
-#: ../../lib/io.sh:164
+#: ../../lib/io.sh:167
 msgid "ERROR: "
 msgstr "ERRO: "
 
@@ -639,7 +640,7 @@ msgstr "Pacman está atualmente em uso, aguarde por favor."
 msgid "synchronizing package databases"
 msgstr "a sincronizar base de dados de pacotes"
 
-#: ../../lib/pacman.sh.in:70
+#: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
 msgstr "(a ignorar atualização de pacotes)"
 
@@ -735,27 +736,27 @@ msgstr "Incapaz de apagar diretório %s. Por favor, remova-o com privilégios de
 msgid "Unable to create directory %s."
 msgstr "Incapaz de criar diretório %s."
 
-#: ../../lib/pkgbuild.sh.in:392
+#: ../../lib/pkgbuild.sh.in:393
 msgid "Continue building %s ? "
 msgstr "Continuar a compilar %s ? "
 
-#: ../../lib/pkgbuild.sh.in:398
+#: ../../lib/pkgbuild.sh.in:399
 msgid "Restart building %s ? "
 msgstr "Reiniciar a compilação de %s ? "
 
-#: ../../lib/pkgbuild.sh.in:456
+#: ../../lib/pkgbuild.sh.in:458
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "O diretório %s já existe. [S]ubstituir, [A]lterar para %s, [I]gnorar ?"
 
-#: ../../lib/pkgbuild.sh.in:457
+#: ../../lib/pkgbuild.sh.in:459
 msgid "RCS"
 msgstr "SAI"
 
-#: ../../lib/pkgbuild.sh.in:463
+#: ../../lib/pkgbuild.sh.in:468
 msgid "Download %s sources"
 msgstr "Transferir fontes %s"
 
-#: ../../lib/pkgbuild.sh.in:503
+#: ../../lib/pkgbuild.sh.in:510
 msgid "Copying files from %s to build directory..."
 msgstr "A copiar ficheiros de %s para diretório de compilação..."
 

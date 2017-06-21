@@ -1,14 +1,17 @@
 # yaourt default.po file
-# Copyright (C) 2010-2016
+# Copyright (C) 2010-2017
 # This file is distributed under the same license as the yaourt package.
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
 # Artem Vorotnikov <artem@vorotnikov.me>, 2014
+# Artem Vorotnikov <artem@vorotnikov.me>, 2014
 # Dmitry Korzhevin <dkorzhevin@lsupport.net>, 2012
-# Igor <f2404@yandex.ru>, 2016
+# Igor <f2404@yandex.ru>, 2016-2017
 # Igor <f2404@yandex.ru>, 2016
 # Julien MISCHKOWITZ <wain@archlinux.fr>, 2010
+# larchunix, 2016
+# larchunix, 2016
 # Petr Zhizhin <piter.zh@gmail.com>, 2014
 # Roman Skrynski <nakkez@ya.ru>, 2016
 # Vladislav <nuklea@gmail.com>, 2015
@@ -17,8 +20,8 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2016-04-17 07:11+0000\n"
-"Last-Translator: Igor <f2404@yandex.ru>\n"
+"PO-Revision-Date: 2017-06-21 17:54+0000\n"
+"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Russian (http://www.transifex.com/archlinuxfr/yaourt/language/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -83,45 +86,45 @@ msgstr "(S: без подтверждения)"
 msgid "YNS"
 msgstr "YNS"
 
-#: ../../pacdiffviewer.sh.in:180
+#: ../../pacdiffviewer.sh.in:179
 msgid "**same file**"
 msgstr "**тот же файл**"
 
-#: ../../pacdiffviewer.sh.in:184
+#: ../../pacdiffviewer.sh.in:183
 msgid "**automerge**"
 msgstr "**автослияние**"
 
-#: ../../pacdiffviewer.sh.in:188
+#: ../../pacdiffviewer.sh.in:187
 msgid "Action: [E]dit, [R]eplace, [S]uppress, [C]ontinue (default), [A]bort ?"
 msgstr "Действия: [E]редактировать, [R]заменить, [S]подавить, [C]продолжить (по умолчанию), [A]отменить ?"
 
-#: ../../pacdiffviewer.sh.in:189
+#: ../../pacdiffviewer.sh.in:188
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
 msgstr "Действия: [E]редактировать, [R]заменить, [S]подавить, [M]слить, [C]продолжить (по умолчанию), [A]отменить ?"
 
-#: ../../pacdiffviewer.sh.in:190
+#: ../../pacdiffviewer.sh.in:189
 msgid "ERSCA"
 msgstr "ERSCA"
 
-#: ../../pacdiffviewer.sh.in:191
+#: ../../pacdiffviewer.sh.in:190
 msgid "ERSCAM"
 msgstr "ERSCAM"
 
-#: ../../pacdiffviewer.sh.in:201
+#: ../../pacdiffviewer.sh.in:200
 msgid "Patch: "
 msgstr "Пропатчить: "
 
-#: ../../pacdiffviewer.sh.in:204
+#: ../../pacdiffviewer.sh.in:203
 msgid "Apply ?"
 msgstr "Применить ?"
 
-#: ../../pacdiffviewer.sh.in:207
+#: ../../pacdiffviewer.sh.in:206
 msgid "patch returned an error!"
 msgstr "ошибка во время применения патча!"
 
-#: ../../pacdiffviewer.sh.in:229
+#: ../../pacdiffviewer.sh.in:228
 msgid "Enter n° : "
 msgstr "Введите №: "
 
@@ -217,99 +220,95 @@ msgstr "показать группы"
 msgid "Information for %s"
 msgstr "Информация по %s"
 
-#: ../../yaourt.sh.in:207
+#: ../../yaourt.sh.in:214
 msgid "Unable to read %s file"
 msgstr "Невозможно прочитать файл %s"
 
-#: ../../yaourt.sh.in:233
+#: ../../yaourt.sh.in:240
 msgid "%s directory does not contain a PKGBUILD"
 msgstr "в директории %s нет файла PKGBUILD"
 
-#: ../../yaourt.sh.in:239
+#: ../../yaourt.sh.in:246
 msgid "Installing %s from local PKGBUILD"
 msgstr "Установка из локального PKGBUILD"
 
-#: ../../yaourt.sh.in:252
-msgid "Enter n° of packages to be installed (ex: 1 2 3 or 1-3)"
-msgstr "Введите номера пакетов для установки (например: 1 2 3 или 1-3)"
+#: ../../yaourt.sh.in:259
+msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
+msgstr "Введите номера пакетов для установки (например, 1 2 3 или 1-3)"
 
-#: ../../yaourt.sh.in:488
+#: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"
 msgstr "загрузка PKGBUILD"
 
-#: ../../lib/abs.sh.in:68
-msgid "Download abs archive"
-msgstr "Загрузка архивов abs"
-
-#: ../../lib/abs.sh.in:97
+#: ../../lib/abs.sh.in:49
 msgid "Building %s from sources."
 msgstr "Сборка %s из исходников."
 
-#: ../../lib/abs.sh.in:98
+#: ../../lib/abs.sh.in:50
 msgid "Install %s from sources"
 msgstr "Установка %s из исходников"
 
-#: ../../lib/abs.sh.in:100
+#: ../../lib/abs.sh.in:52
 msgid "Retrieving PKGBUILD and local sources..."
 msgstr "Получение PKGBUILD и локальных исходников..."
 
-#: ../../lib/abs.sh.in:177
+#: ../../lib/abs.sh.in:129
 msgid "Foreign packages: "
 msgstr "Другие пакеты: "
 
-#: ../../lib/abs.sh.in:232
+#: ../../lib/abs.sh.in:184
 msgid "not found"
 msgstr "не найдено"
 
-#: ../../lib/abs.sh.in:250
+#: ../../lib/abs.sh.in:202
 msgid "Continue upgrade ?"
 msgstr "Продолжить обновление ?"
 
-#: ../../lib/abs.sh.in:251
+#: ../../lib/abs.sh.in:203
 msgid "[V]iew package detail   [M]anually select packages"
 msgstr "[V]показать детали пакета  [M]вручную выбрать пакеты"
 
-#: ../../lib/abs.sh.in:252
+#: ../../lib/abs.sh.in:204
 msgid "YNVM"
 msgstr "YNVM"
 
-#: ../../lib/abs.sh.in:273
+#: ../../lib/abs.sh.in:225
 msgid "Proceed with upgrade? "
 msgstr "Продолжить обновление? "
 
-#: ../../lib/abs.sh.in:301
+#: ../../lib/abs.sh.in:253
 msgid "Source targets"
 msgstr "Целевые исходники"
 
-#: ../../lib/abs.sh.in:328
+#: ../../lib/abs.sh.in:280
 msgid "unable to update %s"
 msgstr "невозможно обновить %s"
 
-#: ../../lib/abs.sh.in:347
+#: ../../lib/abs.sh.in:299
 msgid "Package upgrade only (new release):"
 msgstr "Только обновление пакета (новая версия):"
 
-#: ../../lib/abs.sh.in:348
+#: ../../lib/abs.sh.in:300
 msgid "Software upgrade (new version) :"
 msgstr "Обновление программ (новая версия) :"
 
-#: ../../lib/abs.sh.in:349
+#: ../../lib/abs.sh.in:301
 msgid "New package :"
 msgstr "Новые пакеты :"
 
-#: ../../lib/abs.sh.in:365 ../../lib/abs.sh.in:373
+#: ../../lib/abs.sh.in:317 ../../lib/abs.sh.in:325
 msgid "(required by %s)"
 msgstr "(требуется %s)"
 
-#: ../../lib/abs.sh.in:390 ../../lib/abs.sh.in:391
+#: ../../lib/abs.sh.in:342 ../../lib/abs.sh.in:343
 msgid "Installing from a package list"
 msgstr "Установка из списка пакетов"
 
-#: ../../lib/abs.sh.in:444 ../../lib/abs.sh.in:445
+#: ../../lib/abs.sh.in:396 ../../lib/abs.sh.in:397
 msgid "upgrading SVN/CVS/HG/GIT package"
 msgstr "установка пакета SVN/CVS/HG/GIT"
 
-#: ../../lib/abs.sh.in:454
+#: ../../lib/abs.sh.in:406
 msgid "Targets"
 msgstr "Цели"
 
@@ -385,11 +384,11 @@ msgstr "(старая база данных сохранена в %s)"
 msgid "wrong argument"
 msgstr "неверный аргумент"
 
-#: ../../lib/alpm_query.sh:48
+#: ../../lib/alpm_query.sh:50
 msgid "Do you want to remove these packages (with -Rcs options) ? "
 msgstr "Вы действительно хотите удалить эти пакеты (с опциями -Rcs) ? "
 
-#: ../../lib/alpm_query.sh:49 ../../lib/pkgbuild.sh.in:399
+#: ../../lib/alpm_query.sh:51 ../../lib/pkgbuild.sh.in:400
 msgid "YN"
 msgstr "YN"
 
@@ -551,82 +550,86 @@ msgid "Maintainer     "
 msgstr "Разработчик    "
 
 #: ../../lib/aur.sh:88
+msgid "First submit   "
+msgstr "Первая версия"
+
+#: ../../lib/aur.sh:89
 msgid "Last update    "
 msgstr "Посл обновление"
 
-#: ../../lib/aur.sh:89
+#: ../../lib/aur.sh:90
 msgid "Out Of Date    "
 msgstr "Устарел        "
 
-#: ../../lib/aur.sh:90
+#: ../../lib/aur.sh:91
 msgid "Votes          "
 msgstr "Голоса         "
 
-#: ../../lib/aur.sh:91
+#: ../../lib/aur.sh:92
 msgid "Popularity     "
 msgstr "Популярность   "
 
-#: ../../lib/aur.sh:173
+#: ../../lib/aur.sh:175
 msgid "Checking vote status for %s"
 msgstr "Проверка статуса голосования за %s"
 
-#: ../../lib/aur.sh:176
+#: ../../lib/aur.sh:178
 msgid "You have already voted for %s"
 msgstr "Вы уже проголосовали за %s"
 
-#: ../../lib/aur.sh:179
+#: ../../lib/aur.sh:181
 msgid "Do you want to vote for %s ? "
 msgstr "Вы хотите проголосовать за %s ? "
 
-#: ../../lib/aur.sh:193
+#: ../../lib/aur.sh:195
 msgid "Installing %s from AUR"
 msgstr "Установка %s из AUR"
 
-#: ../../lib/aur.sh:197
+#: ../../lib/aur.sh:199
 msgid "Downloading %s PKGBUILD from AUR..."
 msgstr "Загрузка PKGBUILD %s из AUR..."
 
-#: ../../lib/aur.sh:203
+#: ../../lib/aur.sh:205
 msgid "This package is orphaned"
 msgstr "Данный пакет более не используется"
 
-#: ../../lib/aur.sh:204
+#: ../../lib/aur.sh:206
 msgid "( Unsupported package: Potentially dangerous ! )"
 msgstr "( Неподдерживаемый пакет: Потенциально опасен ! )"
 
-#: ../../lib/aur.sh:225
+#: ../../lib/aur.sh:227
 msgid "not found on AUR"
 msgstr "не найден в AUR"
 
-#: ../../lib/aur.sh:232
+#: ../../lib/aur.sh:234
 msgid "up to date "
 msgstr "обновлен "
 
-#: ../../lib/aur.sh:233
+#: ../../lib/aur.sh:235
 msgid "flagged as out of date"
 msgstr "помечен как требующий обновления"
 
-#: ../../lib/aur.sh:242
+#: ../../lib/aur.sh:244
 msgid "Orphan"
 msgstr "Нет ответственного"
 
-#: ../../lib/io.sh:98
+#: ../../lib/io.sh:101
 msgid "[Y/n]"
 msgstr "Да/нет [Y/n]"
 
-#: ../../lib/io.sh:99
+#: ../../lib/io.sh:102
 msgid "[y/N]"
 msgstr "да/Нет [y/N]"
 
-#: ../../lib/io.sh:100
+#: ../../lib/io.sh:103
 msgid "[y/n]"
 msgstr "да/нет [y/n]"
 
-#: ../../lib/io.sh:155
+#: ../../lib/io.sh:158
 msgid "WARNING: "
 msgstr "ВНИМАНИЕ: "
 
-#: ../../lib/io.sh:164
+#: ../../lib/io.sh:167
 msgid "ERROR: "
 msgstr "ОШИБКА: "
 
@@ -646,7 +649,7 @@ msgstr "Pacman используется в данный момент, пожал
 msgid "synchronizing package databases"
 msgstr "синхронизация баз данных пакетов"
 
-#: ../../lib/pacman.sh.in:70
+#: ../../lib/pacman.sh.in:71
 msgid "(ignoring package upgrade)"
 msgstr "(игнорирование обновления пакета)"
 
@@ -742,27 +745,27 @@ msgstr "Невозможно удалить директорию %s. Пожал�
 msgid "Unable to create directory %s."
 msgstr "Невозможно создать директорию %s."
 
-#: ../../lib/pkgbuild.sh.in:392
+#: ../../lib/pkgbuild.sh.in:393
 msgid "Continue building %s ? "
 msgstr "Продолжить сборку %s ? "
 
-#: ../../lib/pkgbuild.sh.in:398
+#: ../../lib/pkgbuild.sh.in:399
 msgid "Restart building %s ? "
 msgstr "Перезапустить сборку %s ? "
 
-#: ../../lib/pkgbuild.sh.in:456
+#: ../../lib/pkgbuild.sh.in:458
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
 msgstr "Директория %s уже существует. [R]заменить, [C]изменить на %s, [S]пропустить ?"
 
-#: ../../lib/pkgbuild.sh.in:457
+#: ../../lib/pkgbuild.sh.in:459
 msgid "RCS"
 msgstr "RCS"
 
-#: ../../lib/pkgbuild.sh.in:463
+#: ../../lib/pkgbuild.sh.in:468
 msgid "Download %s sources"
 msgstr "Загрузка исходников %s"
 
-#: ../../lib/pkgbuild.sh.in:503
+#: ../../lib/pkgbuild.sh.in:510
 msgid "Copying files from %s to build directory..."
 msgstr "Копирование файлов из %s в директорию для сборки..."
 
