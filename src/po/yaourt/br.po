@@ -4,6 +4,7 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# archlinuxfr <webmaster@archlinux.fr>, 2017
 # Gwenn M <tornoz@laposte.net>, 2015-2016
 # larchunix, 2016
 msgid ""
@@ -11,7 +12,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-09 19:04+0000\n"
+"PO-Revision-Date: 2017-06-26 10:09+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Breton (http://www.transifex.com/archlinuxfr/yaourt/language/br/)\n"
 "MIME-Version: 1.0\n"
@@ -225,7 +226,7 @@ msgstr ""
 
 #: ../../yaourt.sh.in:259
 msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
-msgstr ""
+msgstr "Enankit niverenn ar pakadoù a fell deoc'h staliañ (sk: 1 2 3 pe 1-3) "
 
 #: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"

@@ -4,6 +4,7 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# archlinuxfr <webmaster@archlinux.fr>, 2017
 # Ekin Dursun <ekindursun@gmail.com>, 2013
 # Ekin Dursun <ekindursun@gmail.com>, 2012
 # Özgür Sarıer <ozgursarier1011601115@gmail.com>, 2013,2016
@@ -12,7 +13,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-09 19:04+0000\n"
+"PO-Revision-Date: 2017-06-26 10:07+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Turkish (http://www.transifex.com/archlinuxfr/yaourt/language/tr/)\n"
 "MIME-Version: 1.0\n"
@@ -226,7 +227,7 @@ msgstr "%s AUR'dan yükleniyor"
 
 #: ../../yaourt.sh.in:259
 msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
-msgstr ""
+msgstr "Yüklenecek paketlerin sıra numarasını girin (örn: 1 2 3 veya 1-3)"
 
 #: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"

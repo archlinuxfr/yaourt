@@ -4,6 +4,7 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# archlinuxfr <webmaster@archlinux.fr>, 2017
 # larchunix, 2016
 # Ḷḷumex03 <tornes@opmbx.org>, 2013-2014
 # Ḷḷumex03 <tornes@opmbx.org>, 2014
@@ -13,7 +14,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-09 19:04+0000\n"
+"PO-Revision-Date: 2017-06-26 10:07+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Asturian (http://www.transifex.com/archlinuxfr/yaourt/language/ast/)\n"
 "MIME-Version: 1.0\n"
@@ -95,7 +96,7 @@ msgstr "Aición: ¿[E]ditar, [T]rocar, [D]esaniciar, [S]iguir (por defeutu) ó [
 msgid ""
 "Action: [E]dit, [R]eplace, [S]uppress, [M]erge, [C]ontinue (default), "
 "[A]bort ?"
-msgstr ""
+msgstr "Aición: ¿[E]ditar, [T]rocar, [M]ecer, [A]mestar, [S]iguir (por defeutu) ó [A]lbortar?"
 
 #: ../../pacdiffviewer.sh.in:189
 msgid "ERSCA"
@@ -103,7 +104,7 @@ msgstr "ETDSA"
 
 #: ../../pacdiffviewer.sh.in:190
 msgid "ERSCAM"
-msgstr ""
+msgstr "ETMSAM"
 
 #: ../../pacdiffviewer.sh.in:200
 msgid "Patch: "
@@ -227,7 +228,7 @@ msgstr ""
 
 #: ../../yaourt.sh.in:259
 msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
-msgstr ""
+msgstr "Introduz un númberu de paquetes pa instalar (exem: 1 2 3 o 1-3)"
 
 #: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"

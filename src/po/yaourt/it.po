@@ -4,6 +4,7 @@
 # Tuxce <tuxce.net@gmail.com>, 2010-2015
 # 
 # Translators:
+# archlinuxfr <webmaster@archlinux.fr>, 2017
 # Vincenzo Reale <smart2128@baslug.org>, 2009, 2010
 # Vincenzo Reale <vinx.reale@gmail.com>, 2012,2014-2016
 msgid ""
@@ -11,7 +12,7 @@ msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-21 17:55+0000\n"
+"PO-Revision-Date: 2017-06-26 10:05+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Italian (http://www.transifex.com/archlinuxfr/yaourt/language/it/)\n"
 "MIME-Version: 1.0\n"
@@ -225,7 +226,7 @@ msgstr "Installazione di %s da PKGBUILD locale"
 
 #: ../../yaourt.sh.in:259
 msgid "Enter n° of packages to be installed (e.g., 1 2 3 or 1-3)"
-msgstr ""
+msgstr "Inserisci il numero dei pacchetti da installare (ex: 1 2 3 o 1-3)"
 
 #: ../../yaourt.sh.in:493
 msgid "get PKGBUILD"
