@@ -123,7 +123,7 @@ BEGIN {
 			line=line"\n"str
 	}
 }
-/^[\t ]*<p>$/ {
+/^[\t ]*<div id="comment-.*-content"/ {
 	if (comment==1) {
 		comment_content=1
 	}
