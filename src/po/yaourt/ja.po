@@ -6,14 +6,14 @@
 # Translators:
 # archlinuxfr <webmaster@archlinux.fr>, 2017
 # larchunix, 2016
-# kusakata, 2014,2016
+# kusakata, 2014,2016-2017
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-26 10:06+0000\n"
-"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"PO-Revision-Date: 2017-09-23 19:18+0000\n"
+"Last-Translator: kusakata\n"
 "Language-Team: Japanese (http://www.transifex.com/archlinuxfr/yaourt/language/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -543,7 +543,7 @@ msgstr "メンテナ　　　　"
 
 #: ../../lib/aur.sh:88
 msgid "First submit   "
-msgstr ""
+msgstr "First submit   "
 
 #: ../../lib/aur.sh:89
 msgid "Last update    "

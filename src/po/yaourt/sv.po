@@ -6,13 +6,13 @@
 # Translators:
 # archlinuxfr <webmaster@archlinux.fr>, 2017
 # Olle Gustafsson <olle@dalnix.se>, 2017
-# riiga <riiga_92@hotmail.com>, 2016
+# riiga <riiga_92@hotmail.com>, 2016,2018
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-26 10:06+0000\n"
+"PO-Revision-Date: 2018-03-18 09:56+0000\n"
 "Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
 "Language-Team: Swedish (http://www.transifex.com/archlinuxfr/yaourt/language/sv/)\n"
 "MIME-Version: 1.0\n"
@@ -76,7 +76,7 @@ msgstr "(S: bekräfta automatiskt)"
 
 #: ../../pacdiffviewer.sh.in:162
 msgid "YNS"
-msgstr "YNS"
+msgstr "JNS"
 
 #: ../../pacdiffviewer.sh.in:179
 msgid "**same file**"
@@ -110,7 +110,7 @@ msgstr "Patch:"
 
 #: ../../pacdiffviewer.sh.in:203
 msgid "Apply ?"
-msgstr "Verkställ ?"
+msgstr "Verkställ?"
 
 #: ../../pacdiffviewer.sh.in:206
 msgid "patch returned an error!"
@@ -254,7 +254,7 @@ msgstr "hittade inte"
 
 #: ../../lib/abs.sh.in:202
 msgid "Continue upgrade ?"
-msgstr "Fortsätta uppgradera ?"
+msgstr "Fortsätta uppgradera?"
 
 #: ../../lib/abs.sh.in:203
 msgid "[V]iew package detail   [M]anually select packages"
@@ -262,7 +262,7 @@ msgstr "[V]isa paketinformation   [M]anuell paketväljare"
 
 #: ../../lib/abs.sh.in:204
 msgid "YNVM"
-msgstr "YNVM"
+msgstr "JNVM"
 
 #: ../../lib/abs.sh.in:225
 msgid "Proceed with upgrade? "
@@ -378,11 +378,11 @@ msgstr "felaktigt argument"
 
 #: ../../lib/alpm_query.sh:50
 msgid "Do you want to remove these packages (with -Rcs options) ? "
-msgstr "Vill du verkligen ta bort dessa paket (med -Rcs-alternativen) ?"
+msgstr "Vill du verkligen ta bort dessa paket (med -Rcs-alternativen)?"
 
 #: ../../lib/alpm_query.sh:51 ../../lib/pkgbuild.sh.in:400
 msgid "YN"
-msgstr "YN"
+msgstr "JN"
 
 #: ../../lib/alpm_stats.sh:49
 msgid "Total installed packages:"
@@ -543,7 +543,7 @@ msgstr "Underhållare"
 
 #: ../../lib/aur.sh:88
 msgid "First submit   "
-msgstr ""
+msgstr "Först publicerad"
 
 #: ../../lib/aur.sh:89
 msgid "Last update    "
@@ -571,7 +571,7 @@ msgstr "Du har redan röstat på %s"
 
 #: ../../lib/aur.sh:181
 msgid "Do you want to vote for %s ? "
-msgstr "Vill du rösta på %s ?"
+msgstr "Vill du rösta på %s?"
 
 #: ../../lib/aur.sh:195
 msgid "Installing %s from AUR"
@@ -587,7 +587,7 @@ msgstr "Paketet är föräldralöst"
 
 #: ../../lib/aur.sh:206
 msgid "( Unsupported package: Potentially dangerous ! )"
-msgstr "( Paket utan stöd: Potentiellt farligt! )"
+msgstr "(Paket utan stöd: Potentiellt farligt!)"
 
 #: ../../lib/aur.sh:227
 msgid "not found on AUR"
@@ -703,7 +703,7 @@ msgstr "Exporterar %s till katalogen %s"
 
 #: ../../lib/pkgbuild.sh.in:323
 msgid "Continue installing %s ?"
-msgstr "Fortsätta installera %s ?"
+msgstr "Fortsätta installera %s?"
 
 #: ../../lib/pkgbuild.sh.in:324
 msgid "[v]iew package contents   [c]heck package with namcap"
@@ -711,7 +711,7 @@ msgstr "[v]isa paketinnehåll   [c] kontrollera paket med namcap"
 
 #: ../../lib/pkgbuild.sh.in:325
 msgid "YNVC"
-msgstr "YNVC"
+msgstr "JNVC"
 
 #: ../../lib/pkgbuild.sh.in:330
 msgid "Press any key to continue"
@@ -739,15 +739,15 @@ msgstr "Kunde inte skapa katalogen %s."
 
 #: ../../lib/pkgbuild.sh.in:393
 msgid "Continue building %s ? "
-msgstr "Fortsätta bygga %s ?"
+msgstr "Fortsätta bygga %s?"
 
 #: ../../lib/pkgbuild.sh.in:399
 msgid "Restart building %s ? "
-msgstr "Bygg om %s ?"
+msgstr "Bygg om %s?"
 
 #: ../../lib/pkgbuild.sh.in:458
 msgid "%s directory already exist. [R]eplace, [C]hange to %s, [S]kip ?"
-msgstr "katalogen %s finns redan. [R] Ersätt, [C] Ändra till %s, [S] Hoppa över ?"
+msgstr "katalogen %s finns redan. [R] Ersätt, [C] Ändra till %s, [S] Hoppa över?"
 
 #: ../../lib/pkgbuild.sh.in:459
 msgid "RCS"
@@ -771,7 +771,7 @@ msgstr "är inte skrivbar"
 
 #: ../../lib/util.sh.in:205
 msgid "Edit %s ?"
-msgstr "Redigera %s ?"
+msgstr "Redigera %s?"
 
 #: ../../lib/util.sh.in:205
 msgid "(\"A\" to abort)"
@@ -779,7 +779,7 @@ msgstr "(\"A\" för att avbryta)"
 
 #: ../../lib/util.sh.in:206
 msgid "YNA"
-msgstr "YNA"
+msgstr "JNA"
 
 #: ../../lib/util.sh.in:208
 msgid "Aborted..."

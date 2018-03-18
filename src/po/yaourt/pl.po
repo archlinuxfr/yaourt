@@ -6,14 +6,16 @@
 # Translators:
 # archlinuxfr <webmaster@archlinux.fr>, 2017
 # larchunix, 2016
+# Marcin Mikołajczak <m4sk1n@vivaldi.net>, 2017
+# Piotr Strębski <strebski@gmail.com>, 2017
 # Piotr Strębski <strebski@gmail.com>, 2014-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: yaourt\n"
 "Report-Msgid-Bugs-To: https://github.com/archlinuxfr/yaourt\n"
 "POT-Creation-Date: 2016-02-21 21:05+0100\n"
-"PO-Revision-Date: 2017-06-26 10:06+0000\n"
-"Last-Translator: archlinuxfr <webmaster@archlinux.fr>\n"
+"PO-Revision-Date: 2017-09-23 18:46+0000\n"
+"Last-Translator: Piotr Strębski <strebski@gmail.com>\n"
 "Language-Team: Polish (http://www.transifex.com/archlinuxfr/yaourt/language/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -543,7 +545,7 @@ msgstr "Opiekun "
 
 #: ../../lib/aur.sh:88
 msgid "First submit   "
-msgstr ""
+msgstr "Data pierwszej publikacji"
 
 #: ../../lib/aur.sh:89
 msgid "Last update    "
